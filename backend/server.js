@@ -5,8 +5,14 @@ require("dotenv").config();
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// ***** FIXED CORS CONFIG *****
+app.use(cors({
+  origin: "https://himstay-frontend.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
+// Body Parser
 app.use(express.json());
 
 // Routes
@@ -25,6 +31,5 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("Mongo Error:", err));
 
-// PORT for Render
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
