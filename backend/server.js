@@ -5,9 +5,9 @@ require("dotenv").config();
 
 const app = express();
 
-// ***** FIXED CORS CONFIG *****
+// ---- FIXED CORS CONFIG ----
 app.use(cors({
-  origin: "https://himstay-frontend.onrender.com",
+  origin: ["https://himstay-frontend.onrender.com"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
 
-// MongoDB Connect
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
