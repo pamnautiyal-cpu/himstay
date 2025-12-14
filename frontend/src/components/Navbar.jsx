@@ -39,8 +39,7 @@ function Navbar() {
           background:
             "linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.6))",
           backdropFilter: "blur(16px)",
-          boxShadow:
-            "0 20px 40px rgba(15, 23, 42, 0.12)",
+          boxShadow: "0 20px 40px rgba(15, 23, 42, 0.12)",
           border: "1px solid rgba(148,163,184,0.35)",
         }}
       >
@@ -61,8 +60,7 @@ function Navbar() {
               borderRadius: 12,
               background:
                 "linear-gradient(135deg, #2563eb, #22c55e)",
-              boxShadow:
-                "0 10px 20px rgba(37,99,235,0.35)",
+              boxShadow: "0 10px 20px rgba(37,99,235,0.35)",
             }}
           />
           <span
@@ -97,6 +95,14 @@ function Navbar() {
             style={linkStyle(location.pathname === "/mytrips")}
           >
             My Trips
+          </Link>
+
+          {/* ✅ CONTACT LINK ADDED */}
+          <Link
+            to="/contact"
+            style={linkStyle(location.pathname === "/contact")}
+          >
+            Contact
           </Link>
 
           <Link
