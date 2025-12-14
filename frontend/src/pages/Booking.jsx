@@ -1,87 +1,101 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-import { createBooking } from "../api/api";
+import React, { useState } from "react";
 
-function Booking() {
-  const { id } = useParams();
-  const [form, setForm] = useState({
-    name: "",
-    guests: 2,
-    checkIn: "",
-    checkOut: "",
-  });
+function Booking({ pricePerNight = 2500, hotelName = "Himalayan Stay" }) {
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [guests, setGuests] = useState(2);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await createBooking({
-      hotelId: id,
-      userId: localStorage.getItem("userId") || "demo-user",
-      ...form,
-    });
-    alert("Booking successful! (saved in backend)");
-  };
+  const nights =
+    checkIn && checkOut
+      ? Math.max(
+          (new Date(checkOut) - new Date(checkIn)) /
+            (1000 * 60 * 60 * 24),
+          1
+        )
+      : 0;
+
+  const totalPrice = nights * pricePerNight;
+
+  const whatsappLink = `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(
+    `Booking Enquiry:
+Hotel: ${hotelName}
+Check-in: ${checkIn}
+Check-out: ${checkOut}
+Guests: ${guests}
+Nights: ${nights}
+Total Price: ₹${totalPrice}`
+  )}`;
 
   return (
-    <div className="hs-center-wrapper">
-      <div className="hs-form-card">
-        <h2 className="hs-form-title">Confirm your stay</h2>
-        <p className="hs-form-description">
-          Fill in a few details and your Himalayans booking will be confirmed.
-        </p>
+    <div style={box}>
+      <h3 style={{ marginBottom: 10 }}>Book Your Stay</h3>
 
-        <form onSubmit={handleSubmit}>
-          <div className="hs-form-field">
-            <label className="hs-label">Your name</label>
-            <input
-              className="hs-input"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
-            />
-          </div>
+      <label>Check-in</label>
+      <input
+        type="date"
+        value={checkIn}
+        onChange={(e) => setCheckIn(e.target.value)}
+      />
 
-          <div className="hs-form-field">
-            <label className="hs-label">Guests</label>
-            <input
-              type="number"
-              min={1}
-              className="hs-input"
-              value={form.guests}
-              onChange={(e) =>
-                setForm({ ...form, guests: Number(e.target.value) })
-              }
-            />
-          </div>
+      <label>Check-out</label>
+      <input
+        type="date"
+        value={checkOut}
+        onChange={(e) => setCheckOut(e.target.value)}
+      />
 
-          <div className="hs-form-field">
-            <label className="hs-label">Check-in</label>
-            <input
-              type="date"
-              className="hs-input"
-              value={form.checkIn}
-              onChange={(e) => setForm({ ...form, checkIn: e.target.value })}
-              required
-            />
-          </div>
+      <label>Guests</label>
+      <select
+        value={guests}
+        onChange={(e) => setGuests(e.target.value)}
+      >
+        <option value="1">1 Guest</option>
+        <option value="2">2 Guests</option>
+        <option value="3">3 Guests</option>
+        <option value="4">4 Guests</option>
+        <option value="5">5+ Guests</option>
+      </select>
 
-          <div className="hs-form-field">
-            <label className="hs-label">Check-out</label>
-            <input
-              type="date"
-              className="hs-input"
-              value={form.checkOut}
-              onChange={(e) => setForm({ ...form, checkOut: e.target.value })}
-              required
-            />
-          </div>
-
-          <button className="hs-btn-primary" style={{ width: "100%", marginTop: 6 }}>
-            Confirm booking
-          </button>
-        </form>
+      <div style={{ marginTop: 10 }}>
+        ₹ {pricePerNight} / night
       </div>
+
+      {nights > 0 && (
+        <div style={{ marginTop: 6, fontWeight: 600 }}>
+          Total: ₹ {totalPrice} ({nights} nights)
+        </div>
+      )}
+
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noreferrer"
+        style={btn}
+      >
+        Book on WhatsApp
+      </a>
     </div>
   );
 }
+
+const box = {
+  padding: 22,
+  borderRadius: 22,
+  background: "#fff",
+  boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
+  display: "grid",
+  gap: 8,
+};
+
+const btn = {
+  marginTop: 14,
+  padding: 12,
+  background: "#22c55e",
+  color: "#fff",
+  textAlign: "center",
+  borderRadius: 999,
+  textDecoration: "none",
+  fontWeight: 600,
+};
 
 export default Booking;

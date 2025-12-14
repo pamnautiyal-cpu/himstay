@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getHotel } from "../api/api";
+import Booking from "../components/Booking";
 
 function HotelDetails() {
   const { id } = useParams();
@@ -22,6 +23,7 @@ function HotelDetails() {
             gap: 20,
           }}
         >
+          {/* LEFT: HOTEL INFO */}
           <div>
             <div
               style={{
@@ -33,34 +35,42 @@ function HotelDetails() {
                   : "linear-gradient(135deg,#1d4ed8,#22c55e)",
               }}
             />
+
             <h1 style={{ marginBottom: 4 }}>{hotel.name}</h1>
+
             <div className="hs-muted" style={{ marginBottom: 12 }}>
               {hotel.city} • ⭐ {hotel.rating || 4.4}
             </div>
+
             <p style={{ fontSize: 14.5, lineHeight: 1.55 }}>
               {hotel.description ||
-                "A cozy hillside property with warm hosts, fast Wi-Fi and great views — perfect for remote work and slow travel."}
+                "A cozy hillside property with warm hosts, fast Wi-Fi and stunning mountain views — perfect for peaceful stays."}
             </p>
           </div>
 
+          {/* RIGHT: PRICE + REAL BOOKING */}
           <aside className="hs-card">
             <div className="hs-muted" style={{ marginBottom: 4 }}>
               From
             </div>
+
             <div className="hs-price">₹{hotel.price}</div>
+
             <div className="hs-muted">per night, taxes extra</div>
 
             <div style={{ marginTop: 18, fontSize: 13.5 }}>
               <div>• Free cancellation on most stays</div>
               <div>• Instant booking confirmation</div>
-              <div>• Verified HimStay partner</div>
+              <div>• Verified Himalayan partner</div>
             </div>
 
-            <Link to={`/booking/${hotel._id}`} style={{ marginTop: 18, display: "block" }}>
-              <button className="hs-btn-primary" style={{ width: "100%" }}>
-                Book this stay
-              </button>
-            </Link>
+            {/* ✅ REAL BOOKING SYSTEM */}
+            <div style={{ marginTop: 20 }}>
+              <Booking
+                pricePerNight={hotel.price}
+                hotelName={hotel.name}
+              />
+            </div>
           </aside>
         </div>
       </div>
