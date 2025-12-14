@@ -83,3 +83,22 @@
             left: 16,
             right: 16,
             color: "#fff",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: 20,
+              fontWeight: 700,
+              marginBottom: 4,
+            }}
+          >
+            {city.name}
+          </h3>
+          <p style={{ fontSize: 13, opacity: 0.9 }}>
+            {city.price}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
