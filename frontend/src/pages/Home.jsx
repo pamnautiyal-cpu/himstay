@@ -30,8 +30,8 @@ function Home() {
               <span style={{ color: "#2563eb" }}>Himalayas</span>.
             </h1>
             <p className="hs-subtitle">
-              HimStay helps you discover hand-picked stays in Manali, Shimla,
-              Dharamshala and beyond — perfect for workations and getaways.
+              The Himalayans helps you discover hand-picked stays in Manali, Shimla,
+Dharamshala and beyond.
             </p>
 
             <form
@@ -82,8 +82,8 @@ function Home() {
             </div>
             <h3 style={{ marginTop: 14 }}>Weekend in the clouds</h3>
             <p className="hs-muted">
-              Average nightly rate from ₹1,299 • 120+ verified homestays across
-              Himachal.
+              Average nightly rate from ₹1,099 • 120+ verified homestays across
+              Uttarakhand.
             </p>
           </div>
         </section>

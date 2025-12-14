@@ -26,7 +26,7 @@ function Booking() {
       <div className="hs-form-card">
         <h2 className="hs-form-title">Confirm your stay</h2>
         <p className="hs-form-description">
-          Fill in a few details and your HimStay booking will be confirmed.
+          Fill in a few details and your Himalayans booking will be confirmed.
         </p>
 
         <form onSubmit={handleSubmit}>

@@ -25,7 +25,7 @@ export default function MyTrips() {
             marginBottom: 10,
           }}
         >
-          Your Trips in the Himalayas 🏔️
+          Your Trips in the Himalayas-Uttarakhand 🏔️
         </h1>
 
         <p
@@ -35,7 +35,7 @@ export default function MyTrips() {
             marginBottom: 30,
           }}
         >
-          Track all your upcoming and past HimStay bookings.
+          Track all your upcoming and past Himalayans bookings.
         </p>
 
         {/* Mountains Illustration */}

@@ -153,7 +153,7 @@ function Dashboard() {
           </div>
 
           <a className="hs-btn-primary" href="/hotels">
-            Find stays in the Himalayas
+            Find stays in the Himalayas-Uttarakhand
           </a>
         </section>
       </div>
