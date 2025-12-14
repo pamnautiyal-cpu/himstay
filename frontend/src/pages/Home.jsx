@@ -67,7 +67,7 @@ function Home() {
                 marginBottom: 30,
               }}
             >
-              Handpicked hotels & homestays across Himachal — perfect for
+              Handpicked hotels & homestays across Uttarakhand & Himachal — perfect for
               workations, weekends and slow travel.
             </p>
 
@@ -85,7 +85,7 @@ function Home() {
               }}
             >
               <input
-                placeholder="Search by city (Manali, Shimla...)"
+                placeholder="Search by city (Mussoorie, Shimla, Nainital , Harshil Valley...)"
                 style={{
                   border: "none",
                   outline: "none",
