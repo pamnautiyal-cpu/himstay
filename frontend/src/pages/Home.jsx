@@ -20,53 +20,65 @@ function Home() {
             Uttarakhand.
           </p>
         </div>
-
-        <div className="hs-hero-card">
-          <div className="hs-hero-mountains">
-            <div className="sun"></div>
-            <div className="cloud cloud-1"></div>
-            <div className="cloud cloud-2"></div>
-            <div className="peak peak-left"></div>
-            <div className="peak peak-center"></div>
-            <div className="peak peak-right"></div>
-          </div>
-
-          <div className="hs-hero-content">
-            <div className="hs-hero-title">Weekend in the clouds</div>
-            <div className="hs-hero-text">
-              Peaceful mountain stays curated for you
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* CONTENT */}
-      <div className="hs-dashboard-grid">
-        <div className="hs-card">
-          <div className="hs-card-header">
-            <h2>Your Trips</h2>
-            <span className="hs-pill">Upcoming</span>
+      {/* DESTINATION CARDS */}
+      <h2 className="hs-section-title">Top Hill Destinations</h2>
+
+      <div className="hs-destination-grid">
+        <div className="hs-destination-card">
+          <img
+            src="https://images.unsplash.com/photo-1548013146-72479768bada"
+            alt="Mussoorie"
+          />
+          <div className="hs-destination-overlay">
+            <h3>Mussoorie</h3>
+            <p>Queen of Hills</p>
           </div>
-
-          <p>No trips booked yet.</p>
-
-          <button className="hs-btn-primary">
-            Explore Destinations
-          </button>
         </div>
 
-        <div className="hs-card">
-          <h2>Popular Destinations</h2>
-
-          <div className="hs-tag-row">
-            <span className="hs-tag">Mussoorie</span>
-            <span className="hs-tag">Shimla</span>
-            <span className="hs-tag">Nainital</span>
-            <span className="hs-tag">Uttarkashi</span>
-            <span className="hs-tag">Dehradun</span>
+        <div className="hs-destination-card">
+          <img
+            src="https://images.unsplash.com/photo-1588416499018-d8c6211b1bda"
+            alt="Shimla"
+          />
+          <div className="hs-destination-overlay">
+            <h3>Shimla</h3>
+            <p>Colonial charm</p>
           </div>
+        </div>
 
-          <p>✅ Verified stays · ✅ Best prices · ✅ Easy booking</p>
+        <div className="hs-destination-card">
+          <img
+            src="https://images.unsplash.com/photo-1603695690376-73b1f09d5b16"
+            alt="Nainital"
+          />
+          <div className="hs-destination-overlay">
+            <h3>Nainital</h3>
+            <p>Lake paradise</p>
+          </div>
+        </div>
+
+        <div className="hs-destination-card">
+          <img
+            src="https://images.unsplash.com/photo-1616776005756-4dca36124bf2"
+            alt="Uttarkashi"
+          />
+          <div className="hs-destination-overlay">
+            <h3>Uttarkashi</h3>
+            <p>Spiritual mountains</p>
+          </div>
+        </div>
+
+        <div className="hs-destination-card">
+          <img
+            src="https://images.unsplash.com/photo-1589308078059-f3d6b63c8a9c"
+            alt="Dehradun"
+          />
+          <div className="hs-destination-overlay">
+            <h3>Dehradun</h3>
+            <p>Gateway to hills</p>
+          </div>
         </div>
       </div>
     </div>
