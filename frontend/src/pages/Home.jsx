@@ -1,190 +1,85 @@
-import React from "react";
-
-function Home() {
-  return (
-    <div
+{/* DESTINATIONS */}
+<section
+  style={{
+    maxWidth: 1100,
+    margin: "0 auto",
+    padding: "20px 20px 80px",
+  }}
+>
+  <div style={{ marginBottom: 24 }}>
+    <h2
       style={{
-        background: "linear-gradient(180deg, #f8fafc, #eef2ff)",
-        minHeight: "100vh",
-        fontFamily: "Inter, sans-serif",
+        fontSize: 28,
+        fontWeight: 800,
+        color: "#0f172a",
+        marginBottom: 6,
       }}
     >
-      {/* HERO SECTION */}
-      <section
+      Popular Hill Stations
+    </h2>
+    <p style={{ color: "#64748b" }}>
+      Explore handpicked stays across India’s most loved mountains
+    </p>
+  </div>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+      gap: 20,
+    }}
+  >
+    {[
+      { name: "Mussoorie", price: "from ₹1,199" },
+      { name: "Shimla", price: "from ₹1,099" },
+      { name: "Dehradun", price: "from ₹999" },
+      { name: "Uttarkashi", price: "from ₹899" },
+      { name: "Nainital", price: "from ₹1,299" },
+    ].map((city, i) => (
+      <div
+        key={i}
         style={{
-          minHeight: "90vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0 20px",
+          position: "relative",
+          height: 260,
+          borderRadius: 20,
+          overflow: "hidden",
+          cursor: "pointer",
+          boxShadow:
+            "0 20px 40px rgba(15, 23, 42, 0.15)",
+          transition: "transform .25s ease",
         }}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.transform = "scale(1.03)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.transform = "scale(1)")
+        }
       >
+        {/* IMAGE PLACEHOLDER */}
         <div
           style={{
-            maxWidth: 1100,
-            width: "100%",
-            display: "grid",
-            gridTemplateColumns: "1.1fr 0.9fr",
-            gap: 40,
-            alignItems: "center",
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(135deg, #38bdf8, #22c55e, #16a34a)",
           }}
-        >
-          {/* LEFT */}
-          <div>
-            <span
-              style={{
-                display: "inline-block",
-                padding: "6px 14px",
-                borderRadius: 999,
-                background: "#e0e7ff",
-                color: "#3730a3",
-                fontSize: 13,
-                fontWeight: 600,
-                marginBottom: 14,
-              }}
-            >
-              Hills • Stays • Memories
-            </span>
+        />
 
-            <h1
-              style={{
-                fontSize: 52,
-                lineHeight: 1.1,
-                fontWeight: 800,
-                color: "#0f172a",
-                marginBottom: 16,
-              }}
-            >
-              Stay closer to the <br />
-              <span style={{ color: "#2563eb" }}>mountains.</span>
-            </h1>
+        {/* OVERLAY */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.55))",
+          }}
+        />
 
-            <p
-              style={{
-                fontSize: 18,
-                color: "#475569",
-                maxWidth: 520,
-                marginBottom: 30,
-              }}
-            >
-              Handpicked hotels & homestays across Uttarakhand & Himachal — perfect for
-              workations, weekends and slow travel.
-            </p>
-
-            {/* SEARCH */}
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                background: "#fff",
-                padding: 10,
-                borderRadius: 999,
-                boxShadow:
-                  "0 20px 40px rgba(15, 23, 42, 0.12)",
-                maxWidth: 420,
-              }}
-            >
-              <input
-                placeholder="Search by city (Mussoorie, Shimla, Nainital , Harshil Valley...)"
-                style={{
-                  border: "none",
-                  outline: "none",
-                  flex: 1,
-                  fontSize: 15,
-                  paddingLeft: 12,
-                }}
-              />
-              <button
-                style={{
-                  background:
-                    "linear-gradient(135deg, #2563eb, #1d4ed8)",
-                  color: "#fff",
-                  border: "none",
-                  padding: "10px 22px",
-                  borderRadius: 999,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Search
-              </button>
-            </div>
-          </div>
-
-          {/* RIGHT CARD */}
-          <div
-            style={{
-              background: "white",
-              borderRadius: 24,
-              padding: 16,
-              boxShadow:
-                "0 30px 60px rgba(15, 23, 42, 0.15)",
-            }}
-          >
-            <div
-              style={{
-                height: 240,
-                borderRadius: 18,
-                background:
-                  "linear-gradient(135deg, #38bdf8, #22c55e, #facc15)",
-                marginBottom: 18,
-              }}
-            />
-            <h3 style={{ marginBottom: 6 }}>
-              Weekend in the clouds
-            </h3>
-            <p style={{ color: "#64748b", fontSize: 14 }}>
-              Average stays from ₹1,099 · Verified homestays
-              across Uttarakhand & Himachal.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section
-        style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: "40px 20px 80px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: 20,
-        }}
-      >
-        {[
-          {
-            title: "Handpicked Stays",
-            text: "Only quality-checked mountain homes",
-          },
-          {
-            title: "Best Prices",
-            text: "Direct deals with local hosts",
-          },
-          {
-            title: "Easy Booking",
-            text: "Fast, secure & hassle-free",
-          },
-        ].map((f, i) => (
-          <div
-            key={i}
-            style={{
-              background: "#fff",
-              borderRadius: 18,
-              padding: 24,
-              boxShadow:
-                "0 10px 30px rgba(15, 23, 42, 0.08)",
-            }}
-          >
-            <h4 style={{ marginBottom: 8 }}>{f.title}</h4>
-            <p style={{ color: "#64748b", fontSize: 14 }}>
-              {f.text}
-            </p>
-          </div>
-        ))}
-      </section>
-    </div>
-  );
-}
-
-export default Home;
+        {/* CONTENT */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 16,
+            left: 16,
+            right: 16,
+            color: "#fff",
