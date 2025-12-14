@@ -10,7 +10,7 @@ import MyTrips from "./pages/MyTrips";
 import AdminAddHotel from "./pages/AdminAddHotel";
 import HotelDetails from "./pages/HotelDetails";
 
-// Protected Route
+// 🔒 Protected Route
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
   if (!token) return <Navigate to="/login" replace />;
@@ -20,15 +20,14 @@ function ProtectedRoute({ children }) {
 function MainRoutes() {
   return (
     <Routes>
+      {/* Public */}
       <Route path="/" element={<Home />} />
-
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
       <Route path="/hotels" element={<Hotels />} />
       <Route path="/hotel/:id" element={<HotelDetails />} />
 
-      {/* ✔ MyTrips new page */}
+      {/* Protected */}
       <Route
         path="/mytrips"
         element={
@@ -38,7 +37,6 @@ function MainRoutes() {
         }
       />
 
-      {/* Old Dashboard route (optional) */}
       <Route
         path="/dashboard"
         element={
@@ -48,7 +46,6 @@ function MainRoutes() {
         }
       />
 
-      {/* Admin */}
       <Route
         path="/admin/add-hotel"
         element={
@@ -58,8 +55,8 @@ function MainRoutes() {
         }
       />
 
-      {/* 404 fallback */}
-      <Route path="*" element={<Navigate to="/" />} />
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
