@@ -1,104 +1,87 @@
-{/* DESTINATIONS */}
-<section
-  style={{
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: "20px 20px 80px",
-  }}
->
-  <div style={{ marginBottom: 24 }}>
-    <h2
-      style={{
-        fontSize: 28,
-        fontWeight: 800,
-        color: "#0f172a",
-        marginBottom: 6,
-      }}
-    >
-      Popular Hill Stations
-    </h2>
-    <p style={{ color: "#64748b" }}>
-      Explore handpicked stays across India’s most loved mountains
-    </p>
-  </div>
+import React from "react";
+import "./Home.css"; // agar css alag file me hai
 
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-      gap: 20,
-    }}
-  >
-    {[
-      { name: "Mussoorie", price: "from ₹1,199" },
-      { name: "Shimla", price: "from ₹1,099" },
-      { name: "Dehradun", price: "from ₹999" },
-      { name: "Uttarkashi", price: "from ₹899" },
-      { name: "Nainital", price: "from ₹1,299" },
-    ].map((city, i) => (
-      <div
-        key={i}
-        style={{
-          position: "relative",
-          height: 260,
-          borderRadius: 20,
-          overflow: "hidden",
-          cursor: "pointer",
-          boxShadow:
-            "0 20px 40px rgba(15, 23, 42, 0.15)",
-          transition: "transform .25s ease",
-        }}
-        onMouseEnter={(e) =>
-          (e.currentTarget.style.transform = "scale(1.03)")
-        }
-        onMouseLeave={(e) =>
-          (e.currentTarget.style.transform = "scale(1)")
-        }
-      >
-        {/* IMAGE PLACEHOLDER */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(135deg, #38bdf8, #22c55e, #16a34a)",
-          }}
-        />
-
-        {/* OVERLAY */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.55))",
-          }}
-        />
-
-        {/* CONTENT */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 16,
-            left: 16,
-            right: 16,
-            color: "#fff",
-          }}
-        >
-          <h3
-            style={{
-              fontSize: 20,
-              fontWeight: 700,
-              marginBottom: 4,
-            }}
-          >
-            {city.name}
-          </h3>
-          <p style={{ fontSize: 13, opacity: 0.9 }}>
-            {city.price}
+function Home() {
+  return (
+    <div className="hs-dashboard">
+      {/* ===== Header ===== */}
+      <div className="hs-dashboard-header">
+        <div>
+          <div className="hs-dashboard-subtitle">
+            Hills · Stays · Memories
+          </div>
+          <h1 className="hs-dashboard-title">
+            Book cozy stays in the Himalayas
+          </h1>
+          <p className="hs-dashboard-text">
+            Discover handpicked hotels & homestays across Himachal,
+            Uttarakhand and beyond.
           </p>
         </div>
+
+        {/* ===== Hero Card ===== */}
+        <div className="hs-hero-card">
+          <div className="hs-hero-mountains">
+            <div className="sun"></div>
+            <div className="cloud cloud-1"></div>
+            <div className="cloud cloud-2"></div>
+
+            <div className="peak peak-left"></div>
+            <div className="peak peak-center"></div>
+            <div className="peak peak-right"></div>
+
+            <div className="people">🧑‍🤝‍🧑</div>
+          </div>
+
+          <div className="hs-hero-content">
+            <div className="hs-hero-title">Weekend in the clouds</div>
+            <div className="hs-hero-text">
+              Peaceful mountain stays curated for you
+            </div>
+          </div>
+        </div>
       </div>
-    ))}
-  </div>
-</section>
+
+      {/* ===== Grid ===== */}
+      <div className="hs-dashboard-grid">
+        <div className="hs-card">
+          <div className="hs-card-header">
+            <h2>Your Trips</h2>
+            <span className="hs-pill">Upcoming</span>
+          </div>
+
+          <div className="hs-empty">
+            <div className="hs-empty-title">No trips booked yet</div>
+            <div className="hs-empty-text">
+              Start planning your Himalayan escape.
+            </div>
+
+            <button className="hs-btn-primary">
+              Explore Destinations
+            </button>
+          </div>
+        </div>
+
+        <div className="hs-card hs-suggestions">
+          <h2>Popular Destinations</h2>
+
+          <div className="hs-tag-row">
+            <span className="hs-tag">Mussoorie</span>
+            <span className="hs-tag">Shimla</span>
+            <span className="hs-tag">Nainital</span>
+            <span className="hs-tag">Uttarkashi</span>
+            <span className="hs-tag">Dehradun</span>
+          </div>
+
+          <div className="hs-checklist">
+            ✅ Verified stays  
+            ✅ Best prices  
+            ✅ Easy booking
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Home;
