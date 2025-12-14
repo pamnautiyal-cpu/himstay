@@ -1,5 +1,4 @@
 import React from "react";
-import "./Home.css"; // agar css alag file me hai
 
 function Home() {
   return (
