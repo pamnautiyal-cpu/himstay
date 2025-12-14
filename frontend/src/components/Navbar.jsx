@@ -54,8 +54,14 @@ function Navbar() {
               display: "inline-block",
             }}
           />
-          <span style={{ fontWeight: 700, letterSpacing: 0.5, fontSize: 18 }}>
-            HimStay
+          <span
+            style={{
+              fontWeight: 700,
+              letterSpacing: 1,
+              fontSize: 18,
+            }}
+          >
+            The Himalayans
           </span>
         </Link>
 
@@ -69,13 +75,12 @@ function Navbar() {
           </Link>
 
           <Link
-            to="/dashboard"
-            style={navLinkStyle(location.pathname === "/dashboard")}
+            to="/mytrips"
+            style={navLinkStyle(location.pathname === "/mytrips")}
           >
             My Trips
           </Link>
 
-          {/* ADMIN PANEL LINK */}
           <Link
             to="/admin/add-hotel"
             style={navLinkStyle(location.pathname === "/admin/add-hotel")}
