@@ -5,81 +5,60 @@ function Home() {
   return (
     <div className="hs-dashboard">
       {/* HERO */}
-      <div className="hs-dashboard-header">
-        <div>
-          <div className="hs-dashboard-subtitle">
-            Hills · Stays · Memories
-          </div>
+      <section className="hs-hero">
+        <div className="hs-hero-left">
+          <span className="hs-badge">Trusted Mountain Stays</span>
 
-          <h1 className="hs-dashboard-title">
-            Book cozy stays in the Himalayas
+          <h1 className="hs-hero-title">
+            Discover <span>Premium Stays</span><br />
+            in the Himalayas
           </h1>
 
-          <p className="hs-dashboard-text">
-            Discover handpicked hotels & homestays across Himachal and
-            Uttarakhand.
+          <p className="hs-hero-text">
+            Handpicked hotels, homestays & destination experiences across
+            Himachal and Uttarakhand.
           </p>
-        </div>
-      </div>
 
-      {/* DESTINATION CARDS */}
+          <div className="hs-hero-cta">
+            <a href="/hotels" className="hs-btn-primary">
+              Book Stay
+            </a>
+            <a href="/contact" className="hs-btn-outline">
+              Enquire
+            </a>
+          </div>
+        </div>
+
+        <div className="hs-hero-right">
+          <img
+            src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+            alt="Himalayas"
+          />
+        </div>
+      </section>
+
+      {/* DESTINATIONS */}
       <h2 className="hs-section-title">Top Hill Destinations</h2>
 
       <div className="hs-destination-grid">
-        <div className="hs-destination-card">
-          <img
-            src="https://images.unsplash.com/photo-1548013146-72479768bada"
-            alt="Mussoorie"
-          />
-          <div className="hs-destination-overlay">
-            <h3>Mussoorie</h3>
-            <p>Queen of Hills</p>
+        {[
+          "Mussoorie",
+          "Shimla",
+          "Nainital",
+          "Uttarkashi",
+          "Dehradun",
+        ].map((city) => (
+          <div className="hs-destination-card" key={city}>
+            <img
+              src={`https://source.unsplash.com/600x600/?${city},mountains`}
+              alt={city}
+            />
+            <div className="hs-destination-overlay">
+              <h3>{city}</h3>
+              <p>Explore stays & experiences</p>
+            </div>
           </div>
-        </div>
-
-        <div className="hs-destination-card">
-          <img
-            src="https://images.unsplash.com/photo-1588416499018-d8c6211b1bda"
-            alt="Shimla"
-          />
-          <div className="hs-destination-overlay">
-            <h3>Shimla</h3>
-            <p>Colonial charm</p>
-          </div>
-        </div>
-
-        <div className="hs-destination-card">
-          <img
-            src="https://images.unsplash.com/photo-1603695690376-73b1f09d5b16"
-            alt="Nainital"
-          />
-          <div className="hs-destination-overlay">
-            <h3>Nainital</h3>
-            <p>Lake paradise</p>
-          </div>
-        </div>
-
-        <div className="hs-destination-card">
-          <img
-            src="https://images.unsplash.com/photo-1616776005756-4dca36124bf2"
-            alt="Uttarkashi"
-          />
-          <div className="hs-destination-overlay">
-            <h3>Uttarkashi</h3>
-            <p>Spiritual mountains</p>
-          </div>
-        </div>
-
-        <div className="hs-destination-card">
-          <img
-            src="https://images.unsplash.com/photo-1589308078059-f3d6b63c8a9c"
-            alt="Dehradun"
-          />
-          <div className="hs-destination-overlay">
-            <h3>Dehradun</h3>
-            <p>Gateway to hills</p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
