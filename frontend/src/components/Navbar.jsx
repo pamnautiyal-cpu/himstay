@@ -97,7 +97,6 @@ function Navbar() {
             My Trips
           </Link>
 
-          {/* ✅ CONTACT LINK ADDED */}
           <Link
             to="/contact"
             style={linkStyle(location.pathname === "/contact")}

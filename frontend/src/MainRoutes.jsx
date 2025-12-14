@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import MyTrips from "./pages/MyTrips";
 import AdminAddHotel from "./pages/AdminAddHotel";
 import HotelDetails from "./pages/HotelDetails";
-import Contact from "./pages/Contact"; // ✅ ADDED
+import Contact from "./pages/Contact";
 
 // 🔒 Protected Route
 function ProtectedRoute({ children }) {
@@ -27,8 +27,6 @@ function MainRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/hotels" element={<Hotels />} />
       <Route path="/hotel/:id" element={<HotelDetails />} />
-
-      {/* ✅ Contact page (PUBLIC) */}
       <Route path="/contact" element={<Contact />} />
 
       {/* Protected */}
