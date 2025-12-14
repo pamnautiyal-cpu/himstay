@@ -1,94 +1,80 @@
 import React, { useState } from "react";
 
 function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const whatsapp = "919410106470"; // ← अपना WhatsApp number
+  const mail = "infothehimalayans@gmail.com"; // ← अपना email
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Message sent successfully!");
-    setForm({ name: "", email: "", phone: "", message: "" });
-  };
+  const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+  )}`;
+
+  const mailLink = `mailto:${mail}?subject=Contact from The Himalayans&body=${encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\n\n${message}`
+  )}`;
 
   return (
-    <div className="hs-dashboard">
-      <div style={{ marginBottom: 32 }}>
-        <div className="hs-dashboard-subtitle">Get in touch</div>
-        <h1 className="hs-dashboard-title">Contact The Himalayans</h1>
-        <p className="hs-dashboard-text">
-          Planning a mountain escape? We’d love to help you.
-        </p>
-      </div>
+    <div style={{ padding: 40, maxWidth: 500, margin: "auto" }}>
+      <h2>Contact Us</h2>
 
-      <div className="hs-contact-grid">
-        <form className="hs-card" onSubmit={handleSubmit}>
-          <h2 style={{ marginBottom: 14 }}>Send us a message</h2>
+      <input
+        placeholder="Your Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={input}
+      />
 
-          <input
-            className="hs-input"
-            name="name"
-            placeholder="Your name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
+      <input
+        placeholder="Your Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        style={input}
+      />
 
-          <input
-            className="hs-input"
-            type="email"
-            name="email"
-            placeholder="Email address"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+      <textarea
+        placeholder="Message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        style={{ ...input, height: 100 }}
+      />
 
-          <input
-            className="hs-input"
-            name="phone"
-            placeholder="Phone (optional)"
-            value={form.phone}
-            onChange={handleChange}
-          />
-
-          <textarea
-            className="hs-input"
-            rows="4"
-            name="message"
-            placeholder="Tell us about your trip…"
-            value={form.message}
-            onChange={handleChange}
-            required
-          />
-
-          <button className="hs-btn-primary" type="submit">
-            Send Message
-          </button>
-        </form>
-
-        <div className="hs-card hs-map-card">
-          <h2 style={{ marginBottom: 10 }}>Our locations</h2>
-          <p className="hs-muted" style={{ marginBottom: 12 }}>
-            Himachal · Uttarakhand · Mountain regions
-          </p>
-
-          <iframe
-            title="The Himalayans Map"
-            src="https://www.google.com/maps?q=Himachal%20Pradesh&output=embed"
-            loading="lazy"
-          ></iframe>
-        </div>
+      <div style={{ display: "flex", gap: 10 }}>
+        <a href={waLink} target="_blank" style={btnGreen}>
+          WhatsApp
+        </a>
+        <a href={mailLink} style={btnBlue}>
+          Email
+        </a>
       </div>
     </div>
   );
 }
+
+const input = {
+  width: "100%",
+  padding: 10,
+  marginBottom: 10,
+};
+
+const btnGreen = {
+  flex: 1,
+  background: "green",
+  color: "#fff",
+  textAlign: "center",
+  padding: 10,
+  textDecoration: "none",
+};
+
+const btnBlue = {
+  flex: 1,
+  background: "blue",
+  color: "#fff",
+  textAlign: "center",
+  padding: 10,
+  textDecoration: "none",
+};
 
 export default Contact;
