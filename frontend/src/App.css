@@ -1,60 +1,80 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: #f8fbff;
+}
+
+/* ===== LAYOUT ===== */
+.hs-dashboard {
+  padding: 60px 6vw 90px;
+}
+
+.hs-dashboard-header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.hs-dashboard-subtitle {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.hs-dashboard-title {
+  font-size: 40px;
+  font-weight: 800;
+  margin: 14px 0;
+}
+
+.hs-dashboard-text {
+  font-size: 16px;
+  color: #475569;
+  max-width: 520px;
+}
+
 /* ===== SECTION TITLE ===== */
 .hs-section-title {
   font-size: 28px;
   font-weight: 800;
-  margin: 48px 0 28px;
+  margin: 20px 0 18px;
   color: #0f172a;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: titleReveal 0.8s ease forwards;
 }
 
-@keyframes titleReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ===== CAROUSEL ===== */
+.hs-carousel {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 0;
 }
 
-/* ===== DESTINATION GRID ===== */
-.hs-destination-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 26px;
+.hs-carousel-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: slideLeft 28s linear infinite;
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 /* ===== DESTINATION CARD ===== */
 .hs-destination-card {
   position: relative;
+  width: 260px;
   height: 300px;
   border-radius: 26px;
   overflow: hidden;
   cursor: pointer;
-
-  /* LIVE FEEL */
-  opacity: 0;
-  transform: translateY(40px);
-  animation: cardReveal 0.9s ease forwards;
-
-  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.3);
-  transition: transform 0.45s ease, box-shadow 0.45s ease;
+  box-shadow: 0 30px 60px rgba(15,23,42,0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* STAGGER ANIMATION */
-.hs-destination-card:nth-child(1) { animation-delay: 0.2s; }
-.hs-destination-card:nth-child(2) { animation-delay: 0.35s; }
-.hs-destination-card:nth-child(3) { animation-delay: 0.5s; }
-.hs-destination-card:nth-child(4) { animation-delay: 0.65s; }
-.hs-destination-card:nth-child(5) { animation-delay: 0.8s; }
-
-@keyframes cardReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* IMAGE */
 .hs-destination-card img {
   width: 100%;
   height: 100%;
@@ -89,36 +109,28 @@
   opacity: 0.9;
 }
 
-/* HOVER = WOW */
+/* HOVER */
 .hs-destination-card:hover {
-  transform: translateY(-14px) scale(1.05);
-  box-shadow: 0 50px 100px rgba(15, 23, 42, 0.45);
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 50px 100px rgba(15,23,42,0.45);
 }
 
 .hs-destination-card:hover img {
   transform: scale(1.15);
 }
 
-/* SUBTLE FLOAT (DESKTOP ONLY) */
-@media (min-width: 900px) {
-  .hs-destination-card {
-    animation: cardReveal 0.9s ease forwards,
-               floatCard 6s ease-in-out infinite alternate;
-  }
-}
-
-@keyframes floatCard {
-  from { transform: translateY(0); }
-  to { transform: translateY(-8px); }
-}
-
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media (max-width: 600px) {
-  .hs-destination-card {
-    height: 220px;
+  .hs-dashboard {
+    padding: 40px 20px 70px;
   }
 
-  .hs-section-title {
-    font-size: 24px;
+  .hs-dashboard-title {
+    font-size: 32px;
+  }
+
+  .hs-destination-card {
+    width: 220px;
+    height: 240px;
   }
 }
