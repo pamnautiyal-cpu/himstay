@@ -1,43 +1,31 @@
 const express = require("express");
-const cors = require("cors");
 const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 
-// ----- FULL CORS FIX -----
-app.use(cors({
-    origin: [
-        "https://himstay-frontend.onrender.com",
-        "https://himstay.onrender.com",
-        "http://localhost:5173"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
-// For preflight OPTIONS request (important)
-app.options("*", cors());
-
-// ----- Body Parser -----
+/* ===== MIDDLEWARE ===== */
+app.use(cors());
 app.use(express.json());
 
-// ----- Routes -----
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/hotels", require("./routes/hotelRoutes"));
-app.use("/api/bookings", require("./routes/bookingRoutes"));
+/* ===== DATABASE ===== */
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ Mongo error", err));
 
-// Test route
+/* ===== ROUTES ===== */
 app.get("/", (req, res) => {
-    res.send("Backend is running!");
+  res.send("Himstay Backend Running 🚀");
 });
 
-// ----- MongoDB Connect -----
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB Connected"))
-    .catch(err => console.log("Mongo Error:", err));
+/* 🔴 STEP 3 — CONTACT ROUTE REGISTER HERE */
+const contactRoutes = require("./routes/contact.routes");
+app.use("/api/contact", contactRoutes);
 
-// ----- Server -----
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+/* ===== START SERVER ===== */
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});

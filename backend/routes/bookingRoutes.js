@@ -3,22 +3,16 @@ const Booking = require("../models/Booking");
 
 const router = express.Router();
 
-// Create booking
+// CREATE booking
 router.post("/", async (req, res) => {
-  try {
-    const booking = await Booking.create(req.body);
-    res.json({ message: "Booking successful", booking });
-  } catch (err) {
-    res.json({ error: err.message });
-  }
+  const booking = new Booking(req.body);
+  await booking.save();
+  res.json({ success: true });
 });
 
-// Get all bookings of one user
-router.get("/:userId", async (req, res) => {
-  const bookings = await Booking.find({ userId: req.params.userId })
-    .populate("hotelId")
-    .populate("userId");
-
+// GET all bookings (admin)
+router.get("/", async (req, res) => {
+  const bookings = await Booking.find().sort({ createdAt: -1 });
   res.json(bookings);
 });
 
