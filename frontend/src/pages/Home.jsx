@@ -14,8 +14,9 @@ function Home() {
           </h1>
 
           <p className="hs-hero-text">
-            Handpicked hotels, homestays & destination experiences across
-            Himachal and Uttarakhand.
+            Handpicked hotels, homestays & trekking experiences across
+Uttarakhand.
+
           </p>
 
           <div className="hs-hero-cta">
