@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <MainRoutes />
-      <Footer />
+      <Footer />   {/* 👈 FOOTER YAHI ADD HOTA HAI */}
     </BrowserRouter>
   );
 }

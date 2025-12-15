@@ -5,8 +5,9 @@ function Footer() {
     <footer
       style={{
         marginTop: 80,
-        padding: "40px 6vw",
-        background: "linear-gradient(135deg,#0f172a,#020617)",
+        padding: "50px 6vw",
+        background:
+          "linear-gradient(135deg, #0f172a, #020617)",
         color: "#e5e7eb",
       }}
     >
@@ -15,44 +16,68 @@ function Footer() {
           display: "grid",
           gridTemplateColumns: "1.2fr 1fr 1fr",
           gap: 30,
+          maxWidth: 1200,
+          margin: "0 auto",
         }}
       >
         {/* LOGO + ABOUT */}
         <div>
-          <h2 style={{ color: "#fff", marginBottom: 8 }}>
-            The Himalayans
-          </h2>
-          <p style={{ fontSize: 14, color: "#cbd5f5" }}>
-            Book handpicked stays, destination weddings, cultural
-            experiences & mountain escapes across the Himalayas.
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 12,
+            }}
+          >
+            <span
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 10,
+                background:
+                  "linear-gradient(135deg, #2563eb, #22c55e)",
+              }}
+            />
+            <h3 style={{ margin: 0 }}>The Himalayans</h3>
+          </div>
+
+          <p style={{ fontSize: 14, lineHeight: 1.6, color: "#cbd5f5" }}>
+            Handpicked Himalayan stays, destination weddings, cultural
+            experiences & slow travel escapes.
           </p>
         </div>
 
         {/* ADDRESS */}
         <div>
-          <h4 style={{ color: "#fff", marginBottom: 8 }}>Address</h4>
+          <h4>Address</h4>
+          <p style={{ fontSize: 14, lineHeight: 1.6 }}>
+            📍 Dehradun, Uttarakhand<br />
+            India – 248001
+          </p>
           <p style={{ fontSize: 14 }}>
-            The Himalayans Pvt Ltd <br />
-            Uttarakhand, Himachal Pradesh <br />
-            India – 175131
+            📞 +91 9XXXXXXXXX<br />
+            ✉️ hello@thehimalayans.in
           </p>
         </div>
 
-        {/* CONTACT */}
+        {/* LINKS */}
         <div>
-          <h4 style={{ color: "#fff", marginBottom: 8 }}>Contact</h4>
-          <p style={{ fontSize: 14 }}>📧 infothehimalayans@gmail.com</p>
-          <p style={{ fontSize: 14 }}>📞 +91 9410106470</p>
+          <h4>Quick Links</h4>
+          <ul style={{ listStyle: "none", padding: 0, fontSize: 14 }}>
+            <li><a href="/" style={linkStyle}>Home</a></li>
+            <li><a href="/hotels" style={linkStyle}>Hotels</a></li>
+            <li><a href="/contact" style={linkStyle}>Contact</a></li>
+            <li><a href="/login" style={linkStyle}>Login</a></li>
+          </ul>
         </div>
       </div>
 
       <div
         style={{
-          marginTop: 30,
-          borderTop: "1px solid rgba(255,255,255,0.15)",
-          paddingTop: 16,
-          fontSize: 13,
           textAlign: "center",
+          marginTop: 40,
+          fontSize: 13,
           color: "#94a3b8",
         }}
       >
@@ -61,5 +86,12 @@ function Footer() {
     </footer>
   );
 }
+
+const linkStyle = {
+  color: "#cbd5f5",
+  textDecoration: "none",
+  display: "block",
+  marginBottom: 6,
+};
 
 export default Footer;
