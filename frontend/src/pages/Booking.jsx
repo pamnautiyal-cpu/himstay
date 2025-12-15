@@ -1,101 +1,70 @@
-import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
-function Booking({ pricePerNight = 2500, hotelName = "Himalayan Stay" }) {
+const BACKEND_URL = "https://himstay.onrender.com";
+
+function Booking() {
+  const { id } = useParams();
+
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
+  const [email, setEmail] = useState("");
 
-  const nights =
-    checkIn && checkOut
-      ? Math.max(
-          (new Date(checkOut) - new Date(checkIn)) /
-            (1000 * 60 * 60 * 24),
-          1
-        )
-      : 0;
+  const amount = 3000;
 
-  const totalPrice = nights * pricePerNight;
+  const handlePayment = async () => {
+    const order = await axios.post(
+      `${BACKEND_URL}/api/payment/create-order`,
+      { amount }
+    );
 
-  const whatsappLink = `https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(
-    `Booking Enquiry:
-Hotel: ${hotelName}
-Check-in: ${checkIn}
-Check-out: ${checkOut}
-Guests: ${guests}
-Nights: ${nights}
-Total Price: ₹${totalPrice}`
-  )}`;
+    const options = {
+      key: "rzp_test_xxxxx",
+      amount: order.data.amount,
+      currency: "INR",
+      name: "The Himalayans",
+      description: "Hotel Booking",
+      order_id: order.data.id,
+      handler: async function (response) {
+        await axios.post(`${BACKEND_URL}/api/payment/verify`, {
+          ...response,
+          booking: {
+            hotelName: "Himalayan Stay",
+            checkIn,
+            checkOut,
+            guests,
+            email,
+            amount,
+          },
+        });
+
+        alert("✅ Booking Confirmed! Check your email.");
+      },
+      method: { upi: true, card: true, netbanking: true },
+      theme: { color: "#2563eb" },
+    };
+
+    new window.Razorpay(options).open();
+  };
 
   return (
-    <div style={box}>
-      <h3 style={{ marginBottom: 10 }}>Book Your Stay</h3>
+    <div className="hs-dashboard">
+      <h2 className="hs-section-title">Confirm Booking</h2>
 
-      <label>Check-in</label>
-      <input
-        type="date"
-        value={checkIn}
-        onChange={(e) => setCheckIn(e.target.value)}
-      />
+      <div className="hs-card" style={{ maxWidth: 420 }}>
+        <input type="email" placeholder="Your Email" onChange={(e)=>setEmail(e.target.value)} />
+        <input type="date" onChange={(e)=>setCheckIn(e.target.value)} />
+        <input type="date" onChange={(e)=>setCheckOut(e.target.value)} />
+        <input type="number" value={guests} min="1" onChange={(e)=>setGuests(e.target.value)} />
 
-      <label>Check-out</label>
-      <input
-        type="date"
-        value={checkOut}
-        onChange={(e) => setCheckOut(e.target.value)}
-      />
-
-      <label>Guests</label>
-      <select
-        value={guests}
-        onChange={(e) => setGuests(e.target.value)}
-      >
-        <option value="1">1 Guest</option>
-        <option value="2">2 Guests</option>
-        <option value="3">3 Guests</option>
-        <option value="4">4 Guests</option>
-        <option value="5">5+ Guests</option>
-      </select>
-
-      <div style={{ marginTop: 10 }}>
-        ₹ {pricePerNight} / night
+        <button className="hs-btn-primary" onClick={handlePayment}>
+          Pay ₹{amount} & Book
+        </button>
       </div>
-
-      {nights > 0 && (
-        <div style={{ marginTop: 6, fontWeight: 600 }}>
-          Total: ₹ {totalPrice} ({nights} nights)
-        </div>
-      )}
-
-      <a
-        href={whatsappLink}
-        target="_blank"
-        rel="noreferrer"
-        style={btn}
-      >
-        Book on WhatsApp
-      </a>
     </div>
   );
 }
-
-const box = {
-  padding: 22,
-  borderRadius: 22,
-  background: "#fff",
-  boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
-  display: "grid",
-  gap: 8,
-};
-
-const btn = {
-  marginTop: 14,
-  padding: 12,
-  background: "#22c55e",
-  color: "#fff",
-  textAlign: "center",
-  borderRadius: 999,
-  textDecoration: "none",
-  fontWeight: 600,
-};
 
 export default Booking;

@@ -1,95 +1,94 @@
 import { useEffect, useState } from "react";
-import API, { getHotels } from "../api/api";
-import { Link } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
+import { getHotels } from "../api/api";
 
 function Hotels() {
   const [hotels, setHotels] = useState([]);
-  const [filters, setFilters] = useState({
-    city: "",
-    minPrice: "",
-    maxPrice: "",
-    rating: "",
-  });
+  const [filtered, setFiltered] = useState([]);
+  const [searchParams] = useSearchParams();
 
-  const loadHotels = async () => {
-    const res = await API.get("/hotels/filter", { params: filters });
-    setHotels(res.data);
-  };
+  const city = searchParams.get("city");
+  const [price, setPrice] = useState("all");
 
   useEffect(() => {
-    loadHotels();
-  }, []);
+    getHotels().then((res) => {
+      let data = res.data;
 
-  const applyFilters = () => loadHotels();
+      if (city) {
+        data = data.filter(
+          (h) => h.city?.toLowerCase() === city.toLowerCase()
+        );
+      }
+
+      setHotels(data);
+      setFiltered(data);
+    });
+  }, [city]);
+
+  useEffect(() => {
+    if (price === "all") {
+      setFiltered(hotels);
+    } else if (price === "low") {
+      setFiltered(hotels.filter((h) => h.price <= 3000));
+    } else if (price === "mid") {
+      setFiltered(hotels.filter((h) => h.price > 3000 && h.price <= 6000));
+    } else if (price === "high") {
+      setFiltered(hotels.filter((h) => h.price > 6000));
+    }
+  }, [price, hotels]);
 
   return (
-    <div className="hs-container">
-      <h2 className="hs-page-title">Search Hotels</h2>
+    <div className="hs-dashboard">
+      <h2 className="hs-section-title">
+        {city ? `Stays in ${city}` : "All Hotels"}
+      </h2>
 
-      {/* Filters */}
-      <div
-        className="hs-card"
-        style={{ padding: 20, marginBottom: 20, display: "grid", gap: 10 }}
-      >
-        <input
-          className="hs-input"
-          placeholder="City"
-          onChange={(e) =>
-            setFilters({ ...filters, city: e.target.value })
-          }
-        />
-
-        <div style={{ display: "flex", gap: 10 }}>
-          <input
-            className="hs-input"
-            placeholder="Min Price"
-            onChange={(e) =>
-              setFilters({ ...filters, minPrice: e.target.value })
-            }
-          />
-          <input
-            className="hs-input"
-            placeholder="Max Price"
-            onChange={(e) =>
-              setFilters({ ...filters, maxPrice: e.target.value })
-            }
-          />
-        </div>
-
+      {/* PRICE FILTER */}
+      <div style={{ marginBottom: 24 }}>
         <select
-          className="hs-input"
-          onChange={(e) => setFilters({ ...filters, rating: e.target.value })}
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          style={{
+            padding: "10px 14px",
+            borderRadius: 10,
+            border: "1px solid #cbd5f5",
+          }}
         >
-          <option value="">Rating</option>
-          <option value="3">3★+</option>
-          <option value="4">4★+</option>
-          <option value="4.5">4.5★+</option>
+          <option value="all">All Prices</option>
+          <option value="low">Up to ₹3,000</option>
+          <option value="mid">₹3,000 – ₹6,000</option>
+          <option value="high">₹6,000+</option>
         </select>
-
-        <button className="hs-btn-primary" onClick={applyFilters}>
-          Apply Filters
-        </button>
       </div>
 
-      {/* Hotels List */}
-      <div className="hs-grid">
-        {hotels.map((h) => (
-          <Link key={h._id} to={`/hotel/${h._id}`} className="hs-card">
-            <div
-              style={{
-                height: 170,
-                borderRadius: 12,
-                background: h.image
-                  ? `url(${h.image}) center/cover`
-                  : "gray",
-                marginBottom: 10,
-              }}
-            ></div>
-            <h3>{h.name}</h3>
-            <p className="hs-muted">
-              {h.city} • ⭐ {h.rating}
-            </p>
-            <p className="hs-price">₹{h.price}</p>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: 24,
+        }}
+      >
+        {filtered.map((hotel) => (
+          <Link
+            key={hotel._id}
+            to={`/hotel/${hotel._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div className="hs-card">
+              <div
+                style={{
+                  height: 180,
+                  borderRadius: 14,
+                  marginBottom: 12,
+                  background: hotel.image
+                    ? `url(${hotel.image}) center/cover`
+                    : "linear-gradient(135deg,#2563eb,#22c55e)",
+                }}
+              />
+              <h3>{hotel.name}</h3>
+              <p className="hs-muted">{hotel.city}</p>
+              <strong>₹{hotel.price} / night</strong>
+            </div>
           </Link>
         ))}
       </div>

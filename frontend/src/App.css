@@ -133,3 +133,52 @@ body {
     font-size: 34px;
   }
 }
+/* ============================= */
+/* 📱 EXTRA MOBILE-FIRST POLISH */
+/* ============================= */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  /* HERO TEXT */
+  .hs-hero-title {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .hs-hero-text {
+    font-size: 15px;
+  }
+
+  /* CTA BUTTONS */
+  .hs-hero-cta {
+    flex-direction: column;
+  }
+
+  .hs-btn-primary,
+  .hs-btn-outline {
+    width: 100%;
+    text-align: center;
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+
+  /* DESTINATION CARDS */
+  .hs-destination-card {
+    height: 240px;
+    border-radius: 22px;
+  }
+
+  /* SECTION TITLE */
+  .hs-section-title {
+    font-size: 24px;
+    margin: 30px 20px 16px;
+  }
+
+  /* REMOVE HOVER JUMP ON MOBILE */
+  .hs-destination-card:hover {
+    transform: none;
+  }
+}

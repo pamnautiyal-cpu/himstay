@@ -1,80 +1,86 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("");
 
-  const whatsapp = "919410106470"; // ← अपना WhatsApp number
-  const mail = "infothehimalayans@gmail.com"; // ← अपना email
+  const submit = async (e) => {
+    e.preventDefault();
 
-  const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(
-    `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-  )}`;
+    const res = await fetch(
+      "https://himstay.onrender.com/api/contact",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      }
+    );
 
-  const mailLink = `mailto:${mail}?subject=Contact from The Himalayans&body=${encodeURIComponent(
-    `Name: ${name}\nEmail: ${email}\n\n${message}`
-  )}`;
+    if (res.ok) {
+      setStatus("Message sent successfully ✅");
+      setForm({ name: "", email: "", message: "" });
+    } else {
+      setStatus("Something went wrong ❌");
+    }
+  };
 
   return (
-    <div style={{ padding: 40, maxWidth: 500, margin: "auto" }}>
-      <h2>Contact Us</h2>
+    <div style={{ padding: "120px 20px", maxWidth: 500, margin: "auto" }}>
+      <h2 style={{ marginBottom: 20 }}>Contact Us</h2>
 
-      <input
-        placeholder="Your Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={input}
-      />
+      <form onSubmit={submit}>
+        <input
+          placeholder="Name"
+          value={form.name}
+          onChange={(e) =>
+            setForm({ ...form, name: e.target.value })
+          }
+          required
+          style={{ width: "100%", padding: 12, marginBottom: 10 }}
+        />
 
-      <input
-        placeholder="Your Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={input}
-      />
+        <input
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) =>
+            setForm({ ...form, email: e.target.value })
+          }
+          required
+          style={{ width: "100%", padding: 12, marginBottom: 10 }}
+        />
 
-      <textarea
-        placeholder="Message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        style={{ ...input, height: 100 }}
-      />
+        <textarea
+          placeholder="Message"
+          value={form.message}
+          onChange={(e) =>
+            setForm({ ...form, message: e.target.value })
+          }
+          required
+          rows={4}
+          style={{ width: "100%", padding: 12, marginBottom: 14 }}
+        />
 
-      <div style={{ display: "flex", gap: 10 }}>
-        <a href={waLink} target="_blank" style={btnGreen}>
-          WhatsApp
-        </a>
-        <a href={mailLink} style={btnBlue}>
-          Email
-        </a>
-      </div>
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: 14,
+            background: "#2563eb",
+            color: "#fff",
+            border: "none",
+          }}
+        >
+          Send Message
+        </button>
+      </form>
+
+      <p style={{ marginTop: 12 }}>{status}</p>
     </div>
   );
 }
-
-const input = {
-  width: "100%",
-  padding: 10,
-  marginBottom: 10,
-};
-
-const btnGreen = {
-  flex: 1,
-  background: "green",
-  color: "#fff",
-  textAlign: "center",
-  padding: 10,
-  textDecoration: "none",
-};
-
-const btnBlue = {
-  flex: 1,
-  background: "blue",
-  color: "#fff",
-  textAlign: "center",
-  padding: 10,
-  textDecoration: "none",
-};
 
 export default Contact;
