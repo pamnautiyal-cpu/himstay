@@ -27,8 +27,7 @@ Total Price: ₹${totalPrice}`
   )}`;
 
   const handleBooking = async () => {
-    await fetch("https://https://himstay.onrender.com
-/api/bookings", {
+    await fetch("https://himstay.onrender.com/api/bookings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +65,7 @@ Total Price: ₹${totalPrice}`
       <label>Guests</label>
       <select
         value={guests}
-        onChange={(e) => setGuests(e.target.value)}
+        onChange={(e) => setGuests(Number(e.target.value))}
       >
         <option value="1">1 Guest</option>
         <option value="2">2 Guests</option>
