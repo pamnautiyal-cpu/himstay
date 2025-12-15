@@ -29,9 +29,7 @@ Total Price: ₹${totalPrice}`
   const handleBooking = async () => {
     await fetch("https://himstay.onrender.com/api/bookings", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         hotelName,
         checkIn,
@@ -46,27 +44,12 @@ Total Price: ₹${totalPrice}`
 
   return (
     <div style={box}>
-      <h3 style={{ marginBottom: 10 }}>Book Your Stay</h3>
+      <h3>Book Your Stay</h3>
 
-      <label>Check-in</label>
-      <input
-        type="date"
-        value={checkIn}
-        onChange={(e) => setCheckIn(e.target.value)}
-      />
+      <input type="date" onChange={(e) => setCheckIn(e.target.value)} />
+      <input type="date" onChange={(e) => setCheckOut(e.target.value)} />
 
-      <label>Check-out</label>
-      <input
-        type="date"
-        value={checkOut}
-        onChange={(e) => setCheckOut(e.target.value)}
-      />
-
-      <label>Guests</label>
-      <select
-        value={guests}
-        onChange={(e) => setGuests(Number(e.target.value))}
-      >
+      <select onChange={(e) => setGuests(Number(e.target.value))}>
         <option value="1">1 Guest</option>
         <option value="2">2 Guests</option>
         <option value="3">3 Guests</option>
@@ -74,12 +57,10 @@ Total Price: ₹${totalPrice}`
         <option value="5">5+ Guests</option>
       </select>
 
-      <div style={{ marginTop: 10 }}>
-        ₹ {pricePerNight} / night
-      </div>
+      <div>₹ {pricePerNight} / night</div>
 
       {nights > 0 && (
-        <div style={{ marginTop: 6, fontWeight: 600 }}>
+        <div>
           Total: ₹ {totalPrice} ({nights} nights)
         </div>
       )}
@@ -95,9 +76,6 @@ const box = {
   padding: 22,
   borderRadius: 22,
   background: "#fff",
-  boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
-  display: "grid",
-  gap: 8,
 };
 
 const btn = {
@@ -105,11 +83,7 @@ const btn = {
   padding: 12,
   background: "#22c55e",
   color: "#fff",
-  textAlign: "center",
-  borderRadius: 999,
   border: "none",
-  cursor: "pointer",
-  fontWeight: 600,
 };
 
 export default Booking;
