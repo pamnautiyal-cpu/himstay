@@ -1,10 +1,8 @@
 import React from "react";
-import "./Home.css";   // 🔴 THIS WAS MISSING
 
 function Home() {
   return (
     <div>
-
       {/* ===== HERO SECTION ===== */}
       <section className="hs-hero">
         <div>
@@ -39,7 +37,7 @@ function Home() {
       <section className="hs-destination-grid">
 
         <div className="hs-destination-card">
-          <img src="https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5" />
+          <img src="https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5" alt="Mussoorie" />
           <div className="hs-destination-overlay">
             <h3>Mussoorie</h3>
             <p>Explore stays & experiences</p>
@@ -47,7 +45,7 @@ function Home() {
         </div>
 
         <div className="hs-destination-card">
-          <img src="https://images.unsplash.com/photo-1548013146-72479768bada" />
+          <img src="https://images.unsplash.com/photo-1548013146-72479768bada" alt="Shimla" />
           <div className="hs-destination-overlay">
             <h3>Shimla</h3>
             <p>Explore stays & experiences</p>
@@ -55,7 +53,7 @@ function Home() {
         </div>
 
         <div className="hs-destination-card">
-          <img src="https://images.unsplash.com/photo-1605640840605-14ac1855827b" />
+          <img src="https://images.unsplash.com/photo-1605640840605-14ac1855827b" alt="Nainital" />
           <div className="hs-destination-overlay">
             <h3>Nainital</h3>
             <p>Explore stays & experiences</p>
@@ -63,7 +61,7 @@ function Home() {
         </div>
 
         <div className="hs-destination-card">
-          <img src="https://images.unsplash.com/photo-1600962815726-457c46a12681" />
+          <img src="https://images.unsplash.com/photo-1600962815726-457c46a12681" alt="Uttarkashi" />
           <div className="hs-destination-overlay">
             <h3>Uttarkashi</h3>
             <p>Explore stays & experiences</p>
@@ -71,7 +69,7 @@ function Home() {
         </div>
 
         <div className="hs-destination-card">
-          <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2" />
+          <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2" alt="Dehradun" />
           <div className="hs-destination-overlay">
             <h3>Dehradun</h3>
             <p>Explore stays & experiences</p>
@@ -79,7 +77,6 @@ function Home() {
         </div>
 
       </section>
-
     </div>
   );
 }
