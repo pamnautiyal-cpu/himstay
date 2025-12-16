@@ -2,12 +2,17 @@
 /* 🌐 GLOBAL */
 /* ============================= */
 
+html {
+  font-size: 14px;
+}
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
   background: #f8fbff;
   color: #0f172a;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 /* ============================= */
@@ -17,25 +22,25 @@ body {
 .hs-hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 48px;
+  gap: 40px;
   align-items: center;
-  padding: 70px 6vw;
+  padding: 60px 6vw 40px;
 }
 
 .hs-badge {
   display: inline-block;
-  padding: 5px 12px;
+  padding: 4px 10px;
   background: #e0e7ff;
   color: #1d4ed8;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .hs-hero-title {
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 28px;
+  font-weight: 700;
   line-height: 1.15;
 }
 
@@ -44,15 +49,15 @@ body {
 }
 
 .hs-hero-text {
-  font-size: 15px;
+  font-size: 14px;
   color: #475569;
   max-width: 520px;
-  margin: 18px 0 26px;
+  margin: 14px 0 20px;
 }
 
 .hs-hero-cta {
   display: flex;
-  gap: 14px;
+  gap: 12px;
 }
 
 /* ============================= */
@@ -61,8 +66,8 @@ body {
 
 .hs-btn-primary,
 .hs-btn-outline {
-  font-size: 14px;
-  padding: 10px 22px;
+  font-size: 13px;
+  padding: 9px 18px;
   border-radius: 999px;
   font-weight: 600;
   text-decoration: none;
@@ -76,6 +81,7 @@ body {
 .hs-btn-outline {
   border: 2px solid #2563eb;
   color: #2563eb;
+  background: transparent;
 }
 
 /* ============================= */
@@ -83,16 +89,17 @@ body {
 /* ============================= */
 
 .hs-hero-right {
-  height: 400px;
-  border-radius: 26px;
+  height: 260px;              /* 👈 IMAGE SIZE FIXED */
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 35px 70px rgba(15,23,42,0.25);
+  box-shadow: 0 25px 50px rgba(15,23,42,0.25);
 }
 
 .hs-hero-right img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 /* ============================= */
@@ -100,24 +107,24 @@ body {
 /* ============================= */
 
 .hs-section-title {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 40px 6vw 18px;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 30px 6vw 16px;
 }
 
 .hs-destination-grid {
-  padding: 0 6vw 70px;
+  padding: 0 6vw 50px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
 }
 
 .hs-destination-card {
   position: relative;
-  height: 260px;
-  border-radius: 22px;
+  height: 200px;              /* 👈 CARD SIZE FIXED */
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
 }
 
 .hs-destination-card img {
@@ -132,23 +139,24 @@ body {
   background: linear-gradient(
     to top,
     rgba(15,23,42,0.85),
-    rgba(15,23,42,0.1)
+    rgba(15,23,42,0.15)
   );
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 18px;
+  padding: 14px;
   color: white;
 }
 
 .hs-destination-overlay h3 {
-  font-size: 16px;
+  font-size: 15px;
   margin: 0;
 }
 
 .hs-destination-overlay p {
   font-size: 13px;
   margin: 4px 0 0;
+  opacity: 0.9;
 }
 
 /* ============================= */
@@ -158,19 +166,27 @@ body {
 @media (max-width: 900px) {
   .hs-hero {
     grid-template-columns: 1fr;
-    padding: 50px 20px;
-  }
-
-  .hs-hero-title {
-    font-size: 30px;
+    padding: 40px 20px 30px;
   }
 
   .hs-hero-right {
-    height: 260px;
+    height: 220px;
   }
 }
 
 @media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+
+  .hs-hero-title {
+    font-size: 24px;
+  }
+
+  .hs-hero-text {
+    font-size: 13px;
+  }
+
   .hs-hero-cta {
     flex-direction: column;
   }
@@ -182,77 +198,11 @@ body {
   }
 
   .hs-section-title {
-    font-size: 22px;
-    margin: 30px 20px 14px;
+    font-size: 20px;
+    margin: 24px 20px 12px;
   }
 
   .hs-destination-card {
-    height: 230px;
-  }
-}
-/* ============================= */
-/* 🔥 FINAL FONT SIZE FIX (GLOBAL OVERRIDE) */
-/* ============================= */
-
-html {
-  font-size: 14px !important;
-}
-
-body {
-  font-size: 14px !important;
-  line-height: 1.4;
-}
-
-/* HERO TEXT */
-.hs-hero-title {
-  font-size: 28px !important;
-  font-weight: 700;
-  line-height: 1.15;
-}
-
-.hs-hero-text {
-  font-size: 14px !important;
-}
-
-/* HERO BUTTONS */
-.hs-btn-primary,
-.hs-btn-outline {
-  font-size: 13px !important;
-  padding: 9px 18px !important;
-}
-
-/* NAVBAR TEXT */
-nav a,
-.navbar a,
-header a {
-  font-size: 14px !important;
-}
-
-/* SECTION TITLE */
-.hs-section-title {
-  font-size: 22px !important;
-}
-
-/* DESTINATION CARD TEXT */
-.hs-destination-overlay h3 {
-  font-size: 15px !important;
-}
-
-.hs-destination-overlay p {
-  font-size: 13px !important;
-}
-
-/* MOBILE FIX */
-@media (max-width: 768px) {
-  html {
-    font-size: 13px !important;
-  }
-
-  .hs-hero-title {
-    font-size: 24px !important;
-  }
-
-  .hs-hero-text {
-    font-size: 13px !important;
+    height: 180px;
   }
 }
