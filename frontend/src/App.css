@@ -206,3 +206,17 @@ body {
     text-align: center;
   }
 }
+/* ===== HARD HERO CONTAINER LOCK ===== */
+
+.hs-hero {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hs-hero-right {
+  max-width: 400px;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}

@@ -159,3 +159,16 @@ a {
   display: block;
   color: #4b5563;
 }
+/* ===== GLOBAL IMAGE SAFETY NET ===== */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* stop full-viewport images */
+img,
+.hs-hero-right img {
+  width: auto;
+  max-width: 100%;
+}
