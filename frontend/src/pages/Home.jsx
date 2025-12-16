@@ -1,4 +1,5 @@
 import React from "react";
+import "../App.css";   // ✅ IMPORTANT: CSS LOAD HOGI
 
 function Home() {
   return (
@@ -23,14 +24,8 @@ function Home() {
           </div>
         </div>
 
-        {/* RIGHT IMAGE (SAFE WAY) */}
-        <div
-          className="hs-hero-image"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470')",
-          }}
-        />
+        {/* RIGHT IMAGE (SAFE + CONTROLLED) */}
+        <div className="hs-hero-image"></div>
       </section>
     </>
   );
