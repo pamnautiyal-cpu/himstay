@@ -206,3 +206,31 @@ body {
     text-align: center;
   }
 }
+/* ============================= */
+/* 🧱 LIMIT HERO IMAGE WIDTH */
+/* ============================= */
+
+.hs-hero {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.hs-hero-right {
+  max-width: 420px;
+  width: 100%;
+  height: 240px;
+}
+
+@media (min-width: 1440px) {
+  .hs-hero-right {
+    max-width: 520px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hs-hero-right {
+    height: 200px;
+    max-width: 100%;
+  }
+}
