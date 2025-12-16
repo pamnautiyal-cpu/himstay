@@ -21,14 +21,6 @@ function Home() {
             <a href="/contact" className="hs-btn-outline">Enquire</a>
           </div>
         </div>
-
-        {/* ✅ IMAGE MUST STAY INSIDE HERO */}
-        <div className="hs-hero-right">
-          <img
-            src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
-            alt="Himalayas"
-          />
-        </div>
       </section>
     </>
   );
