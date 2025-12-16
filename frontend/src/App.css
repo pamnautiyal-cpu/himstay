@@ -92,7 +92,7 @@ body {
 
 .hs-hero-right {
   width: 380px;               /* 👈 HARD LIMIT */
-  max-width: 100%;
+  max-width: 10%;
   height: 220px;              /* 👈 NOT FULL SCREEN */
   border-radius: 18px;
   overflow: hidden;
@@ -100,8 +100,8 @@ body {
 }
 
 .hs-hero-right img {
-  width: 100%;
-  height: 100%;
+  width: 10%;
+  height: 10%;
   object-fit: cover;          /* CROPPED, NOT STRETCHED */
   display: block;
 }
@@ -136,8 +136,8 @@ body {
 }
 
 .hs-destination-card img {
-  width: 100%;
-  height: 100%;
+  width: 10%;
+  height: 10%;
   object-fit: cover;
 }
 
@@ -177,7 +177,7 @@ body {
   }
 
   .hs-hero-right {
-    width: 100%;
+    width: 10%;
     height: 200px;
     margin-top: 18px;
   }
@@ -202,7 +202,7 @@ body {
 
   .hs-btn-primary,
   .hs-btn-outline {
-    width: 100%;
+    width: 10%;
     text-align: center;
   }
 }
@@ -216,7 +216,7 @@ body {
 
 .hs-hero-right {
   max-width: 400px;
-  width: 100%;
+  width: 10%;
   height: 220px;
   overflow: hidden;
 }
