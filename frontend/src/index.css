@@ -172,3 +172,18 @@ img,
   width: auto;
   max-width: 100%;
 }
+/* 🚨 ABSOLUTE IMAGE SAFETY LOCK */
+
+main img,
+section img,
+div img {
+  max-width: 100%;
+  width: auto !important;
+  height: auto !important;
+  display: block;
+}
+
+/* stop viewport images */
+img {
+  max-width: 100% !important;
+}
