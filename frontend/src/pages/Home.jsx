@@ -1,4 +1,5 @@
 import React from "react";
+import "./Home.css";   // 🔴 THIS WAS MISSING
 
 function Home() {
   return (
@@ -15,8 +16,7 @@ function Home() {
 
           <p className="hs-hero-text">
             Handpicked hotels, homestays & trekking experiences across
-Uttarakhand.
-
+            Uttarakhand.
           </p>
 
           <div className="hs-hero-cta">
@@ -38,7 +38,6 @@ Uttarakhand.
 
       <section className="hs-destination-grid">
 
-        {/* MUSSOORIE */}
         <div className="hs-destination-card">
           <img src="https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5" />
           <div className="hs-destination-overlay">
@@ -47,7 +46,6 @@ Uttarakhand.
           </div>
         </div>
 
-        {/* SHIMLA */}
         <div className="hs-destination-card">
           <img src="https://images.unsplash.com/photo-1548013146-72479768bada" />
           <div className="hs-destination-overlay">
@@ -56,7 +54,6 @@ Uttarakhand.
           </div>
         </div>
 
-        {/* NAINITAL */}
         <div className="hs-destination-card">
           <img src="https://images.unsplash.com/photo-1605640840605-14ac1855827b" />
           <div className="hs-destination-overlay">
@@ -65,7 +62,6 @@ Uttarakhand.
           </div>
         </div>
 
-        {/* UTTARKASHI */}
         <div className="hs-destination-card">
           <img src="https://images.unsplash.com/photo-1600962815726-457c46a12681" />
           <div className="hs-destination-overlay">
@@ -74,7 +70,6 @@ Uttarakhand.
           </div>
         </div>
 
-        {/* DEHRADUN */}
         <div className="hs-destination-card">
           <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2" />
           <div className="hs-destination-overlay">
