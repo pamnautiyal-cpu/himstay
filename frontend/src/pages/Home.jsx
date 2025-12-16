@@ -5,6 +5,7 @@ function Home() {
     <>
       {/* ===== HERO SECTION ===== */}
       <section className="hs-hero">
+        {/* LEFT CONTENT */}
         <div>
           <span className="hs-badge">Hills · Stays · Memories</span>
 
@@ -21,6 +22,15 @@ function Home() {
             <a href="/contact" className="hs-btn-outline">Enquire</a>
           </div>
         </div>
+
+        {/* RIGHT IMAGE (SAFE WAY) */}
+        <div
+          className="hs-hero-image"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470')",
+          }}
+        />
       </section>
     </>
   );
