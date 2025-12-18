@@ -87,7 +87,7 @@ body {
 }
 
 /* ============================= */
-/* 🖼 HERO IMAGE (BACKGROUND – FINAL) */
+/* 🖼 HERO IMAGE */
 /* ============================= */
 
 .hs-hero-image {
@@ -102,7 +102,7 @@ body {
 }
 
 /* ============================= */
-/* 📱 MOBILE */
+/* 📱 HERO MOBILE */
 /* ============================= */
 
 @media (max-width: 900px) {
@@ -114,5 +114,67 @@ body {
     width: 100%;
     height: 200px;
     margin-top: 16px;
+  }
+}
+
+/* ============================= */
+/* 🧾 FOOTER (WIDTH FIXED) */
+/* ============================= */
+
+.hs-footer {
+  background: linear-gradient(180deg, #020617, #020617);
+  color: #e5e7eb;
+  padding: 50px 20px 28px;
+  margin-top: 80px;
+}
+
+/* 👇 MAIN WIDTH CONTROL */
+.hs-footer-inner {
+  max-width: 1100px;   /* 👈 footer narrow */
+  margin: 0 auto;     /* 👈 center footer */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 36px;
+}
+
+.hs-footer-col h3,
+.hs-footer-col h4 {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.hs-footer-col p,
+.hs-footer-col a {
+  font-size: 13px;
+  color: #cbd5f5;
+  line-height: 1.6;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.hs-footer-col a:hover {
+  color: #60a5fa;
+}
+
+/* footer bottom line */
+.hs-footer-bottom {
+  max-width: 1100px;
+  margin: 28px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ============================= */
+/* 📱 FOOTER MOBILE */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .hs-footer {
+    padding: 40px 16px 24px;
   }
 }
