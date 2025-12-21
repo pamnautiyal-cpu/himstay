@@ -178,3 +178,58 @@ body {
     padding: 40px 16px 24px;
   }
 }
+/* ============================= */
+/* 🌄 DESTINATION LIGHTBOX */
+/* ============================= */
+
+.hs-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.25s ease;
+}
+
+.hs-lightbox img {
+  max-width: 90%;
+  max-height: 75vh;
+  border-radius: 18px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+
+.hs-lightbox h3 {
+  color: white;
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hs-lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.hs-lightbox-close:hover {
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
