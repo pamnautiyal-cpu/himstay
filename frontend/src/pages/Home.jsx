@@ -1,35 +1,20 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const destinations = [
-  {
-    name: "Mussoorie",
-    img: "https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5",
-  },
-  {
-    name: "Shimla",
-    img: "https://images.unsplash.com/photo-1548013146-72479768bada",
-  },
-  {
-    name: "Nainital",
-    img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b",
-  },
-  {
-    name: "Uttarkashi",
-    img: "https://images.unsplash.com/photo-1600962815726-457c46a12681",
-  },
-  {
-    name: "Dehradun",
-    img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2",
-  },
+  { name: "Mussoorie", img: "https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5" },
+  { name: "Shimla", img: "https://images.unsplash.com/photo-1548013146-72479768bada" },
+  { name: "Nainital", img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b" },
+  { name: "Uttarkashi", img: "https://images.unsplash.com/photo-1600962815726-457c46a12681" },
+  { name: "Dehradun", img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2" },
 ];
 
 function Home() {
-  const [activeImage, setActiveImage] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <div>
-      {/* ===== HERO SECTION ===== */}
+      {/* HERO */}
       <section className="hs-hero">
         <div>
           <span className="hs-badge">Hills · Stays · Memories</span>
@@ -39,24 +24,19 @@ function Home() {
           </h1>
 
           <p className="hs-hero-text">
-            Handpicked hotels, homestays & trekking experiences across Uttarakhand.
+            Handpicked hotels & homestays across Uttarakhand.
           </p>
 
           <div className="hs-hero-cta">
-            <Link to="/hotels" className="hs-btn-primary">
-              Book Stay
-            </Link>
-            <Link to="/contact" className="hs-btn-outline">
-              Enquire
-            </Link>
+            <a href="/hotels" className="hs-btn-primary">Book Stay</a>
+            <a href="/contact" className="hs-btn-outline">Enquire</a>
           </div>
         </div>
 
-        {/* HERO IMAGE (background via CSS) */}
         <div className="hs-hero-image"></div>
       </section>
 
-      {/* ===== DESTINATIONS ===== */}
+      {/* DESTINATIONS */}
       <h2 className="hs-section-title">Top Hill Destinations</h2>
 
       <section className="hs-destination-row">
@@ -64,7 +44,7 @@ function Home() {
           <div
             key={d.name}
             className="hs-destination-box"
-            onClick={() => setActiveImage(d)}
+            onClick={() => navigate(`/hotels?city=${d.name}`)}
           >
             <img src={d.img} alt={d.name} />
             <div className="hs-destination-label">
@@ -74,18 +54,6 @@ function Home() {
           </div>
         ))}
       </section>
-
-      {/* ===== IMAGE LIGHTBOX ===== */}
-      {activeImage && (
-        <div
-          className="hs-lightbox"
-          onClick={() => setActiveImage(null)}
-        >
-          <span className="hs-lightbox-close">✕</span>
-          <img src={activeImage.img} alt={activeImage.name} />
-          <h3>{activeImage.name}</h3>
-        </div>
-      )}
     </div>
   );
 }

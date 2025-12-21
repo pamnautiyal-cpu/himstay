@@ -1,97 +1,130 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
-import { getHotels } from "../api/api";
+import React, { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import axios from "axios";
+
+const BACKEND_URL = "https://himstay.onrender.com";
 
 function Hotels() {
   const [hotels, setHotels] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [searchParams] = useSearchParams();
-
-  const city = searchParams.get("city");
-  const [price, setPrice] = useState("all");
+  const cityFilter = searchParams.get("city");
 
   useEffect(() => {
-    getHotels().then((res) => {
-      let data = res.data;
+    axios
+      .get(`${BACKEND_URL}/api/hotels`)
+      .then((res) => {
+        setHotels(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Hotel fetch error", err);
+        setLoading(false);
+      });
+  }, []);
 
-      if (city) {
-        data = data.filter(
-          (h) => h.city?.toLowerCase() === city.toLowerCase()
-        );
-      }
+  const filteredHotels = cityFilter
+    ? hotels.filter(
+        (h) =>
+          h.city &&
+          h.city.toLowerCase() === cityFilter.toLowerCase()
+      )
+    : hotels;
 
-      setHotels(data);
-      setFiltered(data);
-    });
-  }, [city]);
-
-  useEffect(() => {
-    if (price === "all") {
-      setFiltered(hotels);
-    } else if (price === "low") {
-      setFiltered(hotels.filter((h) => h.price <= 3000));
-    } else if (price === "mid") {
-      setFiltered(hotels.filter((h) => h.price > 3000 && h.price <= 6000));
-    } else if (price === "high") {
-      setFiltered(hotels.filter((h) => h.price > 6000));
-    }
-  }, [price, hotels]);
+  if (loading) {
+    return <div style={{ padding: 40 }}>Loading hotels…</div>;
+  }
 
   return (
-    <div className="hs-dashboard">
-      <h2 className="hs-section-title">
-        {city ? `Stays in ${city}` : "All Hotels"}
-      </h2>
+    <div style={{ padding: "40px 6vw" }}>
+      <h1 style={{ marginBottom: 6 }}>
+        {cityFilter ? `Stays in ${cityFilter}` : "All Stays"}
+      </h1>
 
-      {/* PRICE FILTER */}
-      <div style={{ marginBottom: 24 }}>
-        <select
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
+      {cityFilter && (
+        <div style={{ marginBottom: 20 }}>
+          <Link
+            to="/hotels"
+            style={{
+              fontSize: 13,
+              color: "#2563eb",
+              textDecoration: "none",
+            }}
+          >
+            ← View all destinations
+          </Link>
+        </div>
+      )}
+
+      {filteredHotels.length === 0 ? (
+        <p>No hotels found for this destination.</p>
+      ) : (
+        <div
           style={{
-            padding: "10px 14px",
-            borderRadius: 10,
-            border: "1px solid #cbd5f5",
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 24,
           }}
         >
-          <option value="all">All Prices</option>
-          <option value="low">Up to ₹3,000</option>
-          <option value="mid">₹3,000 – ₹6,000</option>
-          <option value="high">₹6,000+</option>
-        </select>
-      </div>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: 24,
-        }}
-      >
-        {filtered.map((hotel) => (
-          <Link
-            key={hotel._id}
-            to={`/hotel/${hotel._id}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <div className="hs-card">
+          {filteredHotels.map((hotel) => (
+            <div
+              key={hotel._id}
+              style={{
+                background: "#fff",
+                borderRadius: 20,
+                boxShadow:
+                  "0 20px 40px rgba(15,23,42,0.12)",
+                overflow: "hidden",
+              }}
+            >
               <div
                 style={{
                   height: 180,
-                  borderRadius: 14,
-                  marginBottom: 12,
                   background: hotel.image
                     ? `url(${hotel.image}) center/cover`
                     : "linear-gradient(135deg,#2563eb,#22c55e)",
                 }}
               />
-              <h3>{hotel.name}</h3>
-              <p className="hs-muted">{hotel.city}</p>
-              <strong>₹{hotel.price} / night</strong>
+
+              <div style={{ padding: 16 }}>
+                <h3 style={{ marginBottom: 4 }}>
+                  {hotel.name}
+                </h3>
+
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: "#64748b",
+                    marginBottom: 10,
+                  }}
+                >
+                  {hotel.city} • ⭐ {hotel.rating || 4.5}
+                </div>
+
+                <div
+                  style={{
+                    fontWeight: 600,
+                    marginBottom: 12,
+                  }}
+                >
+                  ₹{hotel.price} / night
+                </div>
+
+                <Link to={`/hotel/${hotel._id}`}>
+                  <button
+                    className="hs-btn-primary"
+                    style={{ width: "100%" }}
+                  >
+                    View Details
+                  </button>
+                </Link>
+              </div>
             </div>
-          </Link>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
