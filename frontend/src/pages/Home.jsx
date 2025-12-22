@@ -1,4 +1,3 @@
-console.log("🔥 REAL HOME JSX RENDERED 🔥");
 import React from "react";
 
 const destinations = [

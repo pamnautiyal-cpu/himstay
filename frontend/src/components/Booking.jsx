@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Booking({ pricePerNight = 2500, hotelName = "The Moksha Valley" }) {
+function Booking({ price Per Night = 2500, hotel Name = "The Moksha Valley" }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
@@ -14,7 +14,7 @@ function Booking({ pricePerNight = 2500, hotelName = "The Moksha Valley" }) {
         )
       : 0;
 
-  const totalPrice = nights * pricePerNight;
+  const totalPrice = nights * price Per Night;
 
   const whatsappLink = `https://wa.me/919410106470?text=${encodeURIComponent(
     `Booking Enquiry:

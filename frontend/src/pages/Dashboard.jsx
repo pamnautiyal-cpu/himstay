@@ -78,7 +78,7 @@ function Dashboard() {
             <p className="hs-hero-title">Weekend in the clouds</p>
             <p className="hs-hero-text">
               Average night from ₹1,299 • 120+ verified homestays across
-              Himachal. Perfect for workations & slow travel.
+              Uttarakhand. Perfect for workations & slow travel.
             </p>
           </div>
         </div>

@@ -107,7 +107,8 @@ function Navbar() {
                   color: "#64748b",
                 }}
               >
-                Hills • Stays • Memories
+                Hills • Stays • Memories • Adventures
+
               </div>
             )}
           </div>
