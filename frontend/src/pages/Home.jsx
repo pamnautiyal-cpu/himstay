@@ -51,7 +51,7 @@ function Home() {
       {/* ===== DESTINATIONS ===== */}
       <h2 className="hs-section-title">Top Hill Destinations</h2>
 
-      <section className="hs-destination-row">
+      <div className="hs-destination-row">
         {destinations.map((d) => (
           <a
             key={d.name}
@@ -65,7 +65,7 @@ function Home() {
             </div>
           </a>
         ))}
-      </section>
+      </div>
     </div>
   );
 }

@@ -258,3 +258,33 @@ body {
     height: 240px;
   }
 }
+/* 🚨 FORCE DESTINATION CARD FIX */
+.hs-destination-row {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 0 20px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hs-destination-box {
+  flex: 0 0 220px;
+  height: 280px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hs-destination-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* prevent rogue images */
+section img {
+  max-width: 100%;
+  height: auto;
+}
