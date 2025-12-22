@@ -1,20 +1,32 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 const destinations = [
-  { name: "Mussoorie", img: "https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5" },
-  { name: "Shimla", img: "https://images.unsplash.com/photo-1548013146-72479768bada" },
-  { name: "Nainital", img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b" },
-  { name: "Uttarkashi", img: "https://images.unsplash.com/photo-1600962815726-457c46a12681" },
-  { name: "Dehradun", img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2" },
+  {
+    name: "Mussoorie",
+    img: "https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5",
+  },
+  {
+    name: "Shimla",
+    img: "https://images.unsplash.com/photo-1548013146-72479768bada",
+  },
+  {
+    name: "Nainital",
+    img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b",
+  },
+  {
+    name: "Uttarkashi",
+    img: "https://images.unsplash.com/photo-1600962815726-457c46a12681",
+  },
+  {
+    name: "Dehradun",
+    img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2",
+  },
 ];
 
 function Home() {
-  const navigate = useNavigate();
-
   return (
     <div>
-      {/* HERO */}
+      {/* ===== HERO ===== */}
       <section className="hs-hero">
         <div>
           <span className="hs-badge">Hills · Stays · Memories</span>
@@ -33,25 +45,25 @@ function Home() {
           </div>
         </div>
 
-        <div className="hs-hero-image"></div>
+        <div className="hs-hero-image" />
       </section>
 
-      {/* DESTINATIONS */}
+      {/* ===== DESTINATIONS ===== */}
       <h2 className="hs-section-title">Top Hill Destinations</h2>
 
       <section className="hs-destination-row">
         {destinations.map((d) => (
-          <div
+          <a
             key={d.name}
+            href={`/hotels?city=${encodeURIComponent(d.name)}`}
             className="hs-destination-box"
-            onClick={() => navigate(`/hotels?city=${d.name}`)}
           >
             <img src={d.img} alt={d.name} />
             <div className="hs-destination-label">
               <h3>{d.name}</h3>
               <span>View stays →</span>
             </div>
-          </div>
+          </a>
         ))}
       </section>
     </div>
