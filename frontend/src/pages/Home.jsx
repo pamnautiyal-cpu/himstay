@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/app.css"; // 🔴 VERY IMPORTANT – CSS LINKED
 
 const destinations = [
   {

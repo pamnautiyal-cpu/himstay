@@ -1,187 +1,5 @@
 /* ============================= */
-/* 🌐 GLOBAL */
-/* ============================= */
-
-html {
-  font-size: 14px;
-}
-
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
-  background: #f8fbff;
-  color: #0f172a;
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-/* ============================= */
-/* 🏔 HERO */
-/* ============================= */
-
-.hs-hero {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 360px; /* 👈 slightly smaller image column */
-  gap: 32px;
-  align-items: center;
-  padding: 56px 20px;
-}
-
-.hs-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  background: #e0e7ff;
-  color: #1d4ed8;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-.hs-hero-title {
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.15;
-}
-
-.hs-hero-title span {
-  color: #2563eb;
-}
-
-.hs-hero-text {
-  font-size: 14px;
-  color: #475569;
-  max-width: 480px;
-  margin: 14px 0 18px;
-}
-
-.hs-hero-cta {
-  display: flex;
-  gap: 12px;
-}
-
-/* ============================= */
-/* 🔘 BUTTONS */
-/* ============================= */
-
-.hs-btn-primary,
-.hs-btn-outline {
-  font-size: 13px;
-  padding: 9px 18px;
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.hs-btn-primary {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: white;
-}
-
-.hs-btn-outline {
-  border: 2px solid #2563eb;
-  color: #2563eb;
-  background: transparent;
-}
-
-/* ============================= */
-/* 🖼 HERO IMAGE (CONTROLLED) */
-/* ============================= */
-
-.hs-hero-image {
-  width: 100%;
-  max-width: 360px;        /* 👈 hard limit */
-  height: 220px;
-  border-radius: 18px;
-  background-image: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.25);
-}
-
-/* ============================= */
-/* 📱 HERO MOBILE */
-/* ============================= */
-
-@media (max-width: 900px) {
-  .hs-hero {
-    grid-template-columns: 1fr;
-  }
-
-  .hs-hero-image {
-    max-width: 100%;
-    height: 200px;
-    margin-top: 16px;
-  }
-}
-
-/* ============================= */
-/* 🧾 FOOTER (FIXED WIDTH – FINAL) */
-/* ============================= */
-
-.hs-footer {
-  background: #020617;
-  color: #e5e7eb;
-  padding: 50px 20px 28px;
-  margin-top: 80px;
-}
-
-/* 👇 REAL WIDTH CONTROL */
-.hs-footer-inner {
-  max-width: 1000px;   /* 👈 slightly more premium */
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 36px;
-}
-
-.hs-footer-col h3,
-.hs-footer-col h4 {
-  margin-bottom: 12px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.hs-footer-col p,
-.hs-footer-col a {
-  font-size: 13px;
-  color: #cbd5f5;
-  line-height: 1.6;
-  text-decoration: none;
-  display: block;
-  margin-bottom: 6px;
-}
-
-.hs-footer-col a:hover {
-  color: #60a5fa;
-}
-
-/* footer bottom line */
-.hs-footer-bottom {
-  max-width: 1000px;
-  margin: 28px auto 0;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  text-align: center;
-  font-size: 12px;
-  color: #94a3b8;
-}
-
-/* ============================= */
-/* 📱 FOOTER MOBILE */
-/* ============================= */
-
-@media (max-width: 768px) {
-  .hs-footer {
-    padding: 40px 16px 24px;
-  }
-}
-
-/* ============================= */
-/* 🏞 DESTINATION IMAGE ROW */
+/* 🏞 DESTINATION ROW (FINAL FIX) */
 /* ============================= */
 
 .hs-destination-row {
@@ -201,7 +19,7 @@ body {
   border-radius: 10px;
 }
 
-/* DESTINATION BOX */
+/* DESTINATION CARD */
 .hs-destination-box {
   flex: 0 0 220px;
   height: 280px;
@@ -209,18 +27,15 @@ body {
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  display: block;              /* 🔴 IMPORTANT */
+  text-decoration: none;
+  color: inherit;
   box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.hs-destination-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .hs-destination-box:hover {
-  transform: translateY(-6px) scale(1.03);
+  transform: translateY(-6px);
   box-shadow: 0 30px 70px rgba(0,0,0,0.35);
 }
 
@@ -257,34 +72,4 @@ body {
     flex: 0 0 180px;
     height: 240px;
   }
-}
-/* 🚨 FORCE DESTINATION CARD FIX */
-.hs-destination-row {
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  padding: 0 20px 60px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.hs-destination-box {
-  flex: 0 0 220px;
-  height: 280px;
-  border-radius: 22px;
-  overflow: hidden;
-  position: relative;
-}
-
-.hs-destination-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* prevent rogue images */
-section img {
-  max-width: 100%;
-  height: auto;
 }
