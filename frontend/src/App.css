@@ -14,12 +14,16 @@
 .hs-destination-row::-webkit-scrollbar {
   height: 6px;
 }
+
 .hs-destination-row::-webkit-scrollbar-thumb {
   background: #c7d2fe;
   border-radius: 10px;
 }
 
+/* ============================= */
 /* DESTINATION CARD */
+/* ============================= */
+
 .hs-destination-box {
   flex: 0 0 220px;
   height: 280px;
@@ -27,19 +31,31 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  display: block;              /* 🔴 IMPORTANT */
+  display: block;              /* IMPORTANT */
   text-decoration: none;
   color: inherit;
   box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
+/* 🔴 THIS WAS MISSING */
+.hs-destination-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Hover effect */
 .hs-destination-box:hover {
   transform: translateY(-6px);
   box-shadow: 0 30px 70px rgba(0,0,0,0.35);
 }
 
+/* ============================= */
 /* OVERLAY */
+/* ============================= */
+
 .hs-destination-label {
   position: absolute;
   inset: 0;
@@ -66,7 +82,10 @@
   opacity: 0.9;
 }
 
+/* ============================= */
 /* MOBILE */
+/* ============================= */
+
 @media (max-width: 768px) {
   .hs-destination-box {
     flex: 0 0 180px;
