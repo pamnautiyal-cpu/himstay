@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-function Booking({ price Per Night = 2500, hotel Name = "The Moksha Valley" }) {
+function Booking({
+  pricePerNight = 2500,
+  hotelName = "The Moksha Valley",
+}) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
@@ -14,76 +17,61 @@ function Booking({ price Per Night = 2500, hotel Name = "The Moksha Valley" }) {
         )
       : 0;
 
-  const totalPrice = nights * price Per Night;
+  const totalPrice = nights * pricePerNight;
 
-  const whatsappLink = `https://wa.me/919410106470?text=${encodeURIComponent(
-    `Booking Enquiry:
-Hotel: ${hotelName}
-Check-in: ${checkIn}
-Check-out: ${checkOut}
-Guests: ${guests}
-Nights: ${nights}
-Total Price: ₹${totalPrice}`
-  )}`;
-
-  const handleBooking = async () => {
-    await fetch("https://himstay.onrender.com/api/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        hotelName,
-        checkIn,
-        checkOut,
-        guests,
-        totalPrice,
-      }),
-    });
-
-    window.open(whatsappLink, "_blank");
+  const handleBooking = () => {
+    alert(
+      `Booking Requested\nHotel: ${hotelName}\nCheck-in: ${checkIn}\nCheck-out: ${checkOut}\nGuests: ${guests}\nTotal: ₹${totalPrice}`
+    );
   };
 
   return (
     <div style={box}>
       <h3>Book Your Stay</h3>
 
-      <input type="date" onChange={(e) => setCheckIn(e.target.value)} />
-      <input type="date" onChange={(e) => setCheckOut(e.target.value)} />
+      <label>Check-in</label>
+      <input
+        type="date"
+        value={checkIn}
+        onChange={(e) => setCheckIn(e.target.value)}
+      />
 
-      <select onChange={(e) => setGuests(Number(e.target.value))}>
+      <label>Check-out</label>
+      <input
+        type="date"
+        value={checkOut}
+        onChange={(e) => setCheckOut(e.target.value)}
+      />
+
+      <label>Guests</label>
+      <select
+        value={guests}
+        onChange={(e) => setGuests(Number(e.target.value))}
+      >
         <option value="1">1 Guest</option>
         <option value="2">2 Guests</option>
         <option value="3">3 Guests</option>
         <option value="4">4 Guests</option>
-        <option value="5">5+ Guests</option>
       </select>
 
-      <div>₹ {pricePerNight} / night</div>
+      <p>₹ {pricePerNight} / night</p>
 
       {nights > 0 && (
-        <div>
+        <p>
           Total: ₹ {totalPrice} ({nights} nights)
-        </div>
+        </p>
       )}
 
-      <button onClick={handleBooking} style={btn}>
-        Book on WhatsApp
-      </button>
+      <button onClick={handleBooking}>Book Now</button>
     </div>
   );
 }
 
 const box = {
-  padding: 22,
-  borderRadius: 22,
+  padding: 20,
+  borderRadius: 12,
   background: "#fff",
-};
-
-const btn = {
-  marginTop: 14,
-  padding: 12,
-  background: "#22c55e",
-  color: "#fff",
-  border: "none",
+  maxWidth: 400,
 };
 
 export default Booking;
