@@ -1,83 +1,70 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-const BACKEND_URL = "https://himstay.onrender.com";
-
-function Booking() {
-  const { id } = useParams();
-
+function Booking({ pricePerNight = 2500, hotelName = "The Moksha Valley" }) {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
-  const [email, setEmail] = useState("");
 
-  const amount = 3000;
+  const nights =
+    checkIn && checkOut
+      ? Math.max(
+          (new Date(checkOut) - new Date(checkIn)) /
+            (1000 * 60 * 60 * 24),
+          1
+        )
+      : 0;
 
-  const handlePayment = async () => {
-    try {
-      const order = await axios.post(
-        `${BACKEND_URL}/api/payment/create-order`,
-        { amount }
-      );
+  const totalPrice = nights * pricePerNight;
 
-      const options = {
-        key: "rzp_test_xxxxx", // abhi test key rehne do
-        amount: order.data.amount,
-        currency: "INR",
-        name: "The Himalayans",
-        description: "Hotel Booking",
-        order_id: order.data.id,
-        handler: async function (response) {
-          await axios.post(`${BACKEND_URL}/api/payment/verify`, {
-            ...response,
-            booking: {
-              hotelId: id,
-              checkIn,
-              checkOut,
-              guests: Number(guests),
-              email,
-              amount,
-            },
-          });
-
-          alert("Booking Confirmed");
-        },
-        theme: { color: "#2563eb" },
-      };
-
-      new window.Razorpay(options).open();
-    } catch (err) {
-      console.error(err);
-      alert("Payment failed");
-    }
+  const handleBooking = () => {
+    alert(
+      `Booking Requested\n\nHotel: ${hotelName}\nCheck-in: ${checkIn}\nCheck-out: ${checkOut}\nGuests: ${guests}\nTotal: ₹${totalPrice}`
+    );
   };
 
   return (
-    <div className="hs-dashboard">
-      <h2 className="hs-section-title">Confirm Booking</h2>
+    <div style={{ padding: 30 }}>
+      <h2>Confirm Booking</h2>
 
-      <div className="hs-card" style={{ maxWidth: 420 }}>
-        <input
-          type="email"
-          placeholder="Your Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <label>Check-in</label>
+      <input
+        type="date"
+        value={checkIn}
+        onChange={(e) => setCheckIn(e.target.value)}
+      />
 
-        <input type="date" onChange={(e) => setCheckIn(e.target.value)} />
-        <input type="date" onChange={(e) => setCheckOut(e.target.value)} />
+      <br /><br />
 
-        <input
-          type="number"
-          min="1"
-          value={guests}
-          onChange={(e) => setGuests(Number(e.target.value))}
-        />
+      <label>Check-out</label>
+      <input
+        type="date"
+        value={checkOut}
+        onChange={(e) => setCheckOut(e.target.value)}
+      />
 
-        <button className="hs-btn-primary" onClick={handlePayment}>
-          Pay ₹{amount} & Book
-        </button>
-      </div>
+      <br /><br />
+
+      <label>Guests</label>
+      <input
+        type="number"
+        min="1"
+        value={guests}
+        onChange={(e) => setGuests(Number(e.target.value))}
+      />
+
+      <br /><br />
+
+      <p>₹ {pricePerNight} / night</p>
+
+      {nights > 0 && (
+        <p>
+          Total: ₹ {totalPrice} ({nights} nights)
+        </p>
+      )}
+
+      <button onClick={handleBooking}>
+        Confirm Booking
+      </button>
     </div>
   );
 }
