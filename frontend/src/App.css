@@ -92,3 +92,13 @@
     height: 240px;
   }
 }
+/* ============================= */
+/* 🚨 HARD OVERRIDE – FINAL */
+/* ============================= */
+
+.hs-destination-box img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  max-width: none !important;
+}
