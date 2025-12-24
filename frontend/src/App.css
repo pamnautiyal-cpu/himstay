@@ -91,3 +91,33 @@
     height: 240px;
   }
 }
+/* ============================= */
+/* 🚨 HERO IMAGE HARD FIX */
+/* ============================= */
+
+.hs-hero {
+  min-height: unset !important;
+  height: auto !important;
+  max-height: 420px !important;
+  overflow: hidden !important;
+}
+
+.hs-hero-image {
+  width: 100% !important;
+  max-width: 360px !important;
+  height: 220px !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hs-hero {
+    max-height: none !important;
+  }
+
+  .hs-hero-image {
+    max-width: 100% !important;
+    height: 200px !important;
+  }
+}
