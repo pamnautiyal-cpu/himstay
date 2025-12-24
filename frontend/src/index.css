@@ -70,7 +70,7 @@ a {
   font-weight: 600;
   font-size: 14px;
   box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .hs-btn-primary:hover {
@@ -87,7 +87,6 @@ a {
   font-size: 14px;
   outline: none;
   background: #f9fafb;
-  transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s;
 }
 
 .hs-input:focus,
@@ -159,31 +158,9 @@ a {
   display: block;
   color: #4b5563;
 }
-/* ===== GLOBAL IMAGE SAFETY NET ===== */
 
+/* ✅ SAFE IMAGE BASE (NO OVERRIDES) */
 img {
   max-width: 100%;
-  height: auto;
-}
-
-/* stop full-viewport images */
-img,
-.hs-hero-right img {
-  width: auto;
-  max-width: 100%;
-}
-/* 🚨 ABSOLUTE IMAGE SAFETY LOCK */
-
-main img,
-section img,
-div img {
-  max-width: 100%;
-  width: auto !important;
-  height: auto !important;
   display: block;
-}
-
-/* stop viewport images */
-img {
-  max-width: 100% !important;
 }

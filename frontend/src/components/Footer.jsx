@@ -9,7 +9,7 @@ function Footer() {
         <div className="hs-footer-col">
           <h3>The Himalayans</h3>
           <p>
-            Handpicked Himalayan stays, destination weddings, cultural
+            Handpicked Himalayan stays, Trekking , Adventure, cultural
             experiences & slow travel escapes.
           </p>
         </div>
