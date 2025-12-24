@@ -215,3 +215,22 @@ img {
     height: 240px;
   }
 }
+/* 🚨 FORCE HERO HEIGHT FIX */
+.hs-hero {
+  max-height: 420px !important;
+  overflow: hidden !important;
+}
+
+/* 🚨 FORCE HERO BACKGROUND IMAGE */
+.hs-hero-image {
+  max-width: 360px !important;
+  height: 220px !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* 🚨 IF IMAGE IS SET ON HERO SECTION ITSELF */
+.hs-hero {
+  background-size: cover !important;
+  background-position: center !important;
+}
