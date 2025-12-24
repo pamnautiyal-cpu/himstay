@@ -1,5 +1,5 @@
 /* ============================= */
-/* 🏞 DESTINATION ROW (FINAL FIX) */
+/* 🏞 DESTINATION ROW – FINAL */
 /* ============================= */
 
 .hs-destination-row {
@@ -30,15 +30,15 @@
   border-radius: 22px;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
-  display: block;              /* IMPORTANT */
+  display: block;
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
   box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: transform 0.3s ease;
 }
 
-/* ✅ THIS IS THE KEY LINE (FINAL, CORRECT) */
+/* 🔥 MOST IMPORTANT FIX */
 .hs-destination-box img {
   width: 100%;
   height: 100%;
@@ -46,10 +46,9 @@
   display: block;
 }
 
-/* Hover effect */
+/* Hover */
 .hs-destination-box:hover {
   transform: translateY(-6px);
-  box-shadow: 0 30px 70px rgba(0,0,0,0.35);
 }
 
 /* ============================= */
@@ -68,7 +67,7 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 16px;
-  color: white;
+  color: #fff;
 }
 
 .hs-destination-label h3 {
@@ -91,14 +90,4 @@
     flex: 0 0 180px;
     height: 240px;
   }
-}
-/* ============================= */
-/* 🚨 HARD OVERRIDE – FINAL */
-/* ============================= */
-
-.hs-destination-box img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  max-width: none !important;
 }

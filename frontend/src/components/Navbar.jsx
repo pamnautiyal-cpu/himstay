@@ -16,12 +16,13 @@ function Navbar() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
-  // 🔥 SCROLL EFFECT
+  // ✅ SCROLL EFFECT (clean + safe)
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 40);
     };
-    window.addEventListener("scroll", onScroll);
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -33,13 +34,11 @@ function Navbar() {
         zIndex: 50,
         display: "flex",
         justifyContent: "center",
-        pointerEvents: "none",
         transition: "all 0.3s ease",
       }}
     >
       <nav
         style={{
-          pointerEvents: "auto",
           width: "100%",
           maxWidth: 1200,
           margin: "0 16px",
@@ -99,6 +98,7 @@ function Navbar() {
             >
               The Himalayans
             </div>
+
             {!scrolled && (
               <div
                 style={{
@@ -108,7 +108,6 @@ function Navbar() {
                 }}
               >
                 Hills • Stays • Memories • Adventures
-
               </div>
             )}
           </div>
@@ -118,28 +117,28 @@ function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <Link
             to="/hotels"
-            style={linkStyle(location.pathname === "/hotels")}
+            style={linkStyle(location.pathname.startsWith("/hotels"))}
           >
             Hotels
           </Link>
 
           <Link
             to="/mytrips"
-            style={linkStyle(location.pathname === "/mytrips")}
+            style={linkStyle(location.pathname.startsWith("/mytrips"))}
           >
             My Trips
           </Link>
 
           <Link
             to="/contact"
-            style={linkStyle(location.pathname === "/contact")}
+            style={linkStyle(location.pathname.startsWith("/contact"))}
           >
             Contact
           </Link>
 
           <Link
             to="/login"
-            style={linkStyle(location.pathname === "/login")}
+            style={linkStyle(location.pathname.startsWith("/login"))}
           >
             Login
           </Link>

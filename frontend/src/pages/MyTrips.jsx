@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function MyTrips() {
   return (
@@ -9,7 +10,7 @@ export default function MyTrips() {
         background: "linear-gradient(to bottom, #e0f2fe, #f0f9ff)",
       }}
     >
-      {/* Hero Section */}
+      {/* ===== HERO SECTION ===== */}
       <div
         style={{
           maxWidth: 1100,
@@ -19,13 +20,13 @@ export default function MyTrips() {
       >
         <h1
           style={{
-            fontSize: "42px",
+            fontSize: 42,
             fontWeight: 700,
             color: "#0f172a",
             marginBottom: 10,
           }}
         >
-          Your Trips in the Himalayas-Uttarakhand 🏔️
+          Your Himalayan Trips 🏔️
         </h1>
 
         <p
@@ -35,27 +36,28 @@ export default function MyTrips() {
             marginBottom: 30,
           }}
         >
-          Track all your upcoming and past Himalayans bookings.
+          Track all your upcoming and past bookings with The Himalayans.
         </p>
 
-        {/* Mountains Illustration */}
+        {/* Illustration */}
         <img
           src="https://i.imgur.com/YOwM8Uh.png"
-          alt="mountains"
+          alt="Himalayan mountains"
           style={{
             width: "100%",
-            maxWidth: 650,
+            maxWidth: 600,
             margin: "20px auto",
             borderRadius: 16,
             boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+            display: "block",
           }}
         />
       </div>
 
-      {/* Empty State */}
+      {/* ===== EMPTY STATE ===== */}
       <div
         style={{
-          marginTop: 40,
+          marginTop: 50,
           textAlign: "center",
           color: "#475569",
         }}
@@ -63,10 +65,13 @@ export default function MyTrips() {
         <h2 style={{ fontSize: 24, marginBottom: 10 }}>
           No trips booked yet 😔
         </h2>
-        <p style={{ marginBottom: 20 }}>Start exploring amazing stays now!</p>
 
-        <a
-          href="/hotels"
+        <p style={{ marginBottom: 20 }}>
+          Start exploring cozy stays in the Himalayas.
+        </p>
+
+        <Link
+          to="/hotels"
           style={{
             padding: "12px 26px",
             borderRadius: 999,
@@ -74,10 +79,12 @@ export default function MyTrips() {
             color: "white",
             textDecoration: "none",
             fontSize: 16,
+            fontWeight: 600,
+            display: "inline-block",
           }}
         >
           Explore Hotels
-        </a>
+        </Link>
       </div>
     </div>
   );

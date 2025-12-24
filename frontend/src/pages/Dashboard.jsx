@@ -1,20 +1,20 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
-import { getUserBookings } from "../api/api"; // <- yahi wali api.js se aa rahi hai
+import { Link } from "react-router-dom";
+import { getUserBookings } from "../api/api";
 
 function Dashboard() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // future me real data aayega, abhi ke liye try–catch
     const fetchData = async () => {
       try {
         const res = await getUserBookings();
         setBookings(res.data || []);
       } catch (err) {
         console.log("Booking load error:", err);
-        // demo ke liye kuch fake data
+        // fallback demo data
         setBookings([
           {
             _id: "1",
@@ -41,19 +41,18 @@ function Dashboard() {
 
   return (
     <div className="hs-dashboard">
-      {/* Top section: greeting + stats */}
+      {/* ===== HEADER ===== */}
       <div className="hs-dashboard-header">
         <div>
           <p className="hs-dashboard-subtitle">Welcome back to HimStay</p>
           <h1 className="hs-dashboard-title">Your Himalayan getaways</h1>
           <p className="hs-dashboard-text">
             Track all your cozy stays in the mountains – Manali, Shimla,
-            Dharamshala, and beyond. Time to plan your next chai-with-a-view
-            trip. ☕🏔️
+            Dharamshala, and beyond.
           </p>
         </div>
 
-        {/* Illustration card */}
+        {/* ===== HERO CARD ===== */}
         <div className="hs-hero-card">
           <div className="hs-hero-mountains">
             <div className="peak peak-left" />
@@ -62,36 +61,27 @@ function Dashboard() {
             <div className="sun" />
             <div className="cloud cloud-1" />
             <div className="cloud cloud-2" />
-            <div className="people">
-              <span role="img" aria-label="person">
-                🧍‍♂️
-              </span>
-              <span role="img" aria-label="person">
-                🧍‍♀️
-              </span>
-              <span role="img" aria-label="camp">
-                🏕️
-              </span>
-            </div>
+            <div className="people">🧍‍♂️ 🧍‍♀️ 🏕️</div>
           </div>
+
           <div className="hs-hero-content">
             <p className="hs-hero-title">Weekend in the clouds</p>
             <p className="hs-hero-text">
-              Average night from ₹1,299 • 120+ verified homestays across
-              Uttarakhand. Perfect for workations & slow travel.
+              From ₹1,299/night • 120+ verified homestays across Uttarakhand.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Bookings + suggestions */}
+      {/* ===== GRID ===== */}
       <div className="hs-dashboard-grid">
-        {/* My Trips / bookings list */}
+        {/* ===== MY TRIPS ===== */}
         <section className="hs-card">
           <div className="hs-card-header">
             <h2>My trips</h2>
             <span className="hs-pill">
-              {bookings.length} {bookings.length === 1 ? "booking" : "bookings"}
+              {bookings.length}{" "}
+              {bookings.length === 1 ? "booking" : "bookings"}
             </span>
           </div>
 
@@ -101,12 +91,13 @@ function Dashboard() {
             <div className="hs-empty">
               <p className="hs-empty-title">No trips yet</p>
               <p className="hs-empty-text">
-                Start your first Himalayan getaway – search stays on the home
-                page and book a cozy homestay.
+                Start your first Himalayan getaway.
               </p>
-              <a className="hs-btn-outline" href="/">
+
+              {/* 🔴 FIXED: a → Link */}
+              <Link to="/" className="hs-btn-outline">
                 Browse stays
-              </a>
+              </Link>
             </div>
           ) : (
             <ul className="hs-trip-list">
@@ -130,9 +121,10 @@ function Dashboard() {
           )}
         </section>
 
-        {/* Right side: quick suggestions */}
+        {/* ===== SUGGESTIONS ===== */}
         <section className="hs-card hs-suggestions">
           <h2>Popular hill escapes</h2>
+
           <div className="hs-tag-row">
             <span className="hs-tag">Manali • Workation</span>
             <span className="hs-tag">Shimla • Family</span>
@@ -141,8 +133,7 @@ function Dashboard() {
           </div>
 
           <p className="hs-muted" style={{ marginTop: 12 }}>
-            Pro tip: Weekdays are cheaper and quieter. Perfect for working from
-            mountains with a hot cup of chai.
+            Weekdays are cheaper & quieter — perfect for workations.
           </p>
 
           <div className="hs-checklist">
@@ -152,9 +143,10 @@ function Dashboard() {
             <p>✅ Verified hosts</p>
           </div>
 
-          <a className="hs-btn-primary" href="/hotels">
-            Find stays in the Himalayas-Uttarakhand
-          </a>
+          {/* 🔴 FIXED: a → Link */}
+          <Link to="/hotels" className="hs-btn-primary">
+            Find stays in Uttarakhand
+          </Link>
         </section>
       </div>
     </div>

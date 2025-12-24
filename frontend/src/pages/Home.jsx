@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const destinations = [
   {
@@ -40,8 +41,12 @@ function Home() {
           </p>
 
           <div className="hs-hero-cta">
-            <a href="/hotels" className="hs-btn-primary">Book Stay</a>
-            <a href="/contact" className="hs-btn-outline">Enquire</a>
+            <Link to="/hotels" className="hs-btn-primary">
+              Book Stay
+            </Link>
+            <Link to="/contact" className="hs-btn-outline">
+              Enquire
+            </Link>
           </div>
         </div>
 
@@ -53,17 +58,17 @@ function Home() {
 
       <div className="hs-destination-row">
         {destinations.map((d) => (
-          <a
+          <Link
             key={d.name}
-            href={`/hotels?city=${encodeURIComponent(d.name)}`}
+            to={`/hotels?city=${encodeURIComponent(d.name)}`}
             className="hs-destination-box"
           >
-            <img src={d.img} alt={d.name} />
+            <img src={d.img} alt={d.name} loading="lazy" />
             <div className="hs-destination-label">
               <h3>{d.name}</h3>
               <span>View stays →</span>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </div>
