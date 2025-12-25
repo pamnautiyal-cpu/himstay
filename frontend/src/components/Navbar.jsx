@@ -129,3 +129,10 @@ function Navbar() {
 }
 
 export default Navbar;
+<div className="nav-links">
+  <Link to="/hotels" className="nav-pill">Hotels</Link>
+  <Link to="/mytrips" className="nav-pill">My Trips</Link>
+  <Link to="/contact" className="nav-pill">Contact</Link>
+  <Link to="/login" className="nav-pill ghost">Login</Link>
+  <Link to="/register" className="nav-pill primary">Sign up</Link>
+</div>

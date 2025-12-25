@@ -250,3 +250,48 @@ img {
   transform: translateY(-4px);
   box-shadow: 0 16px 40px rgba(0,0,0,0.15);
 }
+/* ============================= */
+/* 🌈 NAVBAR COLORFUL BUTTONS */
+/* ============================= */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* common pill */
+.nav-pill {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #0f172a;
+  background: linear-gradient(135deg,#e0e7ff,#f0f9ff);
+  transition: all 0.25s ease;
+}
+
+/* hover */
+.nav-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* login (soft) */
+.nav-pill.ghost {
+  background: linear-gradient(135deg,#fef3c7,#fde68a);
+}
+
+/* signup (strong CTA) */
+.nav-pill.primary {
+  color: #fff;
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  box-shadow: 0 10px 30px rgba(37,99,235,0.45);
+}
+
+/* active page (optional) */
+.nav-pill.active {
+  background: linear-gradient(135deg,#22c55e,#16a34a);
+  color: #fff;
+}
