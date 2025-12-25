@@ -1,167 +1,129 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const linkStyle = (active) => ({
-  padding: "8px 16px",
-  borderRadius: 999,
-  fontSize: 14,
-  fontWeight: 600,
-  color: active ? "#0f172a" : "#334155",
-  background: active ? "rgba(255,255,255,0.9)" : "transparent",
-  textDecoration: "none",
-  transition: "all 0.25s ease",
-});
-
 function Navbar() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
-  // ✅ SCROLL EFFECT (clean + safe)
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const isActive = (path) => location.pathname.startsWith(path);
 
   return (
     <header
       style={{
         position: "sticky",
-        top: scrolled ? 6 : 16,
-        zIndex: 50,
-        display: "flex",
-        justifyContent: "center",
-        transition: "all 0.3s ease",
+        top: 0,
+        zIndex: 100,
+        background: "#ffffff",
+        borderBottom: "1px solid #e5e7eb",
+        boxShadow: scrolled
+          ? "0 6px 20px rgba(0,0,0,0.08)"
+          : "none",
+        transition: "all 0.2s ease",
       }}
     >
-      <nav
+      <div
         style={{
-          width: "100%",
           maxWidth: 1200,
-          margin: "0 16px",
-          padding: scrolled ? "8px 18px" : "12px 22px",
+          margin: "0 auto",
+          padding: "12px 16px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          borderRadius: 999,
-          background:
-            "linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.75))",
-          backdropFilter: "blur(18px)",
-          boxShadow: scrolled
-            ? "0 18px 40px rgba(15,23,42,0.25)"
-            : "0 25px 60px rgba(15,23,42,0.18)",
-          border: "1px solid rgba(148,163,184,0.35)",
-          transition: "all 0.3s ease",
         }}
       >
-        {/* ===== LOGO ===== */}
+        {/* LOGO */}
         <Link
           to="/"
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 12,
+            gap: 10,
             textDecoration: "none",
+            color: "#0f172a",
           }}
         >
           <div
             style={{
-              width: scrolled ? 40 : 46,
-              height: scrolled ? 40 : 46,
-              borderRadius: 14,
-              background:
-                "linear-gradient(135deg,#2563eb,#22c55e,#facc15)",
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              background: "#2563eb",
+              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 22,
-              color: "white",
-              boxShadow: "0 12px 30px rgba(0,0,0,0.25)",
-              transition: "all 0.3s ease",
+              fontSize: 20,
+              fontWeight: 700,
             }}
           >
             ⛰️
           </div>
 
           <div>
-            <div
-              style={{
-                fontWeight: 900,
-                fontSize: scrolled ? 16 : 18,
-                color: "#0f172a",
-                lineHeight: 1.1,
-                transition: "all 0.3s ease",
-              }}
-            >
+            <div style={{ fontWeight: 800, fontSize: 16 }}>
               The Himalayans
             </div>
-
-            {!scrolled && (
-              <div
-                style={{
-                  fontSize: 11,
-                  letterSpacing: 1,
-                  color: "#64748b",
-                }}
-              >
-                Hills • Stays • Memories • Adventures
-              </div>
-            )}
+            <div style={{ fontSize: 11, color: "#64748b" }}>
+              Hills • Stays • Memories
+            </div>
           </div>
         </Link>
 
-        {/* ===== LINKS ===== */}
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <Link
-            to="/hotels"
-            style={linkStyle(location.pathname.startsWith("/hotels"))}
-          >
-            Hotels
-          </Link>
-
-          <Link
-            to="/mytrips"
-            style={linkStyle(location.pathname.startsWith("/mytrips"))}
-          >
-            My Trips
-          </Link>
-
-          <Link
-            to="/contact"
-            style={linkStyle(location.pathname.startsWith("/contact"))}
-          >
-            Contact
-          </Link>
-
-          <Link
-            to="/login"
-            style={linkStyle(location.pathname.startsWith("/login"))}
-          >
-            Login
-          </Link>
+        {/* LINKS */}
+        <nav
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 20,
+          }}
+        >
+          {[
+            { to: "/hotels", label: "Hotels" },
+            { to: "/mytrips", label: "My Trips" },
+            { to: "/contact", label: "Contact" },
+            { to: "/login", label: "Login" },
+          ].map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              style={{
+                fontSize: 14,
+                fontWeight: 600,
+                color: isActive(l.to) ? "#2563eb" : "#334155",
+                textDecoration: "none",
+                paddingBottom: 4,
+                borderBottom: isActive(l.to)
+                  ? "2px solid #2563eb"
+                  : "2px solid transparent",
+              }}
+            >
+              {l.label}
+            </Link>
+          ))}
 
           <Link
             to="/register"
             style={{
               marginLeft: 8,
-              padding: "10px 20px",
-              borderRadius: 999,
+              padding: "8px 16px",
+              borderRadius: 8,
+              background: "#2563eb",
+              color: "#fff",
               fontSize: 14,
               fontWeight: 700,
-              color: "#fff",
               textDecoration: "none",
-              background:
-                "linear-gradient(135deg,#2563eb,#1d4ed8)",
-              boxShadow: "0 12px 30px rgba(37,99,235,0.45)",
             }}
           >
             Sign up
           </Link>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </header>
   );
 }

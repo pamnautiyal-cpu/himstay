@@ -1,4 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
+/* ============================= */
+/* DATA */
+/* ============================= */
 
 const destinations = [
   {
@@ -38,44 +43,58 @@ const charDham = [
   },
 ];
 
+/* ============================= */
+/* COMPONENT */
+/* ============================= */
+
 export default function Home() {
   return (
     <div className="bk-home">
-      {/* ===== HERO SEARCH ===== */}
+      {/* ================= HERO SEARCH ================= */}
       <section className="bk-hero">
-        <h1>Find your next stay</h1>
-        <p>Search deals on hotels, homes, and much more…</p>
+        <h1>Find your next stay in Uttarakhand</h1>
+        <p>Hotels, homestays & Char Dham stays — all in one place</p>
 
         <div className="bk-search">
-          <input placeholder="Where are you going?" />
+          <input placeholder="Destination (Mussoorie, Kedarnath…)" />
           <input type="date" />
           <input type="date" />
           <button>Search</button>
         </div>
       </section>
 
-      {/* ===== UTTARAKHAND ===== */}
+      {/* ================= UTTARAKHAND ================= */}
       <section className="bk-section">
         <h2>Top destinations in Uttarakhand</h2>
+
         <div className="bk-grid">
           {destinations.map((d) => (
-            <div key={d.name} className="bk-card">
-              <img src={d.img} alt={d.name} />
+            <Link
+              key={d.name}
+              to={`/hotels?city=${encodeURIComponent(d.name)}`}
+              className="bk-card"
+            >
+              <img src={d.img} alt={d.name} loading="lazy" />
               <span>{d.name}</span>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* ===== CHAR DHAM ===== */}
+      {/* ================= CHAR DHAM ================= */}
       <section className="bk-section">
-        <h2>Char Dham Yatra Destinations</h2>
+        <h2>Char Dham Yatra Destinations in Uttarakhand</h2>
+
         <div className="bk-grid">
           {charDham.map((d) => (
-            <div key={d.name} className="bk-card">
-              <img src={d.img} alt={d.name} />
+            <Link
+              key={d.name}
+              to={`/hotels?city=${encodeURIComponent(d.name)}`}
+              className="bk-card"
+            >
+              <img src={d.img} alt={d.name} loading="lazy" />
               <span>{d.name}</span>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
