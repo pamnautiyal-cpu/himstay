@@ -1,7 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const uttarakhand = ["Mussoorie", "Nainital", "Dehradun", "Haldwani"];
+const uttarakhand = [
+  "Mussoorie",
+  "Nainital",
+  "Dehradun",
+  "Haldwani",
+];
+
 const charDham = [
   "Kedarnath",
   "Badrinath",
@@ -12,50 +17,51 @@ const charDham = [
 
 export default function Home() {
   return (
-    <div className="dash-page">
-      {/* HERO */}
-      <section className="dash-hero">
-        <h1>Find your next stay</h1>
-        <p>Hotels & homestays across Uttarakhand</p>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg,#eef5ff,#f8fbff,#ffffff)" }}>
+      
+      {/* SEARCH */}
+      <section className="hs-search-wrap">
+        <div className="hs-search-card">
+          <h1 style={{ marginBottom: 6 }}>Find your next stay</h1>
+          <p style={{ color: "#64748b", marginBottom: 16 }}>
+            Hotels & homestays across Uttarakhand
+          </p>
 
-        <div className="dash-search">
-          <input placeholder="Where are you going?" />
-          <input type="date" />
-          <input type="date" />
-          <button>Search</button>
+          <input
+            className="hs-search-input"
+            placeholder="Where are you going?"
+          />
+
+          <div className="hs-search-row">
+            <div className="hs-box">📅 Check-in</div>
+            <div className="hs-box">📅 Check-out</div>
+            <div className="hs-box">👥 2 adults · 1 room</div>
+          </div>
+
+          <button className="hs-search-btn">Search</button>
         </div>
       </section>
 
-      {/* DESTINATIONS */}
-      <section className="dash-section">
+      {/* UTTARAKHAND */}
+      <section className="bk-section">
         <h2>Top destinations in Uttarakhand</h2>
-        <div className="dash-grid">
-          {uttarakhand.map((c) => (
-            <Link
-              key={c}
-              to={`/hotels?city=${c}`}
-              className="dash-card"
-            >
-              {c}
-            </Link>
+        <div className="bk-text-grid">
+          {uttarakhand.map((d) => (
+            <div key={d} className="bk-text-card">{d}</div>
           ))}
         </div>
       </section>
 
-      <section className="dash-section">
+      {/* CHAR DHAM */}
+      <section className="bk-section">
         <h2>Char Dham Yatra Destinations</h2>
-        <div className="dash-grid">
-          {charDham.map((c) => (
-            <Link
-              key={c}
-              to={`/hotels?city=${c}`}
-              className="dash-card"
-            >
-              {c}
-            </Link>
+        <div className="bk-text-grid">
+          {charDham.map((d) => (
+            <div key={d} className="bk-text-card">{d}</div>
           ))}
         </div>
       </section>
+
     </div>
   );
 }
