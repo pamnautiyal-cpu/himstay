@@ -1,6 +1,8 @@
 /* ============================= */
-/* AGODA STYLE HOME – FIXED */
+/* AGODA / BOOKING STYLE HOME */
 /* ============================= */
+
+/* ===== SEARCH ===== */
 
 .hs-search-wrap {
   padding: 80px 16px 40px;
@@ -17,7 +19,7 @@
   box-shadow: 0 30px 80px rgba(0,0,0,0.15);
 }
 
-/* TABS */
+/* Tabs */
 .hs-search-tabs {
   display: flex;
   gap: 12px;
@@ -25,8 +27,8 @@
 }
 
 .hs-search-tabs button {
-  border-radius: 999px;
   padding: 6px 16px;
+  border-radius: 999px;
   border: 1px solid #d1d5db;
   background: #fff;
   cursor: pointer;
@@ -38,7 +40,7 @@
   font-weight: 600;
 }
 
-/* SEARCH INPUT */
+/* Input */
 .hs-search-input {
   width: 100%;
   padding: 14px;
@@ -48,6 +50,7 @@
   font-size: 15px;
 }
 
+/* Row */
 .hs-search-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -69,14 +72,14 @@
   border-radius: 999px;
   border: none;
   background: #2563eb;
-  color: white;
+  color: #fff;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
 }
 
 /* ============================= */
-/* DESTINATIONS – BOOKING STYLE */
+/* DESTINATIONS (SMALL CARDS) */
 /* ============================= */
 
 .hs-destination-section {
@@ -90,52 +93,6 @@
   font-size: 22px;
   font-weight: 700;
 }
-
-/* GRID */
-.hs-destination-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-}
-
-/* CARD */
-.hs-destination-card {
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-  transition: transform 0.2s ease;
-}
-
-.hs-destination-card:hover {
-  transform: translateY(-4px);
-}
-
-/* IMAGE (REAL FIX) */
-.hs-destination-img {
-  width: 100%;
-  height: 120px;
-  background-size: cover;
-  background-position: center;
-}
-
-/* TEXT */
-.hs-destination-card p {
-  padding: 10px 12px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-/* MOBILE */
-@media (max-width: 640px) {
-  .hs-search-row {
-    grid-template-columns: 1fr;
-  }
-}
-/* ============================= */
-/* 🔒 FINAL IMAGE SIZE FIX */
-/* ============================= */
 
 /* GRID */
 .bk-grid {
@@ -157,11 +114,11 @@
   transform: translateY(-4px);
 }
 
-/* IMAGE — 🔥 MOST IMPORTANT */
+/* 🔥 IMAGE FIX — THIS WAS THE PROBLEM */
 .bk-card img {
   width: 100%;
-  height: 120px;         
-  object-fit: cover;   
+  height: 120px;
+  object-fit: cover;
   display: block;
 }
 
@@ -176,7 +133,11 @@
 }
 
 /* MOBILE */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  .hs-search-row {
+    grid-template-columns: 1fr;
+  }
+
   .bk-card img {
     height: 100px;
   }
