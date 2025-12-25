@@ -1,123 +1,111 @@
 /* ============================= */
-/* 🏞 DESTINATION ROW – FINAL */
+/* AGODA STYLE HOME */
 /* ============================= */
 
-.hs-destination-row {
+.hs-search-wrap {
+  padding: 80px 16px 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.hs-search-card {
+  width: 100%;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+}
+
+.hs-search-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.hs-search-tabs button {
+  border-radius: 999px;
+  padding: 6px 16px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+}
+
+.hs-search-tabs .active {
+  border-color: #2563eb;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.hs-search-input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.hs-search-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hs-box {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font-size: 14px;
+}
+
+.hs-search-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ============================= */
+/* DESTINATIONS */
+/* ============================= */
+
+.hs-destination-section {
   max-width: 1200px;
   margin: 0 auto 80px;
-  padding: 0 20px;
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
+  padding: 0 16px;
 }
 
-.hs-destination-row::-webkit-scrollbar {
-  height: 6px;
+.hs-destination-section h2 {
+  margin-bottom: 20px;
 }
 
-.hs-destination-row::-webkit-scrollbar-thumb {
-  background: #c7d2fe;
-  border-radius: 10px;
+.hs-destination-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
 }
 
-/* ============================= */
-/* DESTINATION CARD */
-/* ============================= */
-
-.hs-destination-box {
-  flex: 0 0 220px;
-  height: 280px;
-  border-radius: 22px;
+.hs-destination-card {
+  border-radius: 16px;
   overflow: hidden;
-  position: relative;
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  transition: transform 0.3s ease;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.15);
 }
 
-/* 🔥 MOST IMPORTANT FIX */
-.hs-destination-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.hs-destination-img {
+  height: 140px;
+  background: linear-gradient(135deg, #94a3b8, #cbd5f5);
 }
 
-/* Hover */
-.hs-destination-box:hover {
-  transform: translateY(-6px);
-}
-
-/* ============================= */
-/* OVERLAY */
-/* ============================= */
-
-.hs-destination-label {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(15,23,42,0.85),
-    rgba(15,23,42,0.1)
-  );
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 16px;
-  color: #fff;
-}
-
-.hs-destination-label h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.hs-destination-label span {
-  font-size: 13px;
-  opacity: 0.9;
-}
-
-/* ============================= */
-/* MOBILE */
-/* ============================= */
-
-@media (max-width: 768px) {
-  .hs-destination-box {
-    flex: 0 0 180px;
-    height: 240px;
-  }
-}
-/* ============================= */
-/* 🚨 HERO IMAGE HARD FIX */
-/* ============================= */
-
-.hs-hero {
-  min-height: unset !important;
-  height: auto !important;
-  max-height: 420px !important;
-  overflow: hidden !important;
-}
-
-.hs-hero-image {
-  width: 100% !important;
-  max-width: 360px !important;
-  height: 220px !important;
-  background-size: cover !important;
-  background-position: center !important;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .hs-hero {
-    max-height: none !important;
-  }
-
-  .hs-hero-image {
-    max-width: 100% !important;
-    height: 200px !important;
-  }
+.hs-destination-card p {
+  padding: 12px;
+  font-weight: 600;
 }

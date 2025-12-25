@@ -1,78 +1,55 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const destinations = [
-  {
-    name: "Mussoorie",
-    img: "https://images.unsplash.com/photo-1586372215481-3c1c6c1f63c5",
-  },
-  {
-    name: "Shimla",
-    img: "https://images.unsplash.com/photo-1548013146-72479768bada",
-  },
-  {
-    name: "Nainital",
-    img: "https://images.unsplash.com/photo-1605640840605-14ac1855827b",
-  },
-  {
-    name: "Uttarkashi",
-    img: "https://images.unsplash.com/photo-1600962815726-457c46a12681",
-  },
-  {
-    name: "Dehradun",
-    img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2",
-  },
+  { name: "New Delhi & NCR" },
+  { name: "Goa" },
+  { name: "Bangalore" },
+  { name: "Mumbai" },
+  { name: "Hyderabad" },
 ];
 
-function Home() {
+export default function Home() {
   return (
-    <div>
-      {/* ===== HERO ===== */}
-      <section className="hs-hero">
-        <div>
-          <span className="hs-badge">Hills · Stays · Memories</span>
+    <div className="hs-home">
 
-          <h1 className="hs-hero-title">
-            Discover stays in the <span>Himalayas</span>
-          </h1>
+      {/* ===== SEARCH CARD (AGODA STYLE) ===== */}
+      <section className="hs-search-wrap">
+        <div className="hs-search-card">
 
-          <p className="hs-hero-text">
-            Handpicked hotels & homestays across Uttarakhand.
-          </p>
-
-          <div className="hs-hero-cta">
-            <Link to="/hotels" className="hs-btn-primary">
-              Book Stay
-            </Link>
-            <Link to="/contact" className="hs-btn-outline">
-              Enquire
-            </Link>
+          <div className="hs-search-tabs">
+            <button className="active">Overnight Stays</button>
+            <button>Day Use Stays</button>
           </div>
-        </div>
 
-        <div className="hs-hero-image" />
+          <input
+            className="hs-search-input"
+            placeholder="Enter a destination or property"
+          />
+
+          <div className="hs-search-row">
+            <div className="hs-box">📅 Check-in</div>
+            <div className="hs-box">📅 Check-out</div>
+            <div className="hs-box">👥 2 adults · 1 room</div>
+          </div>
+
+          <button className="hs-search-btn">SEARCH</button>
+        </div>
       </section>
 
       {/* ===== DESTINATIONS ===== */}
-      <h2 className="hs-section-title">Top Hill Destinations</h2>
+      <section className="hs-destination-section">
+        <h2>Top destinations in India</h2>
 
-      <div className="hs-destination-row">
-        {destinations.map((d) => (
-          <Link
-            key={d.name}
-            to={`/hotels?city=${encodeURIComponent(d.name)}`}
-            className="hs-destination-box"
-          >
-            <img src={d.img} alt={d.name} loading="lazy" />
-            <div className="hs-destination-label">
-              <h3>{d.name}</h3>
-              <span>View stays →</span>
+        <div className="hs-destination-grid">
+          {destinations.map((d) => (
+            <div key={d.name} className="hs-destination-card">
+              <div className="hs-destination-img" />
+              <p>{d.name}</p>
             </div>
-          </Link>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
+
     </div>
   );
 }
-
-export default Home;
