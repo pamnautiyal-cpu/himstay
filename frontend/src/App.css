@@ -133,3 +133,51 @@
     grid-template-columns: 1fr;
   }
 }
+/* ============================= */
+/* 🔒 FINAL IMAGE SIZE FIX */
+/* ============================= */
+
+/* GRID */
+.bk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+/* CARD */
+.bk-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease;
+}
+
+.bk-card:hover {
+  transform: translateY(-4px);
+}
+
+/* IMAGE — 🔥 MOST IMPORTANT */
+.bk-card img {
+  width: 100%;
+  height: 120px;         
+  object-fit: cover;   
+  display: block;
+}
+
+/* TEXT */
+.bk-card span {
+  display: block;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  background: #fff;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .bk-card img {
+    height: 100px;
+  }
+}
