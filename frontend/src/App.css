@@ -142,3 +142,27 @@
     height: 100px;
   }
 }
+/* ============================= */
+/* 🚨 ABSOLUTE IMAGE LOCK (FINAL) */
+/* ============================= */
+
+/* ONLY destination cards */
+.bk-card {
+  height: auto;
+}
+
+/* FORCE image size inside cards */
+.bk-card img {
+  width: 100% !important;
+  height: 120px !important;
+  object-fit: cover !important;
+  display: block !important;
+  max-width: none !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .bk-card img {
+    height: 100px !important;
+  }
+}
