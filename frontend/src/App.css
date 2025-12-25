@@ -360,3 +360,88 @@ img {
     padding: 50px 16px 24px;
   }
 }
+/* ===================================== */
+/* 🏨 AGODA / BOOKING STYLE FOOTER */
+/* ===================================== */
+
+.hs-footer {
+  background: linear-gradient(180deg, #020617, #020617);
+  color: #e5e7eb;
+  padding: 80px 20px 32px;
+  margin-top: 100px;
+}
+
+/* GRID */
+.hs-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr;
+  gap: 48px;
+}
+
+/* BRAND */
+.hs-footer-col h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.hs-footer-col p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+/* HEADINGS */
+.hs-footer-col h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #f8fafc;
+  letter-spacing: 0.4px;
+}
+
+/* LINKS */
+.hs-footer-col a {
+  display: block;
+  margin: 8px 0;
+  font-size: 14px;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hs-footer-col a:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+/* ICON TEXT */
+.hs-footer-col p span {
+  margin-right: 6px;
+}
+
+/* BOTTOM BAR */
+.hs-footer-bottom {
+  margin-top: 56px;
+  padding-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hs-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .hs-footer {
+    padding: 60px 16px 28px;
+  }
+}
