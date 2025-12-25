@@ -219,3 +219,34 @@ img {
     max-height: 100px !important;
   }
 }
+/* ===== TEXT ONLY DESTINATIONS ===== */
+
+.bk-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 16px;
+}
+
+.bk-text-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.bk-text-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #0f172a;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bk-text-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+}
