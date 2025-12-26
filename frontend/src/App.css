@@ -707,3 +707,25 @@ header a:last-child {
   border-top: 1px solid rgba(255,255,255,0.1);
   margin-top: 32px;
 }
+/* ============================= */
+/* 🏔 TREKKING & ADVENTURE COLORS */
+/* ============================= */
+
+.hs-destination-section h2 {
+  background: linear-gradient(90deg, #0f172a, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bk-card span {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #eef2ff
+  );
+}
+
+/* Adventure hover feel */
+.bk-card:hover {
+  box-shadow: 0 35px 80px rgba(16, 185, 129, 0.35);
+}
