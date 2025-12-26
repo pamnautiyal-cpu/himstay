@@ -1,6 +1,14 @@
 import React from "react";
 
 export default function Footer() {
+  const linkStyle = {
+    display: "block",
+    color: "#1f2937",
+    textDecoration: "none",
+    marginBottom: 6,
+    cursor: "pointer",
+  };
+
   return (
     <footer style={{ background: "#f8fafc", borderTop: "1px solid #e5e7eb" }}>
       
@@ -69,40 +77,40 @@ export default function Footer() {
       >
         <div>
           <h4>Support</h4>
-          <p>Manage your trips</p>
-          <p>Customer Service</p>
-          <p>Safety resource centre</p>
+          <a href="/support" style={linkStyle}>Manage your trips</a>
+          <a href="/support" style={linkStyle}>Customer Service</a>
+          <a href="/support" style={linkStyle}>Safety resource centre</a>
         </div>
 
         <div>
           <h4>Discover</h4>
-          <p>Seasonal deals</p>
-          <p>Travel articles</p>
-          <p>Trekking & Adventure</p>
-          <p>Yoga retreats</p>
+          <a href="/discover" style={linkStyle}>Seasonal deals</a>
+          <a href="/discover" style={linkStyle}>Travel articles</a>
+          <a href="/discover" style={linkStyle}>Trekking & Adventure</a>
+          <a href="/discover" style={linkStyle}>Yoga retreats</a>
         </div>
 
         <div>
           <h4>Terms & Settings</h4>
-          <p>Privacy notice</p>
-          <p>Terms of service</p>
-          <p>Accessibility</p>
-          <p>Human rights</p>
+          <a href="/terms" style={linkStyle}>Privacy notice</a>
+          <a href="/terms" style={linkStyle}>Terms of service</a>
+          <a href="/terms" style={linkStyle}>Accessibility</a>
+          <a href="/terms" style={linkStyle}>Human rights</a>
         </div>
 
         <div>
           <h4>Partners</h4>
-          <p>List your property</p>
-          <p>Partner help</p>
-          <p>Affiliate program</p>
+          <a href="/partners" style={linkStyle}>List your property</a>
+          <a href="/partners" style={linkStyle}>Partner help</a>
+          <a href="/partners" style={linkStyle}>Affiliate program</a>
         </div>
 
         <div>
           <h4>About</h4>
-          <p>About The Himalayans</p>
-          <p>How we work</p>
-          <p>Sustainability</p>
-          <p>Careers</p>
+          <a href="/about" style={linkStyle}>About The Himalayans</a>
+          <a href="/about" style={linkStyle}>How we work</a>
+          <a href="/about" style={linkStyle}>Sustainability</a>
+          <a href="/about" style={linkStyle}>Careers</a>
         </div>
       </div>
 
