@@ -113,32 +113,27 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* TREKKING & ADVENTURE */}
+      <section style={sectionStyle}>
+        <h2 style={{ fontSize: 26, fontWeight: 800 }}>
+          Trekking & Adventure in Uttarakhand
+        </h2>
+
+        <div style={gridStyle}>
+          {[
+            "🏔️ Kedarkantha Trek",
+            "🥾 Har Ki Dun Trek",
+            "🌄 Nag Tibba Trek",
+            "🌸 Valley of Flowers",
+            "❄️ Roopkund Trek",
+          ].map((t) => (
+            <div key={t} style={cardStyle}>
+              {t}
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
-{/* ===== TREKKING & ADVENTURE ===== */}
-<section className="bk-section">
-  <h2>Trekking & Adventure in Uttarakhand</h2>
-
-  <div className="bk-text-grid">
-    <a href="/treks/kedarkantha" className="bk-text-card">
-      🏔️ Kedarkantha Trek
-    </a>
-
-    <a href="/treks/har-ki-dun" className="bk-text-card">
-      🥾 Har Ki Dun Trek
-    </a>
-
-    <a href="/treks/nag-tibba" className="bk-text-card">
-      🌄 Nag Tibba Trek
-    </a>
-
-    <a href="/treks/valley-of-flowers" className="bk-text-card">
-      🌸 Valley of Flowers
-    </a>
-
-    <a href="/treks/roopkund" className="bk-text-card">
-      ❄️ Roopkund Trek
-    </a>
-  </div>
-</section>
