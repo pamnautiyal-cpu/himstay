@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import MainRoutes from "./MainRoutes";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import TrekDetails from "./pages/TrekDetails";
 
 function App() {
   return (

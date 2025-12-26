@@ -117,17 +117,28 @@ export default function Home() {
   );
 }
 {/* ===== TREKKING & ADVENTURE ===== */}
-<section className="hs-destination-section">
-  <h2>Trekking & Adventure Experiences</h2>
+<section className="bk-section">
+  <h2>Trekking & Adventure in Uttarakhand</h2>
 
-  <div className="bk-grid">
-    <div className="bk-card"><span>🌸 Valley of Flowers Trek</span></div>
-    <div className="bk-card"><span>🥾 Kedarkantha Trek</span></div>
-    <div className="bk-card"><span>🏞 Har Ki Dun Trek</span></div>
-    <div className="bk-card"><span>⛰ Nag Tibba Trek</span></div>
-    <div className="bk-card"><span>🧭 Kuari Pass Trek</span></div>
-    <div className="bk-card"><span>🌊 River Rafting – Rishikesh</span></div>
-    <div className="bk-card"><span>🔥 Camping & Bonfire</span></div>
-    <div className="bk-card"><span>🚵 Mountain Biking</span></div>
+  <div className="bk-text-grid">
+    <a href="/treks/kedarkantha" className="bk-text-card">
+      🏔️ Kedarkantha Trek
+    </a>
+
+    <a href="/treks/har-ki-dun" className="bk-text-card">
+      🥾 Har Ki Dun Trek
+    </a>
+
+    <a href="/treks/nag-tibba" className="bk-text-card">
+      🌄 Nag Tibba Trek
+    </a>
+
+    <a href="/treks/valley-of-flowers" className="bk-text-card">
+      🌸 Valley of Flowers
+    </a>
+
+    <a href="/treks/roopkund" className="bk-text-card">
+      ❄️ Roopkund Trek
+    </a>
   </div>
 </section>
