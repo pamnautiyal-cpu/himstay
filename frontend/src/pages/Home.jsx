@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function Home() {
   const sectionStyle = {
@@ -10,186 +9,92 @@ export default function Home() {
 
   const gridStyle = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-    gap: 16,
+    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+    gap: 20,
     marginTop: 20,
   };
 
   const cardStyle = {
-    background: "#ffffff",
-    padding: "18px 16px",
-    borderRadius: 16,
-    textAlign: "center",
-    fontWeight: 700,
-    fontSize: 15,
+    background: "#fff",
+    borderRadius: 18,
+    overflow: "hidden",
+    textDecoration: "none",
     color: "#0f172a",
     boxShadow: "0 14px 35px rgba(15,23,42,0.15)",
-    textDecoration: "none",
-    cursor: "pointer",
+    transition: "transform .3s",
   };
 
-  const featureCard = {
-    background: "#ffffff",
-    padding: "26px 22px",
-    borderRadius: 20,
-    boxShadow: "0 18px 45px rgba(15,23,42,0.12)",
+  const imgStyle = {
+    width: "100%",
+    height: 140,
+    objectFit: "cover",
   };
 
-  const iconStyle = {
-    fontSize: 38,
-    marginBottom: 12,
+  const titleStyle = {
+    padding: 14,
+    fontWeight: 700,
+    textAlign: "center",
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(180deg,#eaf2ff 0%,#f4f8ff 45%,#ffffff 100%)",
-      }}
-    >
-      {/* HERO */}
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: "48px 40px",
-          borderRadius: 32,
-          background: "linear-gradient(135deg,#ffffff,#eef2ff)",
-          boxShadow: "0 30px 70px rgba(15,23,42,0.15)",
-        }}
-      >
-        <h1 style={{ fontSize: 42, fontWeight: 800, marginBottom: 8 }}>
-          Find your next stay
-        </h1>
-        <p style={{ color: "#475569" }}>
-          Hotels & homestays across Uttarakhand
-        </p>
-      </div>
+    <div style={{ background: "#f4f8ff", minHeight: "100vh" }}>
 
       {/* TOP DESTINATIONS */}
       <section style={sectionStyle}>
-        <h2 style={{ fontSize: 26, fontWeight: 800 }}>
-          Top destinations in Uttarakhand
-        </h2>
+        <h2>Top destinations in Uttarakhand</h2>
         <div style={gridStyle}>
-          {["Mussoorie", "Nainital", "Dehradun", "Haldwani"].map((d) => (
-            <div key={d} style={cardStyle}>{d}</div>
+          {[
+            ["Mussoorie","https://images.unsplash.com/photo-1593693397690-362cb9666fc2"],
+            ["Nainital","https://images.unsplash.com/photo-1588416936097-41850ab3d86d"],
+            ["Dehradun","https://images.unsplash.com/photo-1605100804763-247f67b3557e"],
+            ["Haldwani","https://images.unsplash.com/photo-1623064171611-bc8a5b1b8c7c"],
+          ].map(([name,img])=>(
+            <a key={name} href={img} target="_blank" rel="noreferrer" style={cardStyle}>
+              <img src={img} alt={name} style={imgStyle}/>
+              <div style={titleStyle}>{name}</div>
+            </a>
           ))}
         </div>
       </section>
 
       {/* CHAR DHAM */}
       <section style={sectionStyle}>
-        <h2 style={{ fontSize: 26, fontWeight: 800 }}>
-          Char Dham Yatra Destinations
-        </h2>
+        <h2>Char Dham Yatra Destinations</h2>
         <div style={gridStyle}>
-          {["Kedarnath","Badrinath","Gangotri","Yamunotri","Hemkund Sahib"].map((d) => (
-            <div key={d} style={cardStyle}>{d}</div>
+          {[
+            ["Kedarnath","https://images.unsplash.com/photo-1610552050890-fe99536c2615"],
+            ["Badrinath","https://images.unsplash.com/photo-1620044307310-5b6b5e0cbe9a"],
+            ["Gangotri","https://images.unsplash.com/photo-1618826411640-d6df2cfd2a3b"],
+            ["Yamunotri","https://images.unsplash.com/photo-1630650053235-7b77c1d45d0a"],
+            ["Hemkund Sahib","https://images.unsplash.com/photo-1598091383021-15ddea10925d"],
+          ].map(([name,img])=>(
+            <a key={name} href={img} target="_blank" rel="noreferrer" style={cardStyle}>
+              <img src={img} alt={name} style={imgStyle}/>
+              <div style={titleStyle}>{name}</div>
+            </a>
           ))}
         </div>
       </section>
 
-      {/* 🏔️ TREKKING & ADVENTURE (DETAIL PAGE LINKS) */}
+      {/* TREKKING */}
       <section style={sectionStyle}>
-        <h2 style={{ fontSize: 26, fontWeight: 800 }}>
-          Trekking & Adventure in Uttarakhand
-        </h2>
-
+        <h2>Trekking & Adventure in Uttarakhand</h2>
         <div style={gridStyle}>
-          <Link to="/treks/kedarkantha" style={cardStyle}>
-            🏔️ Kedarkantha Trek
-          </Link>
-
-          <Link to="/treks/har-ki-dun" style={cardStyle}>
-            🥾 Har Ki Dun Trek
-          </Link>
-
-          <Link to="/treks/nag-tibba" style={cardStyle}>
-            🌄 Nag Tibba Trek
-          </Link>
-
-          <Link to="/treks/valley-of-flowers" style={cardStyle}>
-            🌸 Valley of Flowers
-          </Link>
-
-          <Link to="/treks/roopkund" style={cardStyle}>
-            ❄️ Roopkund Trek
-          </Link>
+          {[
+            ["Kedarkantha Trek","https://images.unsplash.com/photo-1605540436563-5bca919ae766"],
+            ["Har Ki Dun Trek","https://images.unsplash.com/photo-1626621341517-bbf3d9990f8c"],
+            ["Nag Tibba Trek","https://images.unsplash.com/photo-1622030411594-cd1b7c50fd14"],
+            ["Valley of Flowers","https://images.unsplash.com/photo-1590130904419-2f9c77b0b1ef"],
+            ["Roopkund Trek","https://images.unsplash.com/photo-1597501412226-8e5f56d6b3f1"],
+          ].map(([name,img])=>(
+            <a key={name} href={img} target="_blank" rel="noreferrer" style={cardStyle}>
+              <img src={img} alt={name} style={imgStyle}/>
+              <div style={titleStyle}>{name}</div>
+            </a>
+          ))}
         </div>
       </section>
 
-      {/* 🧘 YOGA & NATURAL THERAPY */}
-      <section style={sectionStyle}>
-        <h2 style={{ fontSize: 26, fontWeight: 800 }}>
-          Yoga & Natural Therapy Retreats
-        </h2>
-
-        <div style={gridStyle}>
-          <Link to="/yoga/himalayan-retreat" style={cardStyle}>
-            🧘 Himalayan Yoga Retreat
-          </Link>
-
-          <Link to="/yoga/naturopathy" style={cardStyle}>
-            🌿 Naturopathy Healing
-          </Link>
-
-          <Link to="/yoga/meditation" style={cardStyle}>
-            🕉️ Meditation & Pranayama
-          </Link>
-
-          <Link to="/yoga/ayurveda" style={cardStyle}>
-            💆 Ayurvedic Therapy
-          </Link>
-
-          <Link to="/yoga/panchakarma" style={cardStyle}>
-            🔥 Panchakarma Detox
-          </Link>
-        </div>
-      </section>
-
-      {/* WHY THE HIMALAYANS */}
-      <section style={{ maxWidth: 1200, margin: "80px auto", padding: "0 20px" }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800 }}>
-          Why The Himalayans?
-        </h2>
-        <p style={{ color: "#475569", marginBottom: 32 }}>
-          Trusted stays, treks & wellness experiences across Uttarakhand
-        </p>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: 20,
-          }}
-        >
-          <div style={featureCard}>
-            <div style={iconStyle}>🏨</div>
-            <h4>Book now, pay later</h4>
-            <p>Flexible stays & easy payments</p>
-          </div>
-
-          <div style={featureCard}>
-            <div style={iconStyle}>⭐</div>
-            <h4>Verified experiences</h4>
-            <p>Handpicked stays & treks</p>
-          </div>
-
-          <div style={featureCard}>
-            <div style={iconStyle}>🏔️</div>
-            <h4>Himalayan expertise</h4>
-            <p>Mountains, trekking & wellness</p>
-          </div>
-
-          <div style={featureCard}>
-            <div style={iconStyle}>📞</div>
-            <h4>24/7 local support</h4>
-            <p>Real help, anytime</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
-0}
+}
