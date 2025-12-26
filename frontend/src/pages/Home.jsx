@@ -83,12 +83,9 @@ export default function Home() {
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Top destinations in Uttarakhand
         </h2>
-
         <div style={gridStyle}>
           {["Mussoorie", "Nainital", "Dehradun", "Haldwani"].map((d) => (
-            <div key={d} style={cardStyle}>
-              {d}
-            </div>
+            <div key={d} style={cardStyle}>{d}</div>
           ))}
         </div>
       </section>
@@ -98,7 +95,6 @@ export default function Home() {
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Char Dham Yatra Destinations
         </h2>
-
         <div style={gridStyle}>
           {[
             "Kedarnath",
@@ -107,9 +103,7 @@ export default function Home() {
             "Yamunotri",
             "Hemkund Sahib",
           ].map((d) => (
-            <div key={d} style={cardStyle}>
-              {d}
-            </div>
+            <div key={d} style={cardStyle}>{d}</div>
           ))}
         </div>
       </section>
@@ -119,7 +113,6 @@ export default function Home() {
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Trekking & Adventure in Uttarakhand
         </h2>
-
         <div style={gridStyle}>
           {[
             "🏔️ Kedarkantha Trek",
@@ -128,9 +121,25 @@ export default function Home() {
             "🌸 Valley of Flowers",
             "❄️ Roopkund Trek",
           ].map((t) => (
-            <div key={t} style={cardStyle}>
-              {t}
-            </div>
+            <div key={t} style={cardStyle}>{t}</div>
+          ))}
+        </div>
+      </section>
+
+      {/* 🧘 YOGA & NATURAL THERAPY */}
+      <section style={sectionStyle}>
+        <h2 style={{ fontSize: 26, fontWeight: 800 }}>
+          Yoga & Natural Therapy Retreats
+        </h2>
+        <div style={gridStyle}>
+          {[
+            "🧘 Himalayan Yoga Retreat",
+            "🌿 Naturopathy Healing",
+            "🕉️ Meditation & Pranayama",
+            "💆 Ayurvedic Therapy",
+            "🔥 Panchakarma Detox",
+          ].map((y) => (
+            <div key={y} style={cardStyle}>{y}</div>
           ))}
         </div>
       </section>
