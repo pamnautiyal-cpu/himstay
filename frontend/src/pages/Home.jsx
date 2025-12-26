@@ -7,41 +7,46 @@ export default function Home() {
     padding: "0 20px",
   };
 
-  const gridStyle = {
+  const gridDesktop = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
     gap: 22,
     marginTop: 24,
   };
 
-  const cardStyle = {
+  const sliderMobile = {
+    display: "flex",
+    gap: 18,
+    overflowX: "auto",
+    paddingBottom: 10,
+    marginTop: 24,
+    scrollSnapType: "x mandatory",
+  };
+
+  const card = {
+    minWidth: 220,
     background: "#fff",
     borderRadius: 20,
     overflow: "hidden",
     textDecoration: "none",
     color: "#0f172a",
     boxShadow: "0 14px 35px rgba(15,23,42,0.15)",
-    transition: "all .35s ease",
+    scrollSnapAlign: "start",
+    transition: "transform .3s ease",
   };
 
-  const imgWrap = {
-    overflow: "hidden",
-    height: 150,
-  };
+  const imgWrap = { height: 150, overflow: "hidden" };
+  const img = { width: "100%", height: "100%", objectFit: "cover" };
+  const title = { padding: 14, fontWeight: 700, textAlign: "center" };
 
-  const imgStyle = {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    transition: "transform .5s ease",
-  };
-
-  const titleStyle = {
-    padding: "14px 12px",
-    fontWeight: 700,
-    textAlign: "center",
-    background: "#fff",
-  };
+  const Card = ({ name, image }) => (
+    <a href={image} target="_blank" rel="noreferrer" style={card}>
+      <div style={imgWrap}>
+        <img src={image} alt={name} style={img} />
+      </div>
+      <div style={title}>{name}</div>
+    </a>
+  );
 
   const data = {
     destinations: [
@@ -66,49 +71,30 @@ export default function Home() {
     ],
   };
 
-  const Card = ({ name, img }) => (
-    <a
-      href={img}
-      target="_blank"
-      rel="noreferrer"
-      style={cardStyle}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-8px)";
-        e.currentTarget.querySelector("img").style.transform = "scale(1.12)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.querySelector("img").style.transform = "scale(1)";
-      }}
-    >
-      <div style={imgWrap}>
-        <img src={img} alt={name} style={imgStyle} />
-      </div>
-      <div style={titleStyle}>{name}</div>
-    </a>
-  );
+  const isMobile = window.innerWidth < 768;
+  const layout = isMobile ? sliderMobile : gridDesktop;
 
   return (
     <div style={{ background: "#f4f8ff", minHeight: "100vh" }}>
 
       <section style={sectionStyle}>
         <h2>Top destinations in Uttarakhand</h2>
-        <div style={gridStyle}>
-          {data.destinations.map(([n,i]) => <Card key={n} name={n} img={i} />)}
+        <div style={layout}>
+          {data.destinations.map(([n,i]) => <Card key={n} name={n} image={i} />)}
         </div>
       </section>
 
       <section style={sectionStyle}>
         <h2>Char Dham Yatra Destinations</h2>
-        <div style={gridStyle}>
-          {data.dham.map(([n,i]) => <Card key={n} name={n} img={i} />)}
+        <div style={layout}>
+          {data.dham.map(([n,i]) => <Card key={n} name={n} image={i} />)}
         </div>
       </section>
 
       <section style={sectionStyle}>
         <h2>Trekking & Adventure in Uttarakhand</h2>
-        <div style={gridStyle}>
-          {data.treks.map(([n,i]) => <Card key={n} name={n} img={i} />)}
+        <div style={layout}>
+          {data.treks.map(([n,i]) => <Card key={n} name={n} image={i} />)}
         </div>
       </section>
 
