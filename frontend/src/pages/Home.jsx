@@ -121,13 +121,13 @@ export default function Home() {
   <h2>Trekking & Adventure Experiences</h2>
 
   <div className="bk-grid">
-    <div className="bk-card"><span>Valley of Flowers Trek</span></div>
-    <div className="bk-card"><span>Kedarkantha Trek</span></div>
-    <div className="bk-card"><span>Har Ki Dun Trek</span></div>
-    <div className="bk-card"><span>Nag Tibba Trek</span></div>
-    <div className="bk-card"><span>Kuari Pass Trek</span></div>
-    <div className="bk-card"><span>River Rafting – Rishikesh</span></div>
-    <div className="bk-card"><span>Camping & Bonfire</span></div>
-    <div className="bk-card"><span>Mountain Biking</span></div>
+    <div className="bk-card"><span>🌸 Valley of Flowers Trek</span></div>
+    <div className="bk-card"><span>🥾 Kedarkantha Trek</span></div>
+    <div className="bk-card"><span>🏞 Har Ki Dun Trek</span></div>
+    <div className="bk-card"><span>⛰ Nag Tibba Trek</span></div>
+    <div className="bk-card"><span>🧭 Kuari Pass Trek</span></div>
+    <div className="bk-card"><span>🌊 River Rafting – Rishikesh</span></div>
+    <div className="bk-card"><span>🔥 Camping & Bonfire</span></div>
+    <div className="bk-card"><span>🚵 Mountain Biking</span></div>
   </div>
 </section>

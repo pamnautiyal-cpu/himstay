@@ -729,3 +729,11 @@ header a:last-child {
 .bk-card:hover {
   box-shadow: 0 35px 80px rgba(16, 185, 129, 0.35);
 }
+/* Trekking icon spacing */
+.bk-card span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 15px;
+}
