@@ -1,138 +1,116 @@
-import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
-function Navbar() {
-  const location = useLocation();
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const isActive = (path) => location.pathname.startsWith(path);
-
+export default function Navbar() {
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        background: "#ffffff",
-        borderBottom: "1px solid #e5e7eb",
-        boxShadow: scrolled
-          ? "0 6px 20px rgba(0,0,0,0.08)"
-          : "none",
-        transition: "all 0.2s ease",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          padding: "12px 16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* LOGO */}
-        <Link
-          to="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            textDecoration: "none",
-            color: "#0f172a",
-          }}
-        >
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 10,
-              background: "#2563eb",
-              color: "#fff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 20,
-              fontWeight: 700,
-            }}
-          >
-            ⛰️
-          </div>
+    <header style={styles.header}>
+      <div style={styles.container}>
 
+        {/* LOGO */}
+        <Link to="/" style={styles.logoWrap}>
+          <div style={styles.logoIcon}>🏔️</div>
           <div>
-            <div style={{ fontWeight: 800, fontSize: 16 }}>
-              The Himalayans
-            </div>
-            <div style={{ fontSize: 11, color: "#64748b" }}>
-              Hills • Stays • Memories
-            </div>
+            <div style={styles.logoText}>The Himalayans</div>
+            <div style={styles.tagline}>Hills • Stays • Memories</div>
           </div>
         </Link>
 
-        {/* LINKS */}
-        <nav
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 20,
-          }}
-        >
-          {[
-            { to: "/hotels", label: "Hotels" },
-            { to: "/mytrips", label: "My Trips" },
-            { to: "/contact", label: "Contact" },
-            { to: "/login", label: "Login" },
-          ].map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: isActive(l.to) ? "#2563eb" : "#334155",
-                textDecoration: "none",
-                paddingBottom: 4,
-                borderBottom: isActive(l.to)
-                  ? "2px solid #2563eb"
-                  : "2px solid transparent",
-              }}
-            >
-              {l.label}
-            </Link>
-          ))}
-
-          <Link
-            to="/register"
-            style={{
-              marginLeft: 8,
-              padding: "8px 16px",
-              borderRadius: 8,
-              background: "#2563eb",
-              color: "#fff",
-              fontSize: 14,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            Sign up
-          </Link>
+        {/* NAV LINKS */}
+        <nav style={styles.nav}>
+          <Link to="/hotels" style={styles.navLink}>Hotels</Link>
+          <Link to="/trips" style={styles.navLink}>My Trips</Link>
+          <Link to="/contact" style={styles.navLink}>Contact</Link>
+          <Link to="/login" style={styles.loginLink}>Login</Link>
+          <Link to="/signup" style={styles.signupBtn}>Sign up</Link>
         </nav>
+
       </div>
     </header>
   );
 }
 
-export default Navbar;
-<div className="nav-links">
-  <Link to="/hotels" className="nav-pill">Hotels</Link>
-  <Link to="/mytrips" className="nav-pill">My Trips</Link>
-  <Link to="/contact" className="nav-pill">Contact</Link>
-  <Link to="/login" className="nav-pill ghost">Login</Link>
-  <Link to="/register" className="nav-pill primary">Sign up</Link>
-</div>
+const styles = {
+  header: {
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+    background: "#ffffff",
+    borderBottom: "1px solid #e5e7eb",
+    boxShadow: "0 8px 30px rgba(15,23,42,0.06)",
+  },
+
+  container: {
+    maxWidth: 1200,
+    margin: "0 auto",
+    padding: "14px 20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  logoWrap: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    textDecoration: "none",
+    color: "#0f172a",
+  },
+
+  logoIcon: {
+    width: 46,
+    height: 46,
+    borderRadius: 12,
+    background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 22,
+    color: "#fff",
+    boxShadow: "0 10px 25px rgba(37,99,235,0.45)",
+  },
+
+  logoText: {
+    fontSize: 18,
+    fontWeight: 800,
+    letterSpacing: 0.3,
+  },
+
+  tagline: {
+    fontSize: 12,
+    color: "#64748b",
+    marginTop: -2,
+  },
+
+  nav: {
+    display: "flex",
+    alignItems: "center",
+    gap: 22,
+  },
+
+  navLink: {
+    textDecoration: "none",
+    fontWeight: 600,
+    fontSize: 14,
+    color: "#0f172a",
+    opacity: 0.85,
+  },
+
+  loginLink: {
+    textDecoration: "none",
+    fontWeight: 600,
+    fontSize: 14,
+    color: "#2563eb",
+  },
+
+  signupBtn: {
+    marginLeft: 6,
+    textDecoration: "none",
+    padding: "10px 18px",
+    borderRadius: 12,
+    fontWeight: 700,
+    fontSize: 14,
+    color: "#fff",
+    background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+    boxShadow: "0 12px 30px rgba(37,99,235,0.45)",
+  },
+};
