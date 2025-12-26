@@ -7,35 +7,36 @@ export default function Home() {
     padding: "0 20px",
   };
 
-  const gridDesktop = {
+  const isMobile = window.innerWidth < 768;
+
+  const grid = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
     gap: 22,
     marginTop: 24,
   };
 
-  const sliderMobile = {
+  const slider = {
     display: "flex",
     gap: 18,
     overflowX: "auto",
-    paddingBottom: 10,
     marginTop: 24,
+    paddingBottom: 10,
     scrollSnapType: "x mandatory",
   };
 
   const card = {
     minWidth: 220,
     background: "#fff",
-    borderRadius: 20,
+    borderRadius: 18,
     overflow: "hidden",
+    boxShadow: "0 14px 35px rgba(15,23,42,0.15)",
     textDecoration: "none",
     color: "#0f172a",
-    boxShadow: "0 14px 35px rgba(15,23,42,0.15)",
     scrollSnapAlign: "start",
-    transition: "transform .3s ease",
   };
 
-  const imgWrap = { height: 150, overflow: "hidden" };
+  const imgWrap = { height: 150 };
   const img = { width: "100%", height: "100%", objectFit: "cover" };
   const title = { padding: 14, fontWeight: 700, textAlign: "center" };
 
@@ -48,53 +49,55 @@ export default function Home() {
     </a>
   );
 
-  const data = {
-    destinations: [
-      ["Mussoorie","https://images.unsplash.com/photo-1593693397690-362cb9666fc2"],
-      ["Nainital","https://images.unsplash.com/photo-1588416936097-41850ab3d86d"],
-      ["Dehradun","https://images.unsplash.com/photo-1605100804763-247f67b3557e"],
-      ["Haldwani","https://images.unsplash.com/photo-1623064171611-bc8a5b1b8c7c"],
-    ],
-    dham: [
-      ["Kedarnath","https://images.unsplash.com/photo-1610552050890-fe99536c2615"],
-      ["Badrinath","https://images.unsplash.com/photo-1620044307310-5b6b5e0cbe9a"],
-      ["Gangotri","https://images.unsplash.com/photo-1618826411640-d6df2cfd2a3b"],
-      ["Yamunotri","https://images.unsplash.com/photo-1630650053235-7b77c1d45d0a"],
-      ["Hemkund Sahib","https://images.unsplash.com/photo-1598091383021-15ddea10925d"],
-    ],
-    treks: [
-      ["Kedarkantha Trek","https://images.unsplash.com/photo-1605540436563-5bca919ae766"],
-      ["Har Ki Dun Trek","https://images.unsplash.com/photo-1626621341517-bbf3d9990f8c"],
-      ["Nag Tibba Trek","https://images.unsplash.com/photo-1622030411594-cd1b7c50fd14"],
-      ["Valley of Flowers","https://images.unsplash.com/photo-1590130904419-2f9c77b0b1ef"],
-      ["Roopkund Trek","https://images.unsplash.com/photo-1597501412226-8e5f56d6b3f1"],
-    ],
-  };
-
-  const isMobile = window.innerWidth < 768;
-  const layout = isMobile ? sliderMobile : gridDesktop;
+  const layout = isMobile ? slider : grid;
 
   return (
     <div style={{ background: "#f4f8ff", minHeight: "100vh" }}>
 
+      {/* TOP DESTINATIONS */}
       <section style={sectionStyle}>
         <h2>Top destinations in Uttarakhand</h2>
         <div style={layout}>
-          {data.destinations.map(([n,i]) => <Card key={n} name={n} image={i} />)}
+          <Card name="Mussoorie" image="https://images.unsplash.com/photo-1593693397690-362cb9666fc2" />
+          <Card name="Nainital" image="https://images.unsplash.com/photo-1588416936097-41850ab3d86d" />
+          <Card name="Dehradun" image="https://images.unsplash.com/photo-1605100804763-247f67b3557e" />
+          <Card name="Haldwani" image="https://images.unsplash.com/photo-1623064171611-bc8a5b1b8c7c" />
         </div>
       </section>
 
+      {/* CHAR DHAM */}
       <section style={sectionStyle}>
         <h2>Char Dham Yatra Destinations</h2>
         <div style={layout}>
-          {data.dham.map(([n,i]) => <Card key={n} name={n} image={i} />)}
+          <Card name="Kedarnath" image="https://images.unsplash.com/photo-1610552050890-fe99536c2615" />
+          <Card name="Badrinath" image="https://images.unsplash.com/photo-1620044307310-5b6b5e0cbe9a" />
+          <Card name="Gangotri" image="https://images.unsplash.com/photo-1618826411640-d6df2cfd2a3b" />
+          <Card name="Yamunotri" image="https://images.unsplash.com/photo-1630650053235-7b77c1d45d0a" />
+          <Card name="Hemkund Sahib" image="https://images.unsplash.com/photo-1598091383021-15ddea10925d" />
         </div>
       </section>
 
+      {/* TREKKING */}
       <section style={sectionStyle}>
         <h2>Trekking & Adventure in Uttarakhand</h2>
         <div style={layout}>
-          {data.treks.map(([n,i]) => <Card key={n} name={n} image={i} />)}
+          <Card name="Kedarkantha Trek" image="https://images.unsplash.com/photo-1605540436563-5bca919ae766" />
+          <Card name="Har Ki Dun Trek" image="https://images.unsplash.com/photo-1626621341517-bbf3d9990f8c" />
+          <Card name="Nag Tibba Trek" image="https://images.unsplash.com/photo-1622030411594-cd1b7c50fd14" />
+          <Card name="Valley of Flowers" image="https://images.unsplash.com/photo-1590130904419-2f9c77b0b1ef" />
+          <Card name="Roopkund Trek" image="https://images.unsplash.com/photo-1597501412226-8e5f56d6b3f1" />
+        </div>
+      </section>
+
+      {/* 🧘 YOGA & NATURAL THERAPY (FIXED & BACK) */}
+      <section style={sectionStyle}>
+        <h2>Yoga & Natural Therapy Retreats</h2>
+        <div style={layout}>
+          <Card name="Himalayan Yoga Retreat" image="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b" />
+          <Card name="Naturopathy Healing" image="https://images.unsplash.com/photo-1556228724-4a1f9b3b2b1c" />
+          <Card name="Meditation & Pranayama" image="https://images.unsplash.com/photo-1506126613408-eca07ce68773" />
+          <Card name="Ayurvedic Therapy" image="https://images.unsplash.com/photo-1600334129128-685c5582fd35" />
+          <Card name="Panchakarma Detox" image="https://images.unsplash.com/photo-1625631980641-9a35a6adf46a" />
         </div>
       </section>
 
