@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const sectionStyle = {
@@ -23,6 +24,8 @@ export default function Home() {
     fontSize: 15,
     color: "#0f172a",
     boxShadow: "0 14px 35px rgba(15,23,42,0.15)",
+    textDecoration: "none",
+    cursor: "pointer",
   };
 
   return (
@@ -50,32 +53,6 @@ export default function Home() {
         <p style={{ color: "#475569", marginBottom: 24 }}>
           Hotels & homestays across Uttarakhand
         </p>
-
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <input
-            placeholder="Where are you going?"
-            style={{
-              padding: "12px 14px",
-              borderRadius: 10,
-              border: "1px solid #c7d2fe",
-            }}
-          />
-          <input type="date" style={{ padding: 12, borderRadius: 10 }} />
-          <input type="date" style={{ padding: 12, borderRadius: 10 }} />
-          <button
-            style={{
-              padding: "12px 20px",
-              borderRadius: 10,
-              border: "none",
-              background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
-              color: "#fff",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            Search
-          </button>
-        </div>
       </div>
 
       {/* TOP DESTINATIONS */}
@@ -108,21 +85,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TREKKING & ADVENTURE */}
+      {/* 🏔️ TREKKING & ADVENTURE */}
       <section style={sectionStyle}>
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Trekking & Adventure in Uttarakhand
         </h2>
+
         <div style={gridStyle}>
-          {[
-            "🏔️ Kedarkantha Trek",
-            "🥾 Har Ki Dun Trek",
-            "🌄 Nag Tibba Trek",
-            "🌸 Valley of Flowers",
-            "❄️ Roopkund Trek",
-          ].map((t) => (
-            <div key={t} style={cardStyle}>{t}</div>
-          ))}
+          <Link to="/treks/kedarkantha" style={cardStyle}>
+            🏔️ Kedarkantha Trek
+          </Link>
+
+          <Link to="/treks/har-ki-dun" style={cardStyle}>
+            🥾 Har Ki Dun Trek
+          </Link>
+
+          <Link to="/treks/nag-tibba" style={cardStyle}>
+            🌄 Nag Tibba Trek
+          </Link>
+
+          <Link to="/treks/valley-of-flowers" style={cardStyle}>
+            🌸 Valley of Flowers
+          </Link>
+
+          <Link to="/treks/roopkund" style={cardStyle}>
+            ❄️ Roopkund Trek
+          </Link>
         </div>
       </section>
 
@@ -131,16 +119,27 @@ export default function Home() {
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Yoga & Natural Therapy Retreats
         </h2>
+
         <div style={gridStyle}>
-          {[
-            "🧘 Himalayan Yoga Retreat",
-            "🌿 Naturopathy Healing",
-            "🕉️ Meditation & Pranayama",
-            "💆 Ayurvedic Therapy",
-            "🔥 Panchakarma Detox",
-          ].map((y) => (
-            <div key={y} style={cardStyle}>{y}</div>
-          ))}
+          <Link to="/yoga/retreat" style={cardStyle}>
+            🧘 Himalayan Yoga Retreat
+          </Link>
+
+          <Link to="/yoga/naturopathy" style={cardStyle}>
+            🌿 Naturopathy Healing
+          </Link>
+
+          <Link to="/yoga/meditation" style={cardStyle}>
+            🕉️ Meditation & Pranayama
+          </Link>
+
+          <Link to="/yoga/ayurveda" style={cardStyle}>
+            💆 Ayurvedic Therapy
+          </Link>
+
+          <Link to="/yoga/panchakarma" style={cardStyle}>
+            🔥 Panchakarma Detox
+          </Link>
         </div>
       </section>
     </div>

@@ -1,15 +1,28 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
-import MainRoutes from "./MainRoutes";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+
+import Home from "./pages/Home";
 import TrekDetails from "./pages/TrekDetails";
+import YogaDetails from "./pages/YogaDetails";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <MainRoutes />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+
+        {/* Trek Detail */}
+        <Route path="/treks/:slug" element={<TrekDetails />} />
+
+        {/* Yoga Detail */}
+        <Route path="/yoga/:slug" element={<YogaDetails />} />
+      </Routes>
+
       <Footer />
     </BrowserRouter>
   );
