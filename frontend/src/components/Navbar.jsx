@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header style={styles.navbar}>
+    <header
+      style={{
+        ...styles.navbar,
+        background: scrolled
+          ? "linear-gradient(90deg,#0f172a,#020617)"
+          : "linear-gradient(90deg,#2563eb,#1d4ed8,#0f172a)",
+        padding: scrolled ? "8px 0" : "0",
+      }}
+    >
       <div style={styles.inner}>
 
         {/* LOGO */}
         <Link to="/" style={styles.logoBox}>
-          <div style={styles.logoIcon}>🏔️</div>
+          <div
+            style={{
+              ...styles.logoIcon,
+              transform: scrolled ? "scale(0.9)" : "scale(1)",
+            }}
+          >
+            🏔️
+          </div>
           <div>
             <div style={styles.logoText}>The Himalayans</div>
-            <div style={styles.logoSub}>Hills • Stays • Memories</div>
+            {!scrolled && (
+              <div style={styles.logoSub}>
+                Hills • Stays • Memories
+              </div>
+            )}
           </div>
         </Link>
 
@@ -33,11 +62,11 @@ export default function Navbar() {
 
 const styles = {
   navbar: {
-    background: "linear-gradient(90deg,#2563eb,#1d4ed8,#0f172a)",
-    boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
     position: "sticky",
     top: 0,
     zIndex: 999,
+    transition: "all 0.3s ease",
+    boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
   },
 
   inner: {
@@ -58,8 +87,8 @@ const styles = {
   },
 
   logoIcon: {
-    width: 46,
-    height: 46,
+    width: 44,
+    height: 44,
     borderRadius: 14,
     background: "linear-gradient(135deg,#22c55e,#16a34a)",
     display: "flex",
@@ -67,6 +96,7 @@ const styles = {
     justifyContent: "center",
     fontSize: 22,
     boxShadow: "0 6px 20px rgba(34,197,94,0.5)",
+    transition: "transform 0.3s ease",
   },
 
   logoText: {
