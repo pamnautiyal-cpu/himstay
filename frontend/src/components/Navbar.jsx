@@ -15,7 +15,16 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* NAV LINKS */}
+        {/* 🔍 SEARCH BAR (BOOKING STYLE) */}
+        <div style={styles.searchBox}>
+          <input
+            placeholder="Search stays, treks, yoga…"
+            style={styles.searchInput}
+          />
+          <button style={styles.searchBtn}>Search</button>
+        </div>
+
+        {/* NAV */}
         <nav style={styles.nav}>
           <Link to="/hotels" style={styles.navLink}>Hotels</Link>
           <Link to="/trips" style={styles.navLink}>My Trips</Link>
@@ -45,15 +54,17 @@ const styles = {
     padding: "14px 20px",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    gap: 24,
   },
 
+  /* LOGO */
   logoWrap: {
     display: "flex",
     alignItems: "center",
     gap: 12,
     textDecoration: "none",
     color: "#0f172a",
+    minWidth: 220,
   },
 
   logoIcon: {
@@ -72,7 +83,6 @@ const styles = {
   logoText: {
     fontSize: 18,
     fontWeight: 800,
-    letterSpacing: 0.3,
   },
 
   tagline: {
@@ -81,6 +91,38 @@ const styles = {
     marginTop: -2,
   },
 
+  /* SEARCH */
+  searchBox: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    background: "#f8fafc",
+    borderRadius: 14,
+    padding: 4,
+    border: "1px solid #e5e7eb",
+    maxWidth: 420,
+  },
+
+  searchInput: {
+    flex: 1,
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    padding: "10px 12px",
+    fontSize: 14,
+  },
+
+  searchBtn: {
+    border: "none",
+    borderRadius: 10,
+    padding: "10px 16px",
+    fontWeight: 700,
+    background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+    color: "#fff",
+    cursor: "pointer",
+  },
+
+  /* NAV */
   nav: {
     display: "flex",
     alignItems: "center",
@@ -103,7 +145,7 @@ const styles = {
   },
 
   signupBtn: {
-    marginLeft: 6,
+    marginLeft: 4,
     textDecoration: "none",
     padding: "10px 18px",
     borderRadius: 12,
