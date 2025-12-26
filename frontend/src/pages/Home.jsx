@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function Home() {
   const sectionStyle = {
@@ -50,7 +49,7 @@ export default function Home() {
         <h1 style={{ fontSize: 42, fontWeight: 800, marginBottom: 8 }}>
           Find your next stay
         </h1>
-        <p style={{ color: "#475569", marginBottom: 24 }}>
+        <p style={{ color: "#475569" }}>
           Hotels & homestays across Uttarakhand
         </p>
       </div>
@@ -92,25 +91,25 @@ export default function Home() {
         </h2>
 
         <div style={gridStyle}>
-          <Link to="/treks/kedarkantha" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/kedarkantha-trek" target="_blank" rel="noreferrer" style={cardStyle}>
             🏔️ Kedarkantha Trek
-          </Link>
+          </a>
 
-          <Link to="/treks/har-ki-dun" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/har-ki-dun-trek" target="_blank" rel="noreferrer" style={cardStyle}>
             🥾 Har Ki Dun Trek
-          </Link>
+          </a>
 
-          <Link to="/treks/nag-tibba" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/nag-tibba-trek" target="_blank" rel="noreferrer" style={cardStyle}>
             🌄 Nag Tibba Trek
-          </Link>
+          </a>
 
-          <Link to="/treks/valley-of-flowers" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/valley-of-flowers-uttarakhand" target="_blank" rel="noreferrer" style={cardStyle}>
             🌸 Valley of Flowers
-          </Link>
+          </a>
 
-          <Link to="/treks/roopkund" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/roopkund-trek" target="_blank" rel="noreferrer" style={cardStyle}>
             ❄️ Roopkund Trek
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -121,25 +120,25 @@ export default function Home() {
         </h2>
 
         <div style={gridStyle}>
-          <Link to="/yoga/retreat" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/himalayan-yoga-retreat" target="_blank" rel="noreferrer" style={cardStyle}>
             🧘 Himalayan Yoga Retreat
-          </Link>
+          </a>
 
-          <Link to="/yoga/naturopathy" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/naturopathy-healing" target="_blank" rel="noreferrer" style={cardStyle}>
             🌿 Naturopathy Healing
-          </Link>
+          </a>
 
-          <Link to="/yoga/meditation" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/meditation-pranayama" target="_blank" rel="noreferrer" style={cardStyle}>
             🕉️ Meditation & Pranayama
-          </Link>
+          </a>
 
-          <Link to="/yoga/ayurveda" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/ayurvedic-therapy" target="_blank" rel="noreferrer" style={cardStyle}>
             💆 Ayurvedic Therapy
-          </Link>
+          </a>
 
-          <Link to="/yoga/panchakarma" style={cardStyle}>
+          <a href="https://unsplash.com/s/photos/panchakarma" target="_blank" rel="noreferrer" style={cardStyle}>
             🔥 Panchakarma Detox
-          </Link>
+          </a>
         </div>
       </section>
     </div>
