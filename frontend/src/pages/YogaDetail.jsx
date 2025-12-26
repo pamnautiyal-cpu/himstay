@@ -1,40 +1,53 @@
+import React from "react";
 import { useParams } from "react-router-dom";
 
-export default function YogaDetail() {
+const yogaData = {
+  retreat: {
+    title: "Himalayan Yoga Retreat",
+    desc: "Relax, rejuvenate and reconnect with nature in the Himalayas.",
+  },
+  meditation: {
+    title: "Meditation & Pranayama",
+    desc: "Guided meditation sessions with experienced gurus.",
+  },
+  ayurveda: {
+    title: "Ayurvedic Therapy",
+    desc: "Traditional Ayurvedic healing & detox programs.",
+  },
+};
+
+export default function YogaDetails() {
   const { slug } = useParams();
-
-  const yogaData = {
-    retreat: {
-      title: "Himalayan Yoga Retreat",
-      desc: "Peaceful yoga retreat in the Himalayas with meditation & pranayama.",
-      duration: "7 Days",
-    },
-    naturopathy: {
-      title: "Natural Therapy Program",
-      desc: "Healing through nature, diet & detox therapies.",
-      duration: "5 Days",
-    },
-    ayurveda: {
-      title: "Ayurvedic Wellness Retreat",
-      desc: "Traditional Ayurveda therapies & Panchakarma.",
-      duration: "10 Days",
-    },
-  };
-
   const yoga = yogaData[slug];
 
   if (!yoga) return <h2 style={{ padding: 40 }}>Program not found</h2>;
 
   return (
-    <div style={{ padding: 40, maxWidth: 900, margin: "auto" }}>
+    <div style={{ maxWidth: 900, margin: "60px auto", padding: 20 }}>
       <h1>{yoga.title}</h1>
-      <p>{yoga.desc}</p>
+      <p style={{ marginTop: 12 }}>{yoga.desc}</p>
 
+      <h3 style={{ marginTop: 30 }}>What’s included</h3>
       <ul>
-        <li><b>Duration:</b> {yoga.duration}</li>
-        <li><b>Location:</b> Uttarakhand</li>
-        <li><b>Includes:</b> Stay + Meals + Sessions</li>
+        <li>Daily yoga sessions</li>
+        <li>Healthy meals</li>
+        <li>Peaceful Himalayan stay</li>
       </ul>
+
+      <button
+        style={{
+          marginTop: 30,
+          padding: "12px 20px",
+          borderRadius: 8,
+          border: "none",
+          background: "#16a34a",
+          color: "#fff",
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
+        Enquire Now
+      </button>
     </div>
   );
 }

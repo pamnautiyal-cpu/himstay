@@ -1,44 +1,53 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-function TrekDetails() {
-  const { trekId } = useParams();
+const trekData = {
+  kedarkantha: {
+    title: "Kedarkantha Trek",
+    desc: "One of the most popular winter treks in Uttarakhand with stunning Himalayan views.",
+  },
+  harkidun: {
+    title: "Har Ki Dun Trek",
+    desc: "A beautiful valley trek known as the Valley of Gods.",
+  },
+  nagtibba: {
+    title: "Nag Tibba Trek",
+    desc: "Perfect weekend trek near Dehradun with snow views.",
+  },
+};
+
+export default function TrekDetails() {
+  const { slug } = useParams();
+  const trek = trekData[slug];
+
+  if (!trek) return <h2 style={{ padding: 40 }}>Trek not found</h2>;
 
   return (
-    <div style={{ padding: "80px 20px", maxWidth: 900, margin: "0 auto" }}>
-      <h1 style={{ fontSize: 32, marginBottom: 10 }}>
-        🏔️ {trekId.replace("-", " ").toUpperCase()}
-      </h1>
+    <div style={{ maxWidth: 900, margin: "60px auto", padding: 20 }}>
+      <h1>{trek.title}</h1>
+      <p style={{ marginTop: 12 }}>{trek.desc}</p>
 
-      <p style={{ fontSize: 18, color: "#475569", marginBottom: 24 }}>
-        Experience the best trekking adventure in Uttarakhand with scenic views,
-        local guides and safe travel.
-      </p>
-
-      <ul style={{ lineHeight: 1.8, fontSize: 16 }}>
-        <li>⛰️ Altitude: 10,000 – 14,000 ft</li>
-        <li>📅 Best season: Oct – Apr</li>
-        <li>🥾 Difficulty: Easy to Moderate</li>
-        <li>⏳ Duration: 4–6 days</li>
+      <h3 style={{ marginTop: 30 }}>Highlights</h3>
+      <ul>
+        <li>Best season: Oct – April</li>
+        <li>Altitude: 12,500 ft</li>
+        <li>Difficulty: Easy – Moderate</li>
       </ul>
 
       <button
         style={{
           marginTop: 30,
-          padding: "14px 28px",
-          borderRadius: 999,
+          padding: "12px 20px",
+          borderRadius: 8,
+          border: "none",
           background: "#2563eb",
           color: "#fff",
-          border: "none",
-          fontSize: 16,
           fontWeight: 700,
           cursor: "pointer",
         }}
       >
-        Enquire Trek
+        Book Trek
       </button>
     </div>
   );
 }
-
-export default TrekDetails;
