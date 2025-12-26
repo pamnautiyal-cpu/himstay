@@ -1,13 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Footer() {
+  const [open, setOpen] = useState(null);
+
+  const toggle = (key) => {
+    setOpen(open === key ? null : key);
+  };
+
+  const isMobile = window.innerWidth < 768;
+
   const linkStyle = {
     display: "block",
     color: "#1f2937",
     textDecoration: "none",
-    marginBottom: 6,
-    cursor: "pointer",
+    margin: "6px 0",
+    fontSize: 14,
   };
+
+  const Section = ({ title, id, children }) => (
+    <div>
+      <h4
+        onClick={() => isMobile && toggle(id)}
+        style={{
+          cursor: isMobile ? "pointer" : "default",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {title}
+        {isMobile && <span>{open === id ? "−" : "+"}</span>}
+      </h4>
+
+      {(!isMobile || open === id) && <div>{children}</div>}
+    </div>
+  );
 
   return (
     <footer style={{ background: "#f8fafc", borderTop: "1px solid #e5e7eb" }}>
@@ -44,7 +71,6 @@ export default function Footer() {
               width: 260,
               borderRadius: 6,
               border: "none",
-              outline: "none",
             }}
           />
           <button
@@ -63,69 +89,47 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* LINKS GRID */}
+      {/* FOOTER LINKS */}
       <div
         style={{
           maxWidth: 1200,
           margin: "0 auto",
           padding: "40px 20px",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
           gap: 24,
-          fontSize: 14,
         }}
       >
-        <div>
-          <h4>Support</h4>
+        <Section title="Support" id="support">
           <a href="/support" style={linkStyle}>Manage your trips</a>
           <a href="/support" style={linkStyle}>Customer Service</a>
           <a href="/support" style={linkStyle}>Safety resource centre</a>
-        </div>
+        </Section>
 
-        <div>
-          <h4>Discover</h4>
+        <Section title="Discover" id="discover">
           <a href="/discover" style={linkStyle}>Seasonal deals</a>
           <a href="/discover" style={linkStyle}>Travel articles</a>
-          <a href="/discover" style={linkStyle}>Trekking & Adventure</a>
-          <a href="/discover" style={linkStyle}>Yoga retreats</a>
-        </div>
+          <a href="/treks" style={linkStyle}>Trekking & Adventure</a>
+          <a href="/yoga" style={linkStyle}>Yoga retreats</a>
+        </Section>
 
-        <div>
-          <h4>Terms & Settings</h4>
+        <Section title="Terms & Settings" id="terms">
           <a href="/terms" style={linkStyle}>Privacy notice</a>
           <a href="/terms" style={linkStyle}>Terms of service</a>
           <a href="/terms" style={linkStyle}>Accessibility</a>
           <a href="/terms" style={linkStyle}>Human rights</a>
-        </div>
+        </Section>
 
-        <div>
-          <h4>Partners</h4>
-          <a href="/partners" style={linkStyle}>List your property</a>
-          <a href="/partners" style={linkStyle}>Partner help</a>
-          <a href="/partners" style={linkStyle}>Affiliate program</a>
-        </div>
-
-        <div>
-          <h4>About</h4>
+        <Section title="About" id="about">
           <a href="/about" style={linkStyle}>About The Himalayans</a>
           <a href="/about" style={linkStyle}>How we work</a>
           <a href="/about" style={linkStyle}>Sustainability</a>
           <a href="/about" style={linkStyle}>Careers</a>
-        </div>
+        </Section>
       </div>
 
       {/* CURRENCY */}
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          padding: "0 20px 20px",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          fontSize: 14,
-        }}
-      >
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px 20px" }}>
         🇮🇳 <strong>INR</strong>
       </div>
 
@@ -139,27 +143,7 @@ export default function Footer() {
           color: "#475569",
         }}
       >
-        <p>
-          The Himalayans is part of Himalayan Travel Network.  
-          © 2025 The Himalayans. All rights reserved.
-        </p>
-
-        <div
-          style={{
-            marginTop: 12,
-            display: "flex",
-            justifyContent: "center",
-            gap: 16,
-            flexWrap: "wrap",
-            fontWeight: 700,
-          }}
-        >
-          <span>Booking</span>
-          <span>Priceline</span>
-          <span>KAYAK</span>
-          <span>Agoda</span>
-          <span>OpenTable</span>
-        </div>
+        © 2025 The Himalayans. All rights reserved.
       </div>
     </footer>
   );
