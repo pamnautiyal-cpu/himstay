@@ -27,6 +27,18 @@ export default function Home() {
     cursor: "pointer",
   };
 
+  const featureCard = {
+    background: "#ffffff",
+    padding: "26px 22px",
+    borderRadius: 20,
+    boxShadow: "0 18px 45px rgba(15,23,42,0.12)",
+  };
+
+  const iconStyle = {
+    fontSize: 38,
+    marginBottom: 12,
+  };
+
   return (
     <div
       style={{
@@ -72,73 +84,123 @@ export default function Home() {
           Char Dham Yatra Destinations
         </h2>
         <div style={gridStyle}>
-          {[
-            "Kedarnath",
-            "Badrinath",
-            "Gangotri",
-            "Yamunotri",
-            "Hemkund Sahib",
-          ].map((d) => (
+          {["Kedarnath","Badrinath","Gangotri","Yamunotri","Hemkund Sahib"].map((d) => (
             <div key={d} style={cardStyle}>{d}</div>
           ))}
         </div>
       </section>
 
-      {/* 🏔️ TREKKING & ADVENTURE */}
+      {/* TREKKING */}
       <section style={sectionStyle}>
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Trekking & Adventure in Uttarakhand
         </h2>
-
         <div style={gridStyle}>
-          <a href="https://unsplash.com/s/photos/kedarkantha-trek" target="_blank" rel="noreferrer" style={cardStyle}>
-            🏔️ Kedarkantha Trek
-          </a>
-
-          <a href="https://unsplash.com/s/photos/har-ki-dun-trek" target="_blank" rel="noreferrer" style={cardStyle}>
-            🥾 Har Ki Dun Trek
-          </a>
-
-          <a href="https://unsplash.com/s/photos/nag-tibba-trek" target="_blank" rel="noreferrer" style={cardStyle}>
-            🌄 Nag Tibba Trek
-          </a>
-
-          <a href="https://unsplash.com/s/photos/valley-of-flowers-uttarakhand" target="_blank" rel="noreferrer" style={cardStyle}>
-            🌸 Valley of Flowers
-          </a>
-
-          <a href="https://unsplash.com/s/photos/roopkund-trek" target="_blank" rel="noreferrer" style={cardStyle}>
-            ❄️ Roopkund Trek
-          </a>
+          <a href="https://unsplash.com/s/photos/kedarkantha-trek" target="_blank" rel="noreferrer" style={cardStyle}>🏔️ Kedarkantha Trek</a>
+          <a href="https://unsplash.com/s/photos/har-ki-dun-trek" target="_blank" rel="noreferrer" style={cardStyle}>🥾 Har Ki Dun Trek</a>
+          <a href="https://unsplash.com/s/photos/nag-tibba-trek" target="_blank" rel="noreferrer" style={cardStyle}>🌄 Nag Tibba Trek</a>
+          <a href="https://unsplash.com/s/photos/valley-of-flowers-uttarakhand" target="_blank" rel="noreferrer" style={cardStyle}>🌸 Valley of Flowers</a>
+          <a href="https://unsplash.com/s/photos/roopkund-trek" target="_blank" rel="noreferrer" style={cardStyle}>❄️ Roopkund Trek</a>
         </div>
       </section>
 
-      {/* 🧘 YOGA & NATURAL THERAPY */}
+      {/* YOGA */}
       <section style={sectionStyle}>
         <h2 style={{ fontSize: 26, fontWeight: 800 }}>
           Yoga & Natural Therapy Retreats
         </h2>
-
         <div style={gridStyle}>
-          <a href="https://unsplash.com/s/photos/himalayan-yoga-retreat" target="_blank" rel="noreferrer" style={cardStyle}>
-            🧘 Himalayan Yoga Retreat
-          </a>
+          <a href="https://unsplash.com/s/photos/himalayan-yoga-retreat" target="_blank" rel="noreferrer" style={cardStyle}>🧘 Himalayan Yoga Retreat</a>
+          <a href="https://unsplash.com/s/photos/naturopathy-healing" target="_blank" rel="noreferrer" style={cardStyle}>🌿 Naturopathy Healing</a>
+          <a href="https://unsplash.com/s/photos/meditation-pranayama" target="_blank" rel="noreferrer" style={cardStyle}>🕉️ Meditation & Pranayama</a>
+          <a href="https://unsplash.com/s/photos/ayurvedic-therapy" target="_blank" rel="noreferrer" style={cardStyle}>💆 Ayurvedic Therapy</a>
+          <a href="https://unsplash.com/s/photos/panchakarma" target="_blank" rel="noreferrer" style={cardStyle}>🔥 Panchakarma Detox</a>
+        </div>
+      </section>
 
-          <a href="https://unsplash.com/s/photos/naturopathy-healing" target="_blank" rel="noreferrer" style={cardStyle}>
-            🌿 Naturopathy Healing
-          </a>
+      {/* WHY THE HIMALAYANS */}
+      <section style={{ maxWidth: 1200, margin: "80px auto", padding: "0 20px" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800 }}>
+          Why The Himalayans?
+        </h2>
+        <p style={{ color: "#475569", marginBottom: 32 }}>
+          Trusted stays, treks & wellness experiences across Uttarakhand
+        </p>
 
-          <a href="https://unsplash.com/s/photos/meditation-pranayama" target="_blank" rel="noreferrer" style={cardStyle}>
-            🕉️ Meditation & Pranayama
-          </a>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: 20,
+        }}>
+          <div style={featureCard}>
+            <div style={iconStyle}>🏨</div>
+            <h4>Book now, pay later</h4>
+            <p>Flexible stays & easy payments</p>
+          </div>
 
-          <a href="https://unsplash.com/s/photos/ayurvedic-therapy" target="_blank" rel="noreferrer" style={cardStyle}>
-            💆 Ayurvedic Therapy
-          </a>
+          <div style={featureCard}>
+            <div style={iconStyle}>⭐</div>
+            <h4>Verified experiences</h4>
+            <p>Handpicked stays & treks</p>
+          </div>
 
-          <a href="https://unsplash.com/s/photos/panchakarma" target="_blank" rel="noreferrer" style={cardStyle}>
-            🔥 Panchakarma Detox
-          </a>
+          <div style={featureCard}>
+            <div style={iconStyle}>🏔️</div>
+            <h4>Himalayan expertise</h4>
+            <p>Mountains, trekking & wellness</p>
+          </div>
+
+          <div style={featureCard}>
+            <div style={iconStyle}>📞</div>
+            <h4>24/7 local support</h4>
+            <p>Real help, anytime</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 🎁 OFFERS & DEALS */}
+      <section style={{ maxWidth: 1200, margin: "80px auto", padding: "0 20px" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800 }}>
+          Exclusive Offers & Deals
+        </h2>
+        <p style={{ color: "#475569", marginBottom: 32 }}>
+          Special discounts on stays, treks & wellness retreats
+        </p>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: 20,
+        }}>
+          <div style={{
+            background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+            color: "#fff",
+            padding: 28,
+            borderRadius: 22,
+          }}>
+            🏨 Stay Longer, Save More  
+            <p>Up to 25% off homestays</p>
+          </div>
+
+          <div style={{
+            background: "linear-gradient(135deg,#16a34a,#22c55e)",
+            color: "#fff",
+            padding: 28,
+            borderRadius: 22,
+          }}>
+            🏔️ Trekking Combo Deal  
+            <p>Flat 15% off popular treks</p>
+          </div>
+
+          <div style={{
+            background: "linear-gradient(135deg,#9333ea,#7c3aed)",
+            color: "#fff",
+            padding: 28,
+            borderRadius: 22,
+          }}>
+            🧘 Wellness Escape  
+            <p>Yoga & Ayurveda packages</p>
+          </div>
         </div>
       </section>
     </div>
