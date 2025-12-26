@@ -57,7 +57,7 @@ export default function Footer() {
 
         {/* ✅ EMAIL + POPUP */}
         <form
-          action="https://formsubmit.co/infothetimalayans@gmail.com"
+          action="https://formsubmit.co/infothehimalayans@gmail.com"
           method="POST"
           onSubmit={() => {
             setTimeout(() => {
