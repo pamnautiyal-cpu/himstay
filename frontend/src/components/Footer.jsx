@@ -1,68 +1,158 @@
 import React from "react";
 
-function Footer() {
+export default function Footer() {
   return (
-    <footer className="hs-footer">
-      {/* TOP SEARCH BAR */}
-      <div className="hs-footer-search">
-        <h3>Save time, save money!</h3>
-        <p>Sign up and we'll send the best deals to you</p>
+    <footer style={{ background: "#f8fafc", borderTop: "1px solid #e5e7eb" }}>
+      
+      {/* NEWSLETTER */}
+      <div
+        style={{
+          background: "#003580",
+          color: "#fff",
+          padding: "40px 20px",
+          textAlign: "center",
+        }}
+      >
+        <h3 style={{ fontSize: 22, fontWeight: 700 }}>
+          Save time, save money!
+        </h3>
+        <p style={{ opacity: 0.9 }}>
+          Sign up and we'll send the best deals to you
+        </p>
 
-        <div className="hs-footer-search-box">
-          <input type="email" placeholder="Your email address" />
-          <button>Subscribe</button>
+        <div
+          style={{
+            marginTop: 16,
+            display: "flex",
+            justifyContent: "center",
+            gap: 8,
+            flexWrap: "wrap",
+          }}
+        >
+          <input
+            placeholder="Your email address"
+            style={{
+              padding: "12px 14px",
+              width: 260,
+              borderRadius: 6,
+              border: "none",
+              outline: "none",
+            }}
+          />
+          <button
+            style={{
+              padding: "12px 18px",
+              borderRadius: 6,
+              border: "none",
+              background: "#1d4ed8",
+              color: "#fff",
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            Subscribe
+          </button>
         </div>
       </div>
 
-      {/* MAIN FOOTER */}
-      <div className="hs-footer-inner">
-        {/* BRAND */}
-        <div className="hs-footer-col">
-          <h3>The Himalayans</h3>
-          <p>
-            Handpicked Himalayan stays, trekking, adventure & slow travel
-            experiences across Uttarakhand.
-          </p>
-
-          {/* SOCIAL ICONS */}
-          <div className="hs-footer-social">
-            <a href="#">🌐</a>
-            <a href="#">📘</a>
-            <a href="#">📸</a>
-            <a href="#">🐦</a>
-          </div>
+      {/* LINKS GRID */}
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "40px 20px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: 24,
+          fontSize: 14,
+        }}
+      >
+        <div>
+          <h4>Support</h4>
+          <p>Manage your trips</p>
+          <p>Customer Service</p>
+          <p>Safety resource centre</p>
         </div>
 
-        {/* LINKS */}
-        <div className="hs-footer-col">
-          <h4>Explore</h4>
-          <a href="/">Home</a>
-          <a href="/hotels">Hotels</a>
-          <a href="/mytrips">My Trips</a>
-          <a href="/contact">Contact</a>
+        <div>
+          <h4>Discover</h4>
+          <p>Seasonal deals</p>
+          <p>Travel articles</p>
+          <p>Trekking & Adventure</p>
+          <p>Yoga retreats</p>
         </div>
 
-        <div className="hs-footer-col">
-          <h4>Account</h4>
-          <a href="/login">Login</a>
-          <a href="/register">Sign up</a>
-          <a href="#">Help Center</a>
+        <div>
+          <h4>Terms & Settings</h4>
+          <p>Privacy notice</p>
+          <p>Terms of service</p>
+          <p>Accessibility</p>
+          <p>Human rights</p>
         </div>
 
-        <div className="hs-footer-col">
-          <h4>Contact</h4>
-          <p>📍 Dehradun, Uttarakhand</p>
-          <p>📞 +91 9410106470</p>
-          <p>✉️ infothetimalayans@gmail.com</p>
+        <div>
+          <h4>Partners</h4>
+          <p>List your property</p>
+          <p>Partner help</p>
+          <p>Affiliate program</p>
+        </div>
+
+        <div>
+          <h4>About</h4>
+          <p>About The Himalayans</p>
+          <p>How we work</p>
+          <p>Sustainability</p>
+          <p>Careers</p>
         </div>
       </div>
 
-      {/* BOTTOM */}
-      <div className="hs-footer-bottom">
-        © 2025 The Himalayans. All rights reserved.
+      {/* CURRENCY */}
+      <div
+        style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "0 20px 20px",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          fontSize: 14,
+        }}
+      >
+        🇮🇳 <strong>INR</strong>
+      </div>
+
+      {/* COPYRIGHT */}
+      <div
+        style={{
+          borderTop: "1px solid #e5e7eb",
+          padding: "20px",
+          textAlign: "center",
+          fontSize: 13,
+          color: "#475569",
+        }}
+      >
+        <p>
+          The Himalayans is part of Himalayan Travel Network.  
+          © 2025 The Himalayans. All rights reserved.
+        </p>
+
+        <div
+          style={{
+            marginTop: 12,
+            display: "flex",
+            justifyContent: "center",
+            gap: 16,
+            flexWrap: "wrap",
+            fontWeight: 700,
+          }}
+        >
+          <span>Booking</span>
+          <span>Priceline</span>
+          <span>KAYAK</span>
+          <span>Agoda</span>
+          <span>OpenTable</span>
+        </div>
       </div>
     </footer>
   );
 }
-
-export default Footer;
