@@ -55,7 +55,10 @@ export default function Footer() {
           Sign up and we'll send the best deals to you
         </p>
 
-        <div
+        {/* ✅ WORKING EMAIL FORM */}
+        <form
+          action="https://formsubmit.co/infothetimalayans@gmail.com"
+          method="POST"
           style={{
             marginTop: 16,
             display: "flex",
@@ -65,15 +68,24 @@ export default function Footer() {
           }}
         >
           <input
-            placeholder="Your email address"
+            type="email"
+            name="email"
+            required
+            placeholder="infothehimalayans@gmail.com"
             style={{
               padding: "12px 14px",
               width: 260,
               borderRadius: 6,
               border: "none",
+              outline: "none",
             }}
           />
+
+          <input type="hidden" name="_subject" value="New Newsletter Signup" />
+          <input type="hidden" name="_captcha" value="false" />
+
           <button
+            type="submit"
             style={{
               padding: "12px 18px",
               borderRadius: 6,
@@ -86,7 +98,7 @@ export default function Footer() {
           >
             Subscribe
           </button>
-        </div>
+        </form>
       </div>
 
       {/* FOOTER LINKS */}
