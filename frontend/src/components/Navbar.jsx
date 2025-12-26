@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = () => {
+    if (!query.trim()) return;
+    const url = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(
+      query + " Uttarakhand"
+    )}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <header style={styles.header}>
       <div style={styles.container}>
@@ -15,13 +25,18 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* 🔍 SEARCH BAR (BOOKING STYLE) */}
+        {/* 🔍 SEARCH */}
         <div style={styles.searchBox}>
           <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             placeholder="Search stays, treks, yoga…"
             style={styles.searchInput}
           />
-          <button style={styles.searchBtn}>Search</button>
+          <button onClick={handleSearch} style={styles.searchBtn}>
+            Search
+          </button>
         </div>
 
         {/* NAV */}
@@ -37,6 +52,8 @@ export default function Navbar() {
     </header>
   );
 }
+
+/* ---------- STYLES ---------- */
 
 const styles = {
   header: {
@@ -57,7 +74,6 @@ const styles = {
     gap: 24,
   },
 
-  /* LOGO */
   logoWrap: {
     display: "flex",
     alignItems: "center",
@@ -77,21 +93,11 @@ const styles = {
     justifyContent: "center",
     fontSize: 22,
     color: "#fff",
-    boxShadow: "0 10px 25px rgba(37,99,235,0.45)",
   },
 
-  logoText: {
-    fontSize: 18,
-    fontWeight: 800,
-  },
+  logoText: { fontSize: 18, fontWeight: 800 },
+  tagline: { fontSize: 12, color: "#64748b" },
 
-  tagline: {
-    fontSize: 12,
-    color: "#64748b",
-    marginTop: -2,
-  },
-
-  /* SEARCH */
   searchBox: {
     flex: 1,
     display: "flex",
@@ -122,37 +128,15 @@ const styles = {
     cursor: "pointer",
   },
 
-  /* NAV */
-  nav: {
-    display: "flex",
-    alignItems: "center",
-    gap: 22,
-  },
-
-  navLink: {
-    textDecoration: "none",
-    fontWeight: 600,
-    fontSize: 14,
-    color: "#0f172a",
-    opacity: 0.85,
-  },
-
-  loginLink: {
-    textDecoration: "none",
-    fontWeight: 600,
-    fontSize: 14,
-    color: "#2563eb",
-  },
-
+  nav: { display: "flex", alignItems: "center", gap: 22 },
+  navLink: { textDecoration: "none", fontWeight: 600, color: "#0f172a" },
+  loginLink: { textDecoration: "none", fontWeight: 600, color: "#2563eb" },
   signupBtn: {
-    marginLeft: 4,
     textDecoration: "none",
     padding: "10px 18px",
     borderRadius: 12,
     fontWeight: 700,
-    fontSize: 14,
     color: "#fff",
     background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
-    boxShadow: "0 12px 30px rgba(37,99,235,0.45)",
   },
 };
