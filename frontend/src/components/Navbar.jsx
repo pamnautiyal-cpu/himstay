@@ -20,9 +20,8 @@ export default function Navbar() {
     borderRadius: 999,
     fontSize: 14,
     fontWeight: 600,
-    color: "#e5e7eb",
     textDecoration: "none",
-    transition: "all 0.3s ease",
+    transition: "all 0.25s ease",
   };
 
   return (
@@ -33,7 +32,7 @@ export default function Navbar() {
         zIndex: 100,
         background: scrolled
           ? "linear-gradient(135deg,#020617,#0f172a)"
-          : "linear-gradient(135deg,#020617,#020617)",
+          : "#020617",
         boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
       }}
     >
@@ -69,7 +68,6 @@ export default function Navbar() {
               justifyContent: "center",
               fontSize: 20,
               boxShadow: "0 6px 20px rgba(239,68,68,0.6)",
-              animation: "pulse 2.5s infinite",
             }}
           >
             🏔️
@@ -90,29 +88,17 @@ export default function Navbar() {
               to={l.to}
               style={{
                 ...linkBase,
-                background: isActive(l.to) ? "#2563eb" : "transparent",
                 color: isActive(l.to) ? "#fff" : "#e5e7eb",
+                background: isActive(l.to) ? "#2563eb" : "transparent",
               }}
             >
               {l.label}
-              <span
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  bottom: -6,
-                  width: isActive(l.to) ? 20 : 0,
-                  height: 3,
-                  background: "#22c55e",
-                  borderRadius: 4,
-                  transform: "translateX(-50%)",
-                  transition: "all 0.3s ease",
-                }}
-              />
             </Link>
           ))}
 
+          {/* ✅ SIGN UP → ONLY /signup */}
           <Link
-            to="/register"
+            to="/signup"
             style={{
               padding: "8px 18px",
               borderRadius: 999,
@@ -121,7 +107,6 @@ export default function Navbar() {
               fontWeight: 700,
               textDecoration: "none",
               boxShadow: "0 6px 20px rgba(34,197,94,0.6)",
-              transition: "transform 0.2s ease",
             }}
           >
             Sign up
@@ -130,7 +115,6 @@ export default function Navbar() {
 
         {/* HAMBURGER */}
         <button
-          className="hamburger"
           onClick={() => setOpen(!open)}
           style={{
             display: "none",
@@ -140,6 +124,7 @@ export default function Navbar() {
             fontSize: 26,
             cursor: "pointer",
           }}
+          className="hamburger"
         >
           ☰
         </button>
@@ -150,7 +135,7 @@ export default function Navbar() {
         style={{
           maxHeight: open ? 360 : 0,
           overflow: "hidden",
-          transition: "max-height 0.4s ease",
+          transition: "max-height 0.35s ease",
           background: "#020617",
         }}
       >
@@ -167,7 +152,7 @@ export default function Navbar() {
             { to: "/mytrips", label: "My Trips" },
             { to: "/contact", label: "Contact" },
             { to: "/login", label: "Login" },
-            { to: "/register", label: "Sign up" },
+            { to: "/signup", label: "Sign up" },
           ].map((l) => (
             <Link
               key={l.to}
@@ -189,14 +174,8 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* INLINE CSS */}
+      {/* CSS */}
       <style>{`
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.08); }
-          100% { transform: scale(1); }
-        }
-
         @media (max-width: 768px) {
           .desktop-nav { display: none; }
           .hamburger { display: block !important; }
