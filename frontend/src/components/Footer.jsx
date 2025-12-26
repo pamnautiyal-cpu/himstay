@@ -55,10 +55,15 @@ export default function Footer() {
           Sign up and we'll send the best deals to you
         </p>
 
-        {/* ✅ WORKING EMAIL FORM */}
+        {/* ✅ EMAIL + POPUP */}
         <form
           action="https://formsubmit.co/infothetimalayans@gmail.com"
           method="POST"
+          onSubmit={() => {
+            setTimeout(() => {
+              alert("🎉 Thanks for subscribing! We’ll send you the best deals soon.");
+            }, 300);
+          }}
           style={{
             marginTop: 16,
             display: "flex",
@@ -71,7 +76,7 @@ export default function Footer() {
             type="email"
             name="email"
             required
-            placeholder="infothehimalayans@gmail.com"
+            placeholder="Your email address"
             style={{
               padding: "12px 14px",
               width: 260,
