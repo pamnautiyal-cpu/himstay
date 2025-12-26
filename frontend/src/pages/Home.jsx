@@ -58,10 +58,10 @@ export default function Home() {
       <section style={sectionStyle}>
         <h2>Top destinations in Uttarakhand</h2>
         <div style={layout}>
-          <Card name="Mussoorie" image="https://images.unsplash.com/photo-1593693397690-362cb9666fc2" />
-          <Card name="Nainital" image="https://images.unsplash.com/photo-1588416936097-41850ab3d86d" />
-          <Card name="Dehradun" image="https://images.unsplash.com/photo-1605100804763-247f67b3557e" />
-          <Card name="Haldwani" image="https://images.unsplash.com/photo-1623064171611-bc8a5b1b8c7c" />
+          <Card name="Mussoorie" image="https://unsplash.com/photos/a-village-on-a-hill-with-a-mountain-in-the-background-uV7UxLPnruU" />
+          <Card name="Nainital" image="https://unsplash.com/photos/a-large-building-with-a-clock-tower-in-the-middle-of-it-hDxBAXQB3Zs?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink" />
+          <Card name="Dehradun" image="https://unsplash.com/photos/a-large-building-with-a-clock-tower-in-the-middle-of-it-hDxBAXQB3Zs?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink" />
+          <Card name="Haldwani" image="https://unsplash.com/photos/boat-on-sea-near-mountain-under-white-clouds-and-blue-sky-during-daytime-58E1ZA9CXBA?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink" />
         </div>
       </section>
 
