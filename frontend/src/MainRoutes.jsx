@@ -4,7 +4,9 @@ import Home from "./pages/Home";
 import Hotels from "./pages/Hotels";
 import HotelDetails from "./pages/HotelDetails";
 import Booking from "./pages/Booking";
-import YogaDetails from "./pages/YogaDetails";
+import YogaDetail from "./pages/YogaDetail"; // ✅ SINGULAR
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 export default function MainRoutes() {
   return (
@@ -16,11 +18,14 @@ export default function MainRoutes() {
 
       <Route path="/booking" element={<Booking />} />
 
-      {/* ✅ YOGA DETAIL PAGE */}
-      <Route path="/yoga/:slug" element={<YogaDetails />} />
+      {/* ✅ YOGA ROUTE */}
+      <Route
+        path="/yoga/himalayan-retreat"
+        element={<YogaDetail />}
+      />
 
-      {/* fallback */}
-      <Route path="*" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
