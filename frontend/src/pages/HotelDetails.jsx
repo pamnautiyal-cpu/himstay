@@ -1,81 +1,108 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getHotel } from "../api/api";
-import Booking from "../components/Booking";
+import React from "react";
 
-function HotelDetails() {
-  const { id } = useParams();
-  const [hotel, setHotel] = useState(null);
-
-  useEffect(() => {
-    getHotel(id).then((res) => setHotel(res.data));
-  }, [id]);
-
-  if (!hotel) return <div className="hs-container">Loading…</div>;
-
+export default function HotelDetails() {
   return (
-    <div className="hs-app">
-      <div className="hs-container">
+    <div style={{ background: "#f1f5f9", minHeight: "100vh" }}>
+      {/* HERO IMAGE */}
+      <div
+        style={{
+          height: 360,
+          backgroundImage:
+            "url(https://images.unsplash.com/photo-1501117716987-c8e1ecb210d1)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+
+      {/* CONTENT */}
+      <div style={{ maxWidth: 1100, margin: "-80px auto 0", padding: 20 }}>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 3fr) minmax(0, 2fr)",
-            gap: 20,
+            background: "#fff",
+            borderRadius: 20,
+            padding: 30,
+            boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
           }}
         >
-          {/* LEFT: HOTEL INFO */}
-          <div>
-            <div
-              style={{
-                borderRadius: 18,
-                height: 260,
-                marginBottom: 14,
-                background: hotel.image
-                  ? `url(${hotel.image}) center/cover`
-                  : "linear-gradient(135deg,#1d4ed8,#22c55e)",
-              }}
-            />
+          <h1 style={{ fontSize: 30, fontWeight: 800 }}>
+            Himalayan View Homestay
+          </h1>
+          <p style={{ color: "#475569", marginBottom: 20 }}>
+            📍 Mussoorie, Uttarakhand · ⭐ 4.6 (120 reviews)
+          </p>
 
-            <h1 style={{ marginBottom: 4 }}>{hotel.name}</h1>
-
-            <div className="hs-muted" style={{ marginBottom: 12 }}>
-              {hotel.city} • ⭐ {hotel.rating || 4.4}
-            </div>
-
-            <p style={{ fontSize: 14.5, lineHeight: 1.55 }}>
-              {hotel.description ||
-                "A cozy hillside property with warm hosts, fast Wi-Fi and stunning mountain views — perfect for peaceful stays."}
-            </p>
+          {/* INFO GRID */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 16,
+              marginBottom: 30,
+            }}
+          >
+            <div>🛏️ Deluxe Room</div>
+            <div>👨‍👩‍👧 2 Guests</div>
+            <div>🌄 Mountain View</div>
+            <div>📶 Free Wi-Fi</div>
+            <div>🍳 Breakfast Included</div>
+            <div>🚗 Free Parking</div>
           </div>
 
-          {/* RIGHT: PRICE + REAL BOOKING */}
-          <aside className="hs-card">
-            <div className="hs-muted" style={{ marginBottom: 4 }}>
-              From
+          {/* PRICE + BOOK */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 16,
+            }}
+          >
+            <div>
+              <p style={{ fontSize: 14, color: "#64748b" }}>Price per night</p>
+              <h2 style={{ fontSize: 28, fontWeight: 800, color: "#16a34a" }}>
+                ₹3,499
+              </h2>
             </div>
 
-            <div className="hs-price">₹{hotel.price}</div>
+            <button
+              style={{
+                padding: "14px 28px",
+                borderRadius: 999,
+                border: "none",
+                background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+                color: "#fff",
+                fontWeight: 800,
+                fontSize: 16,
+                cursor: "pointer",
+                boxShadow: "0 10px 30px rgba(37,99,235,0.5)",
+              }}
+            >
+              Book Now
+            </button>
+          </div>
+        </div>
 
-            <div className="hs-muted">per night, taxes extra</div>
-
-            <div style={{ marginTop: 18, fontSize: 13.5 }}>
-              <div>• Free cancellation on most stays</div>
-              <div>• Instant booking confirmation</div>
-              <div>• Verified Himalayan partner</div>
-            </div>
-
-            {/* ✅ REAL BOOKING SYSTEM */}
-            <div style={{ marginTop: 20 }}>
-              <Booking
-                pricePerNight={hotel.price}
-                hotelName={hotel.name}
-              />
-            </div>
-          </aside>
+        {/* DESCRIPTION */}
+        <div
+          style={{
+            marginTop: 30,
+            background: "#fff",
+            borderRadius: 20,
+            padding: 30,
+            boxShadow: "0 16px 40px rgba(0,0,0,0.12)",
+          }}
+        >
+          <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 10 }}>
+            About this stay
+          </h3>
+          <p style={{ color: "#475569", lineHeight: 1.7 }}>
+            Experience peaceful Himalayan living with panoramic mountain views,
+            warm hospitality, and modern comfort. Ideal for couples, families,
+            and slow travelers.
+          </p>
         </div>
       </div>
     </div>
   );
 }
-
-export default HotelDetails;
