@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function HotelDetails() {
   return (
@@ -27,6 +28,7 @@ export default function HotelDetails() {
           <h1 style={{ fontSize: 30, fontWeight: 800 }}>
             Himalayan View Homestay
           </h1>
+
           <p style={{ color: "#475569", marginBottom: 20 }}>
             📍 Mussoorie, Uttarakhand · ⭐ 4.6 (120 reviews)
           </p>
@@ -59,27 +61,32 @@ export default function HotelDetails() {
             }}
           >
             <div>
-              <p style={{ fontSize: 14, color: "#64748b" }}>Price per night</p>
+              <p style={{ fontSize: 14, color: "#64748b" }}>
+                Price per night
+              </p>
               <h2 style={{ fontSize: 28, fontWeight: 800, color: "#16a34a" }}>
                 ₹3,499
               </h2>
             </div>
 
-            <button
-              style={{
-                padding: "14px 28px",
-                borderRadius: 999,
-                border: "none",
-                background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
-                color: "#fff",
-                fontWeight: 800,
-                fontSize: 16,
-                cursor: "pointer",
-                boxShadow: "0 10px 30px rgba(37,99,235,0.5)",
-              }}
-            >
-              Book Now
-            </button>
+            {/* ✅ BOOK NOW → BOOKING PAGE */}
+            <Link to="/booking">
+              <button
+                style={{
+                  padding: "14px 28px",
+                  borderRadius: 999,
+                  border: "none",
+                  background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+                  color: "#fff",
+                  fontWeight: 800,
+                  fontSize: 16,
+                  cursor: "pointer",
+                  boxShadow: "0 10px 30px rgba(37,99,235,0.5)",
+                }}
+              >
+                Book Now
+              </button>
+            </Link>
           </div>
         </div>
 
