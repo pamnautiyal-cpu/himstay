@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 export default function YogaDetails() {
   return (
     <div style={{ background: "#f1f5f9", minHeight: "100vh" }}>
-      {/* HERO */}
       <div
         style={{
           height: 320,
@@ -29,33 +28,31 @@ export default function YogaDetails() {
           </h1>
 
           <p style={{ color: "#475569", marginBottom: 20 }}>
-            📍 Rishikesh, Uttarakhand · 🧘‍♂️ Wellness & Meditation
+            📍 Rishikesh, Uttarakhand
           </p>
 
-          <p style={{ lineHeight: 1.7, color: "#475569" }}>
-            Rejuvenate your body and mind with guided yoga, meditation,
-            pranayama, and holistic healing in the peaceful Himalayas.
+          <p style={{ color: "#475569", lineHeight: 1.7 }}>
+            Guided yoga, meditation, pranayama and holistic healing
+            in the peaceful Himalayas.
           </p>
 
-          <div style={{ marginTop: 30 }}>
-            <Link to="/booking">
-              <button
-                style={{
-                  padding: "14px 28px",
-                  borderRadius: 999,
-                  border: "none",
-                  background: "linear-gradient(135deg,#22c55e,#16a34a)",
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: 16,
-                  cursor: "pointer",
-                  boxShadow: "0 10px 30px rgba(34,197,94,0.5)",
-                }}
-              >
-                Book Yoga Retreat
-              </button>
-            </Link>
-          </div>
+          <Link to="/booking">
+            <button
+              style={{
+                marginTop: 24,
+                padding: "14px 28px",
+                borderRadius: 999,
+                border: "none",
+                background: "linear-gradient(135deg,#22c55e,#16a34a)",
+                color: "#fff",
+                fontWeight: 800,
+                fontSize: 16,
+                cursor: "pointer",
+              }}
+            >
+              Book Yoga Retreat
+            </button>
+          </Link>
         </div>
       </div>
     </div>
