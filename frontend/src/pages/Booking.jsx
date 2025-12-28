@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import axios from "axios";
+
+const BACKEND_URL = "https://himstay.onrender.com";
 
 export default function Booking() {
+  const [searchParams] = useSearchParams();
+  const hotelId = searchParams.get("hotelId");
+
+  const [hotel, setHotel] = useState(null);
+
+  useEffect(() => {
+    if (!hotelId) return;
+
+    axios
+      .get(`${BACKEND_URL}/api/hotels/${hotelId}`)
+      .then((res) => setHotel(res.data))
+      .catch((err) =>
+        console.error("Booking hotel fetch error", err)
+      );
+  }, [hotelId]);
+
   return (
     <div style={{ background: "#f1f5f9", minHeight: "100vh", padding: "60px 20px" }}>
       <div
@@ -16,9 +36,12 @@ export default function Booking() {
         <h1 style={{ fontSize: 34, fontWeight: 900, marginBottom: 10 }}>
           Complete Your Booking
         </h1>
-        <p style={{ color: "#475569", marginBottom: 30 }}>
-          Secure booking · No hidden charges · 24/7 support
-        </p>
+
+        {hotel && (
+          <p style={{ color: "#475569", marginBottom: 20 }}>
+            🏨 <b>{hotel.name}</b> · {hotel.city} · ₹{hotel.price}/night
+          </p>
+        )}
 
         {/* FORM */}
         <form
@@ -28,37 +51,15 @@ export default function Booking() {
             gap: 20,
           }}
         >
-          <input
-            placeholder="Full Name"
-            style={inputStyle}
-          />
-          <input
-            placeholder="Email Address"
-            type="email"
-            style={inputStyle}
-          />
-          <input
-            placeholder="Mobile Number"
-            type="tel"
-            style={inputStyle}
-          />
-          <input
-            placeholder="City"
-            style={inputStyle}
-          />
+          <input placeholder="Full Name" style={inputStyle} />
+          <input placeholder="Email Address" type="email" style={inputStyle} />
+          <input placeholder="Mobile Number" type="tel" style={inputStyle} />
+          <input placeholder="City" style={inputStyle} />
 
-          <input
-            type="date"
-            style={inputStyle}
-          />
-          <input
-            type="number"
-            placeholder="Number of Guests"
-            style={inputStyle}
-          />
+          <input type="date" style={inputStyle} />
+          <input type="number" placeholder="Number of Guests" style={inputStyle} />
 
           <select style={inputStyle}>
-            <option>Select Package</option>
             <option>Hotel Stay</option>
             <option>Trekking Package</option>
             <option>Yoga Retreat</option>
@@ -76,7 +77,7 @@ export default function Booking() {
               Total Amount
             </p>
             <h2 style={{ fontSize: 30, fontWeight: 900, color: "#16a34a" }}>
-              ₹12,999
+              ₹{hotel ? hotel.price : "—"}
             </h2>
           </div>
 

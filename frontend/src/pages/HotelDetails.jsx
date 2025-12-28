@@ -98,7 +98,8 @@ export default function HotelDetails() {
               </h2>
             </div>
 
-            <Link to="/booking">
+            <Link to={`/booking?hotelId=${hotel._id}`}>
+
               <button
                 style={{
                   padding: "14px 28px",
