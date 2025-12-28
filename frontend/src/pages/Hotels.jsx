@@ -112,7 +112,8 @@ function Hotels() {
                   ₹{hotel.price} / night
                 </div>
 
-                <Link to={`/hotel/${hotel._id}`}>
+                {/* 👇 ROUTE FIXED */}
+                <Link to={`/hotels/${hotel._id}`}>
                   <button
                     className="hs-btn-primary"
                     style={{ width: "100%" }}

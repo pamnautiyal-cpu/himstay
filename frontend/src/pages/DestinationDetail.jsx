@@ -59,9 +59,13 @@ export default function DestinationDetail() {
       </p>
 
       <div style={{ marginTop: 30 }}>
-        <Link to="/hotels" style={{ fontWeight: 700 }}>
-          View Hotels →
-        </Link>
+        <Link
+  to={`/hotels?city=${slug}`}
+  style={{ fontWeight: 700 }}
+>
+  View Hotels →
+</Link>
+
       </div>
     </div>
   );
