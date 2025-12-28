@@ -21,6 +21,13 @@ import nagTibba from "../assets/images/treks/nag-tibba.jpg";
 import valley from "../assets/images/treks/valley-of-flowers.jpg";
 import roopkund from "../assets/images/treks/roopkund.jpg";
 
+/* YOGA */
+import yogaRetreat from "../assets/images/yoga/himalayan-yoga.jpg";
+import naturopathy from "../assets/images/yoga/naturopathy.jpg";
+import meditation from "../assets/images/yoga/meditation.jpg";
+import ayurveda from "../assets/images/yoga/ayurveda.jpg";
+import panchakarma from "../assets/images/yoga/panchakarma.jpg";
+
 export default function Home() {
   const section = {
     maxWidth: 1200,
@@ -66,14 +73,17 @@ export default function Home() {
       <section style={section}>
         <h2>Top destinations in Uttarakhand</h2>
         <div style={grid}>
-          {[["Mussoorie", mussoorie], ["Nainital", nainital], ["Dehradun", dehradun], ["Haldwani", haldwani]].map(
-            ([name, image]) => (
-              <div key={name} style={card}>
-                <img src={image} alt={name} style={img} />
-                <div style={{ padding: 16 }}>{name}</div>
-              </div>
-            )
-          )}
+          {[
+            ["Mussoorie", mussoorie],
+            ["Nainital", nainital],
+            ["Dehradun", dehradun],
+            ["Haldwani", haldwani],
+          ].map(([name, image]) => (
+            <div key={name} style={card}>
+              <img src={image} alt={name} style={img} />
+              <div style={{ padding: 16 }}>{name}</div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -81,14 +91,18 @@ export default function Home() {
       <section style={section}>
         <h2>Char Dham Yatra Destinations</h2>
         <div style={grid}>
-          {[["Kedarnath", kedarnath], ["Badrinath", badrinath], ["Gangotri", gangotri], ["Yamunotri", yamunotri], ["Hemkund Sahib", hemkund]].map(
-            ([name, image]) => (
-              <div key={name} style={card}>
-                <img src={image} alt={name} style={img} />
-                <div style={{ padding: 16 }}>{name}</div>
-              </div>
-            )
-          )}
+          {[
+            ["Kedarnath", kedarnath],
+            ["Badrinath", badrinath],
+            ["Gangotri", gangotri],
+            ["Yamunotri", yamunotri],
+            ["Hemkund Sahib", hemkund],
+          ].map(([name, image]) => (
+            <div key={name} style={card}>
+              <img src={image} alt={name} style={img} />
+              <div style={{ padding: 16 }}>{name}</div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -119,6 +133,37 @@ export default function Home() {
           <Link to="/treks/roopkund" style={card}>
             <img src={roopkund} alt="Roopkund" style={img} />
             <div style={{ padding: 16 }}>Roopkund Trek</div>
+          </Link>
+        </div>
+      </section>
+
+      {/* YOGA & NATURAL THERAPY */}
+      <section style={section}>
+        <h2>Yoga & Natural Therapy Retreats</h2>
+        <div style={grid}>
+          <Link to="/yoga/himalayan-retreat" style={card}>
+            <img src={yogaRetreat} alt="Yoga Retreat" style={img} />
+            <div style={{ padding: 16 }}>Himalayan Yoga Retreat</div>
+          </Link>
+
+          <Link to="/yoga/naturopathy" style={card}>
+            <img src={naturopathy} alt="Naturopathy" style={img} />
+            <div style={{ padding: 16 }}>Naturopathy Healing</div>
+          </Link>
+
+          <Link to="/yoga/meditation" style={card}>
+            <img src={meditation} alt="Meditation" style={img} />
+            <div style={{ padding: 16 }}>Meditation & Pranayama</div>
+          </Link>
+
+          <Link to="/yoga/ayurveda" style={card}>
+            <img src={ayurveda} alt="Ayurveda" style={img} />
+            <div style={{ padding: 16 }}>Ayurvedic Therapy</div>
+          </Link>
+
+          <Link to="/yoga/panchakarma" style={card}>
+            <img src={panchakarma} alt="Panchakarma" style={img} />
+            <div style={{ padding: 16 }}>Panchakarma Detox</div>
           </Link>
         </div>
       </section>
