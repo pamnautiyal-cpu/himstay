@@ -18,24 +18,20 @@ export default function Home() {
   const card = {
     background: "#fff",
     borderRadius: 20,
-    overflow: "hidden",
     boxShadow: "0 20px 45px rgba(15,23,42,.15)",
     textDecoration: "none",
     color: "#0f172a",
     fontWeight: 700,
     textAlign: "center",
     cursor: "pointer",
+    position: "relative",
+    overflow: "hidden",
   };
 
   const img = {
     width: "100%",
-    height: 160,
+    height: 170,
     objectFit: "cover",
-    transition: "transform 0.6s ease",
-  };
-
-  const imgWrap = {
-    overflow: "hidden",
   };
 
   return (
@@ -58,9 +54,10 @@ export default function Home() {
             ["Dehradun", "/images/destinations/dehradun.jpg"],
             ["Haldwani", "/images/destinations/haldwani.jpg"],
           ].map(([name, image]) => (
-            <div key={name} style={card}>
-              <div style={imgWrap}>
+            <div key={name} style={card} className="card">
+              <div className="card-img-wrap">
                 <img src={image} alt={name} style={img} className="zoom-img" />
+                <div className="card-overlay">Explore →</div>
               </div>
               <div style={{ padding: 16 }}>{name}</div>
             </div>
@@ -79,9 +76,10 @@ export default function Home() {
             ["Yamunotri", "/images/chardham/yamunotri.jpg"],
             ["Hemkund Sahib", "/images/chardham/hemkund.jpg"],
           ].map(([name, image]) => (
-            <div key={name} style={card}>
-              <div style={imgWrap}>
+            <div key={name} style={card} className="card">
+              <div className="card-img-wrap">
                 <img src={image} alt={name} style={img} className="zoom-img" />
+                <div className="card-overlay">View →</div>
               </div>
               <div style={{ padding: 16 }}>{name}</div>
             </div>
@@ -100,12 +98,34 @@ export default function Home() {
             ["Valley of Flowers", "/treks/valley-of-flowers", "/images/treks/valley-of-flowers.jpg"],
             ["Roopkund Trek", "/treks/roopkund", "/images/treks/roopkund.jpg"],
           ].map(([title, link, image]) => (
-            <Link key={title} to={link} style={card}>
-              <div style={imgWrap}>
+            <Link to={link} key={title} style={card} className="card">
+              <div className="card-img-wrap">
                 <img src={image} alt={title} style={img} className="zoom-img" />
+                <div className="card-overlay">View trek →</div>
               </div>
               <div style={{ padding: 16 }}>{title}</div>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* YOGA & NATURAL THERAPY */}
+      <section style={section}>
+        <h2>Yoga & Natural Therapy</h2>
+        <div style={grid}>
+          {[
+            ["Himalayan Yoga Retreat", "/images/yoga/yoga-retreat.jpg"],
+            ["Meditation & Pranayama", "/images/yoga/meditation.jpg"],
+            ["Ayurvedic Therapy", "/images/yoga/ayurveda.jpg"],
+            ["Panchakarma Detox", "/images/yoga/panchakarma.jpg"],
+          ].map(([name, image]) => (
+            <div key={name} style={card} className="card">
+              <div className="card-img-wrap">
+                <img src={image} alt={name} style={img} className="zoom-img" />
+                <div className="card-overlay">Discover →</div>
+              </div>
+              <div style={{ padding: 16 }}>{name}</div>
+            </div>
           ))}
         </div>
       </section>
