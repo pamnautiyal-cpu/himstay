@@ -1,118 +1,113 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function Booking() {
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    checkin: "",
-    checkout: "",
-    guests: 2,
-  });
-
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("✅ Booking request submitted!");
-  };
-
   return (
-    <div style={{ background: "#f1f5f9", minHeight: "100vh", padding: 20 }}>
+    <div style={{ background: "#f1f5f9", minHeight: "100vh", padding: "60px 20px" }}>
       <div
         style={{
-          maxWidth: 600,
-          margin: "40px auto",
-          background: "#fff",
-          borderRadius: 20,
-          padding: 30,
-          boxShadow: "0 20px 50px rgba(0,0,0,0.15)",
+          maxWidth: 900,
+          margin: "0 auto",
+          background: "#ffffff",
+          borderRadius: 24,
+          padding: 40,
+          boxShadow: "0 30px 70px rgba(15,23,42,0.2)",
         }}
       >
-        <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 10 }}>
-          Complete your booking
+        <h1 style={{ fontSize: 34, fontWeight: 900, marginBottom: 10 }}>
+          Complete Your Booking
         </h1>
-        <p style={{ color: "#475569", marginBottom: 20 }}>
-          Himalayan View Homestay · Mussoorie
+        <p style={{ color: "#475569", marginBottom: 30 }}>
+          Secure booking · No hidden charges · 24/7 support
         </p>
 
-        <form onSubmit={handleSubmit} style={{ display: "grid", gap: 14 }}>
+        {/* FORM */}
+        <form
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 20,
+          }}
+        >
           <input
-            name="name"
-            placeholder="Full name"
-            required
-            onChange={handleChange}
+            placeholder="Full Name"
             style={inputStyle}
           />
-
           <input
+            placeholder="Email Address"
             type="email"
-            name="email"
-            placeholder="Email address"
-            required
-            onChange={handleChange}
+            style={inputStyle}
+          />
+          <input
+            placeholder="Mobile Number"
+            type="tel"
+            style={inputStyle}
+          />
+          <input
+            placeholder="City"
             style={inputStyle}
           />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <input
-              type="date"
-              name="checkin"
-              required
-              onChange={handleChange}
-              style={inputStyle}
-            />
-            <input
-              type="date"
-              name="checkout"
-              required
-              onChange={handleChange}
-              style={inputStyle}
-            />
-          </div>
-
-          <select
-            name="guests"
-            onChange={handleChange}
+          <input
+            type="date"
             style={inputStyle}
-          >
-            <option value="1">1 Guest</option>
-            <option value="2">2 Guests</option>
-            <option value="3">3 Guests</option>
-            <option value="4">4 Guests</option>
+          />
+          <input
+            type="number"
+            placeholder="Number of Guests"
+            style={inputStyle}
+          />
+
+          <select style={inputStyle}>
+            <option>Select Package</option>
+            <option>Hotel Stay</option>
+            <option>Trekking Package</option>
+            <option>Yoga Retreat</option>
           </select>
 
+          <textarea
+            placeholder="Special Requests (optional)"
+            rows={4}
+            style={{ ...inputStyle, gridColumn: "1 / -1" }}
+          />
+
+          {/* PRICE */}
+          <div style={{ gridColumn: "1 / -1", marginTop: 10 }}>
+            <p style={{ color: "#64748b", fontSize: 14 }}>
+              Total Amount
+            </p>
+            <h2 style={{ fontSize: 30, fontWeight: 900, color: "#16a34a" }}>
+              ₹12,999
+            </h2>
+          </div>
+
+          {/* SUBMIT */}
           <button
             type="submit"
             style={{
-              marginTop: 10,
-              padding: "14px",
+              gridColumn: "1 / -1",
+              padding: "18px",
               borderRadius: 999,
               border: "none",
-              background: "linear-gradient(135deg,#16a34a,#22c55e)",
+              background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
               color: "#fff",
-              fontWeight: 800,
-              fontSize: 16,
+              fontSize: 18,
+              fontWeight: 900,
               cursor: "pointer",
-              boxShadow: "0 10px 30px rgba(34,197,94,0.45)",
+              boxShadow: "0 15px 40px rgba(37,99,235,.5)",
             }}
           >
             Confirm Booking
           </button>
         </form>
-
-        <p style={{ fontSize: 13, color: "#64748b", marginTop: 16 }}>
-          No payment required now · Free cancellation
-        </p>
       </div>
     </div>
   );
 }
 
 const inputStyle = {
-  padding: "12px 14px",
-  borderRadius: 10,
-  border: "1px solid #cbd5f5",
-  fontSize: 14,
+  padding: "16px 18px",
+  borderRadius: 14,
+  border: "1px solid #e2e8f0",
+  fontSize: 15,
+  outline: "none",
 };
