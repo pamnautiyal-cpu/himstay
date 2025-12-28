@@ -1,15 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+
+const BACKEND_URL = "https://himstay.onrender.com";
 
 export default function HotelDetails() {
+  const { id } = useParams();
+  const [hotel, setHotel] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/api/hotels/${id}`)
+      .then((res) => {
+        setHotel(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Hotel detail fetch error", err);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return <div style={{ padding: 40 }}>Loading hotel details…</div>;
+  }
+
+  if (!hotel) {
+    return <div style={{ padding: 40 }}>Hotel not found</div>;
+  }
+
   return (
     <div style={{ background: "#f1f5f9", minHeight: "100vh" }}>
       {/* HERO IMAGE */}
       <div
         style={{
           height: 360,
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1501117716987-c8e1ecb210d1)",
+          backgroundImage: hotel.image
+            ? `url(${hotel.image})`
+            : "url(https://images.unsplash.com/photo-1501117716987-c8e1ecb210d1)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -26,11 +55,11 @@ export default function HotelDetails() {
           }}
         >
           <h1 style={{ fontSize: 30, fontWeight: 800 }}>
-            Himalayan View Homestay
+            {hotel.name}
           </h1>
 
           <p style={{ color: "#475569", marginBottom: 20 }}>
-            📍 Mussoorie, Uttarakhand · ⭐ 4.6 (120 reviews)
+            📍 {hotel.city} · ⭐ {hotel.rating || 4.5}
           </p>
 
           {/* INFO GRID */}
@@ -42,9 +71,9 @@ export default function HotelDetails() {
               marginBottom: 30,
             }}
           >
-            <div>🛏️ Deluxe Room</div>
-            <div>👨‍👩‍👧 2 Guests</div>
-            <div>🌄 Mountain View</div>
+            <div>🛏️ {hotel.roomType || "Deluxe Room"}</div>
+            <div>👨‍👩‍👧 {hotel.guests || 2} Guests</div>
+            <div>🌄 {hotel.view || "Mountain View"}</div>
             <div>📶 Free Wi-Fi</div>
             <div>🍳 Breakfast Included</div>
             <div>🚗 Free Parking</div>
@@ -65,23 +94,24 @@ export default function HotelDetails() {
                 Price per night
               </p>
               <h2 style={{ fontSize: 28, fontWeight: 800, color: "#16a34a" }}>
-                ₹3,499
+                ₹{hotel.price}
               </h2>
             </div>
 
-            {/* ✅ BOOK NOW → BOOKING PAGE */}
             <Link to="/booking">
               <button
                 style={{
                   padding: "14px 28px",
                   borderRadius: 999,
                   border: "none",
-                  background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+                  background:
+                    "linear-gradient(135deg,#2563eb,#1d4ed8)",
                   color: "#fff",
                   fontWeight: 800,
                   fontSize: 16,
                   cursor: "pointer",
-                  boxShadow: "0 10px 30px rgba(37,99,235,0.5)",
+                  boxShadow:
+                    "0 10px 30px rgba(37,99,235,0.5)",
                 }}
               >
                 Book Now
@@ -104,9 +134,8 @@ export default function HotelDetails() {
             About this stay
           </h3>
           <p style={{ color: "#475569", lineHeight: 1.7 }}>
-            Experience peaceful Himalayan living with panoramic mountain views,
-            warm hospitality, and modern comfort. Ideal for couples, families,
-            and slow travelers.
+            {hotel.description ||
+              "Experience peaceful Himalayan living with warm hospitality and modern comfort."}
           </p>
         </div>
       </div>
