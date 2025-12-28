@@ -24,12 +24,18 @@ export default function Home() {
     color: "#0f172a",
     fontWeight: 700,
     textAlign: "center",
+    cursor: "pointer",
   };
 
   const img = {
     width: "100%",
     height: 160,
     objectFit: "cover",
+    transition: "transform 0.6s ease",
+  };
+
+  const imgWrap = {
+    overflow: "hidden",
   };
 
   return (
@@ -53,7 +59,9 @@ export default function Home() {
             ["Haldwani", "/images/destinations/haldwani.jpg"],
           ].map(([name, image]) => (
             <div key={name} style={card}>
-              <img src={image} alt={name} style={img} />
+              <div style={imgWrap}>
+                <img src={image} alt={name} style={img} className="zoom-img" />
+              </div>
               <div style={{ padding: 16 }}>{name}</div>
             </div>
           ))}
@@ -72,7 +80,9 @@ export default function Home() {
             ["Hemkund Sahib", "/images/chardham/hemkund.jpg"],
           ].map(([name, image]) => (
             <div key={name} style={card}>
-              <img src={image} alt={name} style={img} />
+              <div style={imgWrap}>
+                <img src={image} alt={name} style={img} className="zoom-img" />
+              </div>
               <div style={{ padding: 16 }}>{name}</div>
             </div>
           ))}
@@ -83,30 +93,20 @@ export default function Home() {
       <section style={section}>
         <h2>Trekking & Adventure in Uttarakhand</h2>
         <div style={grid}>
-          <Link to="/treks/kedarkantha" style={card}>
-            <img src="/images/treks/kedarkantha.jpg" style={img} />
-            <div style={{ padding: 16 }}>Kedarkantha Trek</div>
-          </Link>
-
-          <Link to="/treks/har-ki-dun" style={card}>
-            <img src="/images/treks/har-ki-dun.jpg" style={img} />
-            <div style={{ padding: 16 }}>Har Ki Dun Trek</div>
-          </Link>
-
-          <Link to="/treks/nag-tibba" style={card}>
-            <img src="/images/treks/nag-tibba.jpg" style={img} />
-            <div style={{ padding: 16 }}>Nag Tibba Trek</div>
-          </Link>
-
-          <Link to="/treks/valley-of-flowers" style={card}>
-            <img src="/images/treks/valley-of-flowers.jpg" style={img} />
-            <div style={{ padding: 16 }}>Valley of Flowers</div>
-          </Link>
-
-          <Link to="/treks/roopkund" style={card}>
-            <img src="/images/treks/roopkund.jpg" style={img} />
-            <div style={{ padding: 16 }}>Roopkund Trek</div>
-          </Link>
+          {[
+            ["Kedarkantha Trek", "/treks/kedarkantha", "/images/treks/kedarkantha.jpg"],
+            ["Har Ki Dun Trek", "/treks/har-ki-dun", "/images/treks/har-ki-dun.jpg"],
+            ["Nag Tibba Trek", "/treks/nag-tibba", "/images/treks/nag-tibba.jpg"],
+            ["Valley of Flowers", "/treks/valley-of-flowers", "/images/treks/valley-of-flowers.jpg"],
+            ["Roopkund Trek", "/treks/roopkund", "/images/treks/roopkund.jpg"],
+          ].map(([title, link, image]) => (
+            <Link key={title} to={link} style={card}>
+              <div style={imgWrap}>
+                <img src={image} alt={title} style={img} className="zoom-img" />
+              </div>
+              <div style={{ padding: 16 }}>{title}</div>
+            </Link>
+          ))}
         </div>
       </section>
     </div>
