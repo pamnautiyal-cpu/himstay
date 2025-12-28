@@ -20,9 +20,13 @@ app.get("/", (req, res) => {
   res.send("Himstay Backend Running 🚀");
 });
 
-/* 🔴 STEP 3 — CONTACT ROUTE REGISTER HERE */
+/* CONTACT */
 const contactRoutes = require("./routes/contact.routes");
 app.use("/api/contact", contactRoutes);
+
+/* 🔥 HOTELS (THIS WAS MISSING) */
+const hotelRoutes = require("./routes/hotelRoutes");
+app.use("/api/hotels", hotelRoutes);
 
 /* ===== START SERVER ===== */
 const PORT = process.env.PORT || 5000;
