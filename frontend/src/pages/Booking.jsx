@@ -38,32 +38,61 @@ export default function Booking() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  // 🔥 PAYMENT HANDLER (MISSING – NOW ADDED)
+  async function handlePayment() {
+    if (!hotel) return alert("Hotel not loaded");
 
     setLoading(true);
 
-    axios
-      .post(`${BACKEND_URL}/api/bookings`, {
-        hotelId,
-        ...form,
-      })
-      .then(() => {
-        setSuccess(true);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Booking submit error", err);
-        alert("Booking failed. Try again.");
-        setLoading(false);
-      });
+    try {
+      // 1️⃣ Create Razorpay order
+      const orderRes = await fetch(
+        `${BACKEND_URL}/api/payment/create-order`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: hotel.price }),
+        }
+      );
+
+      const order = await orderRes.json();
+
+      // 2️⃣ Razorpay popup
+      const options = {
+        key: "rzp_test_xxxxxxxx", // 🔴 replace with real key
+        amount: order.amount,
+        currency: "INR",
+        name: "Himstay",
+        description: hotel.name,
+        order_id: order.id,
+        handler: async function () {
+          // 3️⃣ Save booking AFTER payment success
+          await axios.post(`${BACKEND_URL}/api/bookings`, {
+            hotelId,
+            ...form,
+            paymentStatus: "paid",
+          });
+
+          setSuccess(true);
+          setLoading(false);
+        },
+        theme: { color: "#16a34a" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Payment error", err);
+      alert("Payment failed");
+      setLoading(false);
+    }
   }
 
   if (success) {
     return (
       <div style={{ padding: 60, textAlign: "center" }}>
         <h1>✅ Booking Confirmed</h1>
-        <p>We have received your booking request.</p>
+        <p>Payment successful & booking saved.</p>
       </div>
     );
   }
@@ -90,9 +119,7 @@ export default function Booking() {
           </p>
         )}
 
-        {/* FORM */}
         <form
-          onSubmit={handleSubmit}
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
@@ -128,33 +155,17 @@ export default function Booking() {
           </div>
 
           <button
-            type="submit"
+            type="button"
+            onClick={handlePayment}
             disabled={loading}
             style={{
               gridColumn: "1 / -1",
               padding: "18px",
               borderRadius: 999,
               border: "none",
-              background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
+              background: "linear-gradient(135deg,#16a34a,#15803d)",
               color: "#fff",
               fontSize: 18,
               fontWeight: 900,
               cursor: "pointer",
               opacity: loading ? 0.6 : 1,
-            }}
-          >
-            {loading ? "Booking..." : "Confirm Booking"}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-const inputStyle = {
-  padding: "16px 18px",
-  borderRadius: 14,
-  border: "1px solid #e2e8f0",
-  fontSize: 15,
-  outline: "none",
-};
