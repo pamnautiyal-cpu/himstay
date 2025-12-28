@@ -1,39 +1,60 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-function AdminBookings() {
-  const [data, setData] = useState([]);
+const BACKEND_URL = "https://himstay.onrender.com";
+
+export default function AdminBookings() {
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    fetch("https://YOUR_BACKEND_URL/api/bookings")
-      .then((res) => res.json())
-      .then(setData);
+    axios
+      .get(`${BACKEND_URL}/api/bookings`)
+      .then((res) => setBookings(res.data))
+      .catch((err) => console.error(err));
   }, []);
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Booking Enquiries</h2>
+    <div style={{ padding: 60 }}>
+      <h1>Admin – Bookings</h1>
 
-      {data.map((b) => (
-        <div
-          key={b._id}
-          style={{
-            background: "#fff",
-            padding: 16,
-            marginTop: 12,
-            borderRadius: 12,
-            boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-          }}
-        >
-          <strong>{b.hotelName}</strong>
-          <div>
-            {b.checkIn} → {b.checkOut}
-          </div>
-          <div>Guests: {b.guests}</div>
-          <div>Total: ₹{b.totalPrice}</div>
-        </div>
-      ))}
+      <table
+        style={{
+          width: "100%",
+          marginTop: 20,
+          borderCollapse: "collapse",
+        }}
+      >
+        <thead>
+          <tr>
+            <th>Hotel</th>
+            <th>Guest</th>
+            <th>Phone</th>
+            <th>Guests</th>
+            <th>Check-in</th>
+            <th>Package</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {bookings.map((b) => (
+            <tr key={b._id}>
+              <td>
+                {b.hotelId?.name} <br />
+                <small>{b.hotelId?.city}</small>
+              </td>
+              <td>{b.name}</td>
+              <td>{b.phone}</td>
+              <td>{b.guests}</td>
+              <td>{b.checkIn}</td>
+              <td>{b.packageType}</td>
+              <td>
+                {new Date(b.createdAt).toLocaleDateString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
-
-export default AdminBookings;
