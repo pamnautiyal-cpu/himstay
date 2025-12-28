@@ -3,7 +3,9 @@ const Hotel = require("../models/Hotel");
 
 const router = express.Router();
 
+// ============================
 // ADD HOTEL (ADMIN)
+// ============================
 router.post("/add", async (req, res) => {
   try {
     const hotel = await Hotel.create(req.body);
@@ -13,7 +15,9 @@ router.post("/add", async (req, res) => {
   }
 });
 
+// ============================
 // SEARCH HOTELS BY CITY
+// ============================
 router.get("/search/city", async (req, res) => {
   const { city } = req.query;
   const hotels = await Hotel.find({
@@ -22,7 +26,9 @@ router.get("/search/city", async (req, res) => {
   res.json(hotels);
 });
 
+// ============================
 // FILTER HOTELS
+// ============================
 router.get("/filter", async (req, res) => {
   const { city, minPrice, maxPrice, rating } = req.query;
 
@@ -36,13 +42,45 @@ router.get("/filter", async (req, res) => {
   res.json(hotels);
 });
 
+// ============================
 // GET ALL HOTELS
+// ============================
 router.get("/", async (req, res) => {
   const hotels = await Hotel.find();
   res.json(hotels);
 });
 
+// ============================
+// UPDATE HOTEL (ADMIN) ✅ ADD
+// ============================
+router.put("/:id", async (req, res) => {
+  try {
+    const hotel = await Hotel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json({ message: "Hotel updated", hotel });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================
+// DELETE HOTEL (ADMIN) ✅ ADD
+// ============================
+router.delete("/:id", async (req, res) => {
+  try {
+    await Hotel.findByIdAndDelete(req.params.id);
+    res.json({ message: "Hotel deleted" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================
 // GET HOTEL BY ID (⚠️ ALWAYS LAST)
+// ============================
 router.get("/:id", async (req, res) => {
   const hotel = await Hotel.findById(req.params.id);
   res.json(hotel);
