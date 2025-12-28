@@ -25,12 +25,13 @@ function Hotels() {
   }, []);
 
   const filteredHotels = cityFilter
-    ? hotels.filter(
-        (h) =>
-          h.city &&
-          h.city.toLowerCase() === cityFilter.toLowerCase()
-      )
-    : hotels;
+  ? hotels.filter(
+      (h) =>
+        h.city &&
+        h.city.toLowerCase().includes(cityFilter.toLowerCase())
+    )
+  : hotels;
+
 
   if (loading) {
     return <div style={{ padding: 40 }}>Loading hotels…</div>;
