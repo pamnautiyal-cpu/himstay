@@ -54,13 +54,18 @@ export default function Home() {
             ["Dehradun", "/images/destinations/dehradun.jpg"],
             ["Haldwani", "/images/destinations/haldwani.jpg"],
           ].map(([name, image]) => (
-            <div key={name} style={card} className="card">
+            <Link
+              key={name}
+              to={`/destination/${name.toLowerCase()}`}
+              style={card}
+              className="card"
+            >
               <div className="card-img-wrap">
                 <img src={image} alt={name} style={img} className="zoom-img" />
                 <div className="card-overlay">Explore →</div>
               </div>
               <div style={{ padding: 16 }}>{name}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -76,18 +81,23 @@ export default function Home() {
             ["Yamunotri", "/images/chardham/yamunotri.jpg"],
             ["Hemkund Sahib", "/images/chardham/hemkund.jpg"],
           ].map(([name, image]) => (
-            <div key={name} style={card} className="card">
+            <Link
+              key={name}
+              to={`/chardham/${name.toLowerCase().replace(/\s+/g, "-")}`}
+              style={card}
+              className="card"
+            >
               <div className="card-img-wrap">
                 <img src={image} alt={name} style={img} className="zoom-img" />
                 <div className="card-overlay">View →</div>
               </div>
               <div style={{ padding: 16 }}>{name}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* TREKKING */}
+      {/* TREKKING (ALREADY OK – NO CHANGE) */}
       <section style={section}>
         <h2>Trekking & Adventure in Uttarakhand</h2>
         <div style={grid}>
@@ -119,13 +129,18 @@ export default function Home() {
             ["Ayurvedic Therapy", "/images/yoga/ayurveda.jpg"],
             ["Panchakarma Detox", "/images/yoga/panchakarma.jpg"],
           ].map(([name, image]) => (
-            <div key={name} style={card} className="card">
+            <Link
+              key={name}
+              to="/yoga/himalayan-retreat"
+              style={card}
+              className="card"
+            >
               <div className="card-img-wrap">
                 <img src={image} alt={name} style={img} className="zoom-img" />
                 <div className="card-overlay">Discover →</div>
               </div>
               <div style={{ padding: 16 }}>{name}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

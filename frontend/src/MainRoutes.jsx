@@ -7,6 +7,9 @@ import Booking from "./pages/Booking";
 import YogaDetail from "./pages/YogaDetail"; // ✅ SINGULAR
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import DestinationDetail from "./pages/DestinationDetail";
+import CharDhamDetail from "./pages/CharDhamDetail";
+
 
 export default function MainRoutes() {
   return (
@@ -26,6 +29,9 @@ export default function MainRoutes() {
 
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+<Route path="/destination/:slug" element={<DestinationDetail />} />
+<Route path="/chardham/:slug" element={<CharDhamDetail />} />
+
     </Routes>
   );
 }
