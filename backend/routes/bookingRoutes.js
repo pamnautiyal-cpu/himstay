@@ -3,17 +3,27 @@ const Booking = require("../models/Booking");
 
 const router = express.Router();
 
-// CREATE booking
+// ADD BOOKING (already used by frontend)
 router.post("/", async (req, res) => {
-  const booking = new Booking(req.body);
-  await booking.save();
-  res.json({ success: true });
+  try {
+    const booking = await Booking.create(req.body);
+    res.json({ message: "Booking saved", booking });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
-// GET all bookings (admin)
+// GET ALL BOOKINGS (ADMIN)
 router.get("/", async (req, res) => {
-  const bookings = await Booking.find().sort({ createdAt: -1 });
-  res.json(bookings);
+  try {
+    const bookings = await Booking.find()
+      .populate("hotelId", "name city price")
+      .sort({ createdAt: -1 });
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
