@@ -1,143 +1,125 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
+/* DESTINATIONS */
+import mussoorie from "../assets/images/destinations/mussoorie.jpg";
+import nainital from "../assets/images/destinations/nainital.jpg";
+import dehradun from "../assets/images/destinations/dehradun.jpg";
+import haldwani from "../assets/images/destinations/haldwani.jpg";
+
+/* CHAR DHAM */
+import kedarnath from "../assets/images/chardham/kedarnath.jpg";
+import badrinath from "../assets/images/chardham/badrinath.jpg";
+import gangotri from "../assets/images/chardham/gangotri.jpg";
+import yamunotri from "../assets/images/chardham/yamunotri.jpg";
+import hemkund from "../assets/images/chardham/hemkund.jpg";
+
+/* TREKS */
+import kedarkantha from "../assets/images/treks/kedarkantha.jpg";
+import harKiDun from "../assets/images/treks/har-ki-dun.jpg";
+import nagTibba from "../assets/images/treks/nag-tibba.jpg";
+import valley from "../assets/images/treks/valley-of-flowers.jpg";
+import roopkund from "../assets/images/treks/roopkund.jpg";
 
 export default function Home() {
-  const sectionStyle = {
+  const section = {
     maxWidth: 1200,
-    margin: "60px auto",
+    margin: "70px auto",
     padding: "0 20px",
   };
 
-  const gridStyle = {
+  const grid = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-    gap: 22,
-    marginTop: 26,
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: 20,
+    marginTop: 24,
   };
 
-  const cardStyle = {
-    background: "#ffffff",
+  const card = {
+    background: "#fff",
     borderRadius: 20,
     overflow: "hidden",
-    boxShadow: "0 18px 45px rgba(15,23,42,0.18)",
+    boxShadow: "0 20px 45px rgba(15,23,42,.15)",
     textDecoration: "none",
     color: "#0f172a",
     fontWeight: 700,
+    textAlign: "center",
   };
 
-  const imgStyle = {
+  const img = {
     width: "100%",
     height: 160,
     objectFit: "cover",
   };
 
-  const titleStyle = {
-    padding: 14,
-    textAlign: "center",
-    fontSize: 16,
-  };
-
-  const Card = ({ title, query }) => (
-    <a
-      href={`https://source.unsplash.com/800x600/?${query}`}
-      target="_blank"
-      rel="noreferrer"
-      style={cardStyle}
-    >
-      <img
-        src={`https://source.unsplash.com/800x600/?${query}`}
-        alt={title}
-        style={imgStyle}
-      />
-      <div style={titleStyle}>{title}</div>
-    </a>
-  );
-
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background:
-          "linear-gradient(180deg,#eaf2ff 0%,#f4f8ff 45%,#ffffff 100%)",
-      }}
-    >
+    <div style={{ background: "#f1f5f9", minHeight: "100vh" }}>
       {/* HERO */}
-      <div
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: "52px 40px",
-          borderRadius: 32,
-          background: "linear-gradient(135deg,#ffffff,#eef2ff)",
-          boxShadow: "0 30px 70px rgba(15,23,42,0.15)",
-        }}
-      >
-        <h1 style={{ fontSize: 42, fontWeight: 800 }}>
-          Find your next stay
-        </h1>
+      <div style={{ maxWidth: 1200, margin: "40px auto", padding: 20 }}>
+        <h1 style={{ fontSize: 44, fontWeight: 900 }}>Find your next stay</h1>
         <p style={{ color: "#475569" }}>
           Hotels, treks & wellness across Uttarakhand
         </p>
       </div>
 
       {/* TOP DESTINATIONS */}
-      <section style={sectionStyle}>
+      <section style={section}>
         <h2>Top destinations in Uttarakhand</h2>
-        <div style={gridStyle}>
-          <Card title="Mussoorie" query="Mussoorie Uttarakhand hills" />
-          <Card title="Nainital" query="Nainital lake Uttarakhand" />
-          <Card title="Dehradun" query="Dehradun Uttarakhand city" />
-          <Card title="Haldwani" query="Haldwani Uttarakhand" />
+        <div style={grid}>
+          {[["Mussoorie", mussoorie], ["Nainital", nainital], ["Dehradun", dehradun], ["Haldwani", haldwani]].map(
+            ([name, image]) => (
+              <div key={name} style={card}>
+                <img src={image} alt={name} style={img} />
+                <div style={{ padding: 16 }}>{name}</div>
+              </div>
+            )
+          )}
         </div>
       </section>
 
       {/* CHAR DHAM */}
-      <section style={sectionStyle}>
+      <section style={section}>
         <h2>Char Dham Yatra Destinations</h2>
-        <div style={gridStyle}>
-          <Card title="Kedarnath" query="Kedarnath temple Himalayas" />
-          <Card title="Badrinath" query="Badrinath temple Uttarakhand" />
-          <Card title="Gangotri" query="Gangotri temple glacier" />
-          <Card title="Yamunotri" query="Yamunotri temple Uttarakhand" />
-          <Card title="Hemkund Sahib" query="Hemkund Sahib gurudwara" />
+        <div style={grid}>
+          {[["Kedarnath", kedarnath], ["Badrinath", badrinath], ["Gangotri", gangotri], ["Yamunotri", yamunotri], ["Hemkund Sahib", hemkund]].map(
+            ([name, image]) => (
+              <div key={name} style={card}>
+                <img src={image} alt={name} style={img} />
+                <div style={{ padding: 16 }}>{name}</div>
+              </div>
+            )
+          )}
         </div>
       </section>
 
       {/* TREKKING */}
-      <section style={sectionStyle}>
+      <section style={section}>
         <h2>Trekking & Adventure in Uttarakhand</h2>
-        <div style={gridStyle}>
-          <Card title="Kedarkantha Trek" query="Kedarkantha trek snow" />
-          <Card title="Har Ki Dun Trek" query="Har Ki Dun valley trek" />
-          <Card title="Nag Tibba Trek" query="Nag Tibba trek" />
-          <Card title="Valley of Flowers" query="Valley of Flowers Uttarakhand" />
-          <Card title="Roopkund Trek" query="Roopkund trek lake" />
-        </div>
-      </section>
+        <div style={grid}>
+          <Link to="/treks/kedarkantha" style={card}>
+            <img src={kedarkantha} alt="Kedarkantha" style={img} />
+            <div style={{ padding: 16 }}>Kedarkantha Trek</div>
+          </Link>
 
-      {/* YOGA & NATURAL THERAPY */}
-      <section style={sectionStyle}>
-        <h2>Yoga & Natural Therapy Retreats</h2>
-        <div style={gridStyle}>
-          <Card
-            title="Himalayan Yoga Retreat"
-            query="Himalayan yoga retreat meditation"
-          />
-          <Card
-            title="Naturopathy Healing"
-            query="naturopathy healing nature"
-          />
-          <Card
-            title="Meditation & Pranayama"
-            query="meditation pranayama mountains"
-          />
-          <Card
-            title="Ayurvedic Therapy"
-            query="ayurvedic therapy spa"
-          />
-          <Card
-            title="Panchakarma Detox"
-            query="panchakarma ayurveda detox"
-          />
+          <Link to="/treks/har-ki-dun" style={card}>
+            <img src={harKiDun} alt="Har Ki Dun" style={img} />
+            <div style={{ padding: 16 }}>Har Ki Dun Trek</div>
+          </Link>
+
+          <Link to="/treks/nag-tibba" style={card}>
+            <img src={nagTibba} alt="Nag Tibba" style={img} />
+            <div style={{ padding: 16 }}>Nag Tibba Trek</div>
+          </Link>
+
+          <Link to="/treks/valley-of-flowers" style={card}>
+            <img src={valley} alt="Valley of Flowers" style={img} />
+            <div style={{ padding: 16 }}>Valley of Flowers</div>
+          </Link>
+
+          <Link to="/treks/roopkund" style={card}>
+            <img src={roopkund} alt="Roopkund" style={img} />
+            <div style={{ padding: 16 }}>Roopkund Trek</div>
+          </Link>
         </div>
       </section>
     </div>
