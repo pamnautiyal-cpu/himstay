@@ -10,12 +10,10 @@ const razorpay = new Razorpay({
 });
 
 // ============================
-// CREATE ORDER ✅
+// CREATE ORDER
 // ============================
 router.post("/create-order", async (req, res) => {
   try {
-    console.log("CREATE ORDER BODY:", req.body); // 🔴 DEBUG
-
     const { amount } = req.body;
 
     if (!amount) {
@@ -28,10 +26,51 @@ router.post("/create-order", async (req, res) => {
       receipt: "himstay_receipt_" + Date.now(),
     });
 
-    res.json(order);
+    return res.json(order);
   } catch (err) {
-    console.error("RAZORPAY ERROR:", err);
-    res.status(500).json({ error: err.message });
+    console.error("RAZORPAY CREATE ORDER ERROR:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================
+// VERIFY PAYMENT ✅ (IMPORTANT)
+// ============================
+router.post("/verify", (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = req.body;
+
+    if (
+      !razorpay_order_id ||
+      !razorpay_payment_id ||
+      !razorpay_signature
+    ) {
+      return res.status(400).json({ success: false });
+    }
+
+    const body =
+      razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_KEY_SECRET
+      )
+      .update(body)
+      .digest("hex");
+
+    if (expectedSignature === razorpay_signature) {
+      return res.json({ success: true });
+    } else {
+      return res.status(400).json({ success: false });
+    }
+  } catch (err) {
+    console.error("VERIFY ERROR:", err);
+    return res.status(500).json({ success: false });
   }
 });
 
