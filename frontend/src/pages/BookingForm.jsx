@@ -6,8 +6,33 @@ export default function BookingForm({ title }) {
   const [date, setDate] = useState("");
 
   const handleWhatsApp = () => {
-    const msg = `Hello, I want to book:\n\n${title}\nName: ${name}\nPhone: ${phone}\nPreferred Date: ${date}`;
-    const url = `https://wa.me/919410106470?text=${encodeURIComponent(msg)}`;
+    // 🔴 BASIC VALIDATION
+    if (!name.trim()) {
+      alert("Please enter your name");
+      return;
+    }
+
+    if (!phone.trim()) {
+      alert("Please enter phone number");
+      return;
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      alert("Enter valid 10-digit Indian mobile number");
+      return;
+    }
+
+    // ✅ CLEAN MESSAGE
+    let msg = `Hello 👋\n\nI want to book / enquire:\n\n🏨 ${title}\n👤 Name: ${name}\n📞 Phone: ${phone}`;
+
+    if (date) {
+      msg += `\n📅 Preferred Date: ${date}`;
+    }
+
+    const url = `https://wa.me/919410106470?text=${encodeURIComponent(
+      msg
+    )}`;
+
     window.open(url, "_blank");
   };
 
@@ -24,14 +49,14 @@ export default function BookingForm({ title }) {
       <h3 style={{ marginBottom: 16 }}>📋 Book / Enquire</h3>
 
       <input
-        placeholder="Your Name"
+        placeholder="Your Name *"
         value={name}
         onChange={(e) => setName(e.target.value)}
         style={inputStyle}
       />
 
       <input
-        placeholder="Phone Number"
+        placeholder="Phone Number *"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
         style={inputStyle}
