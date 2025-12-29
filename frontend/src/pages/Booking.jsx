@@ -9,19 +9,14 @@ export default function Booking() {
   const hotelId = searchParams.get("hotelId");
 
   const [hotel, setHotel] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    city: "",
-    guests: 1,
-    checkIn: "",
-    packageType: "Hotel Stay",
-    notes: "",
-  });
-
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
 
   useEffect(() => {
     if (!hotelId) return;
@@ -29,31 +24,22 @@ export default function Booking() {
     axios
       .get(`${BACKEND_URL}/api/hotels/${hotelId}`)
       .then((res) => setHotel(res.data))
-      .catch((err) =>
-        console.error("Booking hotel fetch error", err)
-      );
+      .catch((err) => console.error(err));
   }, [hotelId]);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  // 🔥 PAYMENT HANDLER (FIXED)
   async function handlePayment() {
-    alert("PAY NOW CLICKED"); // ✅ DEBUG (remove later)
-
     if (!hotel) return alert("Hotel not loaded");
-
-    if (!window.Razorpay) {
-      alert("Razorpay SDK not loaded");
-      return;
-    }
+    if (!window.Razorpay) return alert("Razorpay not loaded");
 
     setLoading(true);
 
     try {
-      // 1️⃣ Create Razorpay order
-      const orderRes = await fetch(
+      // 1️⃣ CREATE ORDER
+      const res = await fetch(
         `${BACKEND_URL}/api/payment/create-order`,
         {
           method: "POST",
@@ -62,7 +48,7 @@ export default function Booking() {
         }
       );
 
-      const order = await orderRes.json();
+      const order = await res.json();
 
       if (!order.id) {
         alert("Order creation failed");
@@ -70,16 +56,23 @@ export default function Booking() {
         return;
       }
 
-      // 2️⃣ Razorpay popup
+      // 2️⃣ OPEN RAZORPAY POPUP
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // ✅ CORRECT
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // 🔥 FRONTEND KEY
         amount: order.amount,
         currency: "INR",
-        name: "Himstay",
+        name: "The Himalayans",
         description: hotel.name,
         order_id: order.id,
+
         handler: async function (response) {
-          // 3️⃣ Save booking AFTER payment success
+          if (!response.razorpay_payment_id) {
+            alert("Payment not completed");
+            setLoading(false);
+            return;
+          }
+
+          // 3️⃣ SAVE BOOKING
           await axios.post(`${BACKEND_URL}/api/bookings`, {
             hotelId,
             ...form,
@@ -90,13 +83,14 @@ export default function Booking() {
           setSuccess(true);
           setLoading(false);
         },
+
         theme: { color: "#16a34a" },
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.error("Payment error", err);
+      console.error(err);
       alert("Payment failed");
       setLoading(false);
     }
@@ -106,62 +100,69 @@ export default function Booking() {
     return (
       <div style={{ padding: 60, textAlign: "center" }}>
         <h1>✅ Booking Confirmed</h1>
-        <p>Payment successful & booking saved.</p>
+        <p>Payment successful.</p>
       </div>
     );
   }
 
   return (
-    <div style={{ background: "#f1f5f9", minHeight: "100vh", padding: "60px 20px" }}>
-      <div
+    <div style={{ padding: 40, maxWidth: 500, margin: "0 auto" }}>
+      <h1>Complete Your Booking</h1>
+
+      {hotel && (
+        <p>
+          <b>{hotel.name}</b> · {hotel.city} · ₹{hotel.price}/night
+        </p>
+      )}
+
+      {/* 🔴 BOOKING FORM */}
+      <input
+        name="name"
+        placeholder="Your Name"
+        onChange={handleChange}
+        style={inputStyle}
+      />
+
+      <input
+        name="phone"
+        placeholder="Phone Number"
+        onChange={handleChange}
+        style={inputStyle}
+      />
+
+      <input
+        name="email"
+        placeholder="Email"
+        onChange={handleChange}
+        style={inputStyle}
+      />
+
+      <button
+        onClick={handlePayment}
+        disabled={loading}
         style={{
-          maxWidth: 900,
-          margin: "0 auto",
-          background: "#ffffff",
-          borderRadius: 24,
-          padding: 40,
-          boxShadow: "0 30px 70px rgba(15,23,42,0.2)",
+          marginTop: 20,
+          width: "100%",
+          padding: 16,
+          borderRadius: 30,
+          border: "none",
+          background: "#16a34a",
+          color: "#fff",
+          fontSize: 18,
+          fontWeight: 700,
+          cursor: "pointer",
         }}
       >
-        <h1 style={{ fontSize: 34, fontWeight: 900 }}>
-          Complete Your Booking
-        </h1>
-
-        {hotel && (
-          <p>
-            🏨 <b>{hotel.name}</b> · {hotel.city} · ₹{hotel.price}/night
-          </p>
-        )}
-
-        <button
-          type="button"
-          onClick={handlePayment}
-          disabled={loading}
-          style={{
-            marginTop: 20,
-            width: "100%",
-            padding: "18px",
-            borderRadius: 999,
-            border: "none",
-            background: "linear-gradient(135deg,#16a34a,#15803d)",
-            color: "#fff",
-            fontSize: 18,
-            fontWeight: 900,
-            cursor: "pointer",
-            opacity: loading ? 0.6 : 1,
-          }}
-        >
-          Pay Now
-        </button>
-      </div>
+        {loading ? "Processing..." : "Pay Now"}
+      </button>
     </div>
   );
 }
 
 const inputStyle = {
-  padding: "16px 18px",
-  borderRadius: 14,
-  border: "1px solid #e2e8f0",
-  fontSize: 15,
-  outline: "none",
+  width: "100%",
+  padding: 14,
+  marginTop: 12,
+  borderRadius: 10,
+  border: "1px solid #ccc",
 };
