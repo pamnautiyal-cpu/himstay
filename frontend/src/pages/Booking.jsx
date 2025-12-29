@@ -18,6 +18,9 @@ export default function Booking() {
     email: "",
   });
 
+  // ============================
+  // LOAD HOTEL
+  // ============================
   useEffect(() => {
     if (!hotelId) return;
 
@@ -68,10 +71,13 @@ export default function Booking() {
         description: hotel.name,
         order_id: order.id,
 
+        // ============================
+        // ✅ HANDLER (FINAL)
+        // ============================
         handler: async function (response) {
           try {
-            // 3️⃣ VERIFY PAYMENT (BACKEND)
-            const verify = await axios.post(
+            // 3️⃣ VERIFY PAYMENT
+            const verifyRes = await axios.post(
               `${BACKEND_URL}/api/payment/verify`,
               {
                 razorpay_order_id: response.razorpay_order_id,
@@ -80,7 +86,7 @@ export default function Booking() {
               }
             );
 
-            if (!verify.data.success) {
+            if (!verifyRes.data.success) {
               alert("Payment verification failed");
               setLoading(false);
               return;
@@ -116,7 +122,7 @@ export default function Booking() {
   }
 
   // ============================
-  // SUCCESS
+  // SUCCESS UI
   // ============================
   if (success) {
     return (
@@ -128,7 +134,7 @@ export default function Booking() {
   }
 
   // ============================
-  // UI
+  // FORM UI
   // ============================
   return (
     <div style={{ padding: 40, maxWidth: 500, margin: "0 auto" }}>
