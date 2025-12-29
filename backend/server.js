@@ -7,7 +7,7 @@ const app = express();
 
 /* ===== MIDDLEWARE ===== */
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // 🔴 MUST be before routes
 
 /* ===== DATABASE ===== */
 mongoose
@@ -20,22 +20,10 @@ app.get("/", (req, res) => {
   res.send("Himstay Backend Running 🚀");
 });
 
-/* CONTACT ROUTE */
-const contactRoutes = require("./routes/contact.routes");
-app.use("/api/contact", contactRoutes);
-
-/* 🔥 HOTELS ROUTE */
-const hotelRoutes = require("./routes/hotelRoutes");
-app.use("/api/hotels", hotelRoutes);
-
-/* 🔥 BOOKINGS ROUTE (ADD THIS) */
-const bookingRoutes = require("./routes/bookingRoutes");
-app.use("/api/bookings", bookingRoutes);
-
-/* 🔥 PAYMENT ROUTE */
-const paymentRoutes = require("./routes/paymentRoutes");
-app.use("/api/payment", paymentRoutes);
-
+app.use("/api/contact", require("./routes/contact.routes"));
+app.use("/api/hotels", require("./routes/hotelRoutes"));
+app.use("/api/bookings", require("./routes/bookingRoutes"));
+app.use("/api/payment", require("./routes/paymentRoutes"));
 
 /* ===== START SERVER ===== */
 const PORT = process.env.PORT || 5000;

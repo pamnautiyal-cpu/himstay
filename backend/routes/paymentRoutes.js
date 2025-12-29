@@ -14,6 +14,8 @@ const razorpay = new Razorpay({
 // ============================
 router.post("/create-order", async (req, res) => {
   try {
+    console.log("CREATE ORDER BODY:", req.body);
+
     const { amount } = req.body;
 
     if (!amount) {
@@ -21,23 +23,25 @@ router.post("/create-order", async (req, res) => {
     }
 
     const order = await razorpay.orders.create({
-      amount: Number(amount) * 100, // rupees → paise
+      amount: Number(amount) * 100,
       currency: "INR",
-      receipt: "himstay_receipt_" + Date.now(),
+      receipt: "himstay_" + Date.now(),
     });
 
     return res.json(order);
   } catch (err) {
-    console.error("RAZORPAY CREATE ORDER ERROR:", err);
+    console.error("CREATE ORDER ERROR:", err);
     return res.status(500).json({ error: err.message });
   }
 });
 
 // ============================
-// VERIFY PAYMENT ✅ (IMPORTANT)
+// VERIFY PAYMENT (CRITICAL)
 // ============================
 router.post("/verify", (req, res) => {
   try {
+    console.log("VERIFY BODY:", req.body);
+
     const {
       razorpay_order_id,
       razorpay_payment_id,
@@ -49,6 +53,7 @@ router.post("/verify", (req, res) => {
       !razorpay_payment_id ||
       !razorpay_signature
     ) {
+      console.error("VERIFY FAILED: missing fields");
       return res.status(400).json({ success: false });
     }
 
@@ -56,16 +61,15 @@ router.post("/verify", (req, res) => {
       razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSignature = crypto
-      .createHmac(
-        "sha256",
-        process.env.RAZORPAY_KEY_SECRET
-      )
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body)
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
+      console.log("VERIFY SUCCESS");
       return res.json({ success: true });
     } else {
+      console.error("VERIFY SIGNATURE MISMATCH");
       return res.status(400).json({ success: false });
     }
   } catch (err) {
