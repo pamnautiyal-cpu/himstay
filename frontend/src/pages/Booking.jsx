@@ -31,6 +31,9 @@ export default function Booking() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  // ============================
+  // 🔥 PAY NOW
+  // ============================
   async function handlePayment() {
     if (!hotel) return alert("Hotel not loaded");
     if (!window.Razorpay) return alert("Razorpay not loaded");
@@ -56,9 +59,9 @@ export default function Booking() {
         return;
       }
 
-      // 2️⃣ OPEN RAZORPAY POPUP
+      // 2️⃣ OPEN RAZORPAY
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // 🔥 FRONTEND KEY
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // ✅ frontend test key
         amount: order.amount,
         currency: "INR",
         name: "The Himalayans",
@@ -66,22 +69,38 @@ export default function Booking() {
         order_id: order.id,
 
         handler: async function (response) {
-          if (!response.razorpay_payment_id) {
-            alert("Payment not completed");
+          try {
+            // 3️⃣ VERIFY PAYMENT (BACKEND)
+            const verify = await axios.post(
+              `${BACKEND_URL}/api/payment/verify`,
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }
+            );
+
+            if (!verify.data.success) {
+              alert("Payment verification failed");
+              setLoading(false);
+              return;
+            }
+
+            // 4️⃣ SAVE BOOKING
+            await axios.post(`${BACKEND_URL}/api/bookings`, {
+              hotelId,
+              ...form,
+              paymentStatus: "paid",
+              razorpayPaymentId: response.razorpay_payment_id,
+            });
+
+            setSuccess(true);
             setLoading(false);
-            return;
+          } catch (err) {
+            console.error(err);
+            alert("Payment failed");
+            setLoading(false);
           }
-
-          // 3️⃣ SAVE BOOKING
-          await axios.post(`${BACKEND_URL}/api/bookings`, {
-            hotelId,
-            ...form,
-            paymentStatus: "paid",
-            razorpayPaymentId: response.razorpay_payment_id,
-          });
-
-          setSuccess(true);
-          setLoading(false);
         },
 
         theme: { color: "#16a34a" },
@@ -96,6 +115,9 @@ export default function Booking() {
     }
   }
 
+  // ============================
+  // SUCCESS
+  // ============================
   if (success) {
     return (
       <div style={{ padding: 60, textAlign: "center" }}>
@@ -105,6 +127,9 @@ export default function Booking() {
     );
   }
 
+  // ============================
+  // UI
+  // ============================
   return (
     <div style={{ padding: 40, maxWidth: 500, margin: "0 auto" }}>
       <h1>Complete Your Booking</h1>
@@ -115,7 +140,6 @@ export default function Booking() {
         </p>
       )}
 
-      {/* 🔴 BOOKING FORM */}
       <input
         name="name"
         placeholder="Your Name"
