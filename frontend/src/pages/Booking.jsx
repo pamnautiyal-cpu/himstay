@@ -38,9 +38,16 @@ export default function Booking() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  // 🔥 PAYMENT HANDLER (MISSING – NOW ADDED)
+  // 🔥 PAYMENT HANDLER (FIXED)
   async function handlePayment() {
+    alert("PAY NOW CLICKED"); // ✅ DEBUG (remove later)
+
     if (!hotel) return alert("Hotel not loaded");
+
+    if (!window.Razorpay) {
+      alert("Razorpay SDK not loaded");
+      return;
+    }
 
     setLoading(true);
 
@@ -57,20 +64,27 @@ export default function Booking() {
 
       const order = await orderRes.json();
 
+      if (!order.id) {
+        alert("Order creation failed");
+        setLoading(false);
+        return;
+      }
+
       // 2️⃣ Razorpay popup
       const options = {
-        key: "rzp_test_xxxxxxxx", // 🔴 replace with real key
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // ✅ CORRECT
         amount: order.amount,
         currency: "INR",
         name: "Himstay",
         description: hotel.name,
         order_id: order.id,
-        handler: async function () {
+        handler: async function (response) {
           // 3️⃣ Save booking AFTER payment success
           await axios.post(`${BACKEND_URL}/api/bookings`, {
             hotelId,
             ...form,
             paymentStatus: "paid",
+            razorpayPaymentId: response.razorpay_payment_id,
           });
 
           setSuccess(true);
@@ -109,63 +123,45 @@ export default function Booking() {
           boxShadow: "0 30px 70px rgba(15,23,42,0.2)",
         }}
       >
-        <h1 style={{ fontSize: 34, fontWeight: 900, marginBottom: 10 }}>
+        <h1 style={{ fontSize: 34, fontWeight: 900 }}>
           Complete Your Booking
         </h1>
 
         {hotel && (
-          <p style={{ color: "#475569", marginBottom: 20 }}>
+          <p>
             🏨 <b>{hotel.name}</b> · {hotel.city} · ₹{hotel.price}/night
           </p>
         )}
 
-        <form
+        <button
+          type="button"
+          onClick={handlePayment}
+          disabled={loading}
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: 20,
+            marginTop: 20,
+            width: "100%",
+            padding: "18px",
+            borderRadius: 999,
+            border: "none",
+            background: "linear-gradient(135deg,#16a34a,#15803d)",
+            color: "#fff",
+            fontSize: 18,
+            fontWeight: 900,
+            cursor: "pointer",
+            opacity: loading ? 0.6 : 1,
           }}
         >
-          <input name="name" placeholder="Full Name" style={inputStyle} onChange={handleChange} required />
-          <input name="email" placeholder="Email Address" type="email" style={inputStyle} onChange={handleChange} required />
-          <input name="phone" placeholder="Mobile Number" type="tel" style={inputStyle} onChange={handleChange} required />
-          <input name="city" placeholder="City" style={inputStyle} onChange={handleChange} />
+          Pay Now
+        </button>
+      </div>
+    </div>
+  );
+}
 
-          <input name="checkIn" type="date" style={inputStyle} onChange={handleChange} />
-          <input name="guests" type="number" min="1" placeholder="Number of Guests" style={inputStyle} onChange={handleChange} />
-
-          <select name="packageType" style={inputStyle} onChange={handleChange}>
-            <option>Hotel Stay</option>
-            <option>Trekking Package</option>
-            <option>Yoga Retreat</option>
-          </select>
-
-          <textarea
-            name="notes"
-            placeholder="Special Requests (optional)"
-            rows={4}
-            style={{ ...inputStyle, gridColumn: "1 / -1" }}
-            onChange={handleChange}
-          />
-
-          <div style={{ gridColumn: "1 / -1" }}>
-            <h2 style={{ color: "#16a34a" }}>
-              ₹{hotel ? hotel.price : "—"}
-            </h2>
-          </div>
-
-          <button
-            type="button"
-            onClick={handlePayment}
-            disabled={loading}
-            style={{
-              gridColumn: "1 / -1",
-              padding: "18px",
-              borderRadius: 999,
-              border: "none",
-              background: "linear-gradient(135deg,#16a34a,#15803d)",
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: 900,
-              cursor: "pointer",
-              opacity: loading ? 0.6 : 1,
+const inputStyle = {
+  padding: "16px 18px",
+  borderRadius: 14,
+  border: "1px solid #e2e8f0",
+  fontSize: 15,
+  outline: "none",
+};
