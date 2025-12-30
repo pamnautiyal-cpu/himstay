@@ -9,13 +9,11 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-// ============================
-// CREATE ORDER
-// ============================
+/* =========================
+   CREATE ORDER
+========================= */
 router.post("/create-order", async (req, res) => {
   try {
-    console.log("CREATE ORDER BODY:", req.body);
-
     const { amount } = req.body;
 
     if (!amount) {
@@ -25,53 +23,39 @@ router.post("/create-order", async (req, res) => {
     const order = await razorpay.orders.create({
       amount: Number(amount) * 100,
       currency: "INR",
-      receipt: "himstay_" + Date.now(),
+      receipt: "order_" + Date.now(),
     });
 
     return res.json(order);
   } catch (err) {
     console.error("CREATE ORDER ERROR:", err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Order creation failed" });
   }
 });
 
-// ============================
-// VERIFY PAYMENT (CRITICAL)
-// ============================
+/* =========================
+   VERIFY PAYMENT
+========================= */
 router.post("/verify", (req, res) => {
   try {
-    console.log("VERIFY BODY:", req.body);
-
     const {
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
     } = req.body;
 
-    if (
-      !razorpay_order_id ||
-      !razorpay_payment_id ||
-      !razorpay_signature
-    ) {
-      console.error("VERIFY FAILED: missing fields");
-      return res.status(400).json({ success: false });
-    }
-
-    const body =
-      razorpay_order_id + "|" + razorpay_payment_id;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body)
       .digest("hex");
 
-    if (expectedSignature === razorpay_signature) {
-      console.log("VERIFY SUCCESS");
-      return res.json({ success: true });
-    } else {
-      console.error("VERIFY SIGNATURE MISMATCH");
+    if (expectedSignature !== razorpay_signature) {
       return res.status(400).json({ success: false });
     }
+
+    return res.json({ success: true });
   } catch (err) {
     console.error("VERIFY ERROR:", err);
     return res.status(500).json({ success: false });
