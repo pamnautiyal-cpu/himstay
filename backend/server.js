@@ -6,7 +6,20 @@ require("dotenv").config();
 const app = express();
 
 /* ===== MIDDLEWARE ===== */
-app.use(cors());
+
+// 🔥 FIXED CORS FOR RAZORPAY + FRONTEND
+app.use(
+  cors({
+    origin: [
+      "https://thehimalayans.in",
+      "https://www.thehimalayans.in",
+      "https://checkout.razorpay.com"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+
 app.use(express.json()); // 🔴 MUST be before routes
 
 /* ===== DATABASE ===== */
