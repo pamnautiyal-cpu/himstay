@@ -78,3 +78,4 @@ async function handlePayment() {
     setLoading(false);
   }
 }
+export default Booking;
