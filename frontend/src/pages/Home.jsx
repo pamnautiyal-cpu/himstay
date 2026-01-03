@@ -36,13 +36,24 @@ export default function Home() {
 
   return (
     <div style={{ background: "#f1f5f9", minHeight: "100vh" }}>
-      {/* HERO */}
-      <div style={{ maxWidth: 1200, margin: "40px auto", padding: 20 }}>
-        <h1 style={{ fontSize: 44, fontWeight: 900 }}>Find your next stay</h1>
-        <p style={{ color: "#475569" }}>
-          Hotels, treks & wellness across Uttarakhand
-        </p>
-      </div>
+     <section className="hero">
+  <div className="hero-content">
+    <h1>
+      Find your next stay <br />
+      in the Himalayas
+    </h1>
+
+    <p>
+      Curated hotels, treks & wellness stays across Uttarakhand
+    </p>
+
+    <div className="hero-actions">
+      <a href="/hotels" className="btn-primary">Explore Stays</a>
+      <a href="/contact" className="btn-ghost">Plan with us</a>
+    </div>
+  </div>
+</section>
+
 
       {/* TOP DESTINATIONS */}
       <section style={section}>
