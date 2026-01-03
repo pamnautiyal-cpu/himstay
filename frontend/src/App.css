@@ -1,267 +1,123 @@
-/* ===== MODERN IMAGE CARDS ===== */
-
-.cards-section {
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 0 20px;
+/* ===== GLOBAL RESET ===== */
+* {
+  box-sizing: border-box;
 }
 
-.section-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 22px;
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
+  background: #f8fafc;
+  color: #0f172a;
 }
 
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 22px;
-}
-
-.image-card {
+/* ===== HERO (BOOKING STYLE – COMPACT) ===== */
+.hero-booking {
   position: relative;
-  height: 360px;
-  border-radius: 22px;
-  overflow: hidden;
-  text-decoration: none;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.image-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.image-card:hover img {
-  transform: scale(1.08);
-}
-
-.image-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.6);
-}
-
-.card-gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(2, 6, 23, 0.95),
-    rgba(2, 6, 23, 0.2),
-    transparent
-  );
-}
-
-.card-title {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-/* ===== HERO MODERN ===== */
-
-.hero-modern {
-  position: relative;
-  height: 88vh;
+  height: 260px; /* 🔥 BIG IMAGE FIX */
+  background: url("/images/hero/himalaya.jpg") center/cover no-repeat;
   display: flex;
   align-items: center;
-  background-image: url("/images/hero/himalayas.jpg");
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(2, 6, 23, 0.95),
-    rgba(2, 6, 23, 0.65),
-    rgba(2, 6, 23, 0.3)
+    90deg,
+    rgba(2,6,23,0.92),
+    rgba(2,6,23,0.65),
+    rgba(2,6,23,0.35)
   );
 }
 
-.hero-inner {
+.hero-content {
   position: relative;
   z-index: 2;
   max-width: 1200px;
+  padding: 0 20px;
   margin: 0 auto;
-  padding: 0 22px;
   color: #fff;
 }
 
-.hero-inner h1 {
-  font-size: clamp(42px, 6vw, 68px);
-  font-weight: 900;
-  line-height: 1.05;
-  margin-bottom: 20px;
+.hero-content h1 {
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0 0 6px;
 }
 
-.hero-inner h1 span {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.hero-content p {
+  font-size: 15px;
+  opacity: 0.9;
+  margin: 0 0 16px;
 }
 
-.hero-inner p {
-  max-width: 520px;
-  font-size: 18px;
-  color: #cbd5f5;
-  margin-bottom: 34px;
-}
-
-.hero-actions {
+/* ===== SEARCH BAR ===== */
+.hero-search {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.btn-primary {
-  padding: 14px 28px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: #fff;
-  font-weight: 800;
-  text-decoration: none;
-  box-shadow: 0 15px 40px rgba(34, 197, 94, 0.55);
-}
-
-.btn-secondary {
-  padding: 14px 28px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #fff;
-  font-weight: 700;
-  text-decoration: none;
-  backdrop-filter: blur(8px);
-}
-
-.btn-primary:hover,
-.btn-secondary:hover {
-  transform: translateY(-2px);
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .hero-modern {
-    height: 78vh;
-  }
-
-  .hero-inner p {
-    font-size: 16px;
-  }
-}
-/* ===== BOOKING STYLE HOME ===== */
-
-.booking-home {
-  background: #f5f7fb;
-  min-height: 100vh;
-}
-
-.booking-hero {
-  background: linear-gradient(135deg, #003580, #0057b8);
-  color: #fff;
-  padding: 100px 20px 140px;
-}
-
-.booking-hero-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.booking-hero h1 {
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-
-.booking-hero p {
-  font-size: 18px;
-  color: #dbeafe;
-  margin-bottom: 40px;
-}
-
-/* SEARCH CARD */
-.search-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 18px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 14px;
-  box-shadow: 0 30px 70px rgba(0,0,0,0.25);
-  max-width: 760px;
-}
-
-.search-card input {
-  padding: 16px 18px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  font-size: 16px;
-  outline: none;
-}
-
-.search-card button {
-  padding: 16px 28px;
-  border-radius: 10px;
+.hero-search input {
+  padding: 12px 14px;
+  border-radius: 8px;
   border: none;
-  background: #0071c2;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.search-card button:hover {
-  background: #005fa3;
-}
-
-/* MOBILE */
-@media (max-width: 640px) {
-  .search-card {
-    grid-template-columns: 1fr;
-  }
-
-  .search-card button {
-    width: 100%;
-  }
-}
-.footer {
-  background: #020617;
-  color: #cbd5f5;
-  padding: 60px 20px 30px;
-}
-
-.footer-grid {
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 40px;
-}
-
-.footer h4 {
-  color: #fff;
-  margin-bottom: 14px;
-}
-
-.footer p {
-  margin: 6px 0;
+  width: 260px;
   font-size: 14px;
 }
 
-.footer-copy {
+.hero-search button {
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.section h2 {
+  font-size: 22px;
+  margin-bottom: 18px;
+}
+
+/* ===== CARDS ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #0f172a;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 55px rgba(0,0,0,0.2);
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card-title {
+  padding: 14px;
+  font-weight: 700;
   text-align: center;
-  margin-top: 40px;
-  font-size: 13px;
-  color: #94a3b8;
 }
