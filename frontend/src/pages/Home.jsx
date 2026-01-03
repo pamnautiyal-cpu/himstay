@@ -5,7 +5,33 @@ export default function Home() {
   return (
     <div style={{ background: "#020617", minHeight: "100vh" }}>
 
-      {/* DESTINATIONS */}
+      {/* ================= HERO ================= */}
+      <section className="hero-modern">
+        <div className="hero-overlay" />
+
+        <div className="hero-inner">
+          <h1>
+            Discover stays <br />
+            in the <span>Himalayas</span>
+          </h1>
+
+          <p>
+            Handpicked hotels, homestays, treks & wellness retreats
+            across Uttarakhand
+          </p>
+
+          <div className="hero-actions">
+            <Link to="/hotels" className="btn-primary">
+              Explore Stays
+            </Link>
+            <Link to="/contact" className="btn-secondary">
+              Plan with Experts
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= DESTINATIONS ================= */}
       <section className="cards-section">
         <h2 className="section-title">Top Destinations</h2>
 
@@ -29,7 +55,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TREKS */}
+      {/* ================= TREKS ================= */}
       <section className="cards-section">
         <h2 className="section-title">Popular Treks</h2>
 

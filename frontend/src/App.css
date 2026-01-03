@@ -66,3 +66,97 @@
   font-weight: 800;
   line-height: 1.2;
 }
+/* ===== HERO MODERN ===== */
+
+.hero-modern {
+  position: relative;
+  height: 88vh;
+  display: flex;
+  align-items: center;
+  background-image: url("/images/hero/himalayas.jpg");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(2, 6, 23, 0.95),
+    rgba(2, 6, 23, 0.65),
+    rgba(2, 6, 23, 0.3)
+  );
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 22px;
+  color: #fff;
+}
+
+.hero-inner h1 {
+  font-size: clamp(42px, 6vw, 68px);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.hero-inner h1 span {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-inner p {
+  max-width: 520px;
+  font-size: 18px;
+  color: #cbd5f5;
+  margin-bottom: 34px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 15px 40px rgba(34, 197, 94, 0.55);
+}
+
+.btn-secondary {
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+}
+
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero-modern {
+    height: 78vh;
+  }
+
+  .hero-inner p {
+    font-size: 16px;
+  }
+}
