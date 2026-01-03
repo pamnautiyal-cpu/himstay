@@ -126,3 +126,149 @@
     font-size: 2.3rem;
   }
 }
+/* ============================= */
+/* 🌄 HERO SECTION */
+/* ============================= */
+
+.hero {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2,6,23,0.75),
+      rgba(2,6,23,0.35)
+    ),
+    url("/images/hero/hero-bg.jpg") center/cover no-repeat;
+  color: #fff;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.hero p {
+  margin-top: 18px;
+  font-size: 18px;
+  max-width: 520px;
+  color: #e5e7eb;
+}
+
+.hero-actions {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-ghost {
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ============================= */
+/* 🧩 CARD DESIGN */
+/* ============================= */
+
+.card {
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(15,23,42,.25);
+}
+
+.card-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.zoom-img {
+  transition: transform .6s ease;
+}
+
+.card:hover .zoom-img {
+  transform: scale(1.12);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    180deg,
+    rgba(2,6,23,0),
+    rgba(2,6,23,.65)
+  );
+  color: #fff;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.card:hover .card-overlay {
+  opacity: 1;
+}
+
+/* ============================= */
+/* 📝 SECTION HEADINGS */
+/* ============================= */
+
+section h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+section h2::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  margin-top: 8px;
+  border-radius: 4px;
+}
+
+/* ============================= */
+/* 📱 MOBILE FIX */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 70vh;
+    text-align: center;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
