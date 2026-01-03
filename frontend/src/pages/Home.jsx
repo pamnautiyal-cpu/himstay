@@ -7,8 +7,6 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <section className="hero-booking">
-        <div className="hero-overlay"></div>
-
         <div className="hero-content">
           <h1>Find your perfect stay 🏔️</h1>
           <p>Hotels, homestays & retreats across Uttarakhand</p>
