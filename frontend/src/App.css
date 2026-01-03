@@ -235,3 +235,33 @@
     width: 100%;
   }
 }
+.footer {
+  background: #020617;
+  color: #cbd5f5;
+  padding: 60px 20px 30px;
+}
+
+.footer-grid {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+}
+
+.footer h4 {
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+.footer p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.footer-copy {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #94a3b8;
+}
