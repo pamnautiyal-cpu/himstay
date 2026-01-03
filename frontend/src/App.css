@@ -160,3 +160,78 @@
     font-size: 16px;
   }
 }
+/* ===== BOOKING STYLE HOME ===== */
+
+.booking-home {
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.booking-hero {
+  background: linear-gradient(135deg, #003580, #0057b8);
+  color: #fff;
+  padding: 100px 20px 140px;
+}
+
+.booking-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.booking-hero h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.booking-hero p {
+  font-size: 18px;
+  color: #dbeafe;
+  margin-bottom: 40px;
+}
+
+/* SEARCH CARD */
+.search-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+  max-width: 760px;
+}
+
+.search-card input {
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-card button {
+  padding: 16px 28px;
+  border-radius: 10px;
+  border: none;
+  background: #0071c2;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.search-card button:hover {
+  background: #005fa3;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .search-card {
+    grid-template-columns: 1fr;
+  }
+
+  .search-card button {
+    width: 100%;
+  }
+}
