@@ -1,4 +1,4 @@
-import hotels from "../data/hotels";
+import hotels from "../Data/hotels";
 
 export default function AllStays() {
   return (
