@@ -8,7 +8,11 @@ export default function AllStays() {
       <div className="stays-grid">
         {hotels.map((hotel) => (
           <div className="stay-card" key={hotel.id}>
-            <img src={hotel.image} alt={hotel.name} />
+            
+            {/* ✅ IMAGE WRAPPER ADDED */}
+            <div className="stay-image">
+              <img src={hotel.image} alt={hotel.name} />
+            </div>
 
             <div className="stay-info">
               <h3>{hotel.name}</h3>
