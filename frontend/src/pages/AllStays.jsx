@@ -1,5 +1,4 @@
 import hotels from "../data/hotels";
-import "../index.css";
 
 export default function AllStays() {
   return (
