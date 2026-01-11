@@ -6,7 +6,7 @@ export default function AllStays() {
       <h2>All Stays</h2>
 
       <div className="stays-grid">
-        {hotels.map(hotel => (
+        {hotels.map((hotel) => (
           <div className="stay-card" key={hotel.id}>
             <img src={hotel.image} alt={hotel.name} />
 

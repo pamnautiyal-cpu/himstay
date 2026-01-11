@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 /* PAGES */
 import Home from "./pages/Home";
-import Hotels from "./pages/Hotels";
+import AllStays from "./pages/AllStays";      // ✅ ADD
 import HotelDetails from "./pages/HotelDetails";
 import Booking from "./pages/Booking";
 import YogaDetail from "./pages/YogaDetail";
@@ -21,7 +21,8 @@ export default function MainRoutes() {
       {/* PUBLIC */}
       <Route path="/" element={<Home />} />
 
-      <Route path="/hotels" element={<Hotels />} />
+      {/* ✅ FIX HERE */}
+      <Route path="/hotels" element={<AllStays />} />
       <Route path="/hotels/:id" element={<HotelDetails />} />
 
       <Route path="/booking" element={<Booking />} />
