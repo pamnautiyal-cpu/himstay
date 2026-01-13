@@ -140,3 +140,8 @@ body.no-hero img.hero-img {
   font-weight: 600;
   cursor: pointer;
 }
+/* HARD LIMIT FOR ANY IMAGE ON HOTELS PAGE */
+.stays-container img {
+  max-height: 200px !important;
+  object-fit: cover !important;
+}
