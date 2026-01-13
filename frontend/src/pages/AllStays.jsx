@@ -3,11 +3,12 @@ import hotels from "../Data/hotels";
 
 export default function AllStays() {
   useEffect(() => {
-    // 🔥 HOTELS PAGE FLAG
-    document.body.classList.add("hotels-page");
+    // 🔥 hard reset for hotels page
+    document.body.style.marginTop = "0";
+    document.body.classList.add("no-hero");
 
     return () => {
-      document.body.classList.remove("hotels-page");
+      document.body.classList.remove("no-hero");
     };
   }, []);
 
