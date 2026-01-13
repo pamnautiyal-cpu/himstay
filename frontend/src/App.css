@@ -1,3 +1,18 @@
+/* =====================================
+   🔥 KILL ANY GLOBAL BACKGROUND IMAGE
+===================================== */
+
+html, body {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Extra safety */
+body::before,
+body::after {
+  display: none !important;
+  content: none !important;
+}
 /* ===== GLOBAL ===== */
 html, body {
   margin: 0;
