@@ -6,7 +6,10 @@ html, body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
 }
 
-/* ===== HERO ===== */
+/* =====================================================
+   HERO (HOME PAGE ONLY – HOTELS PAGE PE FORCE HIDE)
+===================================================== */
+
 .hero {
   position: relative;
   height: 65vh;
@@ -31,116 +34,29 @@ html, body {
   );
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #fff;
+/* =====================================================
+   🔥🔥🔥 HOTELS PAGE – HARD KILL HERO / BIG IMAGE 🔥🔥🔥
+===================================================== */
+
+body.no-hero .hero,
+body.no-hero .hero-img,
+body.no-hero .banner,
+body.no-hero .page-hero,
+body.no-hero img.hero-img {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-.hero-overlay h1 {
-  font-size: clamp(34px, 5vw, 56px);
-  font-weight: 800;
-}
-
-.hero-overlay p {
-  margin-top: 10px;
-  font-size: 18px;
-  opacity: .9;
-}
-
-.hero-search {
-  margin-top: 26px;
-  display: flex;
-  gap: 12px;
-  max-width: 520px;
-}
-
-.hero-search input {
-  flex: 1;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: none;
-  font-size: 16px;
-}
-
-.hero-search button {
-  padding: 14px 22px;
-  border-radius: 12px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* ===== SECTIONS ===== */
-.section {
-  max-width: 1200px;
-  margin: 60px auto;
-  padding: 0 20px;
-}
-
-.section-title {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 24px;
-}
-
-/* ===== CARDS ===== */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  height: 240px;
-  text-decoration: none;
-}
-
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,.65), transparent);
-}
-
-.card-overlay {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  z-index: 2;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-}
-.home-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.18);
-}
-/* =============================
+/* =====================================================
    STAYS PAGE
-============================= */
+===================================================== */
 
 .stays-container {
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 30px auto;
   padding: 0 20px;
 }
 
@@ -155,76 +71,10 @@ html, body {
   gap: 24px;
 }
 
-.stay-card {
-  background: #ffffff;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-  transition: transform 0.3s ease;
-}
+/* =====================================================
+   STAY CARD
+===================================================== */
 
-.stay-card:hover {
-  transform: translateY(-6px);
-}
-
-.stay-card img {
-  width: 100%;
-  height: 190px;
-  object-fit: cover;
-}
-
-.stay-info {
-  padding: 16px;
-}
-
-.stay-info h3 {
-  font-size: 18px;
-  margin-bottom: 6px;
-}
-
-.location {
-  font-size: 14px;
-  color: #64748b;
-}
-
-.rating-price {
-  display: flex;
-  justify-content: space-between;
-  margin: 12px 0;
-  font-weight: 600;
-}
-
-.price {
-  color: #16a34a;
-}
-
-.stay-info button {
-  width: 100%;
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
-/* =============================
-   ALL STAYS – CARD FIX
-============================= */
-
-.stays-container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-.stays-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-}
-
-/* Card */
 .stay-card {
   background: #fff;
   border-radius: 18px;
@@ -237,7 +87,7 @@ html, body {
   transform: translateY(-6px);
 }
 
-/* IMAGE FIX 🔥 */
+/* 🔒 IMAGE SIZE FIX (FINAL) */
 .stay-image {
   width: 100%;
   height: 200px;
@@ -251,7 +101,10 @@ html, body {
   display: block;
 }
 
-/* Content */
+/* =====================================================
+   CARD CONTENT
+===================================================== */
+
 .stay-info {
   padding: 16px;
 }
@@ -286,47 +139,4 @@ html, body {
   color: white;
   font-weight: 600;
   cursor: pointer;
-}
-/* =====================================
-   FINAL FORCE FIX – HOTELS PAGE IMAGES
-   (NO DELETE REQUIRED)
-===================================== */
-
-/* Hero image ko hotels page par force hide */
-.stays-container .hero,
-.stays-container .hero-img {
-  display: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
-}
-
-/* Hotel card image ko force constrain */
-.stays-grid .stay-card {
-  overflow: hidden;
-}
-
-.stays-grid .stay-card img {
-  width: 100% !important;
-  height: 200px !important;
-  max-height: 200px !important;
-  object-fit: cover !important;
-  display: block !important;
-}
-/* =====================================
-   FORCE KILL HERO ON HOTELS PAGE
-===================================== */
-
-body.hotels-page .hero,
-body.hotels-page .hero-img,
-body.hotels-page .banner,
-body.hotels-page .page-hero {
-  display: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-}
-
-/* Safety: stop any full-width images */
-body.hotels-page img {
-  max-width: 100%;
 }
