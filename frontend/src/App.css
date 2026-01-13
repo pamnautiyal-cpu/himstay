@@ -145,3 +145,58 @@ body.no-hero img.hero-img {
   max-height: 200px !important;
   object-fit: cover !important;
 }
+/* ===========================
+   ALL STAYS – LIST VIEW
+=========================== */
+
+.stays-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.stay-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* 🔥 SMALL IMAGE FIX */
+.stay-thumb {
+  width: 110px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.stay-text h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.location {
+  font-size: 13px;
+  color: #475569;
+  margin: 2px 0;
+}
+
+.rating {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+.details-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid #2563eb;
+  background: #fff;
+  color: #2563eb;
+  cursor: pointer;
+}

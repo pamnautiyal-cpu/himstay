@@ -5,21 +5,27 @@ export default function AllStays() {
     <div className="stays-container">
       <h2>All Stays</h2>
 
-      <div className="stays-grid">
+      <div className="stays-list">
         {hotels.map((hotel) => (
-          <div className="stay-card" key={hotel.id}>
-            {/* ❌ IMAGE REMOVED COMPLETELY */}
+          <div className="stay-row" key={hotel.id}>
+            
+            {/* ✅ SMALL IMAGE */}
+            <img
+              src={hotel.image}
+              alt={hotel.name}
+              className="stay-thumb"
+            />
 
-            <div className="stay-info">
+            {/* INFO */}
+            <div className="stay-text">
               <h3>{hotel.name}</h3>
               <p className="location">📍 {hotel.location}</p>
 
-              <div className="rating-price">
-                <span>⭐ {hotel.rating}</span>
-                <span className="price">₹{hotel.price} / night</span>
-              </div>
+              <p className="rating">
+                ⭐ {hotel.rating} &nbsp; ₹{hotel.price} / night
+              </p>
 
-              <button>View Details</button>
+              <button className="details-btn">View Details</button>
             </div>
           </div>
         ))}
