@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Navbar() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
   const isActive = (path) => location.pathname.startsWith(path);
+
+  const isHome = location.pathname === "/";
 
   return (
     <>
@@ -14,7 +16,8 @@ export default function Navbar() {
           position: "sticky",
           top: 0,
           zIndex: 100,
-          background: "linear-gradient(180deg,#020617 0%, #020617 70%, rgba(2,6,23,0.92) 100%)",
+          background:
+            "linear-gradient(180deg,#020617 0%, #020617 70%, rgba(2,6,23,0.92) 100%)",
           boxShadow: "0 12px 30px rgba(0,0,0,.45)",
         }}
       >
@@ -116,14 +119,16 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* WHITE FADE GAP (IMAGE MATCH) */}
-      <div
-        style={{
-          height: 34,
-          background:
-            "linear-gradient(180deg, rgba(2,6,23,0.35), rgba(248,250,252,1))",
-        }}
-      />
+      {/* 🔥 FADE GAP — ONLY ON HOME */}
+      {isHome && (
+        <div
+          style={{
+            height: 34,
+            background:
+              "linear-gradient(180deg, rgba(2,6,23,0.35), rgba(248,250,252,1))",
+          }}
+        />
+      )}
 
       <style>{`
         @media (max-width: 768px) {
