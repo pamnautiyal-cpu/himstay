@@ -1,17 +1,6 @@
-import { useEffect } from "react";
 import hotels from "../Data/hotels";
 
 export default function AllStays() {
-  useEffect(() => {
-    // 🔥 hard reset for hotels page
-    document.body.style.marginTop = "0";
-    document.body.classList.add("no-hero");
-
-    return () => {
-      document.body.classList.remove("no-hero");
-    };
-  }, []);
-
   return (
     <div className="stays-container">
       <h2>All Stays</h2>
@@ -19,6 +8,8 @@ export default function AllStays() {
       <div className="stays-grid">
         {hotels.map((hotel) => (
           <div className="stay-card" key={hotel.id}>
+            
+            {/* 🔒 IMAGE WRAPPED — NO FULL WIDTH */}
             <div className="stay-image">
               <img src={hotel.image} alt={hotel.name} />
             </div>
