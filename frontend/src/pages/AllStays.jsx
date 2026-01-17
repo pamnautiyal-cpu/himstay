@@ -3,16 +3,26 @@ import hotels from "../Data/hotels";
 
 export default function AllStays() {
   useEffect(() => {
-    // HARD RESET BODY BACKGROUND
-    document.body.classList.add("no-hero");
-    document.body.style.backgroundImage = "none";
-    document.body.style.background = "#ffffff";
+    // 🔥 HARD NUKE: remove any full-width image inside root
+    const root = document.getElementById("root");
 
-    return () => {
-      document.body.classList.remove("no-hero");
-      document.body.style.backgroundImage = "";
-      document.body.style.background = "";
-    };
+    if (root) {
+      const killers = root.querySelectorAll("img, picture, video, section, div");
+
+      killers.forEach((el) => {
+        const h = el.offsetHeight;
+        const w = el.offsetWidth;
+
+        // kill only BIG elements (hero-like)
+        if (h > 300 && w > 600 && !el.closest(".stays-container")) {
+          el.remove();
+        }
+      });
+    }
+
+    // extra safety
+    document.body.style.backgroundImage = "none";
+    document.body.style.background = "#fff";
   }, []);
 
   return (
