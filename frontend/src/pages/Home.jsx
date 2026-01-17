@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="home-page">
-
-      {/* HEADER */}
+      {/* HEADING */}
       <div className="home-header">
         <h1>Find your perfect stay 🏔️</h1>
         <p>Hotels, homestays & retreats across Uttarakhand</p>
@@ -21,13 +20,9 @@ export default function Home() {
             ["Dehradun", "Gateway to Mussoorie & Himalayas", "/images/destinations/dehradun.jpg"],
             ["Haldwani", "Commercial hub of Kumaon region", "/images/destinations/haldwani.jpg"],
           ].map(([name, text, image]) => (
-            <Link
-              key={name}
-              to={`/destination/${name.toLowerCase()}`}
-              className="home-card"
-            >
+            <Link key={name} to={`/destination/${name.toLowerCase()}`} className="home-card">
               <img src={image} alt={name} />
-              <div className="card-body">
+              <div className="home-card-body">
                 <h3>{name}</h3>
                 <p>{text}</p>
               </div>
@@ -47,13 +42,9 @@ export default function Home() {
             ["Yamunotri", "Source of River Yamuna", "/images/chardham/yamunotri.jpg"],
             ["Hemkund Sahib", "Holy Sikh pilgrimage site", "/images/chardham/hemkund.jpg"],
           ].map(([name, text, image]) => (
-            <Link
-              key={name}
-              to={`/chardham/${name.toLowerCase().replace(/\s+/g, "-")}`}
-              className="home-card"
-            >
+            <Link key={name} to={`/chardham/${name.toLowerCase()}`} className="home-card">
               <img src={image} alt={name} />
-              <div className="card-body">
+              <div className="home-card-body">
                 <h3>{name}</h3>
                 <p>{text}</p>
               </div>
@@ -74,7 +65,7 @@ export default function Home() {
           ].map(([name, text, link, image]) => (
             <Link key={name} to={link} className="home-card">
               <img src={image} alt={name} />
-              <div className="card-body">
+              <div className="home-card-body">
                 <h3>{name}</h3>
                 <p>{text}</p>
               </div>
@@ -82,7 +73,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
     </div>
   );
 }

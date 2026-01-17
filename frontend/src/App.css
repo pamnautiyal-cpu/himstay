@@ -93,3 +93,72 @@ html, body {
     height: 100px;
   }
 }
+/* ===== HOME PAGE FIX ===== */
+
+.home-page {
+  background: #f1f5f9;
+  min-height: 100vh;
+}
+
+.home-header {
+  max-width: 1200px;
+  margin: 40px auto 20px;
+  padding: 0 16px;
+}
+
+.home-header p {
+  color: #475569;
+}
+
+.home-section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.home-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #020617;
+  box-shadow: 0 10px 25px rgba(0,0,0,.12);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.home-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
+}
+
+/* 🔒 IMAGE SIZE — यही सबसे ज़रूरी */
+.home-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+/* CONTENT */
+.home-card-body {
+  padding: 14px;
+}
+
+.home-card-body h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.home-card-body p {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.4;
+}
