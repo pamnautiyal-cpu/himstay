@@ -1,26 +1,26 @@
 import React from "react";
-import { BrowserRouter, useLocation } from "react-router-dom";
-import MainRoutes from "./MainRoutes";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-function Layout() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
-  return (
-    <>
-      <Navbar />
-      <MainRoutes />
-      <Footer />
-    </>
-  );
-}
+/* PAGES */
+import Home from "./pages/Home";
+import AllStays from "./pages/AllStays";
+import HotelDetails from "./pages/HotelDetails";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Layout />
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/hotels" element={<AllStays />} />
+        <Route path="/hotels/:id" element={<HotelDetails />} />
+      </Routes>
+
+      <Footer />
     </BrowserRouter>
   );
 }
