@@ -438,3 +438,75 @@ body.no-hero * {
   font-weight: 600;
   cursor: pointer;
 }
+/* =============================
+   MOBILE STICKY FILTERS
+============================= */
+
+.sticky {
+  position: sticky;
+  top: 60px;
+  z-index: 20;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.price-slider {
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+/* MAP */
+.map-box {
+  height: 180px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+/* DEAL BADGE */
+.deal-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+  background: #16a34a;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* COMPARE BAR */
+.compare-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #2563eb;
+  color: #fff;
+  text-align: center;
+  padding: 12px;
+  font-weight: 700;
+}
+
+/* MOBILE TWEAK */
+@media (max-width: 640px) {
+  .agoda-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .agoda-price {
+    width: 100%;
+    text-align: left;
+  }
+}
