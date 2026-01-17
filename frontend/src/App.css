@@ -114,3 +114,12 @@ body > img {
   font-weight: 600;
   cursor: pointer;
 }
+/* FINAL KILL — HOTELS PAGE BACKGROUND IMAGE */
+body.no-hero {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+body.no-hero * {
+  background-image: none !important;
+}

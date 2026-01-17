@@ -2,10 +2,17 @@ import { useEffect } from "react";
 import hotels from "../Data/hotels";
 
 export default function AllStays() {
-
   useEffect(() => {
+    // HARD RESET BODY BACKGROUND
     document.body.classList.add("no-hero");
-    return () => document.body.classList.remove("no-hero");
+    document.body.style.backgroundImage = "none";
+    document.body.style.background = "#ffffff";
+
+    return () => {
+      document.body.classList.remove("no-hero");
+      document.body.style.backgroundImage = "";
+      document.body.style.background = "";
+    };
   }, []);
 
   return (
@@ -15,7 +22,6 @@ export default function AllStays() {
       <div className="stays-grid">
         {hotels.map((hotel) => (
           <div className="stay-card" key={hotel.id}>
-
             <div className="stay-image">
               <img src={hotel.image} alt={hotel.name} />
             </div>
@@ -31,7 +37,6 @@ export default function AllStays() {
 
               <button>View Details</button>
             </div>
-
           </div>
         ))}
       </div>
