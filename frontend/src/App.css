@@ -1,6 +1,6 @@
-/* =========================
-   GLOBAL RESET
-========================= */
+/* ===============================
+   GLOBAL BASE
+=============================== */
 * {
   box-sizing: border-box;
 }
@@ -13,217 +13,99 @@ html, body {
   overflow-x: hidden;
 }
 
-/* =========================
-   HERO – ONLY HOME PAGE
-========================= */
-body.no-hero .hero,
-body.no-hero .hero-img,
-body.no-hero .banner,
-body.no-hero .page-hero {
-  display: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
+/* ===============================
+   HOME PAGE LAYOUT (FINAL)
+=============================== */
+
+.home-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #f1f5f9;
 }
 
-/* =========================
-   HOTELS PAGE LAYOUT
-========================= */
-.hotels-page {
-  max-width: 1200px;
-  margin: 32px auto;
-  padding: 0 16px;
+/* CENTERED CONTENT (NO EMPTY FEEL) */
+.home-wrap {
+  max-width: 1200px;      /* SAFE, STABLE */
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+/* HEADER */
+.home-header {
+  margin-bottom: 32px;
+}
+
+.home-header h1 {
+  margin-bottom: 6px;
+}
+
+.home-header p {
+  color: #475569;
+}
+
+/* SECTIONS */
+.home-section {
+  margin-bottom: 48px;
+}
+
+.home-section h2 {
+  margin-bottom: 16px;
+}
+
+/* GRID */
+.home-grid {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
 }
 
-/* =========================
-   FILTER SIDEBAR
-========================= */
-.filters {
-  position: sticky;
-  top: 90px;
+/* CARD */
+.home-card {
   background: #ffffff;
-  padding: 16px;
   border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  overflow: hidden;
+  text-decoration: none;
+  color: #020617;
+  box-shadow: 0 10px 25px rgba(0,0,0,.12);
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
-.filters h3 {
-  margin: 0 0 12px;
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.18);
 }
 
-.filters label {
-  font-size: 14px;
-  margin-top: 12px;
+/* CARD IMAGE */
+.home-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
   display: block;
 }
 
-.filters select,
-.filters input {
-  width: 100%;
-  margin-top: 6px;
-}
-
-/* =========================
-   HOTEL LIST
-========================= */
-.hotel-list h2 {
-  margin-bottom: 16px;
-}
-
-.hotel-row {
-  background: #ffffff;
-  border-radius: 16px;
+/* CARD BODY */
+.card-body {
   padding: 14px;
-  display: grid;
-  grid-template-columns: 140px 1fr 140px;
-  gap: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);
 }
 
-.hotel-row img {
-  width: 100%;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-/* INFO */
-.hotel-info h3 {
+.card-body h3 {
   margin: 0 0 6px;
-  font-size: 17px;
+  font-size: 16px;
 }
 
-.hotel-info p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #475569;
-}
-
-/* PRICE */
-.hotel-price {
-  text-align: right;
-}
-
-.hotel-price div {
-  font-size: 20px;
-  font-weight: 800;
-  color: #16a34a;
-}
-
-.hotel-price span {
-  font-size: 12px;
-  color: #64748b;
-}
-
-.hotel-price button {
-  margin-top: 8px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: none;
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* =========================
-   MOBILE
-========================= */
-@media (max-width: 900px) {
-  .hotels-page {
-    grid-template-columns: 1fr;
-  }
-
-  .filters {
-    position: static;
-  }
-
-  .hotel-row {
-    grid-template-columns: 1fr;
-  }
-
-  .hotel-price {
-    text-align: left;
-  }
-}
-/* ===== HOTELS LIST VIEW (NO IMAGE) ===== */
-
-.stays-container {
-  max-width: 1100px;
-  margin: 30px auto;
-  padding: 0 16px;
-}
-
-.stays-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.stay-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  border-radius: 14px;
-}
-
-/* Glass UI */
-.glass {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
-}
-
-.stay-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: linear-gradient(135deg,#2563eb,#1e40af);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  flex-shrink: 0;
-}
-
-.stay-text h3 {
-  margin: 0 0 4px;
-  font-size: 17px;
-}
-
-.location {
+.card-body p {
   font-size: 13px;
   color: #475569;
+  line-height: 1.4;
 }
 
-.rating {
-  font-size: 13px;
-  font-weight: 600;
-}
+/* MOBILE */
+@media (max-width: 640px) {
+  .home-wrap {
+    padding: 24px 12px;
+  }
 
-.stay-price {
-  margin-left: auto;
-  text-align: right;
-}
-
-.amount {
-  font-size: 20px;
-  font-weight: 800;
-  color: #16a34a;
-}
-
-.details-btn {
-  margin-top: 6px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
+  .home-card img {
+    height: 140px;
+  }
 }
