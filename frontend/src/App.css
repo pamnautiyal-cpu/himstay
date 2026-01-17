@@ -197,3 +197,124 @@ body.no-hero * {
   font-weight: 600;
   cursor: pointer;
 }
+/* ===========================
+   ALL STAYS – LIST + GLASS UI
+=========================== */
+
+.stays-container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 16px;
+}
+
+.stays-container h2 {
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+
+/* LIST VIEW */
+.stays-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ROW */
+.stay-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+}
+
+/* GLASS EFFECT */
+.glass {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+
+/* ICON */
+.stay-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#2563eb,#1e40af);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* TEXT */
+.stay-text {
+  flex: 1;
+}
+
+.stay-text h3 {
+  margin: 0 0 4px;
+  font-size: 17px;
+}
+
+.location {
+  font-size: 13px;
+  color: #475569;
+}
+
+.rating {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.price {
+  color: #16a34a;
+}
+
+/* BUTTON */
+.details-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ===========================
+   SKELETON LOADERS
+=========================== */
+
+.skeleton {
+  background: #e5e7eb;
+}
+
+.skeleton-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: #d1d5db;
+}
+
+.skeleton-text {
+  flex: 1;
+}
+
+.line {
+  height: 12px;
+  background: #d1d5db;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.line.short {
+  width: 40%;
+}
+
+.line.small {
+  width: 30%;
+}
