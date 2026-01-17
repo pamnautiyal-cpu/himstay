@@ -123,3 +123,77 @@ body.no-hero {
 body.no-hero * {
   background-image: none !important;
 }
+/* ===============================
+   ALL STAYS – NO IMAGE DESIGN
+=============================== */
+
+.stays-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.stays-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.stay-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+  overflow: hidden;
+  transition: transform .3s ease;
+}
+
+.stay-card:hover {
+  transform: translateY(-6px);
+}
+
+/* 🔥 GRAPHIC HEADER (NO IMAGE) */
+.stay-graphic {
+  height: 140px;
+  background: linear-gradient(135deg,#2563eb,#1e40af);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 54px;
+  color: #fff;
+}
+
+.stay-info {
+  padding: 16px;
+}
+
+.stay-info h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.location {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.rating-price {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-weight: 600;
+}
+
+.price {
+  color: #16a34a;
+}
+
+.stay-info button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
