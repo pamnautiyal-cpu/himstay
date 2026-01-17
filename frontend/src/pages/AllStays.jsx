@@ -1,90 +1,61 @@
-import { useState, useMemo } from "react";
 import hotels from "../Data/hotels";
+import { useState } from "react";
 
 export default function AllStays() {
-  const [sort, setSort] = useState("priceLow");
-  const [maxPrice, setMaxPrice] = useState(10000);
-  const [minRating, setMinRating] = useState(0);
+  const [sort, setSort] = useState("high");
+  const [maxPrice, setMaxPrice] = useState(20000);
 
-  const filteredHotels = useMemo(() => {
-    let data = hotels.filter(
-      (h) => h.price <= maxPrice && h.rating >= minRating
+  const filtered = hotels
+    .filter(h => h.price <= maxPrice)
+    .sort((a, b) =>
+      sort === "high" ? b.price - a.price : a.price - b.price
     );
 
-    if (sort === "priceLow") {
-      data.sort((a, b) => a.price - b.price);
-    }
-    if (sort === "priceHigh") {
-      data.sort((a, b) => b.price - a.price);
-    }
-    if (sort === "rating") {
-      data.sort((a, b) => b.rating - a.rating);
-    }
-
-    return data;
-  }, [sort, maxPrice, minRating]);
-
   return (
-    <div className="agoda-container">
-      <h2>Stays in Uttarakhand</h2>
+    <div className="hotels-page">
+      {/* LEFT FILTER */}
+      <aside className="filters">
+        <h3>Sort & Filters</h3>
 
-      {/* FILTER BAR */}
-      <div className="filter-bar glass">
-        <div>
-          <label>Sort by</label>
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            <option value="priceLow">Price: Low to High</option>
-            <option value="priceHigh">Price: High to Low</option>
-            <option value="rating">Top Rated</option>
-          </select>
-        </div>
+        <label>Sort by</label>
+        <select onChange={(e) => setSort(e.target.value)}>
+          <option value="high">Price: High → Low</option>
+          <option value="low">Price: Low → High</option>
+        </select>
 
-        <div>
-          <label>Max Price ₹{maxPrice}</label>
-          <input
-            type="range"
-            min="1000"
-            max="20000"
-            step="500"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-          />
-        </div>
+        <label>Max Price ₹{maxPrice}</label>
+        <input
+          type="range"
+          min="1000"
+          max="20000"
+          step="500"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(+e.target.value)}
+        />
+      </aside>
 
-        <div>
-          <label>Min Rating</label>
-          <select
-            value={minRating}
-            onChange={(e) => setMinRating(Number(e.target.value))}
-          >
-            <option value="0">All</option>
-            <option value="3">3★+</option>
-            <option value="4">4★+</option>
-            <option value="4.5">4.5★+</option>
-          </select>
-        </div>
-      </div>
+      {/* RIGHT LIST */}
+      <section className="hotel-list">
+        <h2>Stays in Uttarakhand</h2>
 
-      {/* LIST */}
-      <div className="agoda-list">
-        {filteredHotels.map((hotel) => (
-          <div className="agoda-row glass" key={hotel.id}>
-            <div className="agoda-icon">🏨</div>
+        {filtered.map(hotel => (
+          <div key={hotel.id} className="hotel-row">
+            <img src={hotel.image} alt={hotel.name} />
 
-            <div className="agoda-info">
+            <div className="hotel-info">
               <h3>{hotel.name}</h3>
-              <p className="location">📍 {hotel.location}</p>
-              <p className="rating">⭐ {hotel.rating}</p>
+              <p>📍 {hotel.location}</p>
+              <p>⭐ {hotel.rating}</p>
             </div>
 
-            <div className="agoda-price">
-              <div className="amount">₹{hotel.price}</div>
+            <div className="hotel-price">
+              <div>₹{hotel.price}</div>
               <span>/ night</span>
               <button>View Deal</button>
             </div>
           </div>
         ))}
-      </div>
+      </section>
     </div>
   );
 }
