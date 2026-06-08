@@ -5,22 +5,18 @@ export default function AllStays() {
   return (
     <div
       style={{
-        background: "#f8fafc",
         minHeight: "100vh",
+        background: "#f8fafc",
         padding: "40px 20px",
       }}
     >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      <div style={{ maxWidth: "1300px", margin: "0 auto" }}>
         <h1
           style={{
-            fontSize: "38px",
+            fontSize: "42px",
             fontWeight: "800",
-            marginBottom: "10px",
+            color: "#0f172a",
+            marginBottom: "8px",
           }}
         >
           🏔️ Stays in Uttarakhand
@@ -29,128 +25,170 @@ export default function AllStays() {
         <p
           style={{
             color: "#64748b",
-            marginBottom: "30px",
+            marginBottom: "40px",
+            fontSize: "18px",
           }}
         >
-          Discover handpicked Himalayan stays, resorts and homestays.
+          Discover luxury resorts, cozy homestays and unforgettable Himalayan
+          experiences.
         </p>
 
-        <div
-          style={{
-            display: "grid",
-            gap: "24px",
-          }}
-        >
-          {hotels.map((hotel) => (
+        {hotels.map((hotel) => (
+          <div
+            key={hotel.id}
+            style={{
+              background: "#fff",
+              borderRadius: "24px",
+              overflow: "hidden",
+              marginBottom: "28px",
+              boxShadow: "0 12px 35px rgba(0,0,0,0.10)",
+              display: "flex",
+              flexWrap: "wrap",
+              transition: "0.3s",
+            }}
+          >
+            {/* IMAGE */}
             <div
-              key={hotel.id}
               style={{
-                background: "#fff",
-                borderRadius: "20px",
-                overflow: "hidden",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-                display: "grid",
-                gridTemplateColumns: "320px 1fr",
+                flex: "0 0 340px",
+                minHeight: "260px",
               }}
             >
               <img
-                src={
-                  hotel.image ||
-                  "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-                }
+                src={hotel.image}
                 alt={hotel.name}
                 style={{
                   width: "100%",
-                  height: "260px",
+                  height: "100%",
                   objectFit: "cover",
                 }}
               />
+            </div>
 
-              <div
-                style={{
-                  padding: "24px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>
-                  <h2
-                    style={{
-                      margin: 0,
-                      fontSize: "28px",
-                    }}
-                  >
-                    {hotel.name}
-                  </h2>
+            {/* INFO */}
+            <div
+              style={{
+                flex: "1",
+                padding: "28px",
+                display: "flex",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "20px",
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    display: "inline-block",
+                    background: "#dcfce7",
+                    color: "#166534",
+                    padding: "6px 12px",
+                    borderRadius: "999px",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Top Rated Stay
+                </div>
 
-                  <p
-                    style={{
-                      color: "#64748b",
-                      marginTop: "10px",
-                    }}
-                  >
-                    📍 {hotel.location}
-                  </p>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: "30px",
+                    color: "#0f172a",
+                  }}
+                >
+                  {hotel.name}
+                </h2>
 
-                  <p
-                    style={{
-                      marginTop: "10px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    ⭐ {hotel.rating}
-                  </p>
+                <p
+                  style={{
+                    marginTop: "10px",
+                    color: "#64748b",
+                    fontSize: "16px",
+                  }}
+                >
+                  📍 {hotel.location}
+                </p>
+
+                <div
+                  style={{
+                    marginTop: "16px",
+                    display: "flex",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <span>🏔 Mountain View</span>
+                  <span>📶 Free WiFi</span>
+                  <span>🍳 Breakfast</span>
+                  <span>🚗 Parking</span>
                 </div>
 
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: "20px",
+                    marginTop: "18px",
+                    display: "inline-block",
+                    background: "#2563eb",
+                    color: "#fff",
+                    padding: "8px 14px",
+                    borderRadius: "10px",
+                    fontWeight: "700",
                   }}
                 >
-                  <div>
-                    <div
-                      style={{
-                        fontSize: "30px",
-                        fontWeight: "800",
-                        color: "#16a34a",
-                      }}
-                    >
-                      ₹{hotel.price}
-                    </div>
-
-                    <span
-                      style={{
-                        color: "#64748b",
-                      }}
-                    >
-                      per night
-                    </span>
-                  </div>
-
-                  <Link to={`/hotels/${hotel.id}`}>
-                    <button
-                      style={{
-                        background: "#2563eb",
-                        color: "#fff",
-                        border: "none",
-                        padding: "14px 24px",
-                        borderRadius: "12px",
-                        cursor: "pointer",
-                        fontWeight: "700",
-                      }}
-                    >
-                      View Details
-                    </button>
-                  </Link>
+                  ⭐ {hotel.rating}
                 </div>
               </div>
+
+              {/* PRICE */}
+              <div
+                style={{
+                  minWidth: "220px",
+                  textAlign: "right",
+                }}
+              >
+                <div
+                  style={{
+                    color: "#16a34a",
+                    fontSize: "36px",
+                    fontWeight: "800",
+                  }}
+                >
+                  ₹{hotel.price}
+                </div>
+
+                <div
+                  style={{
+                    color: "#64748b",
+                    marginBottom: "18px",
+                  }}
+                >
+                  per night
+                </div>
+
+                <Link to={`/hotels/${hotel.id}`}>
+                  <button
+                    style={{
+                      background:
+                        "linear-gradient(135deg,#2563eb,#1d4ed8)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "12px",
+                      padding: "14px 28px",
+                      fontWeight: "700",
+                      cursor: "pointer",
+                      boxShadow:
+                        "0 10px 20px rgba(37,99,235,0.35)",
+                    }}
+                  >
+                    View Details
+                  </button>
+                </Link>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );
