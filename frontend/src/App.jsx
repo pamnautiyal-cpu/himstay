@@ -10,6 +10,11 @@ import AllStays from "./pages/AllStays";
 import HotelDetails from "./pages/HotelDetails";
 import MyTrips from "./pages/MyTrips";
 
+/* NEW PAGES */
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Contact from "./pages/Contact";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -21,8 +26,12 @@ export default function App() {
         <Route path="/hotels" element={<AllStays />} />
         <Route path="/hotels/:id" element={<HotelDetails />} />
 
-        {/* MY TRIPS PAGE */}
         <Route path="/mytrips" element={<MyTrips />} />
+
+        {/* NEW ROUTES */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
 
       <Footer />
