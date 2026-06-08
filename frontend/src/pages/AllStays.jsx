@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import hotels from "../Data/hotels";
 
 export default function AllStays() {
@@ -44,7 +43,6 @@ export default function AllStays() {
               boxShadow: "0 12px 35px rgba(0,0,0,0.10)",
               display: "flex",
               flexWrap: "wrap",
-              transition: "0.3s",
             }}
           >
             {/* IMAGE */}
@@ -167,24 +165,22 @@ export default function AllStays() {
                   per night
                 </div>
 
-                <Link to={`/hotels/${hotel.id}`}>
-                  <button
-                    style={{
-                      background:
-                        "linear-gradient(135deg,#2563eb,#1d4ed8)",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "12px",
-                      padding: "14px 28px",
-                      fontWeight: "700",
-                      cursor: "pointer",
-                      boxShadow:
-                        "0 10px 20px rgba(37,99,235,0.35)",
-                    }}
-                  >
-                    View Details
-                  </button>
-                </Link>
+                <button
+                  style={{
+                    background:
+                      "linear-gradient(135deg,#2563eb,#1d4ed8)",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "12px",
+                    padding: "14px 28px",
+                    fontWeight: "700",
+                    cursor: "pointer",
+                    boxShadow:
+                      "0 10px 20px rgba(37,99,235,0.35)",
+                  }}
+                >
+                  View Details
+                </button>
               </div>
             </div>
           </div>
