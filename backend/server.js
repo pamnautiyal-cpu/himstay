@@ -13,16 +13,19 @@ app.use(
     origin: [
       "https://thehimalayans.in",
       "https://www.thehimalayans.in",
-      "https://checkout.razorpay.com"
+      "https://checkout.razorpay.com",
     ],
     methods: ["GET", "POST"],
     credentials: true,
   })
 );
 
-app.use(express.json()); // 🔴 MUST be before routes
+app.use(express.json());
 
 /* ===== DATABASE ===== */
+
+console.log("MONGO_URI =", process.env.MONGO_URI);
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -40,6 +43,7 @@ app.use("/api/payment", require("./routes/paymentRoutes"));
 
 /* ===== START SERVER ===== */
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
