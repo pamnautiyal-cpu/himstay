@@ -1,13 +1,11 @@
-// frontend/src/api.js
 import axios from "axios";
 
-// 🔥 Correct Backend Base URL (NO /api at end)
 const API = axios.create({
   baseURL: "https://himstay.onrender.com",
   withCredentials: false,
 });
 
-// 🔥 Login ke baad har request me token bhejne ke liye interceptor
+// Token attach
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
 
@@ -27,7 +25,8 @@ export const getHotels = () => API.get("/api/hotels");
 export const getHotel = (id) => API.get(`/api/hotels/${id}`);
 
 // ------------------ BOOKINGS ------------------
+// FIXED (match backend)
 export const createBooking = (data) => API.post("/api/bookings", data);
-export const getUserBookings = () => API.get("/api/bookings/my");
+export const getBookings = () => API.get("/api/bookings");
 
 export default API;

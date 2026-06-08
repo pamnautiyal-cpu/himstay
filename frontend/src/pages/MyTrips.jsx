@@ -11,12 +11,13 @@ export default function MyTrips() {
     axios
       .get(`${BACKEND_URL}/api/bookings`)
       .then((res) => {
-        setBookings(res.data);
+        setBookings(res.data || []);
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
-        setLoading(false);
+        console.error("Booking fetch error:", err);
+        setBookings([]);
+        setLoading(false); // IMPORTANT FIX
       });
   }, []);
 
@@ -42,22 +43,11 @@ export default function MyTrips() {
           margin: "0 auto",
         }}
       >
-        <h1
-          style={{
-            fontSize: 40,
-            fontWeight: 800,
-            marginBottom: 10,
-          }}
-        >
+        <h1 style={{ fontSize: 40, fontWeight: 800, marginBottom: 10 }}>
           🏔️ My Trips
         </h1>
 
-        <p
-          style={{
-            color: "#64748b",
-            marginBottom: 30,
-          }}
-        >
+        <p style={{ color: "#64748b", marginBottom: 30 }}>
           View all your Himalayan bookings.
         </p>
 
@@ -91,32 +81,15 @@ export default function MyTrips() {
               </h2>
 
               <div style={{ color: "#64748b" }}>
-                📍 {booking.hotelId?.city}
+                📍 {booking.hotelId?.city || "N/A"}
               </div>
 
-              <div style={{ marginTop: 10 }}>
-                👤 {booking.name}
-              </div>
-
-              <div>
-                📧 {booking.email}
-              </div>
-
-              <div>
-                📞 {booking.phone}
-              </div>
-
-              <div>
-                👥 Guests: {booking.guests}
-              </div>
-
-              <div>
-                📅 Check In: {booking.checkIn}
-              </div>
-
-              <div>
-                🎒 Package: {booking.packageType}
-              </div>
+              <div style={{ marginTop: 10 }}>👤 {booking.name}</div>
+              <div>📧 {booking.email}</div>
+              <div>📞 {booking.phone}</div>
+              <div>👥 Guests: {booking.guests}</div>
+              <div>📅 Check In: {booking.checkIn}</div>
+              <div>🎒 Package: {booking.packageType}</div>
 
               <div
                 style={{
