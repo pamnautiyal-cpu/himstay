@@ -7,14 +7,14 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [modalFeature, setModalFeature] = useState("");
 
-  // 🏔️ स्क्रीनशॉट के अनुसार उत्तराखंड के प्रीमियम डेस्टिनेशंस
+  // 🏔️ उत्तराखंड के 6 मुख्य डेस्टिनेशंस (टेक्स्ट-ओनली लिस्ट के लिए)
   const uttarakhandDestinations = [
-    { name: "Char Dham", stays: "350 properties", image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=400" },
-    { name: "Haridwar", stays: "1,041 properties", image: "https://images.unsplash.com/photo-1590050752117-238cb0612b1b?w=400" },
-    { name: "Dehradun", stays: "960 properties", image: "https://images.unsplash.com/photo-1595658658481-d53d3f999875?w=400" },
-    { name: "Mussoorie", stays: "1,240 properties", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400" },
-    { name: "Nainital", stays: "967 properties", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400" },
-    { name: "Rishikesh", stays: "2,150 properties", image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=400" }
+    { name: "Char Dham", stays: "350 properties", isLive: true, targetCity: "Uttarkashi" },
+    { name: "Haridwar", stays: "1,041 properties", isLive: false },
+    { name: "Dehradun", stays: "960 properties", isLive: false },
+    { name: "Mussoorie", stays: "1,240 properties", isLive: false },
+    { name: "Nainital", stays: "967 properties", isLive: false },
+    { name: "Rishikesh", stays: "2,150 properties", isLive: false }
   ];
 
   const propertyTypes = [
@@ -30,6 +30,15 @@ export default function Home() {
       navigate(`/hotels?city=${encodeURIComponent(search.trim())}`);
     } else {
       navigate("/hotels");
+    }
+  };
+
+  const handleDestinationClick = (dest) => {
+    if (dest.isLive) {
+      navigate(`/hotels?city=${encodeURIComponent(dest.targetCity)}`);
+    } else {
+      setModalFeature(dest.name);
+      setShowModal(true);
     }
   };
 
@@ -114,40 +123,67 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px" }}>
             {propertyTypes.map((type) => (
               <div key={type.name} style={{ cursor: "pointer" }} onClick={() => handlePropertyClick(type)}>
-                <div style={{ height: "160px", borderRadius: "8px", overflow: "hidden", marginBottom: "8px", border: "1px solid #e6e6e6" }}>
+                <div style={{ height: "160px", borderRadius: "8px", overflow: "hidden", marginBottom: "8px", border: "1px solid #e6e6e6", position: "relative" }}>
                   <img src={type.image} alt={type.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  {!type.isLive && (
+                    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center", color: "#fff", fontWeight: "bold", fontSize: "14px" }}>
+                      Soon
+                    </div>
+                  )}
                 </div>
-                <h4 style={{ margin: "0", fontSize: "16px", fontWeight: "700", color: "#1a1a1a" }}>
-                  {type.name} {!type.isLive && <span style={{ fontSize: "11px", color: "#ef4444", marginLeft: "5px" }}>(Soon)</span>}
-                </h4>
+                <h4 style={{ margin: "0", fontSize: "16px", fontWeight: "700", color: "#1a1a1a" }}>{type.name}</h4>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 🏔️ 🆕 EXPLORE UTTARAKHAND (HUBAHU SCREENSHOT STYLE) */}
-        <div style={{ marginBottom: "50px" }}>
+        {/* 🏔️ 🆕 EXPLORE UTTARAKHAND (TEXT-ONLY BOLD STYLE LIKE BOOKING.COM) */}
+        <div style={{ marginBottom: "60px" }}>
           <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Explore Uttarakhand</h3>
-          <p style={{ color: "#595959", margin: "0 0 20px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
+          <p style={{ color: "#595959", margin: "0 0 24px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
           
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
             {uttarakhandDestinations.map((dest) => (
               <div 
                 key={dest.name} 
-                onClick={() => navigate(`/hotels?city=${encodeURIComponent(dest.name)}`)}
-                style={{ cursor: "pointer" }}
+                onClick={() => handleDestinationClick(dest)}
+                style={{ 
+                  padding: "16px 20px", 
+                  borderRadius: "8px", 
+                  border: "1px solid #e6e6e6", 
+                  background: dest.isLive ? "#eff6ff" : "#fff", // लाइव वाले के लिए हल्का सा हाइलाइटेड फील
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.borderColor = "#006ce4";
+                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.borderColor = "#e6e6e6";
+                  e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.02)";
+                }}
               >
-                <div style={{ height: "150px", borderRadius: "8px", overflow: "hidden", marginBottom: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                  <img src={dest.image} alt={dest.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                </div>
-                <h4 style={{ margin: "0 0 2px 0", fontSize: "15px", fontWeight: "700", color: "#1a1a1a" }}>{dest.name}</h4>
-                <span style={{ fontSize: "13px", color: "#595959" }}>{dest.stays}</span>
+                {/* शहर का नाम - सुपर बोल्ड बुकिंग स्टाइल में */}
+                <h4 style={{ margin: "0 0 6px 0", fontSize: "18px", fontWeight: "800", color: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  {dest.name}
+                  {dest.isLive && <span style={{ fontSize: "11px", background: "#2563eb", color: "#fff", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold" }}>LIVE</span>}
+                </h4>
+                
+                <span style={{ fontSize: "14px", color: "#595959", fontWeight: "500" }}>{dest.stays}</span>
+                
+                {!dest.isLive && (
+                  <div style={{ fontSize: "11px", color: "#ef4444", fontWeight: "600", marginTop: "6px" }}>
+                    ⏳ Coming Soon
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* 🎁 🆕 TRAVEL MORE, SPEND LESS (GENIUS BANNER) */}
+        {/* 🎁 TRAVEL MORE, SPEND LESS */}
         <div style={{ 
           border: "1px solid #e6e6e6", 
           borderRadius: "8px", 
@@ -169,7 +205,6 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Floating Gift Icon Box Layout */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#eff6ff", padding: "20px", borderRadius: "12px" }}>
             <span style={{ fontSize: "45px" }}>🎁</span>
             <div style={{ marginLeft: "10px", background: "#006ce4", color: "#fff", padding: "4px 10px", borderRadius: "4px", fontSize: "11px", fontWeight: "bold" }}>Genius</div>
@@ -183,15 +218,8 @@ export default function Home() {
         <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: "200" }}>
           <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", maxWidth: "400px", width: "90%", textAlign: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}>
             <div style={{ fontSize: "50px", marginBottom: "10px" }}>🏔️🚀</div>
-            <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "0 0 10px 0" }}>{modalFeature} Feature Coming Soon!</h3>
+            <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "0 0 10px 0" }}>{modalFeature} Stays Coming Soon!</h3>
             <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0" }}>
-              We are currently onboarding top-tier premium verified {modalFeature.toLowerCase()} in Uttarakhand to give you the best experience. Stay tuned!
+              We are currently integrating top verified premium properties in {modalFeature}. Right now, our verified properties in <b>Char Dham (Uttarkashi / Matli)</b> are fully functional and ready to book!
             </p>
-            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}>Great, Got it!</button>
-          </div>
-        </div>
-      )}
-
-    </div>
-  );
-}
+            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}>Great, Take
