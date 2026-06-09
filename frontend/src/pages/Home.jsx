@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
-  
+
+  // 1. Data Definitions
   const propertyTypes = [{n:"Hotels"}, {n:"Apartments"}, {n:"Resorts"}, {n:"Villas"}];
   const locations = [{n:"Char Dham"}, {n:"Haridwar"}, {n:"Dehradun"}, {n:"Mussoorie"}];
   const experiences = [{n:"Trekking"}, {n:"Yoga & Meditation"}, {n:"Hillstations"}, {n:"Spa & Wellness"}];
@@ -20,7 +21,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main Content Sections */}
+      {/* Main Content Sections (Wrapped in home-wrap for centering) */}
       <div className="home-wrap">
         
         {/* Browse by Property */}
