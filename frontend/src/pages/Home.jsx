@@ -32,9 +32,9 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif", background: "#f8fafc", minHeight: "100vh", color: "#0f172a" }}>
       
-      {/* 🏔️ 1. PREMIUM DARK LUXURY HERO BANNER (तुम्हारी ओरिजिनल थीम के साथ सिंक) */}
+      {/* 🏔️ 1. PREMIUM NAVY LUXURY HERO BANNER (नेवबार के कलर कोड #0f1e36 के साथ परफेक्ट सिंक) */}
       <div style={{ 
-        background: "linear-gradient(180deg, #020617 0%, #0f172a 100%)", 
+        background: "linear-gradient(180deg, #0f1e36 0%, #0f172a 100%)", // यहाँ कलर कोड अपडेट किया है
         padding: "80px 20px 100px", 
         color: "#fff", 
         textAlign: "center" 
@@ -49,11 +49,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 🟨 2. FLOATING PREMIUM SEARCH BAR (Booking.com लेआउट, पर बिना कॉपी लगे) */}
+      {/* 🟨 2. FLOATING PREMIUM SEARCH BAR */}
       <div style={{ maxWidth: "1100px", margin: "-40px auto 0", padding: "0 20px", position: "relative", zIndex: "10" }}>
         <form onSubmit={handleSearch} style={{ 
           display: "flex", 
-          background: "#1e293b", // डार्क स्लेट बैकग्राउंड (प्रीमियम लुक)
+          background: "#1e293b", 
           padding: "6px", 
           borderRadius: "12px", 
           boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
@@ -74,7 +74,7 @@ export default function Home() {
           </div>
           
           {/* Calendar Indicator */}
-          <div style={{ width: "240px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.05)", borderRadius: "#fff", padding: "0 16px", color: "#cbd5e1", fontSize: "14px", fontWeight: "500", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px" }}>
+          <div style={{ width: "240px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.05)", padding: "0 16px", color: "#cbd5e1", fontSize: "14px", fontWeight: "500", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px" }}>
             <span style={{ marginRight: "10px" }}>📅</span> June 2026
           </div>
 
