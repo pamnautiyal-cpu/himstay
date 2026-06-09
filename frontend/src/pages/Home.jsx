@@ -33,49 +33,59 @@ export default function Home() {
   ];
 
   const handleSearch = (e) => { e.preventDefault(); navigate(search.trim() ? `/hotels?city=${encodeURIComponent(search.trim())}` : "/hotels"); };
-  const handleDestinationClick = (dest) => { if(dest.isLive) navigate(`/hotels?city=${encodeURIComponent(dest.targetCity)}`); else { setModalFeature(dest.name); setShowModal(true); } };
+  
+  const handleDestinationClick = (dest) => {
+    if (dest.isLive) {
+      navigate(`/hotels?city=${encodeURIComponent(dest.targetCity)}`);
+    } else {
+      setModalFeature(dest.name);
+      setShowModal(true);
+    }
+  };
+
   const handleExperienceClick = (exp) => { setModalFeature(exp.name); setShowModal(true); };
-  const handlePropertyClick = (type) => { if(type.isLive) navigate("/hotels"); else { setModalFeature(type.name); setShowModal(true); } };
+  
+  const handlePropertyClick = (type) => {
+    if (type.isLive) {
+      navigate("/hotels");
+    } else {
+      setModalFeature(type.name);
+      setShowModal(true);
+    }
+  };
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", background: "#fff", minHeight: "100vh" }}>
-      {/* 🌌 HERO SECTION */}
-      <div style={{ background: "linear-gradient(180deg, #1c2541 0%, #0b132b 100%)", padding: "80px 20px 100px", color: "#fff", textAlign: "center" }}>
-        <h1 style={{ fontSize: "3.2rem", fontWeight: "800", margin: "0 0 16px 0" }}>Find your next Himalayan stay</h1>
-        <p style={{ fontSize: "1.3rem", color: "#94a3b8" }}>Explore premium hotels, cozy homestays, and unique experiences.</p>
-      </div>
-
-      {/* 🟨 SEARCH BAR */}
-      <div style={{ maxWidth: "1100px", margin: "-40px auto 0", padding: "0 20px", position: "relative", zIndex: "10" }}>
-        <form onSubmit={handleSearch} style={{ display: "flex", background: "#1e293b", padding: "6px", borderRadius: "12px", gap: "6px" }}>
-          <input type="text" placeholder="Where are you going?" value={search} onChange={(e) => setSearch(e.target.value)} style={{ flex: 1, padding: "16px", borderRadius: "8px", border: "none" }} />
-          <button type="submit" style={{ padding: "0 36px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer" }}>Search</button>
+    <div style={{ background: "#fff", minHeight: "100vh" }}>
+      {/* Search Section */}
+      <div style={{ padding: "40px 20px", textAlign: "center" }}>
+        <h1>Find your next Himalayan stay</h1>
+        <form onSubmit={handleSearch} style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
+          <input type="text" placeholder="Where are you going?" value={search} onChange={(e) => setSearch(e.target.value)} style={{ padding: "10px", width: "300px" }} />
+          <button type="submit" style={{ padding: "10px 20px" }}>Search</button>
         </form>
       </div>
 
-      {/* 📄 MAIN CONTENT AREA (सब कुछ वापस आ गया है) */}
-      <div style={{ maxWidth: "1100px", margin: "50px auto", padding: "0 20px" }}>
-        {/* 1. Property Types */}
-        <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px" }}>Browse by property type</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginBottom: "50px" }}>
-          {propertyTypes.map((t) => <div key={t.name} onClick={() => handlePropertyClick(t)} style={{ cursor: "pointer" }}><img src={t.image} style={{ width: "100%", height: "160px", objectFit: "cover", borderRadius: "8px" }} /><h4>{t.name}</h4></div>)}
+      <div style={{ maxWidth: "1100px", margin: "auto", padding: "20px" }}>
+        {/* Property Types */}
+        <h3>Browse by property type</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
+          {propertyTypes.map((t) => <div key={t.name} onClick={() => handlePropertyClick(t)} style={{ cursor: "pointer" }}><img src={t.image} style={{ width: "100%", height: "100px" }} /><h4>{t.name}</h4></div>)}
         </div>
 
-        {/* 2. Uttarakhand Destinations (जो गायब हो गया था) */}
-        <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px" }}>Explore Uttarakhand</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px", marginBottom: "50px" }}>
+        {/* Explore Uttarakhand */}
+        <h3>Explore Uttarakhand</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
           {uttarakhandDestinations.map((d) => (
-            <div key={d.name} onClick={() => handleDestinationClick(d)} style={{ cursor: "pointer", height: "160px", background: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url(${d.image}) center/cover`, borderRadius: "12px", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "20px", color: "#fff" }}>
-              <h4 style={{ margin: "0", fontSize: "20px" }}>{d.name}</h4>
-              <span style={{ fontSize: "12px", opacity: 0.8 }}>{d.stays}</span>
+            <div key={d.name} onClick={() => handleDestinationClick(d)} style={{ cursor: "pointer", height: "150px", background: `url(${d.image}) center/cover`, borderRadius: "8px", display: "flex", alignItems: "flex-end", padding: "10px", color: "#fff" }}>
+              <h4>{d.name}</h4>
             </div>
           ))}
         </div>
 
-        {/* 3. Trending Experiences */}
-        <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px" }}>Trending Experiences</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
-          {uttarakhandExperiences.map((e) => <div key={e.name} onClick={() => handleExperienceClick(e)} style={{ cursor: "pointer", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}><img src={e.image} style={{ width: "100%", height: "160px", objectFit: "cover" }} /><div style={{ padding: "10px" }}><h4>{e.name}</h4><p style={{ fontSize: "12px", color: "#666", margin: "5px 0 0" }}>{e.desc}</p></div></div>)}
+        {/* Experiences */}
+        <h3>Trending Experiences</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+          {uttarakhandExperiences.map((e) => <div key={e.name} onClick={() => handleExperienceClick(e)} style={{ cursor: "pointer" }}><img src={e.image} style={{ width: "100%", height: "150px" }} /><h4>{e.name}</h4></div>)}
         </div>
       </div>
     </div>
