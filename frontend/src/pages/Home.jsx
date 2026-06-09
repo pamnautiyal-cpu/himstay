@@ -4,12 +4,9 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  
-  // 🆕 'Coming Soon' पॉपअप (Modal) को कंट्रोल करने के लिए स्टेट
   const [showModal, setShowModal] = useState(false);
   const [modalFeature, setModalFeature] = useState("");
 
-  // ट्रेंडिंग डेस्टिनेशंस (इन पर क्लिक करने से लाइव बैकएंड फ़िल्टर काम करेगा)
   const trendingDestinations = [
     { name: "Mussoorie", stays: "1,240 properties", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470", flag: "🏔️" },
     { name: "Nainital", stays: "967 properties", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4", flag: "🛶" },
@@ -17,7 +14,6 @@ export default function Home() {
     { name: "Rishikesh", stays: "2,150 properties", image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511", flag: "🧘" }
   ];
 
-  // प्रॉपर्टी टाइप्स (होटल्स लाइव है, बाकी पर पॉपअप खुलेगा)
   const propertyTypes = [
     { name: "Hotels", isLive: true, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
     { name: "Apartments", isLive: false, image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" },
@@ -34,7 +30,6 @@ export default function Home() {
     }
   };
 
-  // 🆕 क्लिक हैंडलर लॉजिक (लाइव को आगे भेजेगा, बाकी पर सुंदर मैसेज देगा)
   const handlePropertyClick = (type) => {
     if (type.isLive) {
       navigate("/hotels");
@@ -47,15 +42,15 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif", background: "#f8fafc", minHeight: "100vh", color: "#0f172a", position: "relative" }}>
       
-      {/* 🏔️ 1. PREMIUM NAVY LUXURY HERO BANNER */}
+      {/* 🌌 1. MIXED TWILIGHT LUXURY HERO BANNER (नेवबार के साथ एकदम 100% सीमलेस सिंक) */}
       <div style={{ 
-        background: "linear-gradient(180deg, #0f1e36 0%, #0f172a 100%)", 
+        background: "linear-gradient(180deg, #1c2541 0%, #0b132b 100%)", // मिक्स्ड डीप टोन ग्रेडिएंट
         padding: "80px 20px 100px", 
         color: "#fff", 
         textAlign: "center" 
       }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <h1 style={{ fontSize: "3.2rem", fontWeight: "800", margin: "0 0 16px 0", letterSpacing: "-1.5px", background: "linear-gradient(to right, #ffffff, #cbd5e1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <h1 style={{ fontSize: "3.2rem", fontWeight: "800", margin: "0 0 16px 0", letterSpacing: "-1.5px", background: "linear-gradient(to right, #ffffff, #e2e8f0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             Find your next Himalayan stay
           </h1>
           <p style={{ fontSize: "1.3rem", margin: "0 0 40px 0", fontWeight: "400", color: "#94a3b8" }}>
@@ -71,10 +66,10 @@ export default function Home() {
           background: "#1e293b", 
           padding: "6px", 
           borderRadius: "12px", 
-          boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.18)",
           gap: "6px",
           alignItems: "stretch",
-          border: "1px solid rgba(255,255,255,0.1)"
+          border: "1px solid rgba(255,255,255,0.08)"
         }}>
           <div style={{ flex: 1, display: "flex", alignItems: "center", background: "#fff", borderRadius: "8px", padding: "0 16px" }}>
             <span style={{ marginRight: "12px", fontSize: "18px" }}>🛏️</span>
@@ -183,7 +178,7 @@ export default function Home() {
 
       </div>
 
-      {/* 🆕 POPUP MODAL FOR UNDER PROCESSING FEATURES (AGODA/BOOKING STYLE POPUP) */}
+      {/* POPUP MODAL */}
       {showModal && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: "200" }}>
           <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", maxWidth: "400px", width: "90%", textAlign: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}>

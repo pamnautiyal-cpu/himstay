@@ -15,12 +15,12 @@ export default function Navbar() {
           position: "sticky",
           top: 0,
           zIndex: 100,
-          background: "#0f1e36", // 🏔️ प्रीमियम माउंटेन नेवी ब्लू (न ब्लैक, न ब्राइट ब्लू)
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          // वाइट मार्जिन और शेडो को यहाँ से पूरी तरह हटा दिया गया है
+          // 🌌 DEEP ALPINE TWILIGHT GRADIENT (प्रीमियम मिक्स्ड कलर)
+          background: "linear-gradient(135deg, #0b132b 0%, #1c2541 100%)", 
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        {/* ─── TOP ROW: LOGO + UTILITIES (Perfect Center Alignment) ─── */}
+        {/* ─── TOP ROW: LOGO + UTILITIES ─── */}
         <div
           style={{
             maxWidth: 1200,
@@ -90,8 +90,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* ─── BOTTOM ROW: CLEAN MENU LINKS (Flights/Attractions Completely Removed) ─── */}
-        <div style={{ background: "rgba(0, 0, 0, 0.15)", padding: "10px 0" }}>
+        {/* ─── BOTTOM ROW: CLEAN MENU LINKS ─── */}
+        <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "10px 0" }}>
           <div 
             style={{ 
               maxWidth: 1200, 
@@ -155,16 +155,6 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-
-      {/* ⚠️ FADE GAP REMOVED / SMOOTHED FOR PERFECT BANNER ATTACHMENT */}
-      {isHome && (
-        <div
-          style={{
-            height: "1px",
-            background: "#0f172a", // बैनर के बैकग्राउंड के साथ बिल्कुल मिक्स
-          }}
-        />
-      )}
 
       <style>{`
         @media (max-width: 768px) {
