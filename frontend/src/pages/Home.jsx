@@ -22,6 +22,8 @@ export default function Home() {
 
       {/* Main Content Sections */}
       <div className="home-wrap">
+        
+        {/* Browse by Property */}
         <section className="home-section">
           <h2>Browse by property type</h2>
           <div className="home-grid">
@@ -34,6 +36,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Explore Uttarakhand */}
         <section className="home-section">
           <h2>Explore Uttarakhand</h2>
           <div className="home-grid">
@@ -41,6 +44,19 @@ export default function Home() {
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
                 <img src="https://images.unsplash.com/photo-1626621422537-37b2319addef?w=500" alt={u.n} />
                 <h3>{u.n}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Trending Experiences */}
+        <section className="home-section">
+          <h2>Trending Experiences</h2>
+          <div className="home-grid">
+            {experiences.map((e, i) => (
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500" alt={e.n} />
+                <h3>{e.n}</h3>
               </div>
             ))}
           </div>
