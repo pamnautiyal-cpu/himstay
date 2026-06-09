@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
 export default function HotelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // उत्तरकाशी/मटली के वही 5 असली होटल्स का डेटाबेस यहाँ सिंक किया गया है
   const localHotels = {
     local_nagraja_01: {
       name: "Hotel Nagraja Palace",
@@ -78,7 +80,7 @@ export default function HotelDetails() {
       images: [
         "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800",
         "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500",
-        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500"
+        "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=500"
       ],
       amenities: ["Pocket Wi-Fi", "River Stream Access", "Apple Orchard View", "Bonfire Space", "Kitchen Access", "Budget Friendly"],
       description: "Dhruvnanda Homestay on ITBP Road is a hidden treasure for nature lovers and backpackers. Located close to a rushing river stream and surrounded by local fruit orchards, it offers rustic wooden interiors and an amazing outdoor bonfire setup."
@@ -86,30 +88,79 @@ export default function HotelDetails() {
   };
 
   useEffect(() => {
-    // अगर लोकल आईडी मैच होती है, तो तुरंत स्टेट सेट करो
     if (localHotels[id]) {
       setHotel(localHotels[id]);
     } else {
-      // अगर आईडी लोकल नहीं है, तो बैकएंड से फेच करने का बैकअप लॉजिक
-      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
       fetch(`${BACKEND_URL}/api/hotels/${id}`)
         .then((res) => res.json())
         .then((data) => setHotel(data))
         .catch((err) => console.error("Error fetching hotel details:", err));
     }
-    // जब भी डिटेल पेज खुले, स्क्रीन ऊपर से शुरू होनी चाहिए
     window.scrollTo(0, 0);
   }, [id]);
 
-  const handleBookingInit = () => {
-    // 💳 अगला कदम: यहाँ से सीधा पेमेंट गेटवे ट्रिगर होगा
-    alert(`Processing Booking for ${hotel.name}. Opening Secure Payment Gateway...`);
+  // 💳 🆕 RAZORPAY LIVE INTEGRATION ENGINE
+  const handlePayment = async (amountToPay) => {
+    try {
+      // 1. बैकएंड से ऑर्डर आईडी क्रिएट करना (सुरक्षित ट्रांजैक्शन के लिए)
+      const orderUrl = `${BACKEND_URL}/api/payments/order`;
+      const response = await axios.post(orderUrl, { amount: amountToPay });
+      const { id: order_id, currency } = response.data;
+
+      // 2. रेज़रपे पॉपअप की कॉन्फ़िगरेशन सेटिंग्स
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_placeholder_key", // तुम्हारी टेस्ट/लाइव की
+        amount: amountToPay * 100, // रेज़रपे पैसे को पैसे (Paise) में गिनता है (₹1 = 100 पैसे)
+        currency: currency || "INR",
+        name: "The Himalayans Stays",
+        description: `Booking Confirmation for ${hotel.name}`,
+        image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=100",
+        order_id: order_id,
+        handler: async function (response) {
+          // पेमेंट सफल होने के बाद यह ब्लॉक चलेगा
+          const verifyUrl = `${BACKEND_URL}/api/payments/verify`;
+          const verifyData = {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            hotelId: id,
+            amount: amountToPay
+          };
+          
+          const verificationRes = await axios.post(verifyUrl, verifyData);
+          if (verificationRes.data.success) {
+            alert("🎉 Celebration! Booking Confirmed & Payment Received Successfully.");
+            navigate("/mytrips"); // बुकिंग हिस्ट्री पेज पर भेजें
+          } else {
+            alert("Payment verification failed. Please contact support.");
+          }
+        },
+        prefill: {
+          name: "Guest Traveler",
+          email: "traveler@example.com",
+          contact: "9999999999",
+        },
+        notes: {
+          address: hotel.location,
+        },
+        theme: {
+          color: "#0f1e36", // तुम्हारी वेबसाइट की लग्ज़री डार्क ब्लू थीम से सिंक किया गया है
+        },
+      };
+
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      console.error("Payment initiation failed, triggering fallback modal:", error);
+      // बैकएंड पेमेंट एपीआई न होने की स्थिति में फ्रंटएंड डेमो मोड अलर्ट
+      alert(`💳 Demo Gateway Triggered!\n\nHotel: ${hotel.name}\nAmount: ₹${amountToPay}\n\n(Connecting to live gateway once your Razorpay API endpoints are configured on Render backend.)`);
+    }
   };
 
   if (!hotel) {
     return (
       <div style={{ padding: "80px", textAlign: "center", fontSize: "18px", color: "#64748b" }}>
-        🏔️ Loading luxury property configurations...
+        🏔| Loading luxury property configurations...
       </div>
     );
   }
@@ -118,7 +169,7 @@ export default function HotelDetails() {
     <div style={{ background: "#f8fafc", minHeight: "100vh", padding: "30px 20px", fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         
-        {/* ─── 1. BREADCRUMB & BACK BUTTON ─── */}
+        {/* BREADCRUMB */}
         <button 
           onClick={() => navigate(-1)} 
           style={{ background: "none", border: "none", color: "#006ce4", fontWeight: "700", fontSize: "14px", cursor: "pointer", marginBottom: "15px", padding: 0 }}
@@ -126,7 +177,7 @@ export default function HotelDetails() {
           ← Back to results
         </button>
 
-        {/* ─── 2. TITLE BLOCK (BOOKING STYLE) ─── */}
+        {/* TITLE BLOCK */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "15px", marginBottom: "20px" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
@@ -137,7 +188,6 @@ export default function HotelDetails() {
             <p style={{ color: "#475569", fontSize: "14px", margin: "6px 0 0 0" }}>📍 {hotel.location}</p>
           </div>
 
-          {/* Rating Badge Box */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#fff", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
             <div style={{ textAlign: "right" }}>
               <h4 style={{ margin: 0, fontSize: "14px", fontWeight: "700", color: "#0f172a" }}>Excellent</h4>
@@ -149,7 +199,7 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* ─── 3. IMAGE GALLERY LAYOUT (1 LARGE + 2 SMALL CODES) ─── */}
+        {/* IMAGE GALLERY */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "10px", height: "380px", marginBottom: "30px", borderRadius: "12px", overflow: "hidden" }}>
           <div style={{ width: "100%", height: "100%" }}>
             <img src={hotel.images[0]} alt="Main View" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -160,10 +210,8 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* ─── 4. DESCRIPTION & AMENITIES GRID ─── */}
+        {/* DESCRIPTION & HIGHLIGHTS */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "30px", marginBottom: "40px" }} className="details-grid">
-          
-          {/* Left Column: Details */}
           <div>
             <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", marginTop: 0, marginBottom: "12px" }}>Property Description</h3>
             <p style={{ color: "#334155", fontSize: "15px", lineHeight: "1.6", margin: 0 }}>{hotel.description}</p>
@@ -178,19 +226,18 @@ export default function HotelDetails() {
             </div>
           </div>
 
-          {/* Right Column: Pricing Highlights Card */}
           <div style={{ background: "#fff", padding: "24px", borderRadius: "12px", border: "1px solid #e2e8f0", boxShadow: "0 4px 12px rgba(0,0,0,0.02)", height: "fit-content" }}>
             <h4 style={{ margin: "0 0 10px 0", fontSize: "16px", fontWeight: "700", color: "#0f172a" }}>Property Highlights</h4>
-            <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.5", margin: "0 0 20px 0" }}>📍 Nestled right in the heart of Uttarakhand. Highly rated for its pristine Himalayan atmosphere and premium location cleanliness.</p>
+            <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.5", margin: "0 0 20px 0" }}>📍 Nestled right in the heart of Uttarakhand. Highly rated for its pristine Himalayan atmosphere.</p>
             
             <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: "15px", marginBottom: "20px" }}>
               <span style={{ fontSize: "13px", color: "#64748b" }}>Price for 1 night:</span>
               <h2 style={{ fontSize: "32px", fontWeight: "800", color: "#16a34a", margin: "4px 0 0 0" }}>₹{hotel.price}</h2>
-              <span style={{ fontSize: "11px", color: "#64748b" }}>Includes all verified local taxes and green service fees</span>
+              <span style={{ fontSize: "11px", color: "#64748b" }}>Includes all verified local taxes</span>
             </div>
 
             <button 
-              onClick={handleBookingInit}
+              onClick={() => handlePayment(hotel.price)}
               style={{ width: "100%", padding: "14px", background: "#006ce4", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "15px", cursor: "pointer" }}
             >
               Reserve Your Stay
@@ -198,7 +245,7 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* ─── 5. ROOM SELECTION TABLE (BOOKING.COM LAYOUT ENGINE) ─── */}
+        {/* ROOM SELECTION TABLE */}
         <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", padding: "24px", boxShadow: "0 4px 15px rgba(0,0,0,0.02)" }}>
           <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: "0 0 16px 0" }}>Available Rooms & Rates</h3>
           
@@ -225,10 +272,9 @@ export default function HotelDetails() {
                   </td>
                   <td style={tdStyle}>
                     <div style={{ color: "#059669", fontWeight: "600", fontSize: "12px" }}>✔ Free Cancellation anytime</div>
-                    <div style={{ color: "#059669", fontWeight: "600", fontSize: "12px" }}>✔ No prepayment needed</div>
                   </td>
                   <td style={tdStyle}>
-                    <button onClick={handleBookingInit} style={tableBtnStyle}>Book Now</button>
+                    <button onClick={() => handlePayment(hotel.price)} style={tableBtnStyle}>Book Now</button>
                   </td>
                 </tr>
                 <tr>
@@ -242,10 +288,9 @@ export default function HotelDetails() {
                   </td>
                   <td style={tdStyle}>
                     <div style={{ color: "#059669", fontWeight: "600", fontSize: "12px" }}>✔ Free Breakfast Included</div>
-                    <div style={{ color: "#059669", fontWeight: "600", fontSize: "12px" }}>✔ Free Cancellation anytime</div>
                   </td>
                   <td style={tdStyle}>
-                    <button onClick={handleBookingInit} style={tableBtnStyle}>Book Suite</button>
+                    <button onClick={() => handlePayment(Math.round(hotel.price * 1.5))} style={tableBtnStyle}>Book Suite</button>
                   </td>
                 </tr>
               </tbody>
@@ -257,34 +302,13 @@ export default function HotelDetails() {
       
       <style>{`
         @media (max-width: 768px) {
-          .details-grid { gridTemplateColumns: 1fr !important; }
+          .details-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
   );
 }
 
-// 🧰 TABLE CSS OBJECTS
-const thStyle = {
-  padding: "12px 16px",
-  fontWeight: "600",
-  fontSize: "13px"
-};
-
-const tdStyle = {
-  padding: "20px 16px",
-  verticalAlign: "top",
-  lineHeight: "1.5"
-};
-
-const tableBtnStyle = {
-  background: "#006ce4",
-  color: "#fff",
-  border: "none",
-  padding: "8px 16px",
-  borderRadius: "6px",
-  fontWeight: "700",
-  fontSize: "13px",
-  cursor: "pointer",
-  boxShadow: "0 2px 6px rgba(0,108,228,0.2)"
-};
+const thStyle = { padding: "12px 16px", fontWeight: "600", fontSize: "13px" };
+const tdStyle = { padding: "20px 16px", verticalAlign: "top", lineHeight: "1.5" };
+const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer" };
