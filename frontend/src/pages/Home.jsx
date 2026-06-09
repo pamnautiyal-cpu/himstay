@@ -33,60 +33,41 @@ export default function Home() {
   ];
 
   const handleSearch = (e) => { e.preventDefault(); navigate(search.trim() ? `/hotels?city=${encodeURIComponent(search.trim())}` : "/hotels"); };
-  
-  const handleDestinationClick = (dest) => {
-    if (dest.isLive) {
-      navigate(`/hotels?city=${encodeURIComponent(dest.targetCity)}`);
-    } else {
-      setModalFeature(dest.name);
-      setShowModal(true);
-    }
-  };
-
+  const handleDestinationClick = (dest) => { if(dest.isLive) navigate(`/hotels?city=${encodeURIComponent(dest.targetCity)}`); else { setModalFeature(dest.name); setShowModal(true); } };
   const handleExperienceClick = (exp) => { setModalFeature(exp.name); setShowModal(true); };
-  
-  const handlePropertyClick = (type) => {
-    if (type.isLive) {
-      navigate("/hotels");
-    } else {
-      setModalFeature(type.name);
-      setShowModal(true);
-    }
-  };
+  const handlePropertyClick = (type) => { if(type.isLive) navigate("/hotels"); else { setModalFeature(type.name); setShowModal(true); } };
 
   return (
-    <div style={{ background: "#fff", minHeight: "100vh" }}>
-      {/* Search Section */}
-      <div style={{ padding: "40px 20px", textAlign: "center" }}>
+    <div className="home-page">
+      <div className="home-header">
         <h1>Find your next Himalayan stay</h1>
-        <form onSubmit={handleSearch} style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "20px" }}>
-          <input type="text" placeholder="Where are you going?" value={search} onChange={(e) => setSearch(e.target.value)} style={{ padding: "10px", width: "300px" }} />
-          <button type="submit" style={{ padding: "10px 20px" }}>Search</button>
-        </form>
+        <p>Explore premium hotels, cozy homestays, and unique experiences.</p>
       </div>
 
-      <div style={{ maxWidth: "1100px", margin: "auto", padding: "20px" }}>
-        {/* Property Types */}
-        <h3>Browse by property type</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
-          {propertyTypes.map((t) => <div key={t.name} onClick={() => handlePropertyClick(t)} style={{ cursor: "pointer" }}><img src={t.image} style={{ width: "100%", height: "100px" }} /><h4>{t.name}</h4></div>)}
-        </div>
+      <div className="home-wrap">
+        {/* 1. Property Types */}
+        <section className="home-section">
+          <h2>Browse by property type</h2>
+          <div className="home-grid">
+            {propertyTypes.map((t) => <div key={t.name} className="home-card" onClick={() => handlePropertyClick(t)}><img src={t.image} alt={t.name} /><div className="card-body"><h3>{t.name}</h3></div></div>)}
+          </div>
+        </section>
 
-        {/* Explore Uttarakhand */}
-        <h3>Explore Uttarakhand</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
-          {uttarakhandDestinations.map((d) => (
-            <div key={d.name} onClick={() => handleDestinationClick(d)} style={{ cursor: "pointer", height: "150px", background: `url(${d.image}) center/cover`, borderRadius: "8px", display: "flex", alignItems: "flex-end", padding: "10px", color: "#fff" }}>
-              <h4>{d.name}</h4>
-            </div>
-          ))}
-        </div>
+        {/* 2. Uttarakhand Destinations */}
+        <section className="home-section">
+          <h2>Explore Uttarakhand</h2>
+          <div className="home-grid">
+            {uttarakhandDestinations.map((d) => <div key={d.name} className="home-card" onClick={() => handleDestinationClick(d)}><img src={d.image} alt={d.name} /><div className="card-body"><h3>{d.name}</h3><p>{d.stays}</p></div></div>)}
+          </div>
+        </section>
 
-        {/* Experiences */}
-        <h3>Trending Experiences</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
-          {uttarakhandExperiences.map((e) => <div key={e.name} onClick={() => handleExperienceClick(e)} style={{ cursor: "pointer" }}><img src={e.image} style={{ width: "100%", height: "150px" }} /><h4>{e.name}</h4></div>)}
-        </div>
+        {/* 3. Trending Experiences */}
+        <section className="home-section">
+          <h2>Trending Experiences</h2>
+          <div className="home-grid">
+            {uttarakhandExperiences.map((e) => <div key={e.name} className="home-card" onClick={() => handleExperienceClick(e)}><img src={e.image} alt={e.name} /><div className="card-body"><h3>{e.name}</h3><p>{e.desc}</p></div></div>)}
+          </div>
+        </section>
       </div>
     </div>
   );
