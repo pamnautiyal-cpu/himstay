@@ -137,7 +137,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🏔️ EXPLORE UTTARAKHAND (TEXT-ONLY BOLD STYLE LIKE BOOKING.COM) */}
+        {/* 🏔️ EXPLORE UTTARAKHAND */}
         <div style={{ marginBottom: "60px" }}>
           <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Explore Uttarakhand</h3>
           <p style={{ color: "#595959", margin: "0 0 24px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
@@ -230,3 +230,4 @@ export default function Home() {
 
     </div>
   );
+}
