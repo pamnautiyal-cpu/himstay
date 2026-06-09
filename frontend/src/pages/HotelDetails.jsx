@@ -205,4 +205,122 @@ export default function HotelDetails() {
               <h4 style={{ margin: 0, fontSize: "14px", fontWeight: "700", color: "#0f172a" }}>Excellent</h4>
               <span style={{ fontSize: "12px", color: "#64748b" }}>{hotel.reviews} verified reviews</span>
             </div>
-            <div style={{ background: "#0f1e36", color: "#fff", padding: "8px 12px", borderRadius: "6px", fontWeight
+            <div style={{ background: "#0f1e36", color: "#fff", padding: "8px 12px", borderRadius: "6px", fontWeight: "800", fontSize: "16px" }}>
+              {hotel.rating}
+            </div>
+          </div>
+        </div>
+
+        {/* IMAGE GALLERY */}
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "10px", height: "380px", marginBottom: "30px", borderRadius: "12px", overflow: "hidden" }}>
+          <div style={{ width: "100%", height: "100%" }}>
+            <img src={hotel.images[0]} alt="Main View" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+          <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: "10px", height: "100%" }}>
+            <img src={hotel.images[1] || hotel.images[0]} alt="Room View 1" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <img src={hotel.images[2] || hotel.images[0]} alt="Room View 2" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+        </div>
+
+        {/* DESCRIPTION & AMENITIES */}
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "30px", marginBottom: "40px" }} className="details-grid">
+          <div>
+            <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", marginTop: 0, marginBottom: "12px" }}>Property Description</h3>
+            <p style={{ color: "#334155", fontSize: "15px", lineHeight: "1.6", margin: 0 }}>{hotel.description}</p>
+
+            <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", marginTop: "30px", marginBottom: "15px" }}>Most Popular Facilities</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px" }}>
+              {hotel.amenities.map((amenity, index) => (
+                <div key={index} style={{ display: "flex", alignItems: "center", gap: "8px", color: "#059669", fontSize: "14px", fontWeight: "600", background: "#f0fdf4", padding: "10px 14px", borderRadius: "8px" }}>
+                  <span>✓</span> {amenity}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ background: "#fff", padding: "24px", borderRadius: "12px", border: "1px solid #e2e8f0", boxShadow: "0 4px 12px rgba(0,0,0,0.02)", height: "fit-content" }}>
+            <h4 style={{ margin: "0 0 10px 0", fontSize: "16px", fontWeight: "700", color: "#0f172a" }}>Property Highlights</h4>
+            <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.5", margin: "0 0 20px 0" }}>📍 Nestled right in the heart of Uttarakhand. Highly rated for its pristine Himalayan atmosphere.</p>
+            
+            <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: "15px", marginBottom: "20px" }}>
+              <span style={{ fontSize: "13px", color: "#64748b" }}>Price for 1 night:</span>
+              <h2 style={{ fontSize: "32px", fontWeight: "800", color: "#16a34a", margin: "4px 0 0 0" }}>₹{hotel.price}</h2>
+              <span style={{ fontSize: "11px", color: "#64748b" }}>Includes all verified local taxes</span>
+            </div>
+
+            <button 
+              onClick={() => handlePayment(hotel.price)}
+              style={{ width: "100%", padding: "14px", background: "#006ce4", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "15px", cursor: "pointer" }}
+            >
+              Reserve Your Stay
+            </button>
+          </div>
+        </div>
+
+        {/* ROOM SELECTION TABLE */}
+        <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", padding: "24px", boxShadow: "0 4px 15px rgba(0,0,0,0.02)" }}>
+          <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: "0 0 16px 0" }}>Available Rooms & Rates</h3>
+          
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "14px" }}>
+              <thead>
+                <tr style={{ background: "#0f1e36", color: "#fff" }}>
+                  <th style={thStyle}>Room Type</th>
+                  <th style={thStyle}>Max Guests</th>
+                  <th style={thStyle}>Price per Night</th>
+                  <th style={thStyle}>Choices & Benefits</th>
+                  <th style={thStyle}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: "1px solid #e2e8f0" }}>
+                  <td style={tdStyle}>
+                    <strong style={{ color: "#0f172a", fontSize: "15px" }}>Standard Comfort Room</strong>
+                    <div style={{ color: "#64748b", fontSize: "12px", marginTop: "4px" }}>1 Double Bed · Mountain View Window</div>
+                  </td>
+                  <td style={tdStyle}>👥 2 Adults</td>
+                  <td style={tdStyle}>
+                    <span style={{ color: "#16a34a", fontWeight: "700", fontSize: "16px" }}>₹{hotel.price}</span>
+                  </td>
+                  <td style={tdStyle}>
+                    <div style={{ color: "#059669", fontWeight: "600", fontSize: "12px" }}>✔ Free Cancellation anytime</div>
+                  </td>
+                  <td style={tdStyle}>
+                    <button onClick={() => handlePayment(hotel.price)} style={tableBtnStyle}>Book Now</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={tdStyle}>
+                    <strong style={{ color: "#0f172a", fontSize: "15px" }}>Premium Executive Family Suite</strong>
+                    <div style={{ color: "#64748b", fontSize: "12px", marginTop: "4px" }}>2 King Beds · Private Balcony Set</div>
+                  </td>
+                  <td style={tdStyle}>👨‍👩‍👧‍👦 4 Guests</td>
+                  <td style={tdStyle}>
+                    <span style={{ color: "#16a34a", fontWeight: "700", fontSize: "16px" }}>₹{Math.round(hotel.price * 1.5)}</span>
+                  </td>
+                  <td style={tdStyle}>
+                    <div style={{ color: "#059669", fontWeight: "600", fontSize: "12px" }}>✔ Free Breakfast Included</div>
+                  </td>
+                  <td style={tdStyle}>
+                    <button onClick={() => handlePayment(Math.round(hotel.price * 1.5))} style={tableBtnStyle}>Book Suite</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      
+      <style>{`
+        @media (max-width: 768px) {
+          .details-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+const thStyle = { padding: "12px 16px", fontWeight: "600", fontSize: "13px" };
+const tdStyle = { padding: "20px 16px", verticalAlign: "top", lineHeight: "1.5" };
+const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer", boxShadow: "0 2px 6px rgba(0,108,228,0.2)" };
