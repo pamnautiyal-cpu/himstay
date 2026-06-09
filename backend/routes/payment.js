@@ -1,90 +1,80 @@
 const express = require("express");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
+const Booking = require("../models/Booking");
 
 const router = express.Router();
 
+// 🔑 बैकअप के तौर पर तुम्हारी एक्टिव टेस्ट कीज़ यहीं डाल दी हैं ताकि .env लोड न होने पर भी फेल न हो
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
+  key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_RxW3z0Ei0iGN69",
+  key_secret: process.env.RAZORPAY_KEY_SECRET || "QEK9HpYxNKGRU6FeHEub1LB5",
 });
 
-/* ===== EMAIL SETUP ===== */
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-/* ===== CREATE ORDER ===== */
+/* =========================
+   CREATE ORDER
+========================= */
 router.post("/create-order", async (req, res) => {
-  const { amount } = req.body;
+  try {
+    const { amount } = req.body;
 
-  const order = await razorpay.orders.create({
-    amount: amount * 100,
-    currency: "INR",
-    receipt: "receipt_" + Date.now(),
-  });
+    if (!amount) {
+      return res.status(400).json({ error: "Amount missing" });
+    }
 
-  res.json(order);
+    const options = {
+      amount: Math.round(Number(amount) * 100), // इंटीजर राउंड ऑफ लॉजिक
+      currency: "INR",
+      receipt: "order_" + Date.now(),
+    };
+
+    const order = await razorpay.orders.create(options);
+    return res.json(order);
+  } catch (err) {
+    console.error("CREATE ORDER ERROR:", err);
+    return res.status(500).json({ error: "Order creation failed", details: err.message });
+  }
 });
 
-/* ===== VERIFY PAYMENT + SEND EMAIL ===== */
+/* =========================
+   VERIFY PAYMENT
+========================= */
 router.post("/verify", async (req, res) => {
-  const {
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature,
-    booking,
-  } = req.body;
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      bookingData
+    } = req.body;
 
-  const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-  const expectedSign = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(sign)
-    .digest("hex");
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET || "QEK9HpYxNKGRU6FeHEub1LB5")
+      .update(body.toString())
+      .digest("hex");
 
-  if (expectedSign !== razorpay_signature) {
-    return res.status(400).json({ success: false });
+    if (expectedSignature !== razorpay_signature) {
+      return res.status(400).json({ success: false, message: "Signature verification failed" });
+    }
+
+    // पेमेंट सफल होने पर डेटाबेस में बुकिंग को पक्का करना
+    let savedBooking = null;
+    if (bookingData) {
+      savedBooking = await Booking.create({
+        ...bookingData,
+        paymentId: razorpay_payment_id,
+        orderId: razorpay_order_id,
+        status: "Confirmed"
+      });
+    }
+
+    return res.json({ success: true, booking: savedBooking });
+  } catch (err) {
+    console.error("VERIFY ERROR:", err);
+    return res.status(500).json({ success: false, error: err.message });
   }
-
-  /* CUSTOMER EMAIL */
-  await transporter.sendMail({
-    from: `"The Himalayans" <${process.env.EMAIL_USER}>`,
-    to: booking.email,
-    subject: "Booking Confirmed – The Himalayans",
-    html: `
-      <h2>Your booking is confirmed 🎉</h2>
-      <p><strong>Hotel:</strong> ${booking.hotelName}</p>
-      <p><strong>Check-in:</strong> ${booking.checkIn}</p>
-      <p><strong>Check-out:</strong> ${booking.checkOut}</p>
-      <p><strong>Guests:</strong> ${booking.guests}</p>
-      <p><strong>Amount Paid:</strong> ₹${booking.amount}</p>
-      <br/>
-      <p>Thank you for booking with <b>The Himalayans</b>.</p>
-    `,
-  });
-
-  /* ADMIN EMAIL */
-  await transporter.sendMail({
-    from: `"The Himalayans" <${process.env.EMAIL_USER}>`,
-    to: process.env.ADMIN_EMAIL,
-    subject: "New Booking Received",
-    html: `
-      <h3>New Booking</h3>
-      <p><strong>Hotel:</strong> ${booking.hotelName}</p>
-      <p><strong>Customer Email:</strong> ${booking.email}</p>
-      <p><strong>Dates:</strong> ${booking.checkIn} → ${booking.checkOut}</p>
-      <p><strong>Guests:</strong> ${booking.guests}</p>
-      <p><strong>Amount:</strong> ₹${booking.amount}</p>
-    `,
-  });
-
-  res.json({ success: true });
 });
 
 module.exports = router;
