@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import * as XLSX from "xlsx"; // ✨ एक्सेल लाइब्रेरी इम्पोर्ट की
+import * as XLSX from "xlsx"; 
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
@@ -19,7 +19,6 @@ export default function AdminBookings() {
     }
   };
 
-  // ✨ एक्सेल डाउनलोड करने का फंक्शन
   const downloadExcel = () => {
     const ws = XLSX.utils.json_to_sheet(bookings);
     const wb = XLSX.utils.book_new();
@@ -73,17 +72,33 @@ export default function AdminBookings() {
             <th style={{ padding: "12px" }}>Customer Email</th>
             <th style={{ padding: "12px" }}>Hotel</th>
             <th style={{ padding: "12px" }}>Amount</th>
+            <th style={{ padding: "12px" }}>Action</th>
           </tr>
         </thead>
         <tbody>
-          {bookings.map((b) => (
-            <tr key={b._id} style={{ borderBottom: "1px solid #e2e8f0" }}>
-              <td style={{ padding: "12px" }}>{new Date(b.createdAt).toLocaleDateString()}</td>
-              <td style={{ padding: "12px" }}>{b.email || b.bookingData?.email}</td>
-              <td style={{ padding: "12px" }}>{b.hotelName || b.bookingData?.hotelName}</td>
-              <td style={{ padding: "12px" }}>₹{b.amount || b.bookingData?.amount}</td>
-            </tr>
-          ))}
+          {bookings.map((b) => {
+            const hotelName = b.hotelName || b.bookingData?.hotelName || "Stay";
+            const amount = b.amount || b.bookingData?.amount || 0;
+            return (
+              <tr key={b._id} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                <td style={{ padding: "12px" }}>{new Date(b.createdAt).toLocaleDateString()}</td>
+                <td style={{ padding: "12px" }}>{b.email || b.bookingData?.email}</td>
+                <td style={{ padding: "12px" }}>{hotelName}</td>
+                <td style={{ padding: "12px" }}>₹{amount}</td>
+                <td style={{ padding: "12px" }}>
+                  {/* ✨ WhatsApp बटन */}
+                  <a 
+                    href={`https://wa.me/919410106470?text=Hello,%20regarding%20booking%20at%20${hotelName}%20for%20Amount:%20${amount}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ background: "#25d366", color: "#fff", padding: "6px 12px", borderRadius: "5px", textDecoration: "none", fontSize: "12px", fontWeight: "bold" }}
+                  >
+                    💬 WhatsApp
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
