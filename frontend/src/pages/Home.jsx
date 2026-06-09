@@ -7,7 +7,7 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [modalFeature, setModalFeature] = useState("");
 
-  // 🏔️ उत्तराखंड के 6 मुख्य डेस्टिनेशंस (अब बैकग्राउंड इमेज और डार्क ओवरले कोडिंग के साथ)
+  // 🏔️ उत्तराखंड के मुख्य डेस्टिनेशंस
   const uttarakhandDestinations = [
     { name: "Char Dham", stays: "350 properties", isLive: true, targetCity: "Uttarkashi", image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=500&q=80" },
     { name: "Haridwar", stays: "1,041 properties", isLive: false, image: "https://images.unsplash.com/photo-1590050752117-238cb0612b1b?w=500&q=80" },
@@ -15,6 +15,16 @@ export default function Home() {
     { name: "Mussoorie", stays: "1,240 properties", isLive: false, image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500&q=80" },
     { name: "Nainital", stays: "967 properties", isLive: false, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80" },
     { name: "Rishikesh", stays: "2,150 properties", isLive: false, image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=500&q=80" }
+  ];
+
+  // 🏄‍♂️ 🆕 उत्तराखंड के एडवेंचर और लाइवलीहुड एक्सपीरियंसेज (प्रीमियम इमेजेस के साथ)
+  const uttarakhandExperiences = [
+    { name: "Trekking", desc: "Explore alpine trails", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&q=80" },
+    { name: "Yoga & Meditation", desc: "Spiritual healing centers", image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=80" },
+    { name: "Hillstations", desc: "Escape to cold peaks", image: "https://images.unsplash.com/photo-1486873249359-2731bd6da553?w=500&q=80" },
+    { name: "Spa & Wellness", desc: "Luxury mountain rejuvenation", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&q=80" },
+    { name: "River Rafting", desc: "Conquer white water rapids", image: "https://images.unsplash.com/photo-1530866495561-507c9faab2ed?w=500&q=80" },
+    { name: "Climbing Adventure", desc: "Rock scaling & mountaineering", image: "https://images.unsplash.com/photo-1522163182402-834f871fd851?w=500&q=80" }
   ];
 
   const propertyTypes = [
@@ -40,6 +50,12 @@ export default function Home() {
       setModalFeature(dest.name);
       setShowModal(true);
     }
+  };
+
+  const handleExperienceClick = (exp) => {
+    // अनुभव पर क्लिक करने पर भी यूजर को सुंदर अलर्ट पॉपअप दिखेगा
+    setModalFeature(exp.name);
+    setShowModal(true);
   };
 
   const handlePropertyClick = (type) => {
@@ -137,8 +153,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🏔️ EXPLORE UTTARAKHAND (BACKGROUND IMAGE + BOLD TEXT TILES LIKE BOOKING.COM) */}
-        <div style={{ marginBottom: "60px" }}>
+        {/* 🏔️ EXPLORE UTTARAKHAND TILES */}
+        <div style={{ marginBottom: "50px" }}>
           <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Explore Uttarakhand</h3>
           <p style={{ color: "#595959", margin: "0 0 24px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
           
@@ -150,14 +166,13 @@ export default function Home() {
                 style={{ 
                   height: "160px",
                   borderRadius: "12px", 
-                  // 🖼️ इमेज को सीधे कार्ड के बैकग्राउंड में लगाया गया है
                   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.7)), url(${dest.image})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   padding: "20px",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "flex-end", // सारे टेक्स्ट को नीचे अलाइन करने के लिए
+                  justifyContent: "flex-end",
                   cursor: "pointer",
                   transition: "transform 0.2s, box-shadow 0.2s",
                   boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
@@ -173,45 +188,72 @@ export default function Home() {
                   e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.08)";
                 }}
               >
-                {/* अगर लाइव नहीं है तो सुंदर डार्क ब्लर 'Soon' बैनर ओवरले */}
                 {!dest.isLive && (
-                  <div style={{ 
-                    position: "absolute", 
-                    top: "12px", 
-                    right: "12px", 
-                    background: "rgba(15, 23, 42, 0.75)", 
-                    color: "#fff", 
-                    fontSize: "11px", 
-                    fontWeight: "700", 
-                    padding: "3px 8px", 
-                    borderRadius: "4px" 
-                  }}>
+                  <div style={{ position: "absolute", top: "12px", right: "12px", background: "rgba(15, 23, 42, 0.75)", color: "#fff", fontSize: "11px", fontWeight: "700", padding: "3px 8px", borderRadius: "4px" }}>
                     ⏳ Soon
                   </div>
                 )}
-
                 {dest.isLive && (
-                  <div style={{ 
-                    position: "absolute", 
-                    top: "12px", 
-                    right: "12px", 
-                    background: "#2563eb", 
-                    color: "#fff", 
-                    fontSize: "11px", 
-                    fontWeight: "800", 
-                    padding: "3px 8px", 
-                    borderRadius: "4px" 
-                  }}>
+                  <div style={{ position: "absolute", top: "12px", right: "12px", background: "#2563eb", color: "#fff", fontSize: "11px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>
                     LIVE ⚡
                   </div>
                 )}
-
-                {/* शहर और प्रॉपर्टी काउंट - एकदम हैवी बोल्ड और वाइट टेक्स्ट */}
                 <h4 style={{ margin: "0 0 2px 0", fontSize: "22px", fontWeight: "800", color: "#ffffff", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
                   {dest.name}
                 </h4>
                 <span style={{ fontSize: "14px", color: "#e2e8f0", fontWeight: "600", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}>
                   {dest.stays}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 🏄‍♂️ 🆕 3. EXPLORE EXPERIENCES IN UTTARAKHAND SECTION */}
+        <div style={{ marginBottom: "60px" }}>
+          <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Trending Experiences</h3>
+          <p style={{ color: "#595959", margin: "0 0 24px 0", fontSize: "14px" }}>Discover activities, adventure, and wellness packages across hills</p>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
+            {uttarakhandExperiences.map((exp) => (
+              <div 
+                key={exp.name} 
+                onClick={() => handleExperienceClick(exp)}
+                style={{ 
+                  height: "160px",
+                  borderRadius: "12px", 
+                  // 🖼️ एडवेंचर इमेजेस को डार्क ओवरले ग्रेडिएंट के साथ सिंक किया गया है
+                  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.75)), url(${exp.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  padding: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  cursor: "pointer",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+                  position: "relative",
+                  overflow: "hidden"
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.08)";
+                }}
+              >
+                <div style={{ position: "absolute", top: "12px", right: "12px", background: "rgba(255, 255, 255, 0.15)", color: "#fff", fontSize: "11px", fontWeight: "700", padding: "3px 8px", borderRadius: "4px", backdropFilter: "blur(4px)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                  ⭐ Package
+                </div>
+
+                <h4 style={{ margin: "0 0 2px 0", fontSize: "22px", fontWeight: "800", color: "#ffffff", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
+                  {exp.name}
+                </h4>
+                <span style={{ fontSize: "13px", color: "#cbd5e1", fontWeight: "500", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}>
+                  {exp.desc}
                 </span>
               </div>
             ))}
@@ -253,9 +295,9 @@ export default function Home() {
         <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: "200" }}>
           <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", maxWidth: "400px", width: "90%", textAlign: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}>
             <div style={{ fontSize: "50px", marginBottom: "10px" }}>🏔️🚀</div>
-            <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "0 0 10px 0" }}>{modalFeature} Stays Coming Soon!</h3>
+            <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "0 0 10px 0" }}>{modalFeature} Feature Coming Soon!</h3>
             <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0" }}>
-              We are currently integrating top verified premium properties in {modalFeature}. Right now, our verified properties in <b>Char Dham (Uttarkashi / Matli)</b> are fully functional and ready to book!
+              We are currently designing and onboarding custom premium packages for <b>{modalFeature}</b> in Uttarakhand to give you the best thrill. Right now, our verified properties in <b>Char Dham (Uttarkashi / Matli)</b> are fully functional and ready to book!
             </p>
             <button type="button" onClick={() => setShowModal(false)} style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}>
               Great, Take Me to Active Stays
