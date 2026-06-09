@@ -13,9 +13,9 @@ export default function AllStays() {
   const queryParams = new URLSearchParams(location.search);
   const cityQuery = queryParams.get("city");
 
-  // डिफ़ॉल्ट बैकअप इमेज अगर कोई इमेज यूआरएल क्रैश हो जाए
   const defaultImg = "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600";
 
+  // 🔒 बिजनेस प्रोटेक्शन: यहाँ से फोन नंबर्स को पूरी तरह हटा दिया गया है ताकि अर्निंग सेफ रहे
   const localUttarkashiHotels = [
     {
       _id: "local_nagraja_01",
@@ -25,7 +25,6 @@ export default function AllStays() {
       price: 3500,
       rating: 4.8,
       reviews: 19,
-      phone: "097604 56649",
       image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
       roomType: "Luxury Gangotri Highway View Room",
       guests: 3,
@@ -39,7 +38,6 @@ export default function AllStays() {
       price: 1800,
       rating: 4.6,
       reviews: 61,
-      phone: "094101 98367",
       image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600",
       roomType: "Traditional Homestay Room",
       guests: 2,
@@ -53,7 +51,6 @@ export default function AllStays() {
       price: 2200,
       rating: 4.9,
       reviews: 360,
-      phone: "081262 59767",
       image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600",
       roomType: "Premium Family Suite",
       guests: 4,
@@ -67,7 +64,6 @@ export default function AllStays() {
       price: 2800,
       rating: 4.6,
       reviews: 117,
-      phone: "081260 31252",
       image: "https://images.unsplash.com/photo-1568495248636-6432b97bd949?w=600",
       roomType: "Deluxe Comfort Room",
       guests: 2,
@@ -81,7 +77,6 @@ export default function AllStays() {
       price: 1500,
       rating: 4.6,
       reviews: 46,
-      phone: "090450 77759",
       image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600",
       roomType: "Cozy Valley Homestay Cabin",
       guests: 2,
@@ -95,19 +90,17 @@ export default function AllStays() {
       .get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
         const backendData = res.data || [];
-        // लोकल डेटा को हमेशा प्राथमिकता दें और बैकएंड डेटा के साथ कंबाइन करें
         const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !bh._id.startsWith("local_"))];
         setHotels(merged);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Backend fetch error, using local data layer:", err);
+        console.error("Backend fetch error, using secured local data:", err);
         setHotels(localUttarkashiHotels);
         setLoading(false);
       });
   }, [location.search]);
 
-  // फ़िल्टरिंग लॉजिक को और मजबूत किया गया है
   const filteredHotels = hotels.filter((hotel) => {
     if (!cityQuery) return true;
     const query = cityQuery.toLowerCase();
@@ -144,7 +137,7 @@ export default function AllStays() {
               key={hotel._id} 
               style={{ display: "flex", background: "#fff", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.03)", border: "1px solid #e2e8f0", flexWrap: "wrap" }}
             >
-              {/* IMAGE COLUMN WITH ERROR HANDLER */}
+              {/* IMAGE COLUMN */}
               <div 
                 onClick={() => navigate(`/hotels/${hotel._id}`)} 
                 style={{ width: "300px", minWidth: "260px", height: "220px", cursor: "pointer", background: "#f1f5f9" }}
@@ -152,7 +145,7 @@ export default function AllStays() {
                 <img 
                   src={hotel.image || defaultImg} 
                   alt={hotel.name} 
-                  onError={(e) => { e.target.src = defaultImg; }} // अगर इमेज लिंक टूटे तो बैकअप लोड हो
+                  onError={(e) => { e.target.src = defaultImg; }} 
                   style={{ width: "100%", height: "100%", objectFit: "cover" }} 
                 />
               </div>
@@ -176,13 +169,11 @@ export default function AllStays() {
                     </div>
                   </div>
 
-                  <p style={{ color: "#64748b", margin: "0 0 10px 0", fontSize: "13px", lineHeight: "1.4" }}>
+                  <p style={{ color: "#64748b", margin: "0 0 16px 0", fontSize: "13px", lineHeight: "1.4" }}>
                     📍 {hotel.location}
                   </p>
                   
-                  <p style={{ color: "#059669", margin: "0 0 14px 0", fontSize: "12px", fontWeight: "600" }}>
-                    📞 Contact Host: {hotel.phone}
-                  </p>
+                  {/* ❌ "Contact Host" वाली पूरी लाइन यहाँ से हटा दी गई है ताकि डायरेक्ट कॉलिंग ब्लॉक हो सके */}
                   
                   <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", color: "#475569", fontSize: "13px" }}>
                     <span>🛏️ {hotel.roomType}</span>
