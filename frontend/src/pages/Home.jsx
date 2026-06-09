@@ -7,7 +7,7 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [modalFeature, setModalFeature] = useState("");
 
-  // 🏔️ उत्तराखंड के 6 मुख्य डेस्टिनेशंस (टेक्स्ट-ओनली लिस्ट के लिए)
+  // 🏔️ उत्तराखंड के 6 मुख्य डेस्टिनेशंस (टेक्स्ट-ओनली लिस्ट)
   const uttarakhandDestinations = [
     { name: "Char Dham", stays: "350 properties", isLive: true, targetCity: "Uttarkashi" },
     { name: "Haridwar", stays: "1,041 properties", isLive: false },
@@ -137,7 +137,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🏔️ 🆕 EXPLORE UTTARAKHAND (TEXT-ONLY BOLD STYLE LIKE BOOKING.COM) */}
+        {/* 🏔️ EXPLORE UTTARAKHAND (TEXT-ONLY BOLD STYLE LIKE BOOKING.COM) */}
         <div style={{ marginBottom: "60px" }}>
           <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Explore Uttarakhand</h3>
           <p style={{ color: "#595959", margin: "0 0 24px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
@@ -151,7 +151,7 @@ export default function Home() {
                   padding: "16px 20px", 
                   borderRadius: "8px", 
                   border: "1px solid #e6e6e6", 
-                  background: dest.isLive ? "#eff6ff" : "#fff", // लाइव वाले के लिए हल्का सा हाइलाइटेड फील
+                  background: dest.isLive ? "#eff6ff" : "#fff", 
                   cursor: "pointer",
                   transition: "all 0.15s ease",
                   boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
@@ -165,7 +165,6 @@ export default function Home() {
                   e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.02)";
                 }}
               >
-                {/* शहर का नाम - सुपर बोल्ड बुकिंग स्टाइल में */}
                 <h4 style={{ margin: "0 0 6px 0", fontSize: "18px", fontWeight: "800", color: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   {dest.name}
                   {dest.isLive && <span style={{ fontSize: "11px", background: "#2563eb", color: "#fff", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold" }}>LIVE</span>}
@@ -200,8 +199,8 @@ export default function Home() {
             <h3 style={{ margin: "0 0 8px 0", fontSize: "20px", fontWeight: "700", color: "#1a1a1a" }}>Sign in, save money</h3>
             <p style={{ margin: "0 0 20px 0", color: "#595959", fontSize: "14px" }}>Save 10% or more at participating properties – just look for the blue Genius label</p>
             <div style={{ display: "flex", gap: "12px" }}>
-              <button onClick={() => navigate("/login")} style={{ background: "#006ce4", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "4px", fontWeight: "600", cursor: "pointer", fontSize: "14px" }}>Sign in</button>
-              <button onClick={() => navigate("/signup")} style={{ background: "transparent", color: "#006ce4", border: "none", padding: "10px 14px", fontWeight: "600", cursor: "pointer", fontSize: "14px" }}>Register</button>
+              <button type="button" onClick={() => navigate("/login")} style={{ background: "#006ce4", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "4px", fontWeight: "600", cursor: "pointer", fontSize: "14px" }}>Sign in</button>
+              <button type="button" onClick={() => navigate("/signup")} style={{ background: "transparent", color: "#006ce4", border: "none", padding: "10px 14px", fontWeight: "600", cursor: "pointer", fontSize: "14px" }}>Register</button>
             </div>
           </div>
           
@@ -222,4 +221,12 @@ export default function Home() {
             <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0" }}>
               We are currently integrating top verified premium properties in {modalFeature}. Right now, our verified properties in <b>Char Dham (Uttarkashi / Matli)</b> are fully functional and ready to book!
             </p>
-            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}>Great, Take
+            <button type="button" onClick={() => setShowModal(false)} style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}>
+              Great, Take Me to Active Stays
+            </button>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
