@@ -1,102 +1,93 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
+
+const BACKEND_URL = "https://himstay.onrender.com";
 
 export default function Booking() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const hotelId = searchParams.get("hotelId");
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [guests, setGuests] = useState(2);
+  const [packageType, setPackageType] = useState("Standard");
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
-  // assume these already exist in your file
-  const hotel = { price: 1000, name: "Test Hotel" };
-  const hotelId = "123";
-  const form = {};
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-  async function handlePayment() {
-    if (!hotel) return alert("Hotel not loaded");
-    if (!window.Razorpay) return alert("Razorpay not loaded");
-
+  const handleBookingAndPayment = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
     try {
-      // 1️⃣ CREATE ORDER
-      const res = await fetch(`${BACKEND_URL}/api/payment/create-order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: hotel.price }),
-      });
+      // 1. बैकएंड से Razorpay ऑर्डर आईडी बनाएं
+      const orderRes = await axios.post(`${BACKEND_URL}/api/payment/create-order`, { amount: 3500 }); // एस्टीमेट अमाउंट
+      const order = orderRes.data;
 
-      const order = await res.json();
-
-      if (!order.id) {
-        alert("Order creation failed");
-        setLoading(false);
-        return;
-      }
-
-      // 2️⃣ OPEN RAZORPAY
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, 
         amount: order.amount,
         currency: "INR",
-        name: "The Himalayans",
-        description: hotel.name,
+        name: "HimStay",
+        description: "Hotel Booking Payment",
         order_id: order.id,
-
         handler: async function (response) {
-          try {
-            // 3️⃣ VERIFY PAYMENT
-            const verify = await axios.post(
-              `${BACKEND_URL}/api/payment/verify`,
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }
-            );
+          // 2. पेमेंट वेरिफिकेशन और डेटाबेस में सेव करना
+          await axios.post(`${BACKEND_URL}/api/bookings`, {
+            hotelId,
+            name,
+            email,
+            phone,
+            city,
+            guests: Number(guests),
+            checkIn,
+            packageType,
+            notes,
+          });
 
-            if (!verify.data.success) {
-              alert("Payment verification failed");
-              setLoading(false);
-              return;
-            }
-
-            // 4️⃣ SAVE BOOKING
-            await axios.post(`${BACKEND_URL}/api/bookings`, {
-              hotelId,
-              ...form,
-              paymentStatus: "paid",
-              razorpayPaymentId: response.razorpay_payment_id,
-            });
-
-            setSuccess(true);
-            setLoading(false);
-          } catch (err) {
-            console.error(err);
-            alert("Payment failed");
-            setLoading(false);
-          }
+          alert("Booking & Payment Successful! 🎉");
+          navigate("/mytrips");
         },
-
-        theme: { color: "#16a34a" },
+        prefill: { name, email, contact: phone },
+        theme: { color: "#2563eb" },
       };
 
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
       console.error(err);
-      alert("Payment failed");
+      alert("Payment failed or server issue.");
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <div>
-      <h2>Booking Page</h2>
-      <button onClick={handlePayment} disabled={loading}>
-        {loading ? "Processing..." : "Pay Now"}
-      </button>
+    <div style={{ maxWidth: "500px", margin: "40px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
+      <h2>Complete Your Booking</h2>
+      <form onSubmit={handleBookingAndPayment} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+        <input placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required style={inputStyle} />
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
+        <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} required style={inputStyle} />
+        <input placeholder="Your City" value={city} onChange={(e) => setCity(e.target.value)} style={inputStyle} />
+        <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} required style={inputStyle} />
+        
+        <select value={packageType} onChange={(e) => setPackageType(e.target.value)} style={inputStyle}>
+          <option value="Standard">Standard Package</option>
+          <option value="Deluxe">Deluxe Package</option>
+          <option value="Premium">Premium Package</option>
+        </select>
 
-      {success && <p>Payment Successful ✅</p>}
+        <button type="submit" disabled={loading} style={{ padding: "12px", background: "#16a34a", color: "white", border: "none", borderRadius: "8px", fontWeight: "bold", cursor: "pointer" }}>
+          {loading ? "Processing Payment..." : "Pay Now & Confirm"}
+        </button>
+      </form>
     </div>
   );
 }
+
+const inputStyle = { padding: "10px", borderRadius: "6px", border: "1px solid #cbd5e1" };
