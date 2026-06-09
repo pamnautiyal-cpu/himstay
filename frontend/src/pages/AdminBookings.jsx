@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import * as XLSX from "xlsx"; // ✨ एक्सेल लाइब्रेरी इम्पोर्ट की
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
@@ -8,7 +9,6 @@ export default function AdminBookings() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
 
-  // अपना सीक्रेट पासवर्ड यहाँ सेट करो (जो सिर्फ तुम्हें पता हो)
   const ADMIN_SECRET = "040788"; 
 
   const handleLogin = () => {
@@ -19,6 +19,14 @@ export default function AdminBookings() {
     }
   };
 
+  // ✨ एक्सेल डाउनलोड करने का फंक्शन
+  const downloadExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(bookings);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Bookings");
+    XLSX.writeFile(wb, "Himalayan_Bookings_Report.xlsx");
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       axios.get(`${BACKEND_URL}/api/bookings`)
@@ -27,7 +35,6 @@ export default function AdminBookings() {
     }
   }, [isAuthenticated]);
 
-  // अगर पासवर्ड नहीं डाला तो लॉगिन स्क्रीन दिखाओ
   if (!isAuthenticated) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", background: "#0f1e36" }}>
@@ -47,12 +54,19 @@ export default function AdminBookings() {
     );
   }
 
-  // लॉगिन होने के बाद बुकिंग टेबल दिखाओ
   return (
     <div style={{ padding: "40px", background: "#f8fafc", minHeight: "100vh" }}>
-      <h1 style={{ color: "#0f172a", marginBottom: "20px" }}>📊 Admin Booking Console</h1>
-      {/* ... टेबल कोड पहले जैसा ही रहेगा ... */}
-      <table style={{ width: "100%", background: "#fff", borderCollapse: "collapse" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <h1 style={{ color: "#0f172a" }}>📊 Admin Booking Console</h1>
+        <button 
+          onClick={downloadExcel}
+          style={{ background: "#16a34a", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
+        >
+          📥 Download Excel Report
+        </button>
+      </div>
+
+      <table style={{ width: "100%", background: "#fff", borderCollapse: "collapse", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
         <thead>
           <tr style={{ background: "#0f1e36", color: "#fff" }}>
             <th style={{ padding: "12px" }}>Date</th>
