@@ -80,7 +80,7 @@ export default function HotelDetails() {
       images: [
         "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800",
         "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500",
-        "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=500"
+        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500"
       ],
       amenities: ["Pocket Wi-Fi", "River Stream Access", "Apple Orchard View", "Bonfire Space", "Kitchen Access", "Budget Friendly"],
       description: "Dhruvnanda Homestay on ITBP Road is a hidden treasure for nature lovers and backpackers. Located close to a rushing river stream and surrounded by local fruit orchards, it offers rustic wooden interiors and an amazing outdoor bonfire setup."
@@ -99,40 +99,47 @@ export default function HotelDetails() {
     window.scrollTo(0, 0);
   }, [id]);
 
-  // 💳 🆕 RAZORPAY LIVE INTEGRATION ENGINE
+  // 💳 RAZORPAY LIVE INTEGRATION (SURFACE TO SERVER SEAMLESS CORRELATION)
   const handlePayment = async (amountToPay) => {
     try {
-      // 1. बैकएंड से ऑर्डर आईडी क्रिएट करना (सुरक्षित ट्रांजैक्शन के लिए)
-      const orderUrl = `${BACKEND_URL}/api/payments/order`;
+      // 1. बैकएंड के '/api/payment/create-order' रूट पर हिट करना
+      const orderUrl = `${BACKEND_URL}/api/payment/create-order`;
       const response = await axios.post(orderUrl, { amount: amountToPay });
+      
       const { id: order_id, currency } = response.data;
 
-      // 2. रेज़रपे पॉपअप की कॉन्फ़िगरेशन सेटिंग्स
+      // 2. रेज़रपे पॉपअप विंडो के ऑप्शंस लोड करना
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_placeholder_key", // तुम्हारी टेस्ट/लाइव की
-        amount: amountToPay * 100, // रेज़रपे पैसे को पैसे (Paise) में गिनता है (₹1 = 100 पैसे)
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_RxW3z0Ei0iGN69", // तुम्हारी टेस्ट की
+        amount: amountToPay * 100, // पैसे में कनवर्ट (₹3500 = 350000 पैसे)
         currency: currency || "INR",
         name: "The Himalayans Stays",
-        description: `Booking Confirmation for ${hotel.name}`,
+        description: `Booking Room at ${hotel.name}`,
         image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=100",
         order_id: order_id,
-        handler: async function (response) {
-          // पेमेंट सफल होने के बाद यह ब्लॉक चलेगा
-          const verifyUrl = `${BACKEND_URL}/api/payments/verify`;
+        handler: async function (paymentResponse) {
+          // पेमेंट सक्सेसफुल होने पर वेरिफिकेशन रूट को हिट करना
+          const verifyUrl = `${BACKEND_URL}/api/payment/verify`;
           const verifyData = {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            hotelId: id,
-            amount: amountToPay
+            razorpay_order_id: paymentResponse.razorpay_order_id,
+            razorpay_payment_id: paymentResponse.razorpay_payment_id,
+            razorpay_signature: paymentResponse.razorpay_signature,
+            booking: {
+              hotelName: hotel.name,
+              amount: amountToPay,
+              email: "customer@example.com", 
+              checkIn: "June 2026",
+              checkOut: "June 2026",
+              guests: 2
+            }
           };
           
           const verificationRes = await axios.post(verifyUrl, verifyData);
           if (verificationRes.data.success) {
             alert("🎉 Celebration! Booking Confirmed & Payment Received Successfully.");
-            navigate("/mytrips"); // बुकिंग हिस्ट्री पेज पर भेजें
+            navigate("/mytrips");
           } else {
-            alert("Payment verification failed. Please contact support.");
+            alert("Payment verification failed. Please try again.");
           }
         },
         prefill: {
@@ -140,27 +147,23 @@ export default function HotelDetails() {
           email: "traveler@example.com",
           contact: "9999999999",
         },
-        notes: {
-          address: hotel.location,
-        },
         theme: {
-          color: "#0f1e36", // तुम्हारी वेबसाइट की लग्ज़री डार्क ब्लू थीम से सिंक किया गया है
+          color: "#0f1e36", // वेबसाइट मैचिंग प्रीमियम डार्क ब्लू थीम
         },
       };
 
       const rzp1 = new window.Razorpay(options);
-      rzp1.open();
+      rzp1.open(); // 🚀 यहाँ खुलेगा असली UPI/Card पेमेंट बॉक्स!
     } catch (error) {
-      console.error("Payment initiation failed, triggering fallback modal:", error);
-      // बैकएंड पेमेंट एपीआई न होने की स्थिति में फ्रंटएंड डेमो मोड अलर्ट
-      alert(`💳 Demo Gateway Triggered!\n\nHotel: ${hotel.name}\nAmount: ₹${amountToPay}\n\n(Connecting to live gateway once your Razorpay API endpoints are configured on Render backend.)`);
+      console.error("Payment initiation failed:", error);
+      alert("Unable to connect to the secure Razorpay Gateway. Please verify your Render server logs.");
     }
   };
 
   if (!hotel) {
     return (
       <div style={{ padding: "80px", textAlign: "center", fontSize: "18px", color: "#64748b" }}>
-        🏔| Loading luxury property configurations...
+        🏔️ Loading luxury property configurations...
       </div>
     );
   }
@@ -178,7 +181,7 @@ export default function HotelDetails() {
         </button>
 
         {/* TITLE BLOCK */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "15px", marginBottom: "20px" }}>
+        <div style={{ display: "flex", Mathcontent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "15px", marginBottom: "20px" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
               <span style={{ background: "#f59e0b", color: "#fff", fontSize: "11px", fontWeight: "bold", padding: "3px 6px", borderRadius: "4px" }}>Stay</span>
@@ -210,7 +213,7 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* DESCRIPTION & HIGHLIGHTS */}
+        {/* DESCRIPTION & AMENITIES */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "30px", marginBottom: "40px" }} className="details-grid">
           <div>
             <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", marginTop: 0, marginBottom: "12px" }}>Property Description</h3>
@@ -311,4 +314,4 @@ export default function HotelDetails() {
 
 const thStyle = { padding: "12px 16px", fontWeight: "600", fontSize: "13px" };
 const tdStyle = { padding: "20px 16px", verticalAlign: "top", lineHeight: "1.5" };
-const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer" };
+const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer", boxShadow: "0 2px 6px rgba(0,108,228,0.2)" };
