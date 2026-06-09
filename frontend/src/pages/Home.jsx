@@ -3,43 +3,44 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
-  const properties = [{n:"Taj", l:"Chennai"}, {n:"Radisson", l:"Madurai"}, {n:"Heritage", l:"Madurai"}, {n:"Marari", l:"Alleppey"}];
-  const types = [{n:"Hotels"}, {n:"Apartments"}, {n:"Resorts"}, {n:"Villas"}];
+  
+  const propertyTypes = [{n:"Hotels"}, {n:"Apartments"}, {n:"Resorts"}, {n:"Villas"}];
+  const locations = [{n:"Char Dham"}, {n:"Haridwar"}, {n:"Dehradun"}, {n:"Mussoorie"}];
+  const experiences = [{n:"Trekking"}, {n:"Yoga & Meditation"}, {n:"Hillstations"}, {n:"Spa & Wellness"}];
 
   return (
-    <div className="home-page">
+    <div className="home-page-container">
+      {/* Hero Section */}
       <div className="hero-section">
-        <h1>Find your next stay</h1>
-        <p>Search deals on hotels, homes, and much more...</p>
+        <h1>Find your next Himalayan stay</h1>
+        <p>Explore premium hotels, cozy homestays, and unique experiences.</p>
         <div className="search-bar">
           <input type="text" placeholder="Where are you going?" />
-          <button>Search</button>
+          <button onClick={() => navigate("/hotels")}>Search</button>
         </div>
       </div>
 
+      {/* Main Content Sections */}
       <div className="home-wrap">
         <section className="home-section">
-          <h2>Stay at our top unique properties</h2>
+          <h2>Browse by property type</h2>
           <div className="home-grid">
-            {properties.map((p, i) => (
+            {propertyTypes.map((t, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" alt={p.n} />
-                <div className="card-content">
-                  <h3>{p.n}</h3>
-                  <p>{p.l}</p>
-                </div>
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" alt={t.n} />
+                <h3>{t.n}</h3>
               </div>
             ))}
           </div>
         </section>
 
         <section className="home-section">
-          <h2>Browse by property type</h2>
+          <h2>Explore Uttarakhand</h2>
           <div className="home-grid">
-            {types.map((t, i) => (
+            {locations.map((u, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt={t.n} />
-                <div className="card-content"><h3>{t.n}</h3></div>
+                <img src="https://images.unsplash.com/photo-1626621422537-37b2319addef?w=500" alt={u.n} />
+                <h3>{u.n}</h3>
               </div>
             ))}
           </div>
