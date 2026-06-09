@@ -53,24 +53,29 @@ export default function Home() {
         </form>
       </div>
 
-      {/* 📄 CONTENT */}
+      {/* 📄 MAIN CONTENT AREA (सब कुछ वापस आ गया है) */}
       <div style={{ maxWidth: "1100px", margin: "50px auto", padding: "0 20px" }}>
-        {/* Property Types */}
+        {/* 1. Property Types */}
         <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px" }}>Browse by property type</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginBottom: "50px" }}>
           {propertyTypes.map((t) => <div key={t.name} onClick={() => handlePropertyClick(t)} style={{ cursor: "pointer" }}><img src={t.image} style={{ width: "100%", height: "160px", objectFit: "cover", borderRadius: "8px" }} /><h4>{t.name}</h4></div>)}
         </div>
 
-        {/* Destinations */}
+        {/* 2. Uttarakhand Destinations (जो गायब हो गया था) */}
         <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px" }}>Explore Uttarakhand</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px", marginBottom: "50px" }}>
-          {uttarakhandDestinations.map((d) => <div key={d.name} onClick={() => handleDestinationClick(d)} style={{ cursor: "pointer", height: "160px", background: `url(${d.image}) center/cover`, borderRadius: "12px", display: "flex", alignItems: "flex-end", padding: "15px", color: "#fff", fontWeight: "bold" }}>{d.name}</div>)}
+          {uttarakhandDestinations.map((d) => (
+            <div key={d.name} onClick={() => handleDestinationClick(d)} style={{ cursor: "pointer", height: "160px", background: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url(${d.image}) center/cover`, borderRadius: "12px", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "20px", color: "#fff" }}>
+              <h4 style={{ margin: "0", fontSize: "20px" }}>{d.name}</h4>
+              <span style={{ fontSize: "12px", opacity: 0.8 }}>{d.stays}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Experiences */}
+        {/* 3. Trending Experiences */}
         <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px" }}>Trending Experiences</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
-          {uttarakhandExperiences.map((e) => <div key={e.name} onClick={() => handleExperienceClick(e)} style={{ cursor: "pointer", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}><img src={e.image} style={{ width: "100%", height: "160px", objectFit: "cover" }} /><div style={{ padding: "10px" }}><h4>{e.name}</h4></div></div>)}
+          {uttarakhandExperiences.map((e) => <div key={e.name} onClick={() => handleExperienceClick(e)} style={{ cursor: "pointer", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}><img src={e.image} style={{ width: "100%", height: "160px", objectFit: "cover" }} /><div style={{ padding: "10px" }}><h4>{e.name}</h4><p style={{ fontSize: "12px", color: "#666", margin: "5px 0 0" }}>{e.desc}</p></div></div>)}
         </div>
       </div>
     </div>
