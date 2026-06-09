@@ -99,64 +99,71 @@ export default function HotelDetails() {
     window.scrollTo(0, 0);
   }, [id]);
 
-  // 💳 RAZORPAY LIVE INTEGRATION (SURFACE TO SERVER SEAMLESS CORRELATION)
   const handlePayment = async (amountToPay) => {
     try {
-      // 1. बैकएंड के '/api/payment/create-order' रूट पर हिट करना
       const orderUrl = `${BACKEND_URL}/api/payment/create-order`;
       const response = await axios.post(orderUrl, { amount: amountToPay });
-      
-      const { id: order_id, currency } = response.data;
+      const orderData = response.data;
 
-      // 2. रेज़रपे पॉपअप विंडो के ऑप्शंस लोड करना
+      if (!orderData || !orderData.id) {
+        alert("Payment initialization error. Secure order token missing.");
+        return;
+      }
+
+      // 💳 फाइनल गेटवे बाइंडिंग (हार्डकोडेड की के साथ)
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_RxW3z0Ei0iGN69", // तुम्हारी टेस्ट की
-        amount: amountToPay * 100, // पैसे में कनवर्ट (₹3500 = 350000 पैसे)
-        currency: currency || "INR",
-        name: "The Himalayans Stays",
+        key: "rzp_test_RxW3z0Ei0iGN69", // ⚡ की को डायरेक्ट पास किया ताकि .env की मिसमैच प्रॉब्लम खत्म हो
+        amount: orderData.amount,
+        currency: orderData.currency || "INR",
+        name: "The Himalayans",
         description: `Booking Room at ${hotel.name}`,
         image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=100",
-        order_id: order_id,
+        order_id: orderData.id,
         handler: async function (paymentResponse) {
-          // पेमेंट सक्सेसफुल होने पर वेरिफिकेशन रूट को हिट करना
-          const verifyUrl = `${BACKEND_URL}/api/payment/verify`;
-          const verifyData = {
-            razorpay_order_id: paymentResponse.razorpay_order_id,
-            razorpay_payment_id: paymentResponse.razorpay_payment_id,
-            razorpay_signature: paymentResponse.razorpay_signature,
-            booking: {
-              hotelName: hotel.name,
-              amount: amountToPay,
-              email: "customer@example.com", 
-              checkIn: "June 2026",
-              checkOut: "June 2026",
-              guests: 2
+          try {
+            const verifyUrl = `${BACKEND_URL}/api/payment/verify`;
+            const verifyData = {
+              razorpay_order_id: paymentResponse.razorpay_order_id,
+              razorpay_payment_id: paymentResponse.razorpay_payment_id,
+              razorpay_signature: paymentResponse.razorpay_signature,
+              bookingData: {
+                hotelId: id,
+                hotelName: hotel.name,
+                amount: amountToPay,
+                email: "customer@example.com",
+                checkIn: "June 2026",
+                checkOut: "June 2026",
+                guests: 2
+              }
+            };
+            
+            const verificationRes = await axios.post(verifyUrl, verifyData);
+            if (verificationRes.data.success) {
+              alert("🎉 Celebration! Booking Confirmed & Securely Saved in Database.");
+              navigate("/mytrips");
+            } else {
+              alert("Payment verification failed.");
             }
-          };
-          
-          const verificationRes = await axios.post(verifyUrl, verifyData);
-          if (verificationRes.data.success) {
-            alert("🎉 Celebration! Booking Confirmed & Payment Received Successfully.");
-            navigate("/mytrips");
-          } else {
-            alert("Payment verification failed. Please try again.");
+          } catch (vErr) {
+            console.error("Verification connection error:", vErr);
+            alert("Payment done, but server failed to verify the payload.");
           }
         },
         prefill: {
-          name: "Guest Traveler",
+          name: "Pramod Nautiyal",
           email: "traveler@example.com",
           contact: "9999999999",
         },
         theme: {
-          color: "#0f1e36", // वेबसाइट मैचिंग प्रीमियम डार्क ब्लू थीम
-        },
+          color: "#0f1e36",
+        }
       };
 
       const rzp1 = new window.Razorpay(options);
-      rzp1.open(); // 🚀 यहाँ खुलेगा असली UPI/Card पेमेंट बॉक्स!
+      rzp1.open(); 
     } catch (error) {
-      console.error("Payment initiation failed:", error);
-      alert("Unable to connect to the secure Razorpay Gateway. Please verify your Render server logs.");
+      console.error("Payment flow failure:", error);
+      alert("Oops! Something went wrong.\nPayment Failed. Connection timed out.");
     }
   };
 
@@ -172,7 +179,6 @@ export default function HotelDetails() {
     <div style={{ background: "#f8fafc", minHeight: "100vh", padding: "30px 20px", fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         
-        {/* BREADCRUMB */}
         <button 
           onClick={() => navigate(-1)} 
           style={{ background: "none", border: "none", color: "#006ce4", fontWeight: "700", fontSize: "14px", cursor: "pointer", marginBottom: "15px", padding: 0 }}
@@ -180,8 +186,7 @@ export default function HotelDetails() {
           ← Back to results
         </button>
 
-        {/* TITLE BLOCK */}
-        <div style={{ display: "flex", Mathcontent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "15px", marginBottom: "20px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "15px", marginBottom: "20px" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
               <span style={{ background: "#f59e0b", color: "#fff", fontSize: "11px", fontWeight: "bold", padding: "3px 6px", borderRadius: "4px" }}>Stay</span>
@@ -202,7 +207,6 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* IMAGE GALLERY */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "10px", height: "380px", marginBottom: "30px", borderRadius: "12px", overflow: "hidden" }}>
           <div style={{ width: "100%", height: "100%" }}>
             <img src={hotel.images[0]} alt="Main View" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -213,7 +217,6 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* DESCRIPTION & AMENITIES */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "30px", marginBottom: "40px" }} className="details-grid">
           <div>
             <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", marginTop: 0, marginBottom: "12px" }}>Property Description</h3>
@@ -231,7 +234,7 @@ export default function HotelDetails() {
 
           <div style={{ background: "#fff", padding: "24px", borderRadius: "12px", border: "1px solid #e2e8f0", boxShadow: "0 4px 12px rgba(0,0,0,0.02)", height: "fit-content" }}>
             <h4 style={{ margin: "0 0 10px 0", fontSize: "16px", fontWeight: "700", color: "#0f172a" }}>Property Highlights</h4>
-            <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.5", margin: "0 0 20px 0" }}>📍 Nestled right in the heart of Uttarakhand. Highly rated for its pristine Himalayan atmosphere.</p>
+            <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.5", margin: "0 0 20px 0" }}>📍 Nestled right in the heart of Uttarakhand.</p>
             
             <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: "15px", marginBottom: "20px" }}>
               <span style={{ fontSize: "13px", color: "#64748b" }}>Price for 1 night:</span>
@@ -248,7 +251,6 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* ROOM SELECTION TABLE */}
         <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", padding: "24px", boxShadow: "0 4px 15px rgba(0,0,0,0.02)" }}>
           <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: "0 0 16px 0" }}>Available Rooms & Rates</h3>
           
@@ -314,4 +316,4 @@ export default function HotelDetails() {
 
 const thStyle = { padding: "12px 16px", fontWeight: "600", fontSize: "13px" };
 const tdStyle = { padding: "20px 16px", verticalAlign: "top", lineHeight: "1.5" };
-const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer", boxShadow: "0 2px 6px rgba(0,108,228,0.2)" };
+const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer" };
