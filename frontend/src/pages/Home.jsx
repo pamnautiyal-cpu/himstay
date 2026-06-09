@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  
+  // 🆕 'Coming Soon' पॉपअप (Modal) को कंट्रोल करने के लिए स्टेट
+  const [showModal, setShowModal] = useState(false);
+  const [modalFeature, setModalFeature] = useState("");
 
-  // तुम्हारे चारों प्रीमियम डेस्टिनेशंस
+  // ट्रेंडिंग डेस्टिनेशंस (इन पर क्लिक करने से लाइव बैकएंड फ़िल्टर काम करेगा)
   const trendingDestinations = [
     { name: "Mussoorie", stays: "1,240 properties", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470", flag: "🏔️" },
     { name: "Nainital", stays: "967 properties", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4", flag: "🛶" },
@@ -13,11 +17,12 @@ export default function Home() {
     { name: "Rishikesh", stays: "2,150 properties", image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511", flag: "🧘" }
   ];
 
+  // प्रॉपर्टी टाइप्स (होटल्स लाइव है, बाकी पर पॉपअप खुलेगा)
   const propertyTypes = [
-    { name: "Hotels", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
-    { name: "Apartments", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" },
-    { name: "Resorts", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400" },
-    { name: "Villas", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
+    { name: "Hotels", isLive: true, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
+    { name: "Apartments", isLive: false, image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" },
+    { name: "Resorts", isLive: false, image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400" },
+    { name: "Villas", isLive: false, image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
   ];
 
   const handleSearch = (e) => {
@@ -29,12 +34,22 @@ export default function Home() {
     }
   };
 
+  // 🆕 क्लिक हैंडलर लॉजिक (लाइव को आगे भेजेगा, बाकी पर सुंदर मैसेज देगा)
+  const handlePropertyClick = (type) => {
+    if (type.isLive) {
+      navigate("/hotels");
+    } else {
+      setModalFeature(type.name);
+      setShowModal(true);
+    }
+  };
+
   return (
-    <div style={{ fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif", background: "#f8fafc", minHeight: "100vh", color: "#0f172a" }}>
+    <div style={{ fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif", background: "#f8fafc", minHeight: "100vh", color: "#0f172a", position: "relative" }}>
       
-      {/* 🏔️ 1. PREMIUM NAVY LUXURY HERO BANNER (नेवबार के कलर कोड #0f1e36 के साथ परफेक्ट सिंक) */}
+      {/* 🏔️ 1. PREMIUM NAVY LUXURY HERO BANNER */}
       <div style={{ 
-        background: "linear-gradient(180deg, #0f1e36 0%, #0f172a 100%)", // यहाँ कलर कोड अपडेट किया है
+        background: "linear-gradient(180deg, #0f1e36 0%, #0f172a 100%)", 
         padding: "80px 20px 100px", 
         color: "#fff", 
         textAlign: "center" 
@@ -61,7 +76,6 @@ export default function Home() {
           alignItems: "stretch",
           border: "1px solid rgba(255,255,255,0.1)"
         }}>
-          {/* Input Area */}
           <div style={{ flex: 1, display: "flex", alignItems: "center", background: "#fff", borderRadius: "8px", padding: "0 16px" }}>
             <span style={{ marginRight: "12px", fontSize: "18px" }}>🛏️</span>
             <input 
@@ -73,12 +87,10 @@ export default function Home() {
             />
           </div>
           
-          {/* Calendar Indicator */}
           <div style={{ width: "240px", display: "flex", alignItems: "center", background: "rgba(255,255,255,0.05)", padding: "0 16px", color: "#cbd5e1", fontSize: "14px", fontWeight: "500", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px" }}>
             <span style={{ marginRight: "10px" }}>📅</span> June 2026
           </div>
 
-          {/* Premium Blue Action Button */}
           <button type="submit" style={{ 
             padding: "0 36px", 
             background: "#2563eb", 
@@ -98,22 +110,30 @@ export default function Home() {
       {/* 📄 MAIN LAYOUT AREA */}
       <div style={{ maxWidth: "1100px", margin: "60px auto", padding: "0 20px" }}>
         
-        {/* 📦 PROPERTY TYPES */}
+        {/* 📦 PROPERTY TYPES SECTION */}
         <div style={{ marginBottom: "50px" }}>
           <h3 style={{ fontSize: "22px", fontWeight: "800", marginBottom: "16px", color: "#0f172a" }}>Browse by property type</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px" }}>
             {propertyTypes.map((type) => (
-              <div key={type.name} style={{ cursor: "pointer" }} onClick={() => navigate("/hotels")}>
-                <div style={{ height: "160px", borderRadius: "12px", overflow: "hidden", marginBottom: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}>
+              <div 
+                key={type.name} 
+                style={{ cursor: "pointer", transition: "transform 0.2s" }} 
+                onClick={() => handlePropertyClick(type)}
+                onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
+                onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
+              >
+                <div style={{ height: "160px", borderRadius: "12px", overflow: "hidden", marginBottom: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.04)", border: "1px solid #e2e8f0" }}>
                   <img src={type.image} alt={type.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
-                <h4 style={{ margin: "0", fontSize: "15px", fontWeight: "700", color: "#1e293b" }}>{type.name}</h4>
+                <h4 style={{ margin: "0", fontSize: "15px", fontWeight: "700", color: "#1e293b" }}>
+                  {type.name} {!type.isLive && <span style={{ fontSize: "11px", fontWeight: "500", color: "#ef4444", background: "#fef2f2", padding: "2px 6px", borderRadius: "4px", marginLeft: "4px" }}>Soon</span>}
+                </h4>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 🏔️ TRENDING DESTINATIONS */}
+        {/* 🏔️ TRENDING DESTINATIONS SECTION */}
         <div style={{ marginBottom: "60px" }}>
           <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>Trending destinations</h3>
           <p style={{ color: "#64748b", margin: "0 0 24px 0", fontSize: "14px" }}>Most popular choices for Himalayan travelers</p>
@@ -129,8 +149,11 @@ export default function Home() {
                   boxShadow: "0 4px 20px rgba(0,0,0,0.04)", 
                   border: "1px solid #e2e8f0", 
                   cursor: "pointer",
-                  background: "#fff"
+                  background: "#fff",
+                  transition: "transform 0.2s"
                 }}
+                onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
+                onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
               >
                 <div style={{ height: "180px", position: "relative" }}>
                   <img src={city.image} alt={city.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -159,6 +182,26 @@ export default function Home() {
         </div>
 
       </div>
+
+      {/* 🆕 POPUP MODAL FOR UNDER PROCESSING FEATURES (AGODA/BOOKING STYLE POPUP) */}
+      {showModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: "200" }}>
+          <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", maxWidth: "400px", width: "90%", textAlign: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}>
+            <div style={{ fontSize: "50px", marginBottom: "10px" }}>🏔️🚀</div>
+            <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "0 0 10px 0" }}>{modalFeature} Feature Coming Soon!</h3>
+            <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0" }}>
+              We are currently onboarding top-tier premium verified {modalFeature.toLowerCase()} in Uttarakhand to give you the best experience. Stay tuned!
+            </p>
+            <button 
+              onClick={() => setShowModal(false)}
+              style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}
+            >
+              Great, Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
