@@ -9,7 +9,7 @@ export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // फॉर्म डेटा की स्टेट स्ट्रक्चर (बैकएंड मॉडल के अनुसार)
+  // फॉर्म डेटा की स्टेट स्ट्रक्चर
   const [formData, setFormData] = useState({
     name: "",
     city: "Uttarkashi", // डिफ़ॉल्ट सिलेक्शन
@@ -36,19 +36,17 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
 
-    // स्ट्रिंग प्राइस को नंबर में बदलें
     const finalData = {
       ...formData,
       price: Number(formData.price) || 1200
     };
 
-    // 🚀 डेटाबेस एपीआई पोस्ट रिक्वेस्ट (सीधे तुम्हारे मोंगोडीबी बैकएंड में सेव होगा)
+    // डेटाबेस एपीआई पोस्ट रिक्वेस्ट
     axios
       .post(`${BACKEND_URL}/api/hotels`, finalData)
       .then((res) => {
         setSuccess(true);
         setLoading(false);
-        // 3 सेकंड के बाद ओनर को सीधे होटल्स लिस्टिंग पेज पर ले जाएं ताकि वो अपना होटल देख सके
         setTimeout(() => {
           navigate("/hotels");
         }, 3000);
@@ -103,7 +101,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* SECTION 2: MANAGEMENT & CONTACT */}
+            {/* SECTION 2: LOCATION & CONTACT */}
             <div>
               <h3 style={sectionTitleStyle}>2. Location & Contact Security</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
@@ -178,14 +176,13 @@ export default function Contact() {
 
       <style>{`
         @media (max-width: 550px) {
-          .form-grid { gridTemplateColumns: 1fr !important; }
+          .form-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>
   );
 }
 
-// 🧰 INLINE STYLE COMPONENTS FOR CLEAN FORMS
 const sectionTitleStyle = {
   fontSize: "16px",
   fontWeight: "700",
@@ -213,5 +210,5 @@ const inputStyle = {
   color: "#0f172a",
   outline: "none",
   background: "#fdfdfd",
-  box some: "inset 0 1px 2px rgba(0,0,0,0.02)"
+  boxShadow: "inset 0 1px 2px rgba(0,0,0,0.02)" // 🛠️ यहाँ 'box some' को 'boxShadow' में सही फिक्स कर दिया गया है
 };
