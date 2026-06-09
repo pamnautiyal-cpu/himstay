@@ -9,26 +9,21 @@ export default function MyTrips() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // मान लेते हैं कि लॉगिन यूजर की ईमेल लोकल स्टोरेज या स्टेट से आ रही है
-  // अगर यूजर लॉगिन नहीं है, तो डेमो के लिए हम "customer@example.com" की बुकिंग्स दिखाएंगे
+  // लॉगिन यूजर की ईमेल लोकल स्टोरेज से उठाना (यदि नहीं है तो डेमो के लिए customer@example.com)
   const userEmail = localStorage.getItem("userEmail") || "customer@example.com";
 
   useEffect(() => {
     setLoading(true);
     
-    // 🚀 डेटाबेस से इस विशिष्ट यूजर की बुकिंग्स फेच करना
+    // 🚀 बैकएंड के ईमेल स्पेसिफिक एंडपॉइंट से सीधे फिल्टर की हुई बुकिंग्स मांगना
     axios
-      .get(`${BACKEND_URL}/api/bookings`)
+      .get(`${BACKEND_URL}/api/bookings/user/${userEmail}`)
       .then((res) => {
-        // सर्वर से आई सभी बुकिंग्स में से सिर्फ इस लॉगिन यूजर की ईमेल वाली बुकिंग्स को फिल्टर करना
-        const userBookings = (res.data || []).filter(
-          (b) => b.email === userEmail || b.bookingData?.email === userEmail
-        );
-        setBookings(userBookings);
+        setBookings(res.data || []);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching user trips:", err);
+        console.error("Dynamic trips fetch error:", err);
         setLoading(false);
       });
   }, [userEmail]);
@@ -49,7 +44,7 @@ export default function MyTrips() {
         <p style={{ color: "#64748b", marginBottom: "30px", marginTop: 0 }}>Manage your verified stays and upcoming adventures across Uttarakhand hills.</p>
 
         {bookings.length === 0 ? (
-          /* 📭 अगर कोई बुकिंग नहीं है तो यह सुंदर बॉक्स दिखेगा */
+          /* 📭 खाली स्टेट: जब कोई बुकिंग न हो */
           <div style={{ background: "#fff", padding: "40px", borderRadius: "12px", textAlign: "center", border: "1px solid #e2e8f0", boxShadow: "0 4px 12px rgba(0,0,0,0.02)" }}>
             <span style={{ fontSize: "50px" }}>🗺️</span>
             <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1a1a1a", margin: "15px 0 8px 0" }}>No trips booked yet</h3>
@@ -62,7 +57,7 @@ export default function MyTrips() {
             </button>
           </div>
         ) : (
-          /* 💳 अगर बुकिंग्स हैं तो बुकिंग कार्ड्स की लिस्ट दिखेगी */
+          /* 💳 डायनामिक बुकिंग कार्ड्स की लिस्ट */
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {bookings.map((trip, index) => (
               <div 
@@ -88,7 +83,7 @@ export default function MyTrips() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "15px", background: "#f8fafc", padding: "14px", borderRadius: "8px", border: "1px solid #f1f5f9" }}>
                   <div>
                     <span style={{ fontSize: "12px", color: "#64748b", display: "block" }}>GUESTS</span>
-                    <strong style={{ color: "#334155", fontSize: "14px" }}>👥 {trip.guests || trip.bookingData?.guests || 2} Adults</strong>
+                    <strong style={{ color: "#334155", fontSize: "14px" }}>👥 {trip.guests || trip.bookingData?.guests || 2} Guests</strong>
                   </div>
                   <div>
                     <span style={{ fontSize: "12px", color: "#64748b", display: "block" }}>TOTAL PRICE</span>
@@ -119,3 +114,7 @@ export default function MyTrips() {
     </div>
   );
 }
+
+const thStyle = { padding: "12px 16px", fontWeight: "600", fontSize: "13px" };
+const tdStyle = { padding: "20px 16px", verticalAlign: "top", lineHeight: "1.5" };
+const tableBtnStyle = { background: "#006ce4", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer", boxShadow: "0 2px 6px rgba(0,108,228,0.2)" };
