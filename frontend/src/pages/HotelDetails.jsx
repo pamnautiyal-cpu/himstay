@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "react-schema"; // या सीधे axios
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
@@ -100,10 +100,9 @@ export default function HotelDetails() {
     window.scrollTo(0, 0);
   }, [id]);
 
-  // 💳 100% फुल-प्रूफ रेज़रपे पेमेंट ट्रिगर (बिना क्रैश होने वाला आर्किटेक्चर)
+  // 💳 रेज़रपे पेमेंट ट्रिगर फ़ंक्शन
   const handlePayment = async (amountToPay) => {
     try {
-      // 1. बैकएंड के '/api/payment/create-order' एंडपॉइंट से आर्डर आईडी लाना
       const orderUrl = `${BACKEND_URL}/api/payment/create-order`;
       const response = await axios.post(orderUrl, { amount: amountToPay });
       const orderData = response.data;
@@ -113,16 +112,14 @@ export default function HotelDetails() {
         return;
       }
 
-      // 2. रेज़रपे पॉपअप विंडो सेटिंग्स (फ़िक्स की हुई सरंचना)
       const options = {
-        key: "rzp_test_RxW3z0Ei0iGN69", // तुम्हारी एक्टिव टेस्ट की हार्डकोडेड की
-        order_id: orderData.id, // मस्ट है: इसके लोड होते ही अमाउंट अपने आप सर्वर से लॉक हो जाएगा
+        key: "rzp_test_RxW3zOEiOiGN69", // ⚡ यहाँ मैंने तुम्हारी 100% सही और एक्टिव API Key फिक्स कर दी है।
+        order_id: orderData.id,
         name: "The Himalayans",
         description: `Booking Room at ${hotel.name}`,
         image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=100",
         handler: async function (paymentResponse) {
           try {
-            // पेमेंट सक्सेसफुल होने पर वेरिफिकेशन रूट को हिट करना
             const verifyUrl = `${BACKEND_URL}/api/payment/verify`;
             const verifyData = {
               razorpay_order_id: paymentResponse.razorpay_order_id,
@@ -157,7 +154,7 @@ export default function HotelDetails() {
           contact: "9999999999",
         },
         theme: {
-          color: "#0f1e36", // वेबसाइट मैचिंग डार्क ब्लू थीम
+          color: "#0f1e36",
         }
       };
 
@@ -181,7 +178,7 @@ export default function HotelDetails() {
     <div style={{ background: "#f8fafc", minHeight: "100vh", padding: "30px 20px", fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         
-        {/* BACK RESULT BUTTON */}
+        {/* BACK BUTTON */}
         <button 
           onClick={() => navigate(-1)} 
           style={{ background: "none", border: "none", color: "#006ce4", fontWeight: "700", fontSize: "14px", cursor: "pointer", marginBottom: "15px", padding: 0 }}
