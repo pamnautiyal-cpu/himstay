@@ -6,7 +6,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
-  const isHome = location.pathname === "/";
 
   return (
     <>
@@ -15,94 +14,25 @@ export default function Navbar() {
           position: "sticky",
           top: 0,
           zIndex: 100,
-          // 🌌 DEEP ALPINE TWILIGHT GRADIENT (प्रीमियम मिक्स्ड कलर)
           background: "linear-gradient(135deg, #0b132b 0%, #1c2541 100%)", 
           borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        {/* ─── TOP ROW: LOGO + UTILITIES ─── */}
-        <div
-          style={{
-            maxWidth: 1200,
-            margin: "0 auto",
-            padding: "16px 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* LOGO */}
-          <Link
-            to="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              textDecoration: "none",
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: 19,
-            }}
-          >
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 10,
-                background: "linear-gradient(135deg,#ef4444,#b91c1c)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 4px 14px rgba(239,68,68,.4)",
-              }}
-            >
-              🏔️
-            </div>
-            The Himalayans
-          </Link>
-
-          {/* RIGHT SIDE UTILITIES */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+        {/* ─── TOP ROW: UTILITIES (बिना लोगो के) ─── */}
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "20px" }}>
             <span style={{ color: "#fff", fontSize: "14px", fontWeight: "600" }}>INR</span>
-            
             <div style={{ width: "22px", height: "22px", borderRadius: "50%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <img src="https://flagcdn.com/w20/in.png" alt="India Flag" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
-
             <div style={{ width: "18px", height: "18px", borderRadius: "50%", border: "2px solid #fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "bold", fontSize: "11px", cursor: "pointer" }}>
               ?
             </div>
-
-            <button
-              onClick={() => setOpen(!open)}
-              className="hamburger"
-              style={{
-                display: "none",
-                background: "none",
-                border: "none",
-                color: "#fff",
-                fontSize: 26,
-                cursor: "pointer",
-              }}
-            >
-              ☰
-            </button>
-          </div>
         </div>
 
         {/* ─── BOTTOM ROW: CLEAN MENU LINKS ─── */}
         <div style={{ background: "rgba(255, 255, 255, 0.03)", padding: "10px 0" }}>
           <div 
-            style={{ 
-              maxWidth: 1200, 
-              margin: "0 auto", 
-              padding: "0 20px", 
-              display: "flex", 
-              alignItems: "center",
-              gap: "8px", 
-              overflowX: "auto", 
-              whiteSpace: "nowrap" 
-            }} 
+            style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", display: "flex", alignItems: "center", gap: "8px", overflowX: "auto", whiteSpace: "nowrap" }} 
             className="category-scroll desktop-nav"
           >
             {[
@@ -124,32 +54,11 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <Link 
-              to="/contact" 
-              style={{ 
-                ...linkItemStyle, 
-                border: isActive("/contact") ? "1px solid #fff" : "1px solid transparent",
-                color: "#38bdf8", 
-                fontWeight: "600"
-              }}
-            >
+            <Link to="/contact" style={{ ...linkItemStyle, border: isActive("/contact") ? "1px solid #fff" : "1px solid transparent", color: "#38bdf8", fontWeight: "600" }}>
               📢 List your property
             </Link>
 
-            <Link
-              to="/signup"
-              style={{
-                padding: "7px 18px",
-                borderRadius: 100,
-                background: "linear-gradient(135deg,#22c55e,#16a34a)",
-                color: "#fff",
-                fontWeight: 700,
-                fontSize: "13px",
-                textDecoration: "none",
-                boxShadow: "0 4px 12px rgba(34,197,94,.2)",
-                marginLeft: "auto"
-              }}
-            >
+            <Link to="/signup" style={{ padding: "7px 18px", borderRadius: 100, background: "linear-gradient(135deg,#22c55e,#16a34a)", color: "#fff", fontWeight: 700, fontSize: "13px", textDecoration: "none", boxShadow: "0 4px 12px rgba(34,197,94,.2)", marginLeft: "auto" }}>
               Sign up
             </Link>
           </div>
@@ -157,10 +66,6 @@ export default function Navbar() {
       </header>
 
       <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: flex; flex-wrap: nowrap; }
-          .hamburger { display: block !important; }
-        }
         .category-scroll::-webkit-scrollbar { display: none; }
         .category-scroll { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
