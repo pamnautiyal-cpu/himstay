@@ -7,11 +7,14 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [modalFeature, setModalFeature] = useState("");
 
-  const trendingDestinations = [
-    { name: "Mussoorie", stays: "1,240 properties", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470", flag: "🏔️" },
-    { name: "Nainital", stays: "967 properties", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4", flag: "🛶" },
-    { name: "Auli", stays: "480 properties", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb", flag: "⛷️" },
-    { name: "Rishikesh", stays: "2,150 properties", image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511", flag: "🧘" }
+  // 🏔️ स्क्रीनशॉट के अनुसार उत्तराखंड के प्रीमियम डेस्टिनेशंस
+  const uttarakhandDestinations = [
+    { name: "Char Dham", stays: "350 properties", image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=400" },
+    { name: "Haridwar", stays: "1,041 properties", image: "https://images.unsplash.com/photo-1590050752117-238cb0612b1b?w=400" },
+    { name: "Dehradun", stays: "960 properties", image: "https://images.unsplash.com/photo-1595658658481-d53d3f999875?w=400" },
+    { name: "Mussoorie", stays: "1,240 properties", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400" },
+    { name: "Nainital", stays: "967 properties", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400" },
+    { name: "Rishikesh", stays: "2,150 properties", image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=400" }
   ];
 
   const propertyTypes = [
@@ -40,11 +43,11 @@ export default function Home() {
   };
 
   return (
-    <div style={{ fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif", background: "#f8fafc", minHeight: "100vh", color: "#0f172a", position: "relative" }}>
+    <div style={{ fontFamily: "BlinkMacSystemFont, -apple-system, Roboto, sans-serif", background: "#fff", minHeight: "100vh", color: "#1a1a1a", position: "relative" }}>
       
-      {/* 🌌 1. MIXED TWILIGHT LUXURY HERO BANNER (नेवबार के साथ एकदम 100% सीमलेस सिंक) */}
+      {/* 🌌 1. HERO BANNER */}
       <div style={{ 
-        background: "linear-gradient(180deg, #1c2541 0%, #0b132b 100%)", // मिक्स्ड डीप टोन ग्रेडिएंट
+        background: "linear-gradient(180deg, #1c2541 0%, #0b132b 100%)", 
         padding: "80px 20px 100px", 
         color: "#fff", 
         textAlign: "center" 
@@ -59,7 +62,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 🟨 2. FLOATING PREMIUM SEARCH BAR */}
+      {/* 🟨 2. FLOATING SEARCH BAR */}
       <div style={{ maxWidth: "1100px", margin: "-40px auto 0", padding: "0 20px", position: "relative", zIndex: "10" }}>
         <form onSubmit={handleSearch} style={{ 
           display: "flex", 
@@ -75,7 +78,7 @@ export default function Home() {
             <span style={{ marginRight: "12px", fontSize: "18px" }}>🛏️</span>
             <input 
               type="text" 
-              placeholder="Where are you going? (e.g. Uttarkashi, Rishikesh)" 
+              placeholder="Where are you going? (e.g. Uttarkashi, Mussoorie)" 
               value={search} 
               onChange={(e) => setSearch(e.target.value)} 
               style={{ width: "100%", padding: "16px 0", border: "none", fontSize: "15px", outline: "none", color: "#0f172a", fontWeight: "500" }} 
@@ -102,77 +105,74 @@ export default function Home() {
         </form>
       </div>
 
-      {/* 📄 MAIN LAYOUT AREA */}
-      <div style={{ maxWidth: "1100px", margin: "60px auto", padding: "0 20px" }}>
+      {/* 📄 MAIN CONTENT AREA */}
+      <div style={{ maxWidth: "1100px", margin: "50px auto", padding: "0 20px" }}>
         
-        {/* 📦 PROPERTY TYPES SECTION */}
+        {/* 📦 PROPERTY TYPES */}
         <div style={{ marginBottom: "50px" }}>
-          <h3 style={{ fontSize: "22px", fontWeight: "800", marginBottom: "16px", color: "#0f172a" }}>Browse by property type</h3>
+          <h3 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "16px", color: "#1a1a1a" }}>Browse by property type</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px" }}>
             {propertyTypes.map((type) => (
-              <div 
-                key={type.name} 
-                style={{ cursor: "pointer", transition: "transform 0.2s" }} 
-                onClick={() => handlePropertyClick(type)}
-                onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
-                onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
-              >
-                <div style={{ height: "160px", borderRadius: "12px", overflow: "hidden", marginBottom: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.04)", border: "1px solid #e2e8f0" }}>
+              <div key={type.name} style={{ cursor: "pointer" }} onClick={() => handlePropertyClick(type)}>
+                <div style={{ height: "160px", borderRadius: "8px", overflow: "hidden", marginBottom: "8px", border: "1px solid #e6e6e6" }}>
                   <img src={type.image} alt={type.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
-                <h4 style={{ margin: "0", fontSize: "15px", fontWeight: "700", color: "#1e293b" }}>
-                  {type.name} {!type.isLive && <span style={{ fontSize: "11px", fontWeight: "500", color: "#ef4444", background: "#fef2f2", padding: "2px 6px", borderRadius: "4px", marginLeft: "4px" }}>Soon</span>}
+                <h4 style={{ margin: "0", fontSize: "16px", fontWeight: "700", color: "#1a1a1a" }}>
+                  {type.name} {!type.isLive && <span style={{ fontSize: "11px", color: "#ef4444", marginLeft: "5px" }}>(Soon)</span>}
                 </h4>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 🏔️ TRENDING DESTINATIONS SECTION */}
-        <div style={{ marginBottom: "60px" }}>
-          <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>Trending destinations</h3>
-          <p style={{ color: "#64748b", margin: "0 0 24px 0", fontSize: "14px" }}>Most popular choices for Himalayan travelers</p>
+        {/* 🏔️ 🆕 EXPLORE UTTARAKHAND (HUBAHU SCREENSHOT STYLE) */}
+        <div style={{ marginBottom: "50px" }}>
+          <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Explore Uttarakhand</h3>
+          <p style={{ color: "#595959", margin: "0 0 20px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
           
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
-            {trendingDestinations.map((city) => (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "16px" }}>
+            {uttarakhandDestinations.map((dest) => (
               <div 
-                key={city.name} 
-                onClick={() => navigate(`/hotels?city=${encodeURIComponent(city.name)}`)}
-                style={{ 
-                  borderRadius: "12px", 
-                  overflow: "hidden", 
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.04)", 
-                  border: "1px solid #e2e8f0", 
-                  cursor: "pointer",
-                  background: "#fff",
-                  transition: "transform 0.2s"
-                }}
-                onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
-                onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
+                key={dest.name} 
+                onClick={() => navigate(`/hotels?city=${encodeURIComponent(dest.name)}`)}
+                style={{ cursor: "pointer" }}
               >
-                <div style={{ height: "180px", position: "relative" }}>
-                  <img src={city.image} alt={city.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  <div style={{ 
-                    position: "absolute", 
-                    top: "16px", 
-                    left: "16px", 
-                    color: "#fff", 
-                    fontSize: "20px", 
-                    fontWeight: "800", 
-                    textShadow: "0 2px 8px rgba(0,0,0,0.6)",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px"
-                  }}>
-                    {city.name} {city.flag}
-                  </div>
+                <div style={{ height: "150px", borderRadius: "8px", overflow: "hidden", marginBottom: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <img src={dest.image} alt={dest.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
-                
-                <div style={{ padding: "14px 16px" }}>
-                  <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>{city.stays}</span>
-                </div>
+                <h4 style={{ margin: "0 0 2px 0", fontSize: "15px", fontWeight: "700", color: "#1a1a1a" }}>{dest.name}</h4>
+                <span style={{ fontSize: "13px", color: "#595959" }}>{dest.stays}</span>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* 🎁 🆕 TRAVEL MORE, SPEND LESS (GENIUS BANNER) */}
+        <div style={{ 
+          border: "1px solid #e6e6e6", 
+          borderRadius: "8px", 
+          padding: "24px", 
+          display: "flex", 
+          justifyContent: "space-between", 
+          alignItems: "center",
+          background: "#fff",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.02)",
+          flexWrap: "wrap",
+          gap: "20px"
+        }}>
+          <div>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "20px", fontWeight: "700", color: "#1a1a1a" }}>Sign in, save money</h3>
+            <p style={{ margin: "0 0 20px 0", color: "#595959", fontSize: "14px" }}>Save 10% or more at participating properties – just look for the blue Genius label</p>
+            <div style={{ display: "flex", gap: "12px" }}>
+              <button onClick={() => navigate("/login")} style={{ background: "#006ce4", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "4px", fontWeight: "600", cursor: "pointer", fontSize: "14px" }}>Sign in</button>
+              <button onClick={() => navigate("/signup")} style={{ background: "transparent", color: "#006ce4", border: "none", padding: "10px 14px", fontWeight: "600", cursor: "pointer", fontSize: "14px" }}>Register</button>
+            </div>
+          </div>
+          
+          {/* Floating Gift Icon Box Layout */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#eff6ff", padding: "20px", borderRadius: "12px" }}>
+            <span style={{ fontSize: "45px" }}>🎁</span>
+            <div style={{ marginLeft: "10px", background: "#006ce4", color: "#fff", padding: "4px 10px", borderRadius: "4px", fontSize: "11px", fontWeight: "bold" }}>Genius</div>
           </div>
         </div>
 
@@ -187,12 +187,7 @@ export default function Home() {
             <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.6", margin: "0 0 20px 0" }}>
               We are currently onboarding top-tier premium verified {modalFeature.toLowerCase()} in Uttarakhand to give you the best experience. Stay tuned!
             </p>
-            <button 
-              onClick={() => setShowModal(false)}
-              style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}
-            >
-              Great, Got it!
-            </button>
+            <button onClick={() => setShowModal(false)} style={{ width: "100%", padding: "12px", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}>Great, Got it!</button>
           </div>
         </div>
       )}
