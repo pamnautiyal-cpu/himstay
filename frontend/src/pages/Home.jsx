@@ -7,14 +7,14 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [modalFeature, setModalFeature] = useState("");
 
-  // 🏔️ उत्तराखंड के 6 मुख्य डेस्टिनेशंस (टेक्स्ट-ओनली लिस्ट)
+  // 🏔️ उत्तराखंड के 6 मुख्य डेस्टिनेशंस (अब बैकग्राउंड इमेज और डार्क ओवरले कोडिंग के साथ)
   const uttarakhandDestinations = [
-    { name: "Char Dham", stays: "350 properties", isLive: true, targetCity: "Uttarkashi" },
-    { name: "Haridwar", stays: "1,041 properties", isLive: false },
-    { name: "Dehradun", stays: "960 properties", isLive: false },
-    { name: "Mussoorie", stays: "1,240 properties", isLive: false },
-    { name: "Nainital", stays: "967 properties", isLive: false },
-    { name: "Rishikesh", stays: "2,150 properties", isLive: false }
+    { name: "Char Dham", stays: "350 properties", isLive: true, targetCity: "Uttarkashi", image: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=500&q=80" },
+    { name: "Haridwar", stays: "1,041 properties", isLive: false, image: "https://images.unsplash.com/photo-1590050752117-238cb0612b1b?w=500&q=80" },
+    { name: "Dehradun", stays: "960 properties", isLive: false, image: "https://images.unsplash.com/photo-1595658658481-d53d3f999875?w=500&q=80" },
+    { name: "Mussoorie", stays: "1,240 properties", isLive: false, image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500&q=80" },
+    { name: "Nainital", stays: "967 properties", isLive: false, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80" },
+    { name: "Rishikesh", stays: "2,150 properties", isLive: false, image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=500&q=80" }
   ];
 
   const propertyTypes = [
@@ -137,46 +137,82 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🏔️ EXPLORE UTTARAKHAND */}
+        {/* 🏔️ EXPLORE UTTARAKHAND (BACKGROUND IMAGE + BOLD TEXT TILES LIKE BOOKING.COM) */}
         <div style={{ marginBottom: "60px" }}>
           <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#1a1a1a", margin: "0 0 4px 0" }}>Explore Uttarakhand</h3>
           <p style={{ color: "#595959", margin: "0 0 24px 0", fontSize: "14px" }}>These popular destinations have a lot to offer</p>
           
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
             {uttarakhandDestinations.map((dest) => (
               <div 
                 key={dest.name} 
                 onClick={() => handleDestinationClick(dest)}
                 style={{ 
-                  padding: "16px 20px", 
-                  borderRadius: "8px", 
-                  border: "1px solid #e6e6e6", 
-                  background: dest.isLive ? "#eff6ff" : "#fff", 
+                  height: "160px",
+                  borderRadius: "12px", 
+                  // 🖼️ इमेज को सीधे कार्ड के बैकग्राउंड में लगाया गया है
+                  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.7)), url(${dest.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  padding: "20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end", // सारे टेक्स्ट को नीचे अलाइन करने के लिए
                   cursor: "pointer",
-                  transition: "all 0.15s ease",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.02)"
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+                  position: "relative",
+                  overflow: "hidden"
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.borderColor = "#006ce4";
-                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.05)";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.borderColor = "#e6e6e6";
-                  e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.02)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.08)";
                 }}
               >
-                <h4 style={{ margin: "0 0 6px 0", fontSize: "18px", fontWeight: "800", color: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  {dest.name}
-                  {dest.isLive && <span style={{ fontSize: "11px", background: "#2563eb", color: "#fff", padding: "2px 8px", borderRadius: "4px", fontWeight: "bold" }}>LIVE</span>}
-                </h4>
-                
-                <span style={{ fontSize: "14px", color: "#595959", fontWeight: "500" }}>{dest.stays}</span>
-                
+                {/* अगर लाइव नहीं है तो सुंदर डार्क ब्लर 'Soon' बैनर ओवरले */}
                 {!dest.isLive && (
-                  <div style={{ fontSize: "11px", color: "#ef4444", fontWeight: "600", marginTop: "6px" }}>
-                    ⏳ Coming Soon
+                  <div style={{ 
+                    position: "absolute", 
+                    top: "12px", 
+                    right: "12px", 
+                    background: "rgba(15, 23, 42, 0.75)", 
+                    color: "#fff", 
+                    fontSize: "11px", 
+                    fontWeight: "700", 
+                    padding: "3px 8px", 
+                    borderRadius: "4px" 
+                  }}>
+                    ⏳ Soon
                   </div>
                 )}
+
+                {dest.isLive && (
+                  <div style={{ 
+                    position: "absolute", 
+                    top: "12px", 
+                    right: "12px", 
+                    background: "#2563eb", 
+                    color: "#fff", 
+                    fontSize: "11px", 
+                    fontWeight: "800", 
+                    padding: "3px 8px", 
+                    borderRadius: "4px" 
+                  }}>
+                    LIVE ⚡
+                  </div>
+                )}
+
+                {/* शहर और प्रॉपर्टी काउंट - एकदम हैवी बोल्ड और वाइट टेक्स्ट */}
+                <h4 style={{ margin: "0 0 2px 0", fontSize: "22px", fontWeight: "800", color: "#ffffff", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
+                  {dest.name}
+                </h4>
+                <span style={{ fontSize: "14px", color: "#e2e8f0", fontWeight: "600", textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}>
+                  {dest.stays}
+                </span>
               </div>
             ))}
           </div>
