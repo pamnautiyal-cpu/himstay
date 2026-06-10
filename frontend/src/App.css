@@ -2,39 +2,39 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: sans-serif; background: #fff; color: #333; }
 
-/* 1. HERO SECTION (BLUE DARK) */
-.hero-section {
-  background: #0b132b; color: #fff; padding: 60px 20px; text-align: center;
-}
-.search-bar { 
-  background: white; padding: 10px; border-radius: 8px; display: inline-flex; 
-  max-width: 800px; width: 100%; margin-top: 20px; 
-}
+/* 1. HERO SECTION */
+.hero-section { background: #0b132b; color: #fff; padding: 60px 20px; text-align: center; }
+.search-bar { background: white; padding: 10px; border-radius: 8px; display: inline-flex; max-width: 800px; width: 100%; margin-top: 20px; }
 .search-bar input { flex: 1; border: none; padding: 12px; outline: none; }
 .search-bar button { background: #2563eb; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
 
-/* 2. MAIN GRID LAYOUT (CENTERED) */
-.home-wrap { 
-  max-width: 1100px; margin: 40px auto; padding: 0 20px; 
-}
+/* 2. MAIN LAYOUT */
+.home-wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
 .home-section { margin-bottom: 40px; }
 .home-section h2 { font-size: 22px; margin-bottom: 20px; color: #1a1a1a; }
 
-/* Booking.com स्टाइल Grid - Force 4 columns */
-.home-grid { 
-  display: grid !important; 
-  grid-template-columns: repeat(4, 1fr) !important; 
-  gap: 20px !important; 
-}
+/* Booking.com Style Grid (4 Columns) */
+.home-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 20px !important; }
 
-/* 3. CARD STYLING */
+/* 3. VERTICAL CARD STYLING (For Grid) */
 .home-card { cursor: pointer; transition: 0.2s; }
-.home-card img { 
-  width: 100%; height: 160px; object-fit: cover; border-radius: 8px; 
-}
+.home-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
 .home-card h3 { font-size: 16px; margin-top: 10px; color: #000; }
+
+/* 4. HORIZONTAL HOTEL CARD STYLING (For Hotel List) */
+.hotel-card {
+  display: flex; gap: 20px; background: #fff; border: 1px solid #ddd;
+  border-radius: 12px; padding: 15px; margin-bottom: 20px; align-items: center;
+}
+.hotel-card img { width: 250px; height: 180px; object-fit: cover; border-radius: 8px; }
+.hotel-info { flex: 1; }
+.hotel-info h3 { margin: 0 0 10px; font-size: 18px; }
+.price { font-size: 20px; font-weight: bold; color: #000; margin-top: 10px; }
+.view-btn { background: #2563eb; color: #fff; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 900px) {
   .home-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .hotel-card { flex-direction: column; align-items: flex-start; }
+  .hotel-card img { width: 100%; height: 200px; }
 }
