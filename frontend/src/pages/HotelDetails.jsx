@@ -9,11 +9,11 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // 16 Hotels ka complete database (yahan map karo)
+  // 16 Hotels ka complete database
   const localHotels = {
-    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", price: 3500, rating: 4.8, reviews: 19, images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"], description: "Gangotri Hwy par sthit shandaar luxury stay.", amenities: ["Wi-Fi", "Parking", "River View"] },
-    "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", price: 1800, rating: 4.6, reviews: 61, images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"], description: "Ekdum ghar jaisa mahaul aur mountain view.", amenities: ["Food", "Balcony"] },
-    // ... baaki 16 tak yahan honge
+    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", price: 3500, description: "Luxury stay at Gangotri Hwy.", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"] },
+    "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", price: 1800, description: "Cozy home-like stay.", images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"] },
+    // ... baki 16 tak yahan honge
   };
 
   useEffect(() => {
@@ -26,30 +26,54 @@ export default function HotelDetails() {
     }
   }, [id]);
 
+  // ✅ YAHI HAI WOH PAYMENT FUNCTION JO AAPNE GAYAB KAR DIYA THA
+  const handlePayment = async (amount) => {
+    try {
+      const { data: orderData } = await axios.post(`${BACKEND_URL}/api/payment/create-order`, { amount });
+      
+      const options = {
+        key: "rzp_test_RxW3zOEiOiGN69",
+        amount: orderData.amount,
+        currency: "INR",
+        name: "The Himalayans",
+        description: `Booking ${hotel.name}`,
+        order_id: orderData.id,
+        handler: async (response) => {
+          const res = await axios.post(`${BACKEND_URL}/api/payment/verify`, response);
+          if (res.data.success) {
+            alert("🎉 Booking Confirmed!");
+            navigate("/mytrips");
+          }
+        },
+        theme: { color: "#006ce4" }
+      };
+      
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Payment Error:", err);
+      alert("Payment shuru nahi ho payi, server check karo.");
+    }
+  };
+
   if (!hotel) return <div>🏔️ Loading Details...</div>;
 
   return (
-    <div style={{ padding: "30px", maxWidth: "900px", margin: "auto", fontFamily: "sans-serif" }}>
-      <button onClick={() => navigate(-1)} style={{ cursor: "pointer" }}>← Back to results</button>
+    <div style={{ padding: "30px", maxWidth: "900px", margin: "auto" }}>
+      <button onClick={() => navigate(-1)}>← Back</button>
+      <h1>{hotel.name}</h1>
+      <p>📍 {hotel.location}</p>
+      <img src={hotel.images[0]} style={{ width: "100%", borderRadius: "15px" }} />
+      <h3>{hotel.description}</h3>
+      <h2>Price: ₹{hotel.price}</h2>
       
-      <h1 style={{ fontSize: "32px", color: "#0f172a" }}>{hotel.name}</h1>
-      <p style={{ fontSize: "18px", color: "#64748b" }}>📍 {hotel.location}</p>
-      
-      <img src={hotel.images[0]} alt={hotel.name} style={{ width: "100%", borderRadius: "15px", margin: "20px 0" }} />
-      
-      <div style={{ background: "#f8fafc", padding: "20px", borderRadius: "10px" }}>
-        <h3>Property Description</h3>
-        <p>{hotel.description}</p>
-        
-        <h3>Price: ₹{hotel.price}</h3>
-        
-        <button 
-          onClick={() => alert("Payment feature active ho raha hai...")} 
-          style={{ padding: "15px 40px", background: "#006ce4", color: "#fff", border: "none", borderRadius: "8px", fontSize: "18px", cursor: "pointer" }}
-        >
-          Reserve Your Stay
-        </button>
-      </div>
+      {/* ✅ YAHAN CLICK HONE PAR PAYMENT KHULEGA */}
+      <button 
+        onClick={() => handlePayment(hotel.price)} 
+        style={{ padding: "15px 40px", background: "#006ce4", color: "#fff", border: "none", borderRadius: "8px", fontSize: "18px", cursor: "pointer" }}
+      >
+        Reserve Your Stay
+      </button>
     </div>
   );
 }
