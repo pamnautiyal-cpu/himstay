@@ -26,45 +26,54 @@ export default function Home() {
   ];
 
   return (
-    <div className="home-wrap">
-      {/* Property Type Section */}
-      <section className="home-section">
-        <h2>Browse by property type</h2>
-        <div className="home-grid">
-          {propertyTypes.map((t, i) => (
-            <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-              <img src={t.img} alt={t.n} />
-              <h3>{t.n}</h3>
-            </div>
-          ))}
+    <div>
+      {/* Agoda Style Hero Search Section */}
+      <section className="hero-search-box">
+        <h1>See the world for less</h1>
+        <div className="search-container">
+           <input type="text" placeholder="Where are you going?" />
+           <button onClick={() => navigate("/hotels")}>SEARCH</button>
         </div>
       </section>
 
-      {/* Popular Destinations Section */}
-      <section className="home-section">
-        <h2>Popular Destinations</h2>
-        <div className="home-grid">
-          {destinations.map((d, i) => (
-            <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-              <img src={d.img} alt={d.n} />
-              <h3>{d.n}</h3>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Existing Sections */}
+      <div className="home-wrap">
+        <section className="home-section">
+          <h2>Browse by property type</h2>
+          <div className="home-grid">
+            {propertyTypes.map((t, i) => (
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+                <img src={t.img} alt={t.n} />
+                <h3>{t.n}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* Trending Experiences Section */}
-      <section className="home-section">
-        <h2>Trending Experiences</h2>
-        <div className="home-grid">
-          {experiences.map((e, i) => (
-            <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-              <img src={e.img} alt={e.n} />
-              <h3>{e.n}</h3>
-            </div>
-          ))}
-        </div>
-      </section>
+        <section className="home-section">
+          <h2>Popular Destinations</h2>
+          <div className="home-grid">
+            {destinations.map((d, i) => (
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+                <img src={d.img} alt={d.n} />
+                <h3>{d.n}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="home-section">
+          <h2>Trending Experiences</h2>
+          <div className="home-grid">
+            {experiences.map((e, i) => (
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+                <img src={e.img} alt={e.n} />
+                <h3>{e.n}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

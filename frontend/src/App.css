@@ -2,18 +2,51 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: sans-serif; background: #fff; color: #333; }
 
-/* 1. HERO SECTION */
+/* 1. HERO SECTION (PURANA WALA - SAFE) */
 .hero-section { background: #0b132b; color: #fff; padding: 60px 20px; text-align: center; }
 .search-bar { background: white; padding: 10px; border-radius: 8px; display: inline-flex; max-width: 800px; width: 100%; margin-top: 20px; }
 .search-bar input { flex: 1; border: none; padding: 12px; outline: none; }
 .search-bar button { background: #2563eb; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
+
+/* 1.1 AGODA STYLE HERO (NYA WALA - ADDED) */
+.hero-search-box {
+  background: #003580;
+  padding: 60px 20px;
+  text-align: center;
+  color: white;
+}
+.search-container {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-flex;
+  max-width: 600px;
+  width: 100%;
+  margin-top: 20px;
+}
+.search-container input {
+  flex: 1;
+  border: none;
+  padding: 12px;
+  outline: none;
+  color: #333;
+}
+.search-container button {
+  background: #febb02;
+  color: #000;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
 /* 2. MAIN LAYOUT */
 .home-wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
 .home-section { margin-bottom: 40px; }
 .home-section h2 { font-size: 22px; margin-bottom: 20px; color: #1a1a1a; }
 
-/* Booking.com Style Grid (4 Columns) */
+/* Booking.com Style Grid */
 .home-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 20px !important; }
 
 /* 3. VERTICAL CARD STYLING */
