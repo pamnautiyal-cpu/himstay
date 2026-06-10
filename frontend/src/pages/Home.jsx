@@ -4,12 +4,18 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  // Har item ke liye alag image URL ka object
   const propertyTypes = [
     { n: "Hotels", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
     { n: "Apartments", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" },
     { n: "Resorts", img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400" },
     { n: "Villas", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
+  ];
+
+  const destinations = [
+    { n: "Char Dham", img: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=400" },
+    { n: "Dehradun", img: "https://images.unsplash.com/photo-1589330206184-4860b6910609?w=400" },
+    { n: "Haridwar", img: "https://images.unsplash.com/photo-1561361513-3d0a095003d8?w=400" },
+    { n: "Nainital", img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400" }
   ];
 
   const experiences = [
@@ -29,6 +35,19 @@ export default function Home() {
             <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
               <img src={t.img} alt={t.n} />
               <h3>{t.n}</h3>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Popular Destinations Section */}
+      <section className="home-section">
+        <h2>Popular Destinations</h2>
+        <div className="home-grid">
+          {destinations.map((d, i) => (
+            <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+              <img src={d.img} alt={d.n} />
+              <h3>{d.n}</h3>
             </div>
           ))}
         </div>
