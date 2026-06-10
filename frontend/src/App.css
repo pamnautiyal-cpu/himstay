@@ -2,44 +2,20 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: sans-serif; background: #fff; color: #333; }
 
-/* 1. HERO SECTION (PURANA WALA - SAFE) */
+/* 1. HERO SECTION (PURANA WALA) */
 .hero-section { background: #0b132b; color: #fff; padding: 60px 20px; text-align: center; }
 .search-bar { background: white; padding: 10px; border-radius: 8px; display: inline-flex; max-width: 800px; width: 100%; margin-top: 20px; }
 .search-bar input { flex: 1; border: none; padding: 12px; outline: none; }
 .search-bar button { background: #2563eb; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
 
-/* 1.1 AGODA STYLE HERO (NYA WALA - ADDED) */
-.hero-search-box {
-  background: #003580;
-  padding: 60px 20px;
-  text-align: center;
-  color: white;
-}
-.search-container {
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  display: inline-flex;
-  max-width: 600px;
-  width: 100%;
-  margin-top: 20px;
-}
-.search-container input {
-  flex: 1;
-  border: none;
-  padding: 12px;
-  outline: none;
-  color: #333;
-}
-.search-container button {
-  background: #febb02;
-  color: #000;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
+/* 1.1 AGODA STYLE HERO */
+.hero-search-box { background: #003580; padding: 40px 20px; text-align: center; color: white; }
+.search-container { background: white; padding: 10px; border-radius: 8px; display: inline-flex; max-width: 600px; width: 100%; margin-top: 20px; }
+.search-container input { flex: 1; border: none; padding: 12px; outline: none; color: #333; }
+.search-container button { background: #febb02; color: #000; border: none; padding: 10px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+/* SEARCH OPTIONS (NEW) */
+.search-options { font-size: 14px; margin-top: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
 
 /* 2. MAIN LAYOUT */
 .home-wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
@@ -50,21 +26,13 @@ body { font-family: sans-serif; background: #fff; color: #333; }
 .home-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 20px !important; }
 
 /* 3. VERTICAL CARD STYLING */
-.home-card { cursor: pointer; transition: 0.2s; }
+.home-card { cursor: pointer; transition: 0.2s; background: #fff; }
 .home-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
 .home-card h3 { font-size: 16px; margin-top: 10px; color: #000; }
 
 /* 4. HOTEL LIST & CARD STYLING */
-.hotel-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 20px;
-}
-.hotel-card {
-  display: flex; gap: 20px; background: #fff; border: 1px solid #ddd;
-  border-radius: 12px; padding: 15px; margin-bottom: 20px; align-items: center;
-}
+.hotel-list { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+.hotel-card { display: flex; gap: 20px; background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 15px; margin-bottom: 20px; align-items: center; }
 .hotel-card img { width: 250px; height: 180px; object-fit: cover; border-radius: 8px; }
 .hotel-info { flex: 1; }
 .hotel-info h3 { margin: 0 0 10px; font-size: 18px; }
