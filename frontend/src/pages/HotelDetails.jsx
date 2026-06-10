@@ -9,7 +9,6 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // 16 Hotels ka complete database
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", price: 3500, rating: 4.8, reviews: 19, images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"], description: "Gangotri Hwy par sthit shandaar luxury stay.", amenities: ["Wi-Fi", "Parking", "River View"] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", price: 1800, rating: 4.6, reviews: 61, images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"], description: "Ekdum ghar jaisa mahaul aur mountain view.", amenities: ["Food", "Balcony"] },
@@ -39,11 +38,13 @@ export default function HotelDetails() {
     }
   }, [id]);
 
-  // ... baaki payment logic waisa hi rahega jaisa tumne likha tha ...
-  
   if (!hotel) return <div>🏔️ Loading luxury property configurations...</div>;
 
   return (
-    // ... wahi return structure jo tumne upar likha tha ...
+    <div style={{ padding: "40px" }}>
+        <h1>{hotel.name}</h1>
+        <p>{hotel.location}</p>
+        <button onClick={() => navigate(-1)}>Back</button>
+    </div>
   );
 }
