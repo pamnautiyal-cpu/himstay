@@ -25,25 +25,18 @@ export default function Home() {
     { n: "Hyderabad", count: "2,735", img: "https://images.unsplash.com/photo-1582468357030-4221a2099032?w=400" }
   ];
 
-  const propertyTypes = [
-    { n: "Hotels", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
-    { n: "Apartments", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" },
-    { n: "Resorts", img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400" },
-    { n: "Villas", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
-  ];
-
   return (
-    <div>
-      {/* Hero */}
-      <section className="hero-search-box">
+    <div className="home-container">
+      {/* Hero Section */}
+      <section className="hero-section">
         <h1>See the world for less</h1>
-        <button onClick={() => navigate("/hotels")}>SEARCH</button>
+        <button className="search-btn" onClick={() => navigate("/hotels")}>SEARCH STAYS</button>
       </section>
 
-      <div className="home-wrap">
-        {/* 1. SLIDER SECTION (Uttarakhand) */}
-        <section className="home-section">
-          <h2>Uttarakhand Tourism: Explore & Experience</h2>
+      <div className="home-content">
+        {/* Slider Section */}
+        <section className="section">
+          <h2>Uttarakhand Tourism</h2>
           <div className="horizontal-scroll-container">
             {uttarakhandExperiences.map((ex, i) => (
               <div key={i} className="scroll-item" onClick={() => navigate("/hotels")}>
@@ -54,24 +47,32 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 2. GRID SECTIONS (Purane cards safe hain) */}
-        <section className="home-section">
+        {/* Grid Sections */}
+        <section className="section">
           <h2>Featured homes</h2>
           <div className="home-grid">
             {featuredHomes.map((h, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={h.img} /> <h3>{h.name}</h3> <p>INR {h.price}</p>
+                <img src={h.img} alt={h.name} />
+                <div className="card-info">
+                  <h3>{h.name}</h3>
+                  <p>INR {h.price}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="home-section">
-          <h2>Top destinations in India</h2>
+        <section className="section">
+          <h2>Top destinations</h2>
           <div className="home-grid">
             {topDestinations.map((d, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={d.img} /> <h3>{d.n}</h3>
+                <img src={d.img} alt={d.n} />
+                <div className="card-info">
+                  <h3>{d.n}</h3>
+                  <p>{d.count} properties</p>
+                </div>
               </div>
             ))}
           </div>
