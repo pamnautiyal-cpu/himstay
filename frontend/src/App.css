@@ -1,38 +1,44 @@
-/* Purana Grid (Safe) */
-.home-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-/* Naya Slider sirf Uttarakhand section ke liye */
-.horizontal-scroll-container {
-  display: flex;
-  overflow-x: auto;
-  gap: 20px;
-  padding: 10px 0;
-  scrollbar-width: none;
-}
-.horizontal-scroll-container::-webkit-scrollbar { display: none; }
-
-.scroll-item {
-  min-width: 220px;
-  flex: 0 0 auto;
-  cursor: pointer;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
+/* AllStays Grid Container */
+.stays-page-wrap {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
   text-align: center;
 }
-.scroll-item img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 6px;
+
+.hotel-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .home-grid { grid-template-columns: repeat(2, 1fr); }
+.hotel-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: left;
+  transition: transform 0.2s;
+}
+
+.hotel-card:hover { transform: translateY(-5px); }
+
+.hotel-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.hotel-info { padding: 16px; }
+
+.view-btn {
+  width: 100%;
+  padding: 10px;
+  background: #006ce4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
 }
