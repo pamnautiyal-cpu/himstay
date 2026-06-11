@@ -11,6 +11,14 @@ export default function Home() {
     { n: "Villas", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
   ];
 
+  // NEW: Uttarakhand Experience Cards
+  const uttarakhandExperiences = [
+    { n: "Trekking", img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400" },
+    { n: "Adventure", img: "https://images.unsplash.com/photo-1527203561188-dae1bc1a4176?w=400" },
+    { n: "Yoga & Wellness", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400" },
+    { n: "Char Dham Yatra", img: "https://images.unsplash.com/photo-1544735716-39742463e264?w=400" }
+  ];
+
   const topDestinations = [
     { n: "Bangalore", count: "5,372", img: "https://images.unsplash.com/photo-1596176530529-781635457887?w=400" },
     { n: "Mumbai", count: "4,177", img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400" },
@@ -32,7 +40,6 @@ export default function Home() {
            <input type="text" placeholder="Where are you going?" />
            <button onClick={() => navigate("/hotels")}>SEARCH</button>
         </div>
-        {/* NEW: Checkboxes */}
         <div className="search-options" style={{ marginTop: "15px", color: "white", fontSize: "14px" }}>
           <label style={{ margin: "0 10px" }}><input type="checkbox" /> I'm looking for an entire home or apartment</label>
           <label style={{ margin: "0 10px" }}><input type="checkbox" /> I'm traveling for work</label>
@@ -41,7 +48,20 @@ export default function Home() {
       </section>
 
       <div className="home-wrap">
-        {/* NEW: Recent Searches */}
+        {/* NEW: Uttarakhand Tourism Section */}
+        <section className="home-section">
+          <h2>Uttarakhand Tourism: Explore & Experience</h2>
+          <div className="home-grid">
+            {uttarakhandExperiences.map((ex, i) => (
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+                <img src={ex.img} alt={ex.n} />
+                <h3>{ex.n}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Existing Sections */}
         <section className="home-section">
           <h2>Your recent searches</h2>
           <div className="home-grid" style={{ gridTemplateColumns: "repeat(2, 1fr) !important" }}>
@@ -56,7 +76,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Existing Sections */}
         <section className="home-section">
           <h2>Top destinations in India</h2>
           <div className="home-grid">
