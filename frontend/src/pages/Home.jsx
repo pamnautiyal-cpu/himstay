@@ -5,12 +5,12 @@ export default function Home() {
   const navigate = useNavigate();
 
   const uttarakhandExperiences = [
-    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1590523278191-9951da64da60?w=400" },
-    { n: "Badrinath", img: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400" },
-    { n: "Gangotri", img: "https://images.unsplash.com/photo-1544735716-39742463e264?w=400" },
-    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=400" },
-    { n: "Trekking", img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400" },
-    { n: "Adventure", img: "https://images.unsplash.com/photo-1527203561188-dae1bc1a4176?w=400" }
+    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1626078239088-75701c901e69?w=600" },
+    { n: "Badrinath", img: "https://images.unsplash.com/photo-1605540306126-70e4e6b18c64?w=600" },
+    { n: "Gangotri", img: "https://images.unsplash.com/photo-1672393375831-29e87515f426?w=600" },
+    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1672393374880-994191c95195?w=600" },
+    { n: "Haridwar", img: "https://images.unsplash.com/photo-1596701780211-137267123963?w=600" },
+    { n: "Rishikesh", img: "https://images.unsplash.com/photo-1596701780183-f66099511674?w=600" }
   ];
 
   const featuredHomes = [
@@ -47,7 +47,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Grid Sections */}
+        {/* Featured homes */}
         <section className="section">
           <h2>Featured homes</h2>
           <div className="home-grid">
@@ -63,6 +63,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Top destinations */}
         <section className="section">
           <h2>Top destinations</h2>
           <div className="home-grid">
