@@ -1,47 +1,39 @@
-/* RESET */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: sans-serif; background: #fff; color: #333; }
+/* --- NEW: HORIZONTAL SLIDER FOR UTTARAKHAND SECTION --- */
+.horizontal-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 5px;
+  scrollbar-width: none; /* Firefox hide scrollbar */
+  -ms-overflow-style: none; /* IE/Edge hide scrollbar */
+  width: 100%;
+}
 
-/* 1. HERO SECTION (PURANA WALA) */
-.hero-section { background: #0b132b; color: #fff; padding: 60px 20px; text-align: center; }
-.search-bar { background: white; padding: 10px; border-radius: 8px; display: inline-flex; max-width: 800px; width: 100%; margin-top: 20px; }
-.search-bar input { flex: 1; border: none; padding: 12px; outline: none; }
-.search-bar button { background: #2563eb; color: white; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari hide scrollbar */
+}
 
-/* 1.1 AGODA STYLE HERO */
-.hero-search-box { background: #003580; padding: 40px 20px; text-align: center; color: white; }
-.search-container { background: white; padding: 10px; border-radius: 8px; display: inline-flex; max-width: 600px; width: 100%; margin-top: 20px; }
-.search-container input { flex: 1; border: none; padding: 12px; outline: none; color: #333; }
-.search-container button { background: #febb02; color: #000; border: none; padding: 10px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+.scroll-item {
+  min-width: 250px; /* Har card ki width fix */
+  flex: 0 0 auto;
+  cursor: pointer;
+}
 
-/* SEARCH OPTIONS (NEW) */
-.search-options { font-size: 14px; margin-top: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.scroll-item img {
+  height: 180px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
 
-/* 2. MAIN LAYOUT */
-.home-wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
-.home-section { margin-bottom: 40px; }
-.home-section h2 { font-size: 22px; margin-bottom: 20px; color: #1a1a1a; }
+.scroll-item:hover img {
+  transform: scale(1.03);
+}
 
-/* Booking.com Style Grid */
-.home-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 20px !important; }
-
-/* 3. VERTICAL CARD STYLING */
-.home-card { cursor: pointer; transition: 0.2s; background: #fff; }
-.home-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; }
-.home-card h3 { font-size: 16px; margin-top: 10px; color: #000; }
-
-/* 4. HOTEL LIST & CARD STYLING */
-.hotel-list { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
-.hotel-card { display: flex; gap: 20px; background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 15px; margin-bottom: 20px; align-items: center; }
-.hotel-card img { width: 250px; height: 180px; object-fit: cover; border-radius: 8px; }
-.hotel-info { flex: 1; }
-.hotel-info h3 { margin: 0 0 10px; font-size: 18px; }
-.price { font-size: 20px; font-weight: bold; color: #000; margin-top: 10px; }
-.view-btn { background: #2563eb; color: #fff; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; }
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 900px) {
-  .home-grid { grid-template-columns: repeat(2, 1fr) !important; }
-  .hotel-card { flex-direction: column; align-items: flex-start; }
-  .hotel-card img { width: 100%; height: 200px; }
+/* --- RESPONSIVE FIXES --- */
+@media (max-width: 600px) {
+  .scroll-item {
+    min-width: 200px;
+  }
 }

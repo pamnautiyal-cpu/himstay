@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  // Data Arrays
+  // 1. Uttarakhand Tourism Data (Ab isme saare Dham aur Activities hain)
   const uttarakhandExperiences = [
+    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1590523278191-9951da64da60?w=400" },
+    { n: "Badrinath", img: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400" },
+    { n: "Gangotri", img: "https://images.unsplash.com/photo-1544735716-39742463e264?w=400" },
+    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1626621422537-37b2319addef?w=400" },
     { n: "Trekking", img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400" },
     { n: "Adventure", img: "https://images.unsplash.com/photo-1527203561188-dae1bc1a4176?w=400" },
-    { n: "Yoga & Wellness", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400" },
-    { n: "Char Dham Yatra", img: "https://images.unsplash.com/photo-1544735716-39742463e264?w=400" }
+    { n: "Yoga & Wellness", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400" }
   ];
 
   const featuredHomes = [
@@ -33,20 +36,28 @@ export default function Home() {
 
   return (
     <div>
-      {/* 1. Hero Section */}
       <section className="hero-search-box">
         <h1>See the world for less</h1>
         <div className="search-container">
            <input type="text" placeholder="Where are you going?" />
            <button onClick={() => navigate("/hotels")}>SEARCH</button>
         </div>
-        <div className="search-options" style={{ marginTop: "15px", color: "white", fontSize: "14px" }}>
-          <label style={{ margin: "0 10px" }}><input type="checkbox" /> Entire homes</label>
-          <label style={{ margin: "0 10px" }}><input type="checkbox" /> For work</label>
-        </div>
       </section>
 
       <div className="home-wrap">
+        {/* 1. Uttarakhand Section with SLIDER */}
+        <section className="home-section">
+          <h2>Uttarakhand Tourism: Explore & Experience</h2>
+          <div className="horizontal-scroll-container">
+            {uttarakhandExperiences.map((ex, i) => (
+              <div key={i} className="home-card scroll-item" onClick={() => navigate("/hotels")}>
+                <img src={ex.img} alt={ex.n} />
+                <h3>{ex.n}</h3>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* 2. Recent Searches */}
         <section className="home-section">
           <h2>Your recent searches</h2>
@@ -60,22 +71,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3. Uttarakhand Tourism */}
+        {/* 3. Featured Homes */}
         <section className="home-section">
-          <h2>Uttarakhand Tourism: Explore & Experience</h2>
-          <div className="home-grid">
-            {uttarakhandExperiences.map((ex, i) => (
-              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={ex.img} alt={ex.n} />
-                <h3>{ex.n}</h3>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* 4. Featured Homes */}
-        <section className="home-section">
-          <h2>Featured homes</h2>
+          <h2>Featured homes recommended for you</h2>
           <div className="home-grid">
             {featuredHomes.map((h, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
@@ -87,7 +85,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. Top Destinations */}
+        {/* 4. Top Destinations */}
         <section className="home-section">
           <h2>Top destinations in India</h2>
           <div className="home-grid">
@@ -100,7 +98,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. Property Type */}
+        {/* 5. Property Type */}
         <section className="home-section">
           <h2>Browse by property type</h2>
           <div className="home-grid">
