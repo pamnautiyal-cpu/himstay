@@ -4,19 +4,19 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  const propertyTypes = [
-    { n: "Hotels", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
-    { n: "Apartments", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" },
-    { n: "Resorts", img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400" },
-    { n: "Villas", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
-  ];
-
-  // NEW: Uttarakhand Experience Cards
+  // Data Arrays
   const uttarakhandExperiences = [
     { n: "Trekking", img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400" },
     { n: "Adventure", img: "https://images.unsplash.com/photo-1527203561188-dae1bc1a4176?w=400" },
     { n: "Yoga & Wellness", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400" },
     { n: "Char Dham Yatra", img: "https://images.unsplash.com/photo-1544735716-39742463e264?w=400" }
+  ];
+
+  const propertyTypes = [
+    { n: "Hotels", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
+    { n: "Apartments", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" },
+    { n: "Resorts", img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400" },
+    { n: "Villas", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" }
   ];
 
   const topDestinations = [
@@ -27,13 +27,13 @@ export default function Home() {
   ];
 
   const featuredHomes = [
-    { name: "VANYA LUXURY RESORT", location: "Bangalore", price: "5,000", rating: "8.2", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
-    { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", rating: "8.3", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" }
+    { name: "VANYA LUXURY RESORT", location: "Bangalore", price: "5,000", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
+    { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" }
   ];
 
   return (
     <div>
-      {/* Search Section */}
+      {/* 1. Hero Section */}
       <section className="hero-search-box">
         <h1>See the world for less</h1>
         <div className="search-container">
@@ -41,14 +41,26 @@ export default function Home() {
            <button onClick={() => navigate("/hotels")}>SEARCH</button>
         </div>
         <div className="search-options" style={{ marginTop: "15px", color: "white", fontSize: "14px" }}>
-          <label style={{ margin: "0 10px" }}><input type="checkbox" /> I'm looking for an entire home or apartment</label>
-          <label style={{ margin: "0 10px" }}><input type="checkbox" /> I'm traveling for work</label>
-          <label style={{ margin: "0 10px" }}><input type="checkbox" /> Add flights to my search</label>
+          <label style={{ margin: "0 10px" }}><input type="checkbox" /> Entire homes</label>
+          <label style={{ margin: "0 10px" }}><input type="checkbox" /> For work</label>
         </div>
       </section>
 
       <div className="home-wrap">
-        {/* NEW: Uttarakhand Tourism Section */}
+        {/* 2. Recent Searches */}
+        <section className="home-section">
+          <h2>Your recent searches</h2>
+          <div className="home-grid" style={{ gridTemplateColumns: "repeat(2, 1fr) !important" }}>
+            <div className="home-card" style={{ padding: "15px", border: "1px solid #ddd", borderRadius: "8px" }}>
+              <p><strong>Dehradun ↔ Mumbai</strong></p>
+            </div>
+            <div className="home-card" style={{ padding: "15px", border: "1px solid #ddd", borderRadius: "8px" }}>
+              <p><strong>Dehradun ↔ Bangalore</strong></p>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. Uttarakhand Tourism */}
         <section className="home-section">
           <h2>Uttarakhand Tourism: Explore & Experience</h2>
           <div className="home-grid">
@@ -61,21 +73,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Existing Sections */}
+        {/* 4. Featured Homes */}
         <section className="home-section">
-          <h2>Your recent searches</h2>
-          <div className="home-grid" style={{ gridTemplateColumns: "repeat(2, 1fr) !important" }}>
-            <div className="home-card" style={{ padding: "15px", border: "1px solid #ddd", borderRadius: "8px" }}>
-              <p><strong>Dehradun (DED) ↔ Mumbai (All airports)</strong></p>
-              <p style={{fontSize: "12px", color: "#666"}}>Sat, Jul 11-Sat, Jul 18 • 1 traveler</p>
-            </div>
-            <div className="home-card" style={{ padding: "15px", border: "1px solid #ddd", borderRadius: "8px" }}>
-              <p><strong>Dehradun (DED) ↔ Bangalore (BLR)</strong></p>
-              <p style={{fontSize: "12px", color: "#666"}}>Sat, Jul 11-Sat, Jul 18 • 1 traveler</p>
-            </div>
+          <h2>Featured homes</h2>
+          <div className="home-grid">
+            {featuredHomes.map((h, i) => (
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
+                <img src={h.img} alt={h.name} />
+                <h3>{h.name}</h3>
+                <p>INR {h.price}</p>
+              </div>
+            ))}
           </div>
         </section>
 
+        {/* 5. Top Destinations */}
         <section className="home-section">
           <h2>Top destinations in India</h2>
           <div className="home-grid">
@@ -83,28 +95,12 @@ export default function Home() {
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
                 <img src={d.img} alt={d.n} />
                 <h3>{d.n}</h3>
-                <p style={{fontSize: "12px", color: "#666"}}>{d.count} accommodations</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="home-section">
-          <h2>Featured homes recommended for you</h2>
-          <div className="home-grid">
-            {featuredHomes.map((h, i) => (
-              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={h.img} alt={h.name} />
-                <div style={{paddingTop: "10px"}}>
-                  <h3 style={{fontSize: "14px"}}>{h.name}</h3>
-                  <p style={{fontSize: "12px", color: "#666"}}>{h.location}</p>
-                  <p style={{fontWeight: "bold", fontSize: "14px"}}>INR {h.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
+        {/* 6. Property Type */}
         <section className="home-section">
           <h2>Browse by property type</h2>
           <div className="home-grid">
