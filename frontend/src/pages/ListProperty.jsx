@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function ListProperty() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "", city: "Uttarkashi", location: "", price: "", 
-    phone: "", roomType: "", guests: "2", view: "", description: "", image: ""
+    phone: "", roomType: "", guests: "2", view: "", description: ""
   });
+  const [file, setFile] = useState(null); // File state add ki
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,13 +17,30 @@ export default function ListProperty() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    const data = new FormData();
+    // Saara text data append karo
+    for (let key in formData) {
+      data.append(key, formData[key]);
+    }
+    // File append karo
+    if (file) {
+      data.append("image", file);
+    }
+
     try {
-      // Backend abhi sirf URL accept kar raha hai
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels`, formData);
-      alert("Property Listed! Redirection to hotels...");
+      // Endpoint /api/hotels/add par request bhejo
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      alert("Property Listed Successfully!");
       navigate("/hotels");
     } catch (err) {
-      alert("Backend error: Ensure your server is running and API path is correct.");
+      console.error(err);
+      alert("Upload failed. Check console.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,10 +62,16 @@ export default function ListProperty() {
 
         <input name="location" placeholder="Full Address *" required onChange={handleChange} style={inputStyle} />
         <input name="phone" placeholder="Contact Number *" required onChange={handleChange} style={inputStyle} />
-        <input name="image" placeholder="Image URL (Unsplash Link) *" required onChange={handleChange} style={inputStyle} />
+        
+        {/* File Input yahan dala hai */}
+        <label style={{ fontSize: "14px", fontWeight: "600" }}>Upload Image *</label>
+        <input type="file" name="image" accept="image/*" required onChange={(e) => setFile(e.target.files[0])} style={inputStyle} />
+        
         <textarea name="description" placeholder="Short description..." onChange={handleChange} style={{...inputStyle, height: "80px"}}></textarea>
         
-        <button type="submit" style={btnStyle}>Complete Listing</button>
+        <button type="submit" style={btnStyle} disabled={loading}>
+          {loading ? "Uploading..." : "Complete Listing"}
+        </button>
       </form>
     </div>
   );
