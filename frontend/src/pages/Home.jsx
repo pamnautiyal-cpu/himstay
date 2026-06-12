@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  // Data wahi hai, kuch delete nahi hua
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "https://images.unsplash.com/photo-1626078239088-75701c901e69?w=600" },
     { n: "Badrinath", img: "https://images.unsplash.com/photo-1605540306126-70e4e6b18c64?w=600" },
@@ -32,7 +31,11 @@ export default function Home() {
           <div className="horizontal-scroll-container">
             {uttarakhandExperiences.map((ex, i) => (
               <div key={i} className="scroll-item" onClick={() => navigate("/hotels")}>
-                <img src={ex.img} alt={ex.n} />
+                <img 
+                  src={ex.img} 
+                  alt={ex.n} 
+                  style={{ width: "200px", height: "150px", objectFit: "cover", display: "block" }} 
+                />
                 <h3>{ex.n}</h3>
               </div>
             ))}
@@ -44,7 +47,11 @@ export default function Home() {
           <div className="home-grid">
             {featuredHomes.map((h, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={h.img} alt={h.name} />
+                <img 
+                  src={h.img} 
+                  alt={h.name} 
+                  style={{ width: "300px", height: "200px", objectFit: "cover", display: "block" }} 
+                />
                 <div className="card-info" style={{padding: "10px"}}>
                   <h3>{h.name}</h3>
                   <p>INR {h.price}</p>
