@@ -1,9 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // <--- YE LINE SABSE ZARURI HAI
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
 
+  // Data wahi hai, kuch delete nahi hua
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "https://images.unsplash.com/photo-1626078239088-75701c901e69?w=600" },
     { n: "Badrinath", img: "https://images.unsplash.com/photo-1605540306126-70e4e6b18c64?w=600" },
