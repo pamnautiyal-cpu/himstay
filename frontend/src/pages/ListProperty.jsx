@@ -4,100 +4,65 @@ import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
-export default function ListProperty() { // Function name fixed
+export default function ListProperty() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     city: "Uttarkashi",
-    location: "",
+    location: "", // Address ke liye
     price: "",
-    phone: "",
-    image: "",
-    roomType: "Deluxe Comfort Room",
-    guests: "2",
-    view: "Mountain View"
+    phone: "",    // Contact number ke liye
+    image: "",    // Image link ke liye
+    roomType: "",
+    guests: "2"
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-
-    const finalData = {
-      ...formData,
-      price: Number(formData.price) || 1200,
-      rating: 4.5,
-      reviews: 1
-    };
-
-    axios
-      .post(`${BACKEND_URL}/api/hotels`, finalData)
+    axios.post(`${BACKEND_URL}/api/hotels`, formData)
       .then(() => {
-        setSuccess(true);
-        setLoading(false);
-        setTimeout(() => navigate("/hotels"), 3000);
+        alert("Property listed successfully!");
+        navigate("/hotels");
       })
       .catch((err) => {
-        console.error("Error onboarding:", err);
-        alert("Server error. Please verify your backend.");
+        console.error(err);
+        alert("Error listing property.");
         setLoading(false);
       });
   };
 
   return (
-    <div style={{ background: "#f8fafc", minHeight: "100vh", padding: "40px 20px" }}>
-      <div style={{ maxWidth: "700px", margin: "0 auto", background: "#fff", padding: "40px", borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
+    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "20px", background: "#f8fafc", borderRadius: "10px" }}>
+      <h2>List Your Property</h2>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+        <input name="name" placeholder="Hotel / Homestay Name *" required onChange={handleChange} style={inputStyle} />
         
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <h1>🏔️ List Your Property</h1>
-          <p style={{ color: "#64748b" }}>Join the premier Uttarakhand hotel network.</p>
-        </div>
+        <select name="city" onChange={handleChange} style={inputStyle}>
+          <option value="Uttarkashi">Uttarkashi</option>
+          <option value="Rishikesh">Rishikesh</option>
+          <option value="Mussoorie">Mussoorie</option>
+        </select>
 
-        {success ? (
-          <div style={{ padding: "20px", background: "#f0fdf4", color: "#16a34a", borderRadius: "8px", textAlign: "center" }}>
-            🎉 Property successfully added! Redirecting...
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {/* Basics */}
-            <div>
-              <label style={labelStyle}>Hotel Name *</label>
-              <input type="text" name="name" required value={formData.name} onChange={handleChange} style={inputStyle} />
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }} className="form-grid">
-              <div>
-                <label style={labelStyle}>City</label>
-                <select name="city" value={formData.city} onChange={handleChange} style={inputStyle}>
-                  <option value="Uttarkashi">Uttarkashi</option>
-                  <option value="Rishikesh">Rishikesh</option>
-                  <option value="Mussoorie">Mussoorie</option>
-                </select>
-              </div>
-              <div>
-                <label style={labelStyle}>Price per Night</label>
-                <input type="number" name="price" required value={formData.price} onChange={handleChange} style={inputStyle} />
-              </div>
-            </div>
-
-            <button type="submit" disabled={loading} style={btnStyle}>
-              {loading ? "Processing..." : "⚡ Complete Free Listing"}
-            </button>
-          </form>
-        )}
-      </div>
+        <input name="location" placeholder="Full Address *" required onChange={handleChange} style={inputStyle} />
+        <input name="phone" type="tel" placeholder="Contact Number *" required onChange={handleChange} style={inputStyle} />
+        <input name="price" type="number" placeholder="Price per Night *" required onChange={handleChange} style={inputStyle} />
+        <input name="image" type="url" placeholder="Image URL (Unsplash link) *" required onChange={handleChange} style={inputStyle} />
+        <input name="roomType" placeholder="Room Type (e.g. Deluxe Room)" onChange={handleChange} style={inputStyle} />
+        
+        <button type="submit" style={btnStyle} disabled={loading}>
+          {loading ? "Submitting..." : "⚡ Complete Free Listing"}
+        </button>
+      </form>
     </div>
   );
 }
 
-// Styles
-const labelStyle = { display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "5px" };
-const inputStyle = { width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #cbd5e1", boxSizing: "border-box" };
-const btnStyle = { background: "#006ce4", color: "#fff", padding: "14px", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold" };
+const inputStyle = { padding: "12px", borderRadius: "6px", border: "1px solid #ccc" };
+const btnStyle = { background: "#006ce4", color: "#fff", padding: "12px", border: "none", borderRadius: "6px", cursor: "pointer" };
