@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  const uttarakhandExperiences = [
-    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1626078239088-75701c901e69?w=600" },
-    { n: "Badrinath", img: "https://images.unsplash.com/photo-1605540306126-70e4e6b18c64?w=600" },
-    { n: "Gangotri", img: "https://images.unsplash.com/photo-1672393375831-29e87515f426?w=600" },
-    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1672393374880-994191c95195?w=600" },
-    { n: "Haridwar", img: "https://images.unsplash.com/photo-1596701780211-137267123963?w=600" },
-    { n: "Rishikesh", img: "https://images.unsplash.com/photo-1596701780183-f66099511674?w=600" }
+ const uttarakhandExperiences = [
+    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1595878095967-048c1e8473ba?w=600" },
+    { n: "Badrinath", img: "https://images.unsplash.com/photo-1626622432923-a53d6118b1a5?w=600" },
+    { n: "Gangotri", img: "https://images.unsplash.com/photo-1593361655071-700683416173?w=600" },
+    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1579762715118-a6f9d4b68426?w=600" },
+    { n: "Haridwar", img: "https://images.unsplash.com/photo-1561361513-3d0a095003d8?w=600" },
+    { n: "Rishikesh", img: "https://images.unsplash.com/photo-1583099958315-e23a4b6736d7?w=600" }
   ];
 
   const featuredHomes = [
