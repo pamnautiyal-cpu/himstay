@@ -19,6 +19,17 @@ export default function AdminBookings() {
     }
   };
 
+  // ✅ Status update function
+  const updateStatus = async (id, newStatus) => {
+    try {
+      await axios.put(`${BACKEND_URL}/api/bookings/status/${id}`, { status: newStatus });
+      // Update local state to show change immediately
+      setBookings(prev => prev.map(b => b._id === id ? { ...b, status: newStatus } : b));
+    } catch (err) {
+      alert("Error updating status!");
+    }
+  };
+
   const downloadExcel = () => {
     const ws = XLSX.utils.json_to_sheet(bookings);
     const wb = XLSX.utils.book_new();
@@ -39,15 +50,8 @@ export default function AdminBookings() {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", background: "#0f1e36" }}>
         <div style={{ background: "#fff", padding: "40px", borderRadius: "12px", textAlign: "center" }}>
           <h2>🔒 Admin Login</h2>
-          <input 
-            type="password" 
-            placeholder="Enter Secret Password" 
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ padding: "10px", width: "200px", marginBottom: "10px", display: "block" }}
-          />
-          <button onClick={handleLogin} style={{ background: "#006ce4", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-            Login to Bookings
-          </button>
+          <input type="password" placeholder="Enter Secret Password" onChange={(e) => setPassword(e.target.value)} style={{ padding: "10px", width: "200px", marginBottom: "10px", display: "block" }} />
+          <button onClick={handleLogin} style={{ background: "#006ce4", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "5px", cursor: "pointer" }}>Login</button>
         </div>
       </div>
     );
@@ -55,50 +59,40 @@ export default function AdminBookings() {
 
   return (
     <div style={{ padding: "40px", background: "#f8fafc", minHeight: "100vh" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-        <h1 style={{ color: "#0f172a" }}>📊 Admin Booking Console</h1>
-        <button 
-          onClick={downloadExcel}
-          style={{ background: "#16a34a", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
-        >
-          📥 Download Excel Report
-        </button>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+        <h1>📊 Admin Booking Console</h1>
+        <button onClick={downloadExcel} style={{ background: "#16a34a", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "6px", cursor: "pointer" }}>📥 Download Excel</button>
       </div>
 
-      <table style={{ width: "100%", background: "#fff", borderCollapse: "collapse", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+      <table style={{ width: "100%", background: "#fff", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ background: "#0f1e36", color: "#fff" }}>
             <th style={{ padding: "12px" }}>Date</th>
-            <th style={{ padding: "12px" }}>Customer Email</th>
+            <th style={{ padding: "12px" }}>Customer</th>
             <th style={{ padding: "12px" }}>Hotel</th>
-            <th style={{ padding: "12px" }}>Amount</th>
+            <th style={{ padding: "12px" }}>Status</th>
             <th style={{ padding: "12px" }}>Action</th>
           </tr>
         </thead>
         <tbody>
-          {bookings.map((b) => {
-            const hotelName = b.hotelName || b.bookingData?.hotelName || "Stay";
-            const amount = b.amount || b.bookingData?.amount || 0;
-            return (
-              <tr key={b._id} style={{ borderBottom: "1px solid #e2e8f0" }}>
-                <td style={{ padding: "12px" }}>{new Date(b.createdAt).toLocaleDateString()}</td>
-                <td style={{ padding: "12px" }}>{b.email || b.bookingData?.email}</td>
-                <td style={{ padding: "12px" }}>{hotelName}</td>
-                <td style={{ padding: "12px" }}>₹{amount}</td>
-                <td style={{ padding: "12px" }}>
-                  {/* ✨ WhatsApp बटन */}
-                  <a 
-                    href={`https://wa.me/919410106470?text=Hello,%20regarding%20booking%20at%20${hotelName}%20for%20Amount:%20${amount}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ background: "#25d366", color: "#fff", padding: "6px 12px", borderRadius: "5px", textDecoration: "none", fontSize: "12px", fontWeight: "bold" }}
-                  >
-                    💬 WhatsApp
-                  </a>
-                </td>
-              </tr>
-            );
-          })}
+          {bookings.map((b) => (
+            <tr key={b._id} style={{ borderBottom: "1px solid #e2e8f0" }}>
+              <td style={{ padding: "12px" }}>{new Date(b.createdAt).toLocaleDateString()}</td>
+              <td style={{ padding: "12px" }}>{b.email || b.bookingData?.email}</td>
+              <td style={{ padding: "12px" }}>{b.hotelName || b.bookingData?.hotelName || "Stay"}</td>
+              
+              {/* ✅ Status display (Purane data ke liye fallback 'Pending') */}
+              <td style={{ padding: "12px", fontWeight: "bold", color: b.status === "Confirmed" ? "green" : "orange" }}>
+                {b.status || "Pending"}
+              </td>
+
+              <td style={{ padding: "12px" }}>
+                <button onClick={() => updateStatus(b._id, "Confirmed")} style={{ background: "#22c55e", color: "white", border: "none", padding: "4px 8px", cursor: "pointer" }}>✅ Confirm</button>
+                <button onClick={() => updateStatus(b._id, "Cancelled")} style={{ background: "#ef4444", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", marginLeft: "5px" }}>❌ Cancel</button>
+                <a href={`https://wa.me/919410106470?text=Hello`} target="_blank" style={{ marginLeft: "10px", textDecoration: "none", fontSize: "12px" }}>💬</a>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
