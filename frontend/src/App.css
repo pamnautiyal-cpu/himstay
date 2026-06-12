@@ -1,51 +1,48 @@
-.hero-section {
-  background: #003b95;
-  color: white;
-  padding: 60px 20px;
+.stays-page-wrap {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
   text-align: center;
 }
 
-.search-btn {
-  background: #ffb700;
-  border: none;
-  padding: 12px 30px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.home-content { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-
-.section { margin-bottom: 40px; }
-
-/* Grid & Cards */
-.home-grid {
+.hotel-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, 300px); 
+  justify-content: center; 
+  gap: 25px;
+  margin-top: 30px;
 }
 
-.home-card {
+.hotel-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: left;
+  transition: transform 0.2s;
+  width: 300px;
+}
+
+.hotel-card:hover { 
+  transform: translateY(-5px); 
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+}
+
+.hotel-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.hotel-info { padding: 16px; }
+
+.view-btn {
+  width: 100%;
+  padding: 10px;
+  background: #006ce4;
+  color: white;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
+  margin-top: 10px;
 }
-
-.home-card:hover { transform: translateY(-5px); }
-
-.home-card img { width: 100%; height: 180px; object-fit: cover; }
-
-.card-info { padding: 12px; }
-
-/* Scrollable Section */
-.horizontal-scroll-container {
-  display: flex;
-  overflow-x: auto;
-  gap: 15px;
-  padding-bottom: 10px;
-}
-
-.scroll-item { min-width: 180px; cursor: pointer; text-align: center; }
-.scroll-item img { width: 100%; height: 120px; border-radius: 8px; object-fit: cover; }
