@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
 import MyTrips from "./pages/MyTrips";
 import ListProperty from "./pages/ListProperty";
+import AdminBookings from "./pages/AdminBookings"; // ✅ Admin route import kiya
 import "./App.css";
 
 export default function App() {
@@ -23,6 +24,9 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/list-property" element={<ListProperty />} />
+        
+        {/* ✅ Admin Panel Route */}
+        <Route path="/admin/bookings" element={<AdminBookings />} />
       </Routes>
     </Layout>
   );
