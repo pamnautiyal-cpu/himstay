@@ -1,40 +1,15 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-
 export default function Home() {
   const navigate = useNavigate();
-
-  const uttarakhandExperiences = [
-    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1626078239088-75701c901e69?w=600" },
-    { n: "Badrinath", img: "https://images.unsplash.com/photo-1605540306126-70e4e6b18c64?w=600" },
-    { n: "Gangotri", img: "https://images.unsplash.com/photo-1672393375831-29e87515f426?w=600" },
-    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1672393374880-994191c95195?w=600" },
-    { n: "Haridwar", img: "https://images.unsplash.com/photo-1596701780211-137267123963?w=600" },
-    { n: "Rishikesh", img: "https://images.unsplash.com/photo-1596701780183-f66099511674?w=600" }
-  ];
-
-  const featuredHomes = [
-    { name: "VANYA LUXURY RESORT", location: "Bangalore", price: "5,000", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" },
-    { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" }
-  ];
-
-  const topDestinations = [
-    { n: "Bangalore", count: "5,372", img: "https://images.unsplash.com/photo-1596176530529-781635457887?w=400" },
-    { n: "Mumbai", count: "4,177", img: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400" },
-    { n: "New Delhi", count: "12,786", img: "https://images.unsplash.com/photo-1587474260584-916f1c71329c?w=400" },
-    { n: "Hyderabad", count: "2,735", img: "https://images.unsplash.com/photo-1582468357030-4221a2099032?w=400" }
-  ];
+  // ... (data same rahega)
 
   return (
     <div className="home-container">
-      {/* Hero Section */}
       <section className="hero-section">
         <h1>See the world for less</h1>
         <button className="search-btn" onClick={() => navigate("/hotels")}>SEARCH STAYS</button>
       </section>
 
       <div className="home-content">
-        {/* Slider Section */}
         <section className="section">
           <h2>Uttarakhand Tourism</h2>
           <div className="horizontal-scroll-container">
@@ -47,32 +22,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured homes */}
         <section className="section">
           <h2>Featured homes</h2>
           <div className="home-grid">
             {featuredHomes.map((h, i) => (
               <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
                 <img src={h.img} alt={h.name} />
-                <div className="card-info">
+                <div className="card-info" style={{padding: "10px"}}>
                   <h3>{h.name}</h3>
                   <p>INR {h.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Top destinations */}
-        <section className="section">
-          <h2>Top destinations</h2>
-          <div className="home-grid">
-            {topDestinations.map((d, i) => (
-              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={d.img} alt={d.n} />
-                <div className="card-info">
-                  <h3>{d.n}</h3>
-                  <p>{d.count} properties</p>
                 </div>
               </div>
             ))}
