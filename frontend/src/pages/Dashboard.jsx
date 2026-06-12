@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserBookings } from "../api/api";
@@ -11,26 +10,11 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         const res = await getUserBookings();
-        setBookings(res.data || []);
+        // Ensure res.data is an array to prevent crashes
+        setBookings(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
-        console.log("Booking load error:", err);
-        // fallback demo data
-        setBookings([
-          {
-            _id: "1",
-            city: "Manali",
-            title: "Cozy Riverside Homestay",
-            dates: "12–15 Jan, 2026",
-            people: 2,
-          },
-          {
-            _id: "2",
-            city: "Shimla",
-            title: "Pine View Workation Studio",
-            dates: "22–27 Feb, 2026",
-            people: 1,
-          },
-        ]);
+        console.error("Booking load error:", err);
+        setBookings([]); // Error par empty list dikhao
       } finally {
         setLoading(false);
       }
@@ -63,25 +47,20 @@ function Dashboard() {
             <div className="cloud cloud-2" />
             <div className="people">🧍‍♂️ 🧍‍♀️ 🏕️</div>
           </div>
-
           <div className="hs-hero-content">
             <p className="hs-hero-title">Weekend in the clouds</p>
-            <p className="hs-hero-text">
-              From ₹1,299/night • 120+ verified homestays across Uttarakhand.
-            </p>
+            <p className="hs-hero-text">From ₹1,299/night • 120+ verified homestays.</p>
           </div>
         </div>
       </div>
 
       {/* ===== GRID ===== */}
       <div className="hs-dashboard-grid">
-        {/* ===== MY TRIPS ===== */}
         <section className="hs-card">
           <div className="hs-card-header">
             <h2>My trips</h2>
             <span className="hs-pill">
-              {bookings.length}{" "}
-              {bookings.length === 1 ? "booking" : "bookings"}
+              {bookings.length} {bookings.length === 1 ? "booking" : "bookings"}
             </span>
           </div>
 
@@ -90,14 +69,8 @@ function Dashboard() {
           ) : bookings.length === 0 ? (
             <div className="hs-empty">
               <p className="hs-empty-title">No trips yet</p>
-              <p className="hs-empty-text">
-                Start your first Himalayan getaway.
-              </p>
-
-              {/* 🔴 FIXED: a → Link */}
-              <Link to="/" className="hs-btn-outline">
-                Browse stays
-              </Link>
+              <p className="hs-empty-text">Start your first Himalayan getaway.</p>
+              <Link to="/hotels" className="hs-btn-outline">Browse stays</Link>
             </div>
           ) : (
             <ul className="hs-trip-list">
@@ -105,15 +78,14 @@ function Dashboard() {
                 <li key={b._id} className="hs-trip-item">
                   <div>
                     <p className="hs-trip-title">{b.title}</p>
-                    <p className="hs-trip-meta">
-                      {b.city} • {b.dates}
-                    </p>
+                    <p className="hs-trip-meta">{b.city} • {b.dates}</p>
                   </div>
                   <div className="hs-trip-right">
-                    <span className="hs-trip-people">
-                      👥 {b.people || 2} guests
-                    </span>
-                    <button className="hs-trip-btn">View details</button>
+                    <span className="hs-trip-people">👥 {b.people || 2} guests</span>
+                    {/* Fixed: button -> Link for navigation */}
+                    <Link to={`/hotels/${b.hotelId}`} className="hs-trip-btn">
+                      View details
+                    </Link>
                   </div>
                 </li>
               ))}
@@ -124,29 +96,11 @@ function Dashboard() {
         {/* ===== SUGGESTIONS ===== */}
         <section className="hs-card hs-suggestions">
           <h2>Popular hill escapes</h2>
-
           <div className="hs-tag-row">
             <span className="hs-tag">Manali • Workation</span>
             <span className="hs-tag">Shimla • Family</span>
-            <span className="hs-tag">Bir • Paragliding</span>
-            <span className="hs-tag">Dharamshala • Chill</span>
           </div>
-
-          <p className="hs-muted" style={{ marginTop: 12 }}>
-            Weekdays are cheaper & quieter — perfect for workations.
-          </p>
-
-          <div className="hs-checklist">
-            <p>✅ High-speed Wi-Fi</p>
-            <p>✅ Mountain views</p>
-            <p>✅ Local homestays</p>
-            <p>✅ Verified hosts</p>
-          </div>
-
-          {/* 🔴 FIXED: a → Link */}
-          <Link to="/hotels" className="hs-btn-primary">
-            Find stays in Uttarakhand
-          </Link>
+          <Link to="/hotels" className="hs-btn-primary">Find stays in Uttarakhand</Link>
         </section>
       </div>
     </div>
