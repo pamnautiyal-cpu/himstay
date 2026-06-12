@@ -15,6 +15,12 @@ export default function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <Link to="/hotels" style={{ color: "#fff", textDecoration: "none" }}>🏨 Hotels</Link>
           <Link to="/mytrips" style={{ color: "#fff", textDecoration: "none" }}>🧳 My Trips</Link>
+          
+          {/* ✅ Admin Access Link (Naya add kiya gaya) */}
+          <Link to="/admin/bookings" style={{ color: "#f59e0b", textDecoration: "none", fontSize: "12px", border: "1px solid #f59e0b", padding: "2px 5px", borderRadius: "4px" }}>
+            Admin
+          </Link>
+
           <Link to="/contact" style={{ color: "#fff", textDecoration: "none" }}>✉️ Contact</Link>
           <Link to="/list-property" style={{ color: "#38bdf8", textDecoration: "none", fontWeight: "bold" }}>📢 List your property</Link>
           <Link to="/login" style={{ color: "#fff", textDecoration: "none" }}>🔐 Login</Link>
