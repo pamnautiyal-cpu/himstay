@@ -1,12 +1,24 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function ListProperty() {
-  // State management for form
-  const [formData, setFormData] = useState({ 
-    name: "", 
-    city: "", 
-    price: "", 
-    description: "" 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
+
+export default function ListProperty() { // Function name fixed
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    city: "Uttarkashi",
+    location: "",
+    price: "",
+    phone: "",
+    image: "",
+    roomType: "Deluxe Comfort Room",
+    guests: "2",
+    view: "Mountain View"
   });
 
   const handleChange = (e) => {
@@ -16,55 +28,76 @@ export default function ListProperty() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    alert("Property '" + formData.name + "' submitted successfully!");
+    setLoading(true);
+
+    const finalData = {
+      ...formData,
+      price: Number(formData.price) || 1200,
+      rating: 4.5,
+      reviews: 1
+    };
+
+    axios
+      .post(`${BACKEND_URL}/api/hotels`, finalData)
+      .then(() => {
+        setSuccess(true);
+        setLoading(false);
+        setTimeout(() => navigate("/hotels"), 3000);
+      })
+      .catch((err) => {
+        console.error("Error onboarding:", err);
+        alert("Server error. Please verify your backend.");
+        setLoading(false);
+      });
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "20px", background: "#fff", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
-      <h2 style={{ textAlign: "center", color: "#1e293b" }}>List your property on The Himalayans</h2>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="text" name="name" placeholder="Property Name" required 
-          value={formData.name} onChange={handleChange} style={inputStyle} 
-        />
-        <input 
-          type="text" name="city" placeholder="City" required 
-          value={formData.city} onChange={handleChange} style={inputStyle} 
-        />
-        <input 
-          type="number" name="price" placeholder="Price per night" required 
-          value={formData.price} onChange={handleChange} style={inputStyle} 
-        />
-        <textarea 
-          name="description" placeholder="Description" 
-          value={formData.description} onChange={handleChange} 
-          style={{...inputStyle, height: "100px"}}
-        ></textarea>
-        <button type="submit" style={btnStyle}>Submit Property</button>
-      </form>
+    <div style={{ background: "#f8fafc", minHeight: "100vh", padding: "40px 20px" }}>
+      <div style={{ maxWidth: "700px", margin: "0 auto", background: "#fff", padding: "40px", borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
+        
+        <div style={{ textAlign: "center", marginBottom: "30px" }}>
+          <h1>🏔️ List Your Property</h1>
+          <p style={{ color: "#64748b" }}>Join the premier Uttarakhand hotel network.</p>
+        </div>
+
+        {success ? (
+          <div style={{ padding: "20px", background: "#f0fdf4", color: "#16a34a", borderRadius: "8px", textAlign: "center" }}>
+            🎉 Property successfully added! Redirecting...
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {/* Basics */}
+            <div>
+              <label style={labelStyle}>Hotel Name *</label>
+              <input type="text" name="name" required value={formData.name} onChange={handleChange} style={inputStyle} />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }} className="form-grid">
+              <div>
+                <label style={labelStyle}>City</label>
+                <select name="city" value={formData.city} onChange={handleChange} style={inputStyle}>
+                  <option value="Uttarkashi">Uttarkashi</option>
+                  <option value="Rishikesh">Rishikesh</option>
+                  <option value="Mussoorie">Mussoorie</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Price per Night</label>
+                <input type="number" name="price" required value={formData.price} onChange={handleChange} style={inputStyle} />
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading} style={btnStyle}>
+              {loading ? "Processing..." : "⚡ Complete Free Listing"}
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
 
-// Styling Constants
-const inputStyle = { 
-  width: "100%", 
-  padding: "12px", 
-  margin: "10px 0", 
-  borderRadius: "6px", 
-  border: "1px solid #cbd5e1",
-  boxSizing: "border-box" // Input border ke bahar na nikle
-};
-
-const btnStyle = { 
-  background: "#2563eb", 
-  color: "#fff", 
-  padding: "14px", 
-  border: "none", 
-  borderRadius: "6px", 
-  cursor: "pointer", 
-  width: "100%",
-  fontSize: "16px",
-  fontWeight: "bold"
-};
+// Styles
+const labelStyle = { display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "5px" };
+const inputStyle = { width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #cbd5e1", boxSizing: "border-box" };
+const btnStyle = { background: "#006ce4", color: "#fff", padding: "14px", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold" };
