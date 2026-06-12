@@ -9,7 +9,7 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // Saare 16 hotels ka database
+  // Tumhara puraana database safe hai
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", price: 3500, description: "Luxury stay at Gangotri Hwy.", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", price: 1800, description: "Cozy home-like stay.", images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"] },
@@ -66,14 +66,22 @@ export default function HotelDetails() {
     }
   };
 
+  // Safely render data
   if (!hotel) return <div>🏔️ Loading Details...</div>;
 
   return (
     <div style={{ padding: "30px", maxWidth: "900px", margin: "auto" }}>
       <button onClick={() => navigate(-1)}>← Back</button>
       <h1>{hotel.name}</h1>
-      <p>📍 {hotel.location}</p>
-      <img src={hotel.images[0]} style={{ width: "100%", borderRadius: "15px" }} />
+      <p>📍 {hotel.city || hotel.location}</p>
+      
+      {/* Dynamic image check */}
+      <img 
+        src={Array.isArray(hotel.images) ? hotel.images[0] : (hotel.image || hotel.images)} 
+        alt={hotel.name}
+        style={{ width: "100%", borderRadius: "15px" }} 
+      />
+
       <h3>{hotel.description}</h3>
       <h2>Price: ₹{hotel.price}</h2>
       <button 
