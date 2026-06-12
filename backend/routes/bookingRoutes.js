@@ -13,12 +13,26 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 2️⃣ एंडpॉइंट: विशिष्ट यूजर की ईमेल के आधार पर बुकिंग्स खोजना (✨ NEW DYNAMIC FILTER)
+// 2️⃣ एंडपॉइंट: एडमिन के लिए बुकिंग स्टेटस अपडेट करने के लिए (✨ NEW STATUS UPDATE)
+router.put("/status/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    res.json({ message: "Status updated", booking: updatedBooking });
+  } catch (err) {
+    res.status(500).json({ error: "Update karne mein error: " + err.message });
+  }
+});
+
+// 3️⃣ एंडपॉइंट: विशिष्ट यूजर की ईमेल के आधार पर बुकिंग्स खोजना
 router.get("/user/:email", async (req, res) => {
   try {
     const userEmail = req.params.email;
     
-    // डेटाबेस में खोजना जहाँ 'email' या 'bookingData.email' यूजर की लॉगिन ईमेल से मैच करे
     const userBookings = await Booking.find({
       $or: [
         { email: userEmail },
@@ -34,7 +48,7 @@ router.get("/user/:email", async (req, res) => {
   }
 });
 
-// 3️⃣ एंडपॉइंट: सभी बुकिंग्स निकालना (एडमिन पैनल के लिए)
+// 4️⃣ एंडपॉइंट: सभी बुकिंग्स निकालना (एडमिन पैनल के लिए)
 router.get("/", async (req, res) => {
   try {
     const bookings = await Booking.find()

@@ -15,6 +15,11 @@ const bookingSchema = new mongoose.Schema(
     checkIn: String,
     packageType: String,
     notes: String,
+    // ✅ Naya field add kiya: Purane data par koi asar nahi padega
+    status: {
+      type: String,
+      default: "Pending", // Purani saari bookings automatically 'Pending' ho jayengi
+    },
   },
   { timestamps: true }
 );
