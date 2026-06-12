@@ -9,7 +9,6 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // Tumhara puraana database safe hai
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", price: 3500, description: "Luxury stay at Gangotri Hwy.", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", price: 1800, description: "Cozy home-like stay.", images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"] },
@@ -32,7 +31,7 @@ export default function HotelDetails() {
   useEffect(() => {
     if (localHotels[id]) {
       setHotel(localHotels[id]);
-    } else {
+    } else if (id && id.length === 24) { // MongoDB IDs are 24 chars
       axios.get(`${BACKEND_URL}/api/hotels/${id}`)
         .then((res) => setHotel(res.data))
         .catch((err) => console.error("Error fetching hotel:", err));
@@ -40,6 +39,7 @@ export default function HotelDetails() {
   }, [id]);
 
   const handlePayment = async (amount) => {
+    if (!hotel) return;
     try {
       const { data: orderData } = await axios.post(`${BACKEND_URL}/api/payment/create-order`, { amount });
       const options = {
@@ -66,7 +66,6 @@ export default function HotelDetails() {
     }
   };
 
-  // Safely render data
   if (!hotel) return <div>🏔️ Loading Details...</div>;
 
   return (
@@ -75,9 +74,8 @@ export default function HotelDetails() {
       <h1>{hotel.name}</h1>
       <p>📍 {hotel.city || hotel.location}</p>
       
-      {/* Dynamic image check */}
       <img 
-        src={Array.isArray(hotel.images) ? hotel.images[0] : (hotel.image || hotel.images)} 
+        src={Array.isArray(hotel.images) ? hotel.images[0] : (hotel.image || "")} 
         alt={hotel.name}
         style={{ width: "100%", borderRadius: "15px" }} 
       />
