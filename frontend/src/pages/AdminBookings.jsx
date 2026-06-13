@@ -19,11 +19,9 @@ export default function AdminBookings() {
     }
   };
 
-  // ✅ Status update function
   const updateStatus = async (id, newStatus) => {
     try {
       await axios.put(`${BACKEND_URL}/api/bookings/status/${id}`, { status: newStatus });
-      // Update local state to show change immediately
       setBookings(prev => prev.map(b => b._id === id ? { ...b, status: newStatus } : b));
     } catch (err) {
       alert("Error updating status!");
@@ -64,6 +62,22 @@ export default function AdminBookings() {
         <button onClick={downloadExcel} style={{ background: "#16a34a", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "6px", cursor: "pointer" }}>📥 Download Excel</button>
       </div>
 
+      {/* ✅ Summary Dashboard Cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "20px", marginBottom: "30px" }}>
+        <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", borderLeft: "5px solid #0f1e36", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
+          <h4 style={{ margin: "0", color: "#64748b" }}>Total Bookings</h4>
+          <p style={{ fontSize: "24px", fontWeight: "bold", margin: "5px 0 0" }}>{bookings.length}</p>
+        </div>
+        <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", borderLeft: "5px solid #f59e0b", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
+          <h4 style={{ margin: "0", color: "#64748b" }}>Pending</h4>
+          <p style={{ fontSize: "24px", fontWeight: "bold", margin: "5px 0 0" }}>{bookings.filter(b => !b.status || b.status === "Pending").length}</p>
+        </div>
+        <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", borderLeft: "5px solid #22c55e", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
+          <h4 style={{ margin: "0", color: "#64748b" }}>Confirmed</h4>
+          <p style={{ fontSize: "24px", fontWeight: "bold", margin: "5px 0 0" }}>{bookings.filter(b => b.status === "Confirmed").length}</p>
+        </div>
+      </div>
+
       <table style={{ width: "100%", background: "#fff", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ background: "#0f1e36", color: "#fff" }}>
@@ -80,12 +94,9 @@ export default function AdminBookings() {
               <td style={{ padding: "12px" }}>{new Date(b.createdAt).toLocaleDateString()}</td>
               <td style={{ padding: "12px" }}>{b.email || b.bookingData?.email}</td>
               <td style={{ padding: "12px" }}>{b.hotelName || b.bookingData?.hotelName || "Stay"}</td>
-              
-              {/* ✅ Status display (Purane data ke liye fallback 'Pending') */}
               <td style={{ padding: "12px", fontWeight: "bold", color: b.status === "Confirmed" ? "green" : "orange" }}>
                 {b.status || "Pending"}
               </td>
-
               <td style={{ padding: "12px" }}>
                 <button onClick={() => updateStatus(b._id, "Confirmed")} style={{ background: "#22c55e", color: "white", border: "none", padding: "4px 8px", cursor: "pointer" }}>✅ Confirm</button>
                 <button onClick={() => updateStatus(b._id, "Cancelled")} style={{ background: "#ef4444", color: "white", border: "none", padding: "4px 8px", cursor: "pointer", marginLeft: "5px" }}>❌ Cancel</button>
