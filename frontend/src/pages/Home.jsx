@@ -19,7 +19,6 @@ export default function Home() {
     { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" }
   ];
 
-  // City Filter Buttons Logic
   const cities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Badrinath"];
 
   return (
@@ -29,7 +28,6 @@ export default function Home() {
         <button className="search-btn" onClick={() => navigate("/hotels")}>SEARCH STAYS</button>
       </section>
 
-      {/* NEW: City Filter Section */}
       <div style={{ display: "flex", gap: "10px", justifyContent: "center", margin: "30px 0", flexWrap: "wrap" }}>
         {cities.map(city => (
           <button 
@@ -48,10 +46,16 @@ export default function Home() {
       <div className="home-content">
         <section className="section">
           <h2>Uttarakhand Tourism</h2>
-          <div className="horizontal-scroll-container">
+          <div className="horizontal-scroll-container" style={{ display: "flex", gap: "20px", overflowX: "auto", padding: "10px" }}>
             {uttarakhandExperiences.map((ex, i) => (
-              <div key={i} className="scroll-item" onClick={() => navigate("/hotels")}>
-                <img src={ex.img} alt={ex.n} style={{ width: "200px", height: "150px", objectFit: "cover", display: "block" }} />
+              <div key={i} className="scroll-item" onClick={() => navigate("/hotels")} style={{ cursor: "pointer", flexShrink: 0 }}>
+                {/* ✅ इमेज फिक्स: CSS के साथ और Error Handling */}
+                <img 
+                  src={ex.img} 
+                  alt={ex.n} 
+                  style={{ width: "200px", height: "150px", objectFit: "cover", borderRadius: "8px", background: "#f0f0f0" }} 
+                  onError={(e) => e.target.src = "https://via.placeholder.com/200x150?text=No+Image"} 
+                />
                 <h3>{ex.n}</h3>
               </div>
             ))}
@@ -60,10 +64,15 @@ export default function Home() {
 
         <section className="section">
           <h2>Featured homes</h2>
-          <div className="home-grid">
+          <div className="home-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
             {featuredHomes.map((h, i) => (
-              <div key={i} className="home-card" onClick={() => navigate("/hotels")}>
-                <img src={h.img} alt={h.name} style={{ width: "300px", height: "200px", objectFit: "cover", display: "block" }} />
+              <div key={i} className="home-card" onClick={() => navigate("/hotels")} style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "8px", overflow: "hidden" }}>
+                <img 
+                  src={h.img} 
+                  alt={h.name} 
+                  style={{ width: "100%", height: "200px", objectFit: "cover", display: "block" }} 
+                  onError={(e) => e.target.src = "https://via.placeholder.com/300x200?text=No+Image"} 
+                />
                 <div className="card-info" style={{padding: "10px"}}>
                   <h3>{h.name}</h3>
                   <p>INR {h.price}</p>
