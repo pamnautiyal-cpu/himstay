@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import jsPDF from "jspdf"; // सुनिश्चित करें कि आपने npm install jspdf किया है
+import jsPDF from "jspdf"; // सुनिश्चित करें कि आपने 'npm install jspdf' किया है
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
@@ -12,18 +12,44 @@ export default function MyTrips() {
 
   const userEmail = localStorage.getItem("userEmail") || "customer@example.com";
 
-  // ✅ PDF टिकट डाउनलोड करने का फंक्शन
+  // ✅ अपडेटेड प्रोफेशनल ई-टिकट डाउनलोड फंक्शन
   const downloadTicket = (trip) => {
     const doc = new jsPDF();
-    doc.setFontSize(20);
-    doc.text("Booking Confirmation - The Himalayans", 20, 20);
+    
+    // 1. हेडर (Branding)
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.setTextColor(0, 108, 228); 
+    doc.text("THE HIMALAYANS", 20, 20);
+    
+    // 2. यूनिक बुकिंग ID
+    const bookingId = trip.paymentId ? trip.paymentId.slice(-8).toUpperCase() : "TH-" + Math.floor(1000 + Math.random() * 9000);
+    
+    // 3. टिकट बॉडी
+    doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
-    doc.text(`Hotel/Dest: ${trip.hotelName || "Stay"}`, 20, 40);
-    doc.text(`Price Paid: ₹${trip.amount || "N/A"}`, 20, 50);
-    doc.text(`Status: ${trip.status}`, 20, 60);
-    doc.text(`Payment ID: ${trip.paymentId || "N/A"}`, 20, 70);
-    doc.text("Thank you for choosing us for your Himalayan journey!", 20, 90);
-    doc.save(`${trip.hotelName || "Booking"}_Ticket.pdf`);
+    doc.setFont("helvetica", "normal");
+    
+    doc.text(`Booking ID: ${bookingId}`, 20, 40);
+    doc.text(`Date of Issue: ${new Date().toLocaleDateString()}`, 20, 50);
+    doc.line(20, 60, 190, 60); // सेपरेटर लाइन
+
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Booking Details:", 20, 75);
+    
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Destination: ${trip.hotelName || "Stay"}`, 20, 90);
+    doc.text(`Amount Paid: ₹${trip.amount || "N/A"}`, 20, 100);
+    doc.text(`Status: ${trip.status}`, 20, 110);
+    doc.text(`Payment Ref: ${trip.paymentId || "N/A"}`, 20, 120);
+
+    doc.setFontSize(10);
+    doc.text("Thank you for choosing The Himalayans for your Himalayan journey!", 20, 150);
+    doc.text("For support, contact us at: support@thehimalayans.in", 20, 160);
+
+    doc.save(`Ticket_${bookingId}.pdf`);
   };
 
   useEffect(() => {
