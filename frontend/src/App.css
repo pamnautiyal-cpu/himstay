@@ -11,8 +11,8 @@
 .hotel-card img {
   display: block !important;
   width: 100% !important;
-  height: 100% !important; /* ✅ यह इमेज को कंटेनर के अंदर पूरा खींच देगा */
-  object-fit: cover !important;
+  height: 100% !important;
+  object-fit: cover !important; /* ✅ इमेज कटेगी नहीं, फिट हो जाएगी */
   background-color: #f0f0f0;
 }
 
@@ -21,57 +21,73 @@
   display: flex !important;
   overflow-x: auto !important;
   gap: 20px !important;
-  padding: 20px !important;
-  justify-content: flex-start !important; /* ✅ बेहतर अलाइनमेंट के लिए */
+  padding: 20px 0 !important;
+  scrollbar-width: thin; /* ✅ साफ़ सुथरा स्क्रॉल बार */
 }
 
 .scroll-item {
-  width: 200px !important; /* ✅ Width फिक्स की */
-  min-width: 200px !important; /* ✅ ताकि कार्ड सिकुड़ें नहीं */
+  width: 200px !important;
+  min-width: 200px !important;
   cursor: pointer;
   text-align: center;
+  transition: transform 0.2s;
+}
+
+.scroll-item:hover {
+  transform: scale(1.03);
 }
 
 .scroll-item img {
   height: 150px !important;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /* --- GRIDS --- */
 .home-grid, 
 .hotel-grid-container {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; /* ✅ फ्लेक्सिबल ग्रिड */
-  gap: 25px !important;
-  justify-items: center; /* ✅ सेंटरिंग के लिए */
-  margin: 30px auto !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 30px !important;
+  margin: 40px auto !important;
 }
 
-/* --- CARDS --- */
+/* --- CARDS (प्रोफेशनल शैडो और ट्रांजिशन) --- */
 .home-card, 
 .hotel-card {
-  width: 100% !important; /* ✅ ग्रिड के हिसाब से रिस्पॉन्सिव */
-  max-width: 300px !important;
+  width: 100% !important;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 16px; /* ✅ थोड़े और गोल कोने */
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
 }
 
 .home-card:hover, 
 .hotel-card:hover { 
-  transform: translateY(-5px); 
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+  transform: translateY(-8px); 
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12); /* ✅ गहरा शैडो इफेक्ट */
 }
 
 .home-card img, 
 .hotel-card img {
-  height: 200px !important;
+  height: 220px !important;
 }
 
 .card-info, 
 .hotel-info { 
-  padding: 16px;  
+  padding: 20px;  
   text-align: left;
+}
+
+.card-info h3, .hotel-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.price-tag {
+  color: #059669;
+  font-weight: 700;
+  font-size: 1rem;
 }

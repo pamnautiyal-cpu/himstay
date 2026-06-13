@@ -6,6 +6,12 @@ export default function Footer() {
     <footer style={{ background: "#f8fafc", borderTop: "1px solid #e2e8f0", padding: "40px 20px 20px", fontFamily: "sans-serif" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         
+        {/* ✅ Brand Section */}
+        <div style={{ marginBottom: "40px", textAlign: "left" }}>
+          <h2 style={{ fontSize: "20px", color: "#006ce4", margin: "0 0 10px 0" }}>The Himalayans</h2>
+          <p style={{ fontSize: "14px", color: "#64748b", margin: 0 }}>Authentic experiences, crafted for the mountains.</p>
+        </div>
+        
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px", marginBottom: "40px" }}>
           
           <div>
@@ -32,11 +38,11 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* ✅ About as a link */}
           <div>
             <h4 style={columnTitleStyle}>About</h4>
             <ul style={ulStyle}>
               <li><Link to="/about" style={linkStyle}>About The Himalayans</Link></li>
+              <li><Link to="/terms" style={linkStyle}>Terms & Privacy</Link></li>
             </ul>
           </div>
         </div>
@@ -44,7 +50,7 @@ export default function Footer() {
         <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "20px", display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#475569" }}>
           <div>© {new Date().getFullYear()} The Himalayans · All rights reserved.</div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span>🇮🇳 INR (₹)</span>
+            <span>🇮🇳 India (INR ₹)</span>
           </div>
         </div>
       </div>
