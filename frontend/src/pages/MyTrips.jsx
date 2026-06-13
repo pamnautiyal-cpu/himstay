@@ -13,9 +13,28 @@ export default function MyTrips() {
 
   useEffect(() => {
     setLoading(true);
+    
+    // 1. API से डेटा लाएं
     axios.get(`${BACKEND_URL}/api/bookings/user/${userEmail}`)
       .then((res) => {
-        setBookings(res.data || []);
+        const apiBookings = res.data || [];
+        
+        // 2. LocalStorage से डेटा लाएं
+        const localBookings = JSON.parse(localStorage.getItem("myTrips") || "[]");
+        
+        // 3. दोनों को एक साथ जोड़ें (Old Data + New Data)
+        const combinedBookings = [
+          ...apiBookings, 
+          ...localBookings.map(b => ({ 
+            _id: Math.random().toString(), // लोकल बुकिंग के लिए ID
+            hotelName: b.id, 
+            status: "Confirmed (Local)", 
+            amount: "Paid", 
+            isLocal: true // यह पहचानने के लिए कि ये लोकल बुकिंग है
+          }))
+        ];
+        
+        setBookings(combinedBookings);
         setLoading(false);
       })
       .catch((err) => {
@@ -24,7 +43,7 @@ export default function MyTrips() {
       });
   }, [userEmail]);
 
-  if (loading) return <div style={{ padding: "80px", textAlign: "center" }}>🏔️ Loading journeys...</div>;
+  if (loading) return <div style={{ padding: "80px", textAlign: "center" }}>🏔️ Loading your journeys...</div>;
 
   return (
     <div style={{ background: "#f8fafc", minHeight: "100vh", padding: "40px 20px" }}>
@@ -39,20 +58,17 @@ export default function MyTrips() {
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {bookings.map((trip) => (
               <div key={trip._id} style={{ background: "#fff", borderRadius: "12px", padding: "24px", position: "relative", border: "1px solid #e2e8f0" }}>
-                
-                {/* Dynamic Status Badge */}
                 <span style={{ 
                   position: "absolute", top: "24px", right: "24px", 
-                  background: trip.status === "Confirmed" ? "#f0fdf4" : trip.status === "Cancelled" ? "#fef2f2" : "#fff7ed", 
-                  color: trip.status === "Confirmed" ? "#16a34a" : trip.status === "Cancelled" ? "#dc2626" : "#d97706", 
-                  fontSize: "12px", fontWeight: "700", padding: "4px 10px", borderRadius: "20px",
-                  border: `1px solid ${trip.status === "Confirmed" ? "#bbf7d0" : trip.status === "Cancelled" ? "#fecaca" : "#fed7aa"}` 
+                  background: trip.status.includes("Confirmed") ? "#f0fdf4" : "#fef2f2", 
+                  color: trip.status.includes("Confirmed") ? "#16a34a" : "#dc2626", 
+                  fontSize: "12px", fontWeight: "700", padding: "4px 10px", borderRadius: "20px"
                 }}>
-                  ● {trip.status || "Pending"}
+                  ● {trip.status}
                 </span>
-
                 <h3>{trip.hotelName || trip.bookingData?.hotelName || "Stay"}</h3>
-                <p><strong>Price:</strong> ₹{trip.amount || trip.bookingData?.amount}</p>
+                <p><strong>Price:</strong> ₹{trip.amount || trip.bookingData?.amount || "N/A"}</p>
+                {trip.isLocal && <small style={{color: '#666'}}>* Booking saved on this device</small>}
               </div>
             ))}
           </div>
