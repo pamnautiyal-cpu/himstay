@@ -14,7 +14,6 @@ export default function Home() {
     { n: "Rishikesh", img: "/images/destinations/rishikesh.jpg" }
   ];
 
-  // ✅ नए डेटा सेक्शन्स
   const yogaExperiences = [
     { n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" },
     { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
@@ -35,13 +34,18 @@ export default function Home() {
   const fallbackImg = "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400";
   const cities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Badrinath"];
 
-  // ✅ रीयुजेबल सेक्शन कॉम्पोनेंट (ताकि बार-बार कोड न लिखना पड़े)
-  const renderScrollSection = (title, data) => (
+  // ✅ अपडेटेड फंक्शन: अब 'category' पैरामीटर के साथ डायनामिक लिंक बनाता है
+  const renderScrollSection = (title, data, category) => (
     <section className="section">
       <h2>{title}</h2>
       <div className="horizontal-scroll-container" style={{ display: "flex", gap: "20px", overflowX: "auto", padding: "10px" }}>
         {data.map((item, i) => (
-          <div key={i} className="scroll-item" onClick={() => navigate("/hotels")} style={{ cursor: "pointer", flexShrink: 0 }}>
+          <div 
+            key={i} 
+            className="scroll-item" 
+            onClick={() => navigate(`/details/${category}/${item.n || item.name}`)} 
+            style={{ cursor: "pointer", flexShrink: 0 }}
+          >
             <img 
               src={item.img} 
               alt={item.n || item.name} 
@@ -71,15 +75,16 @@ export default function Home() {
       </div>
 
       <div className="home-content">
-        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences)}
-        {renderScrollSection("Yoga & Wellness", yogaExperiences)}
-        {renderScrollSection("Popular Treks", trekExperiences)}
+        {/* ✅ यहाँ हमने कैटेगरी पास कर दी है */}
+        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
+        {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
+        {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
         <section className="section">
           <h2>Featured homes</h2>
           <div className="home-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
             {featuredHomes.map((h, i) => (
-              <div key={i} className="home-card" onClick={() => navigate("/hotels")} style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "8px", overflow: "hidden" }}>
+              <div key={i} className="home-card" onClick={() => navigate(`/details/hotel/${h.name}`)} style={{ cursor: "pointer", border: "1px solid #ddd", borderRadius: "8px", overflow: "hidden" }}>
                 <img src={h.img} alt={h.name} style={{ width: "100%", height: "200px", objectFit: "cover", display: "block" }} onError={(e) => e.target.src = fallbackImg} />
                 <div className="card-info" style={{padding: "10px"}}>
                   <h3>{h.name}</h3>
