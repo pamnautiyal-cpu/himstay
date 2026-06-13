@@ -19,6 +19,9 @@ export default function Home() {
     { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" }
   ];
 
+  // यह एक भरोसेमंद Fallback इमेज लिंक है
+  const fallbackImg = "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400";
+
   const cities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Badrinath"];
 
   return (
@@ -49,12 +52,11 @@ export default function Home() {
           <div className="horizontal-scroll-container" style={{ display: "flex", gap: "20px", overflowX: "auto", padding: "10px" }}>
             {uttarakhandExperiences.map((ex, i) => (
               <div key={i} className="scroll-item" onClick={() => navigate("/hotels")} style={{ cursor: "pointer", flexShrink: 0 }}>
-                {/* ✅ इमेज फिक्स: CSS के साथ और Error Handling */}
                 <img 
                   src={ex.img} 
                   alt={ex.n} 
-                  style={{ width: "200px", height: "150px", objectFit: "cover", borderRadius: "8px", background: "#f0f0f0" }} 
-                  onError={(e) => e.target.src = "https://via.placeholder.com/200x150?text=No+Image"} 
+                  style={{ width: "200px", height: "150px", objectFit: "cover", borderRadius: "8px", background: "#eee" }} 
+                  onError={(e) => e.target.src = fallbackImg} 
                 />
                 <h3>{ex.n}</h3>
               </div>
@@ -71,7 +73,7 @@ export default function Home() {
                   src={h.img} 
                   alt={h.name} 
                   style={{ width: "100%", height: "200px", objectFit: "cover", display: "block" }} 
-                  onError={(e) => e.target.src = "https://via.placeholder.com/300x200?text=No+Image"} 
+                  onError={(e) => e.target.src = fallbackImg} 
                 />
                 <div className="card-info" style={{padding: "10px"}}>
                   <h3>{h.name}</h3>
