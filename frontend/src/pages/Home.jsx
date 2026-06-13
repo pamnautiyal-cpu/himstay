@@ -36,26 +36,14 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* 1. PREMIUM HERO SECTION WITH HIMALAYAN BACKGROUND */}
+      {/* 1. PREMIUM HERO SECTION */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1626618012640-6723444569d5?q=80&w=2000')", 
-        height: "500px", 
-        backgroundSize: "cover", 
-        backgroundPosition: "center",
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "center", 
-        alignItems: "center",
-        color: "white", 
-        textAlign: "center", 
-        borderRadius: "20px", 
-        marginBottom: "60px",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
+        height: "500px", backgroundSize: "cover", backgroundPosition: "center",
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+        color: "white", textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
-        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
-          Find your next escape
-        </h1>
-        
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>Find your next escape</h1>
         <div style={{ background: "white", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
           <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
           <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
@@ -88,6 +76,28 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* ✅ STYLISH TRUST SECTION (Added) */}
+        <section className="trust-section">
+          <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
+          <div className="trust-grid">
+            <div className="trust-card">
+              <h2>100+</h2>
+              <h3>Verified Stays</h3>
+              <p>From luxury resorts to hidden homestays, we've got you covered.</p>
+            </div>
+            <div className="trust-card">
+              <h2>10k+</h2>
+              <h3>Happy Travelers</h3>
+              <p>Join our growing community exploring the Himalayas.</p>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="small-feature"><strong>Save more</strong><br/>Get exclusive member discounts.</div>
+              <div className="small-feature"><strong>Experience more</strong><br/>Handpicked local tours.</div>
+              <div className="small-feature"><strong>Always easy</strong><br/>Book entirely on your phone.</div>
+            </div>
           </div>
         </section>
       </div>
