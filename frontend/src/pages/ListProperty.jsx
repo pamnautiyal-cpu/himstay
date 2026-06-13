@@ -10,26 +10,41 @@ export default function ListProperty() {
     phone: "", roomType: "", guests: "2", view: "", description: ""
   });
   
-  // ✅ State ko array mein change kiya
+  // ✅ फाइल्स को array की तरह मैनेज करने के लिए
   const [files, setFiles] = useState([]); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ नई फाइल्स को पुरानी लिस्ट में जोड़ने के लिए
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      setFiles((prev) => [...prev, ...newFiles]);
+    }
+  };
+
+  // ✅ किसी फाइल को लिस्ट से हटाने के लिए
+  const removeFile = (index) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (files.length === 0) return alert("कम से कम एक इमेज ज़रूर चुनें!");
+    
     setLoading(true);
-
     const data = new FormData();
+    
     for (let key in formData) {
       data.append(key, formData[key]);
     }
     
-    // ✅ Files ko loop karke append kiya
-    for (let i = 0; i < files.length; i++) {
-      data.append("images", files[i]);
-    }
+    // ✅ सभी चुनी हुई फाइल्स को API में भेजने के लिए
+    files.forEach((file) => {
+      data.append("images", file);
+    });
 
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
@@ -64,18 +79,26 @@ export default function ListProperty() {
         <input name="location" placeholder="Full Address *" required onChange={handleChange} style={inputStyle} />
         <input name="phone" placeholder="Contact Number *" required onChange={handleChange} style={inputStyle} />
         
-        {/* ✅ multiple attribute add kiya aur setFiles(e.target.files) kiya */}
         <label style={{ fontSize: "14px", fontWeight: "600" }}>Upload Multiple Images *</label>
         <input 
           type="file" 
           name="images" 
           accept="image/*" 
           multiple 
-          required 
-          onChange={(e) => setFiles(e.target.files)} 
+          onChange={handleFileChange} 
           style={inputStyle} 
         />
         
+        {/* ✅ फाइल लिस्ट का प्रिव्यू सेक्शन */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "5px" }}>
+          {files.map((file, index) => (
+            <div key={index} style={{ padding: "5px 10px", background: "#e2e8f0", borderRadius: "15px", fontSize: "12px", display: "flex", alignItems: "center", gap: "5px" }}>
+              {file.name.substring(0, 15)}...
+              <span onClick={() => removeFile(index)} style={{ cursor: "pointer", color: "red", fontWeight: "bold" }}>x</span>
+            </div>
+          ))}
+        </div>
+
         <textarea name="description" placeholder="Short description..." onChange={handleChange} style={{...inputStyle, height: "80px"}}></textarea>
         
         <button type="submit" style={btnStyle} disabled={loading}>
