@@ -37,16 +37,13 @@ export default function AdminBookings() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // डेटा लोड करने का फंक्शन
       const fetchData = () => {
         axios.get(`${BACKEND_URL}/api/bookings`)
           .then((res) => setBookings(res.data))
           .catch((err) => console.error("Admin error:", err));
       };
 
-      fetchData(); // पहली बार कॉल
-
-      // ✅ Auto-Refresh: हर 30 सेकंड में नया डेटा चेक करें
+      fetchData();
       const interval = setInterval(fetchData, 30000); 
       return () => clearInterval(interval); 
     }
@@ -71,7 +68,7 @@ export default function AdminBookings() {
         <button onClick={downloadExcel} style={{ background: "#16a34a", color: "#fff", padding: "10px 20px", border: "none", borderRadius: "6px", cursor: "pointer" }}>📥 Download Excel</button>
       </div>
 
-      {/* ✅ Summary Dashboard Cards */}
+      {/* ✅ Updated Summary Dashboard Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "20px", marginBottom: "30px" }}>
         <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", borderLeft: "5px solid #0f1e36", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
           <h4 style={{ margin: "0", color: "#64748b" }}>Total Bookings</h4>
@@ -84,6 +81,11 @@ export default function AdminBookings() {
         <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", borderLeft: "5px solid #22c55e", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
           <h4 style={{ margin: "0", color: "#64748b" }}>Confirmed</h4>
           <p style={{ fontSize: "24px", fontWeight: "bold", margin: "5px 0 0" }}>{bookings.filter(b => b.status === "Confirmed").length}</p>
+        </div>
+        {/* ✅ Added Cancelled Card */}
+        <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", borderLeft: "5px solid #ef4444", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
+          <h4 style={{ margin: "0", color: "#64748b" }}>Cancelled</h4>
+          <p style={{ fontSize: "24px", fontWeight: "bold", margin: "5px 0 0" }}>{bookings.filter(b => b.status === "Cancelled").length}</p>
         </div>
       </div>
 
@@ -103,7 +105,7 @@ export default function AdminBookings() {
               <td style={{ padding: "12px" }}>{new Date(b.createdAt).toLocaleDateString()}</td>
               <td style={{ padding: "12px" }}>{b.email || b.bookingData?.email}</td>
               <td style={{ padding: "12px" }}>{b.hotelName || b.bookingData?.hotelName || "Stay"}</td>
-              <td style={{ padding: "12px", fontWeight: "bold", color: b.status === "Confirmed" ? "green" : "orange" }}>
+              <td style={{ padding: "12px", fontWeight: "bold", color: b.status === "Confirmed" ? "green" : b.status === "Cancelled" ? "red" : "orange" }}>
                 {b.status || "Pending"}
               </td>
               <td style={{ padding: "12px" }}>
