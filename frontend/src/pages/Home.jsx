@@ -5,13 +5,14 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
 
+  // ✅ लोकल इमेजेस पाथ के साथ अपडेटेड लिस्ट
   const uttarakhandExperiences = [
-    { n: "Kedarnath", img: "https://images.unsplash.com/photo-1595878095967-048c1e8473ba?w=400" },
-    { n: "Badrinath", img: "https://images.unsplash.com/photo-1626622432923-a53d6118b1a5?w=400" },
-    { n: "Gangotri", img: "https://images.unsplash.com/photo-1593361655071-700683416173?w=400" },
-    { n: "Yamunotri", img: "https://images.unsplash.com/photo-1579762715118-a6f9d4b68426?w=400" },
-    { n: "Haridwar", img: "https://images.unsplash.com/photo-1561361513-3d0a095003d8?w=400" },
-    { n: "Rishikesh", img: "https://images.unsplash.com/photo-1583099958315-e23a4b6736d7?w=400" }
+    { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
+    { n: "Badrinath", img: "/images/chardham/badrinath.jpg" },
+    { n: "Gangotri", img: "/images/chardham/gangotri.jpg" },
+    { n: "Yamunotri", img: "/images/chardham/yamunotri.jpg" },
+    { n: "Haridwar", img: "/images/destinations/haridwar.jpg" },
+    { n: "Rishikesh", img: "/images/destinations/rishikesh.jpg" }
   ];
 
   const featuredHomes = [
@@ -19,9 +20,7 @@ export default function Home() {
     { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" }
   ];
 
-  // यह एक भरोसेमंद Fallback इमेज लिंक है
   const fallbackImg = "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400";
-
   const cities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Badrinath"];
 
   return (
