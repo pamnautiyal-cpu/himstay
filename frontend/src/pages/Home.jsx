@@ -36,18 +36,28 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* 1. PREMIUM HERO SECTION WITH SEARCH & FILTER UI */}
+      {/* 1. PREMIUM HERO SECTION WITH HIMALAYAN BACKGROUND */}
       <section style={{ 
-        backgroundImage: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1544735716-397428fc071e?q=80&w=2000')", 
-        height: "450px", backgroundSize: "cover", backgroundPosition: "center",
-        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
-        color: "white", textAlign: "center", borderRadius: "20px", marginBottom: "60px" 
+        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1626618012640-6723444569d5?q=80&w=2000')", 
+        height: "500px", 
+        backgroundSize: "cover", 
+        backgroundPosition: "center",
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center", 
+        alignItems: "center",
+        color: "white", 
+        textAlign: "center", 
+        borderRadius: "20px", 
+        marginBottom: "60px",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
-        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800" }}>Find your next escape</h1>
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
+          Find your next escape
+        </h1>
         
-        {/* ✅ Search Bar with Dropdown Filter UI */}
         <div style={{ background: "white", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
-          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#000" }} />
+          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
           <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
             <option value="All">All Cities</option>
             <option value="Rishikesh">Rishikesh</option>
@@ -58,13 +68,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. CONSISTENT GRIDS WRAPPER */}
+      {/* 2. CONTENT SECTIONS */}
       <div className="home-content">
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
-        {/* ✅ RE-WRAPPED FEATURED HOMES GRID */}
         <section className="section-wrapper">
           <h2 className="section-title">Featured Homes</h2>
           <div className="home-grid">
