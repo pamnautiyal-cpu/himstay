@@ -9,14 +9,14 @@ export default function Contact() {
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "15px", textAlign: "left", background: "#fff", padding: "25px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
-        <p><strong>📍 Address:</strong> Main Market Road, Uttarkashi, Uttarakhand, 249193</p>
-        <p><strong>📞 Phone:</strong> +91 94101 XXXXX</p>
-        <p><strong>✉️ Email:</strong> support@thehimalayans.com</p>
+        <p><strong>📍 Address:</strong> Main Market, Uttarkashi, Uttarakhand, 249193</p>
+        <p><strong>📞 Phone:</strong> +91 9410106470</p>
+        <p><strong>✉️ Email:</strong> infothehimalayans@gmail.com</p>
         <p><strong>⏰ Working Hours:</strong> 9:00 AM - 7:00 PM</p>
       </div>
       
       <div style={{ marginTop: "30px" }}>
-        <button onClick={() => window.location.href='mailto:support@thehimalayans.com'} style={btnStyle}>
+        <button onClick={() => window.location.href='mailto:infothehimalayans@gmail.com'} style={btnStyle}>
           Send us an Email
         </button>
       </div>
