@@ -10,7 +10,6 @@ export default function HotelDetails() {
   const [hotel, setHotel] = useState(null);
 
   const localHotels = {
-    // ... (आपका पुराना 16 होटल्स वाला डेटा यहाँ पहले जैसा ही रहेगा)
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri.", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay.", images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
     "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range", description: "Best hygiene stay.", images: ["https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Attached Bath", "Hygienic"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Space", "TV"] }] },
@@ -69,45 +68,47 @@ export default function HotelDetails() {
       <img src={hotel.images[0]} alt={hotel.name} style={{ width: "100%", borderRadius: "15px" }} />
       <p style={{ fontSize: "18px", marginTop: "20px" }}>{hotel.description}</p>
 
-      {/* एड्रेस और फैसिलिटी सेक्शन */}
-      <div style={{ border: "1px solid #e2e8f0", padding: "20px", borderRadius: "12px", marginTop: "20px", display: "flex", gap: "20px" }}>
-        <span>📍 {hotel.location}</span>
-        <span style={{ marginLeft: "auto" }}>✉️ info@himalayans.com</span>
-      </div>
-
+      {/* Facilities */}
       <div style={{ border: "1px solid #e2e8f0", padding: "20px", borderRadius: "12px", marginTop: "20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
         <div><h3>Facilities:</h3><p>Food, Parking, Drinking Water, Hot Water, CCTV, Attached Toilet.</p></div>
-        <div style={{ borderLeft: "1px solid #e2e8f0", paddingLeft: "20px" }}>
-          <strong>Check-in: 12:00 PM</strong> | <strong>Check-Out: 11:00 AM</strong>
-        </div>
+        <div><h3>Check-in:</h3><p>12:00 PM | Check-Out: 11:00 AM</p></div>
       </div>
 
-      {/* YatraDham स्टाइल टेबल लेआउट */}
+      {/* Rooms Table */}
       <div className="room-options" style={{ marginTop: "40px" }}>
         <h3>Hotel Rooms</h3>
-        <div style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
-          {hotel.rooms?.map((room, index) => (
-            <div key={index} style={{ 
-              display: "grid", gridTemplateColumns: "1.5fr 2fr 1fr 1fr", alignItems: "center", 
-              borderBottom: "1px solid #eee", padding: "15px", background: "#fff", 
-              borderRadius: "8px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" 
-            }}>
-              <div><h4 style={{ margin: 0 }}>{room.type}</h4></div>
-              <ul style={{ fontSize: "13px", color: "#555", margin: 0, paddingLeft: "15px" }}>
-                {room.inclusions?.map((inc, i) => <li key={i}>{inc}</li>)}
-              </ul>
-              <div><p style={{ fontWeight: "bold", fontSize: "1.1rem", margin: 0 }}>₹{room.price}</p></div>
-              <button onClick={() => handlePayment(room.price)} style={{ padding: "10px", background: "#f97316", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-                Book this Room
-              </button>
+        {hotel.rooms?.map((room, index) => (
+            <div key={index} style={{ display: "grid", gridTemplateColumns: "1.5fr 2fr 1fr 1fr", alignItems: "center", borderBottom: "1px solid #eee", padding: "15px" }}>
+              <h4>{room.type}</h4>
+              <ul style={{ fontSize: "13px" }}>{room.inclusions?.map((inc, i) => <li key={i}>{inc}</li>)}</ul>
+              <p>₹{room.price}</p>
+              <button onClick={() => handlePayment(room.price)} style={{ background: "#f97316", color: "#fff", padding: "10px", border: "none" }}>Book Now</button>
             </div>
-          )) || <p>Contact for booking: ₹{hotel.price}</p>}
-        </div>
+        ))}
       </div>
 
-      {/* ✅ Terms & Conditions Link */}
-      <div style={{ marginTop: "40px", padding: "20px", border: "1px solid #ddd", borderRadius: "8px" }}>
-        <p>By booking, you agree to our <a href="/terms" target="_blank" style={{ color: "#006ce4", fontWeight: "bold" }}>Terms & Conditions</a>.</p>
+      {/* Terms & Conditions (Embedded) */}
+      <div style={{ marginTop: "40px", padding: "20px", background: "#f8fafc", borderRadius: "10px" }}>
+        <h3>Terms & Conditions</h3>
+        <ol style={{ fontSize: "12px", color: "#444" }}>
+          <li>According to government rules, all guests must bring a valid government ID proof at the time of check-in. Guests are not allowed under the age of 18.</li>
+          <li>Guest cannot bring any illegal things at the accommodation.</li>
+          <li>Room capacity limit is strictly followed.</li>
+          <li>Check-in: 12:00 PM, Check-out: 11:00 AM. No early check-in/late check-out allowed.</li>
+          <li>Pay at check-in guests must arrive before 3:00 PM.</li>
+          <li>Certain religious properties only for specific Yatris.</li>
+          <li>Selected properties have no refund policy.</li>
+          <li>Food choices are limited; fixed North Indian vegetarian meals.</li>
+          <li>Basic facilities only; be prepared for power outages.</li>
+          <li>No refunds for natural disasters, weather, or travel issues.</li>
+          <li>Management is not responsible for loss/theft of items.</li>
+          <li>No pets, outside food, alcohol, or non-veg allowed.</li>
+          <li><strong>Security:</strong> Management is not liable for theft of cash/valuables.</li>
+          <li><strong>Conduct:</strong> Misbehavior leads to immediate eviction without refund.</li>
+          <li><strong>Data Privacy:</strong> Info used only for booking.</li>
+          <li><strong>Technical Errors:</strong> Management can modify/cancel bookings due to errors.</li>
+          <li>Any dispute subject to Bhavnagar (Gujarat) jurisdiction.</li>
+        </ol>
       </div>
     </div>
   );
