@@ -13,6 +13,7 @@ import MyTrips from "./pages/MyTrips";
 import ListProperty from "./pages/ListProperty";
 import AdminBookings from "./pages/AdminBookings";
 import Terms from "./pages/Terms";
+import Blogs from "./pages/Blogs"; // ✅ नया इम्पोर्ट
 import "./App.css";
 
 export default function App() {
@@ -35,10 +36,10 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/list-property" element={<ListProperty />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/blogs" element={<Blogs />} /> {/* ✅ नया रूट जोड़ा गया */}
           <Route path="/admin/bookings" element={<AdminBookings />} />
         </Routes>
       </Layout>
-      {/* Footer यहाँ से हटा दिया गया है */}
     </HelmetProvider>
   );
 }
