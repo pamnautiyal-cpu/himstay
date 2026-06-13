@@ -10,14 +10,12 @@ export default function ListProperty() {
     phone: "", roomType: "", guests: "2", view: "", description: ""
   });
   
-  // ✅ फाइल्स को array की तरह मैनेज करने के लिए
   const [files, setFiles] = useState([]); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ नई फाइल्स को पुरानी लिस्ट में जोड़ने के लिए
   const handleFileChange = (e) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
@@ -25,14 +23,13 @@ export default function ListProperty() {
     }
   };
 
-  // ✅ किसी फाइल को लिस्ट से हटाने के लिए
   const removeFile = (index) => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (files.length === 0) return alert("कम से कम एक इमेज ज़रूर चुनें!");
+    if (files.length === 0) return alert("कम से कम एक इमेज ज़रूर चुनें!");
     
     setLoading(true);
     const data = new FormData();
@@ -41,7 +38,6 @@ export default function ListProperty() {
       data.append(key, formData[key]);
     }
     
-    // ✅ सभी चुनी हुई फाइल्स को API में भेजने के लिए
     files.forEach((file) => {
       data.append("images", file);
     });
@@ -89,7 +85,6 @@ export default function ListProperty() {
           style={inputStyle} 
         />
         
-        {/* ✅ फाइल लिस्ट का प्रिव्यू सेक्शन */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "5px" }}>
           {files.map((file, index) => (
             <div key={index} style={{ padding: "5px 10px", background: "#e2e8f0", borderRadius: "15px", fontSize: "12px", display: "flex", alignItems: "center", gap: "5px" }}>
@@ -100,6 +95,14 @@ export default function ListProperty() {
         </div>
 
         <textarea name="description" placeholder="Short description..." onChange={handleChange} style={{...inputStyle, height: "80px"}}></textarea>
+        
+        {/* ✅ Terms & Conditions Checkbox */}
+        <div style={{ fontSize: "13px", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px" }}>
+          <input type="checkbox" required style={{ marginTop: "3px" }} />
+          <span>
+            I agree to the Terms & Conditions and confirm that all property information and images are verified and owned by me.
+          </span>
+        </div>
         
         <button type="submit" style={btnStyle} disabled={loading}>
           {loading ? "Uploading..." : "Complete Listing"}
