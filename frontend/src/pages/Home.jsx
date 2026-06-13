@@ -5,7 +5,6 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
 
-  // ... (Data arrays remain same) ...
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
     { n: "Badrinath", img: "/images/chardham/badrinath.jpg" },
@@ -37,7 +36,7 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* 1. PREMIUM HERO SECTION */}
+      {/* 1. PREMIUM HERO SECTION WITH SEARCH & FILTER UI */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1544735716-397428fc071e?q=80&w=2000')", 
         height: "450px", backgroundSize: "cover", backgroundPosition: "center",
@@ -45,18 +44,27 @@ export default function Home() {
         color: "white", textAlign: "center", borderRadius: "20px", marginBottom: "60px" 
       }}>
         <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800" }}>Find your next escape</h1>
+        
+        {/* ✅ Search Bar with Dropdown Filter UI */}
         <div style={{ background: "white", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
-          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none" }} />
+          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#000" }} />
+          <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
+            <option value="All">All Cities</option>
+            <option value="Rishikesh">Rishikesh</option>
+            <option value="Uttarkashi">Uttarkashi</option>
+            <option value="Haridwar">Haridwar</option>
+          </select>
           <button onClick={() => navigate("/hotels")} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
         </div>
       </section>
 
-      {/* 2. CONSISTENT GRIDS */}
+      {/* 2. CONSISTENT GRIDS WRAPPER */}
       <div className="home-content">
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
+        {/* ✅ RE-WRAPPED FEATURED HOMES GRID */}
         <section className="section-wrapper">
           <h2 className="section-title">Featured Homes</h2>
           <div className="home-grid">
@@ -65,7 +73,9 @@ export default function Home() {
                 <img src={h.img} alt={h.name} className="consistent-card-img" />
                 <div className="card-info">
                   <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
-                  <p style={{ color: "#059669", fontWeight: "bold" }}>{h.price === "0,000" ? "Price on Request" : `INR ${h.price}`}</p>
+                  <p style={{ color: "#059669", fontWeight: "bold" }}>
+                    {h.price === "0,000" ? "Price on Request" : `INR ${h.price}`}
+                  </p>
                 </div>
               </div>
             ))}
