@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import jsPDF from "jspdf"; // सुनिश्चित करें कि आपने npm install jspdf किया है
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
@@ -11,26 +12,36 @@ export default function MyTrips() {
 
   const userEmail = localStorage.getItem("userEmail") || "customer@example.com";
 
+  // ✅ PDF टिकट डाउनलोड करने का फंक्शन
+  const downloadTicket = (trip) => {
+    const doc = new jsPDF();
+    doc.setFontSize(20);
+    doc.text("Booking Confirmation - The Himalayans", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Hotel/Dest: ${trip.hotelName || "Stay"}`, 20, 40);
+    doc.text(`Price Paid: ₹${trip.amount || "N/A"}`, 20, 50);
+    doc.text(`Status: ${trip.status}`, 20, 60);
+    doc.text(`Payment ID: ${trip.paymentId || "N/A"}`, 20, 70);
+    doc.text("Thank you for choosing us for your Himalayan journey!", 20, 90);
+    doc.save(`${trip.hotelName || "Booking"}_Ticket.pdf`);
+  };
+
   useEffect(() => {
     setLoading(true);
-    
-    // 1. API से डेटा लाएं
     axios.get(`${BACKEND_URL}/api/bookings/user/${userEmail}`)
       .then((res) => {
         const apiBookings = res.data || [];
-        
-        // 2. LocalStorage से डेटा लाएं
         const localBookings = JSON.parse(localStorage.getItem("myTrips") || "[]");
         
-        // 3. दोनों को एक साथ जोड़ें (Old Data + New Data)
         const combinedBookings = [
           ...apiBookings, 
           ...localBookings.map(b => ({ 
-            _id: Math.random().toString(), // लोकल बुकिंग के लिए ID
+            _id: Math.random().toString(), 
             hotelName: b.id, 
             status: "Confirmed (Local)", 
-            amount: "Paid", 
-            isLocal: true // यह पहचानने के लिए कि ये लोकल बुकिंग है
+            amount: b.amount || "Paid", 
+            paymentId: b.paymentId,
+            isLocal: true 
           }))
         ];
         
@@ -68,7 +79,16 @@ export default function MyTrips() {
                 </span>
                 <h3>{trip.hotelName || trip.bookingData?.hotelName || "Stay"}</h3>
                 <p><strong>Price:</strong> ₹{trip.amount || trip.bookingData?.amount || "N/A"}</p>
-                {trip.isLocal && <small style={{color: '#666'}}>* Booking saved on this device</small>}
+                
+                {/* ✅ PDF डाउनलोड बटन */}
+                <button 
+                  onClick={() => downloadTicket(trip)} 
+                  style={{ marginTop: "10px", padding: "8px 16px", background: "#059669", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
+                >
+                  Download E-Ticket
+                </button>
+
+                {trip.isLocal && <p style={{marginTop: '10px'}}><small style={{color: '#666'}}>* Booking saved on this device</small></p>}
               </div>
             ))}
           </div>
