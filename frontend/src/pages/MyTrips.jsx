@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import jsPDF from "jspdf"; // सुनिश्चित करें कि आपने 'npm install jspdf' किया है
+import jsPDF from "jspdf";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
@@ -10,29 +10,73 @@ export default function MyTrips() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const userEmail = localStorage.getItem("userEmail") || "customer@example.com";
+  // ईमेल और एडमिन स्टेटस चेक करना
+  const userEmail = localStorage.getItem("userEmail");
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-  // ✅ अपडेटेड प्रोफेशनल ई-टिकट डाउनलोड फंक्शन
+  useEffect(() => {
+    // 1. अगर यूज़र लॉग इन नहीं है, तो सीधे वापस भेजें
+    if (!userEmail) {
+      alert("Please login to view your trips!");
+      navigate("/login");
+      return;
+    }
+
+    setLoading(true);
+    axios.get(`${BACKEND_URL}/api/bookings/user/${userEmail}`)
+      .then((res) => {
+        const apiBookings = res.data || [];
+        const localBookings = JSON.parse(localStorage.getItem("myTrips") || "[]");
+        
+        // 2. डेटा मर्ज करें
+        const combinedBookings = [
+          ...apiBookings, 
+          ...localBookings.map(b => ({ 
+            _id: Math.random().toString(), 
+            hotelName: b.id, 
+            status: "Confirmed (Local)", 
+            amount: b.amount || "Paid", 
+            paymentId: b.paymentId,
+            isLocal: true,
+            userEmail: userEmail // ताकि हम मैच कर सकें
+          }))
+        ];
+        
+        // 3. डेटा फिल्टर करें: सिर्फ अपनी बुकिंग या अगर एडमिन हो तो सब
+        const filteredBookings = isAdmin 
+          ? combinedBookings 
+          : combinedBookings.filter(b => b.userEmail === userEmail || b.isLocal === true);
+        
+        setBookings(filteredBookings);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      });
+  }, [userEmail, navigate, isAdmin]);
+
+  // ✅ सुरक्षित PDF डाउनलोड फंक्शन
   const downloadTicket = (trip) => {
+    // एक्स्ट्रा सिक्योरिटी चेक
+    if (trip.userEmail && trip.userEmail !== userEmail && !isAdmin) {
+      alert("Access Denied!");
+      return;
+    }
+
     const doc = new jsPDF();
-    
-    // 1. हेडर (Branding)
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
-    doc.setTextColor(0, 108, 228); 
+    doc.setTextColor(0, 108, 228);
     doc.text("THE HIMALAYANS", 20, 20);
     
-    // 2. यूनिक बुकिंग ID
     const bookingId = trip.paymentId ? trip.paymentId.slice(-8).toUpperCase() : "TH-" + Math.floor(1000 + Math.random() * 9000);
     
-    // 3. टिकट बॉडी
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    
     doc.text(`Booking ID: ${bookingId}`, 20, 40);
-    doc.text(`Date of Issue: ${new Date().toLocaleDateString()}`, 20, 50);
-    doc.line(20, 60, 190, 60); // सेपरेटर लाइन
+    doc.line(20, 60, 190, 60);
 
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
@@ -43,42 +87,9 @@ export default function MyTrips() {
     doc.text(`Destination: ${trip.hotelName || "Stay"}`, 20, 90);
     doc.text(`Amount Paid: ₹${trip.amount || "N/A"}`, 20, 100);
     doc.text(`Status: ${trip.status}`, 20, 110);
-    doc.text(`Payment Ref: ${trip.paymentId || "N/A"}`, 20, 120);
-
-    doc.setFontSize(10);
-    doc.text("Thank you for choosing The Himalayans for your Himalayan journey!", 20, 150);
-    doc.text("For support, contact us at: support@thehimalayans.in", 20, 160);
-
+    
     doc.save(`Ticket_${bookingId}.pdf`);
   };
-
-  useEffect(() => {
-    setLoading(true);
-    axios.get(`${BACKEND_URL}/api/bookings/user/${userEmail}`)
-      .then((res) => {
-        const apiBookings = res.data || [];
-        const localBookings = JSON.parse(localStorage.getItem("myTrips") || "[]");
-        
-        const combinedBookings = [
-          ...apiBookings, 
-          ...localBookings.map(b => ({ 
-            _id: Math.random().toString(), 
-            hotelName: b.id, 
-            status: "Confirmed (Local)", 
-            amount: b.amount || "Paid", 
-            paymentId: b.paymentId,
-            isLocal: true 
-          }))
-        ];
-        
-        setBookings(combinedBookings);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
-  }, [userEmail]);
 
   if (loading) return <div style={{ padding: "80px", textAlign: "center" }}>🏔️ Loading your journeys...</div>;
 
@@ -95,26 +106,11 @@ export default function MyTrips() {
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {bookings.map((trip) => (
               <div key={trip._id} style={{ background: "#fff", borderRadius: "12px", padding: "24px", position: "relative", border: "1px solid #e2e8f0" }}>
-                <span style={{ 
-                  position: "absolute", top: "24px", right: "24px", 
-                  background: trip.status.includes("Confirmed") ? "#f0fdf4" : "#fef2f2", 
-                  color: trip.status.includes("Confirmed") ? "#16a34a" : "#dc2626", 
-                  fontSize: "12px", fontWeight: "700", padding: "4px 10px", borderRadius: "20px"
-                }}>
-                  ● {trip.status}
-                </span>
-                <h3>{trip.hotelName || trip.bookingData?.hotelName || "Stay"}</h3>
-                <p><strong>Price:</strong> ₹{trip.amount || trip.bookingData?.amount || "N/A"}</p>
-                
-                {/* ✅ PDF डाउनलोड बटन */}
-                <button 
-                  onClick={() => downloadTicket(trip)} 
-                  style={{ marginTop: "10px", padding: "8px 16px", background: "#059669", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
-                >
+                <h3>{trip.hotelName || "Stay"}</h3>
+                <p><strong>Price:</strong> ₹{trip.amount || "N/A"}</p>
+                <button onClick={() => downloadTicket(trip)} style={{ padding: "8px 16px", background: "#059669", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}>
                   Download E-Ticket
                 </button>
-
-                {trip.isLocal && <p style={{marginTop: '10px'}}><small style={{color: '#666'}}>* Booking saved on this device</small></p>}
               </div>
             ))}
           </div>
