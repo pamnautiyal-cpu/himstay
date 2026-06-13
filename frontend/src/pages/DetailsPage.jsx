@@ -1,51 +1,71 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { destinationData } from "../data";
+import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
 export default function DetailsPage() {
   const { category, id } = useParams();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [bookingName, setBookingName] = useState("");
   const [bookingDate, setBookingDate] = useState("");
   
   const data = destinationData[id];
 
-  // ✅ Razorpay पेमेंट फंक्शन
-  const handlePayment = (bookingDetails) => {
-    // अगर होटल डेटा है तो प्राइस उठाएं, वरना ₹500 डिफ़ॉल्ट रखें
-    const price = data.hotels?.length > 0 ? parseInt(data.hotels[0].price.replace(/,/g, "")) : 500;
-    
-    const options = {
-      key: "YOUR_RAZORPAY_KEY", // <--- यहाँ अपनी असली Key डालें
-      amount: price * 100,
-      currency: "INR",
-      name: "The Himalayans",
-      description: `Booking for ${id}`,
-      handler: function (response) {
-        // पेमेंट सफल होने पर बुकिंग सेव करें
-        const existingTrips = JSON.parse(localStorage.getItem("myTrips") || "[]");
-        const finalBooking = { ...bookingDetails, status: "Confirmed", paymentId: response.razorpay_payment_id };
-        localStorage.setItem("myTrips", JSON.stringify([...existingTrips, finalBooking]));
-        
-        alert("Payment Successful! Booking Confirmed.");
-        setShowModal(false);
-      },
-      prefill: { name: bookingName },
-    };
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-  };
-
-  const handleConfirmBooking = () => {
+  // ✅ Backend API के ज़रिए पेमेंट और बुकिंग का Final लॉजिक
+  const handleConfirmBooking = async () => {
     if (!bookingName || !bookingDate) {
       alert("Please fill in your details!");
       return;
     }
-    const price = data.hotels?.length > 0 ? data.hotels[0].price : "500";
-    const newBooking = { id, name: bookingName, date: bookingDate, category, amount: price };
+
+    const price = data.hotels?.length > 0 ? parseInt(data.hotels[0].price.replace(/,/g, "")) : 500;
     
-    // पेमेंट प्रक्रिया शुरू करें
-    handlePayment(newBooking);
+    try {
+      // 1. Backend से Order ID जनरेट करें
+      const { data: orderData } = await axios.post(`${BACKEND_URL}/api/payment/create-order`, { amount: price });
+
+      // 2. Razorpay Options
+      const options = {
+        key: "rzp_test_RxW3zOEiOiGN69", // आपकी वर्किंग Key
+        amount: orderData.amount,
+        currency: "INR",
+        name: "The Himalayans",
+        description: `Booking for ${id}`,
+        order_id: orderData.id,
+        handler: async (response) => {
+          // 3. पेमेंट वेरीफाई करें
+          const res = await axios.post(`${BACKEND_URL}/api/payment/verify`, response);
+          if (res.data.success) {
+            // 4. लोकल स्टोरेज में डेटा सेव करें (Old data safe रहेगा)
+            const existingTrips = JSON.parse(localStorage.getItem("myTrips") || "[]");
+            const finalBooking = { 
+              id, 
+              name: bookingName, 
+              date: bookingDate, 
+              category, 
+              amount: price, 
+              status: "Confirmed",
+              paymentId: response.razorpay_payment_id 
+            };
+            localStorage.setItem("myTrips", JSON.stringify([...existingTrips, finalBooking]));
+            
+            alert("🎉 Booking Confirmed!");
+            setShowModal(false);
+            navigate("/mytrips"); // MyTrips पर भेजें
+          }
+        },
+        theme: { color: "#006ce4" }
+      };
+      
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Payment Error:", err);
+      alert("Payment setup failed. Please check server.");
+    }
   };
 
   if (!data) {
@@ -60,12 +80,10 @@ export default function DetailsPage() {
 
   return (
     <div className="details-container" style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-      {/* 1. हेडर */}
       <h1>{data.name}</h1>
       <p><strong>Category:</strong> {category.toUpperCase()}</p>
       <p>{data.description}</p>
 
-      {/* 2. इकोसिस्टम (Nearby Items) */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px", margin: "30px 0" }}>
         <div className="info-box" style={{ border: "1px solid #ddd", padding: "15px", borderRadius: "8px" }}>
           <h3>Nearby Hotels</h3>
@@ -81,13 +99,11 @@ export default function DetailsPage() {
         </div>
       </div>
 
-      {/* 3. बुकिंग सेक्शन */}
       <div className="booking-box" style={{ border: "1px solid #006ce4", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
         <h3>Ready to book your {id} experience?</h3>
         <button className="view-btn" onClick={() => setShowModal(true)}>Book Now</button>
       </div>
 
-      {/* 4. बुकिंग Modal */}
       {showModal && (
         <div style={modalOverlay}>
           <div style={modalContent}>
@@ -105,7 +121,6 @@ export default function DetailsPage() {
   );
 }
 
-// --- CSS Styles ---
 const modalOverlay = { position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.6)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 };
 const modalContent = { background: "#fff", padding: "30px", borderRadius: "10px", width: "320px", textAlign: "center", boxShadow: "0 5px 15px rgba(0,0,0,0.3)" };
 const inputStyle = { width: "90%", padding: "10px", margin: "10px 0", border: "1px solid #ccc", borderRadius: "5px" };
