@@ -37,9 +37,18 @@ export default function AdminBookings() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      axios.get(`${BACKEND_URL}/api/bookings`)
-        .then((res) => setBookings(res.data))
-        .catch((err) => console.error("Admin error:", err));
+      // डेटा लोड करने का फंक्शन
+      const fetchData = () => {
+        axios.get(`${BACKEND_URL}/api/bookings`)
+          .then((res) => setBookings(res.data))
+          .catch((err) => console.error("Admin error:", err));
+      };
+
+      fetchData(); // पहली बार कॉल
+
+      // ✅ Auto-Refresh: हर 30 सेकंड में नया डेटा चेक करें
+      const interval = setInterval(fetchData, 30000); 
+      return () => clearInterval(interval); 
     }
   }, [isAuthenticated]);
 
