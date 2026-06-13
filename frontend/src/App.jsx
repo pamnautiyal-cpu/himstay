@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { HelmetProvider, Helmet } from "react-helmet-async"; // ✅ SEO ke liye import
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import AllStays from "./pages/AllStays";
@@ -11,6 +11,7 @@ import Contact from "./pages/Contact";
 import MyTrips from "./pages/MyTrips";
 import ListProperty from "./pages/ListProperty";
 import AdminBookings from "./pages/AdminBookings";
+import Terms from "./pages/Terms"; // ✅ Terms पेज इम्पोर्ट किया
 import "./App.css";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/list-property" element={<ListProperty />} />
+          <Route path="/terms" element={<Terms />} /> {/* ✅ Terms रूट ऐड किया */}
           
           {/* ✅ Admin Panel Route */}
           <Route path="/admin/bookings" element={<AdminBookings />} />
