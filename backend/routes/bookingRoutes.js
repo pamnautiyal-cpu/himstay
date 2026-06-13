@@ -3,7 +3,6 @@ const Booking = require("../models/Booking");
 
 const router = express.Router();
 
-// 1️⃣ एंडपॉइंट: डेटाबेस में नई बुकिंग सेव करने के लिए
 router.post("/", async (req, res) => {
   try {
     const booking = await Booking.create(req.body);
@@ -13,7 +12,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 2️⃣ एंडपॉइंट: एडमिन के लिए बुकिंग स्टेटस अपडेट करने के लिए (✨ NEW STATUS UPDATE)
 router.put("/status/:id", async (req, res) => {
   try {
     const { status } = req.body;
@@ -28,16 +26,11 @@ router.put("/status/:id", async (req, res) => {
   }
 });
 
-// 3️⃣ एंडपॉइंट: विशिष्ट यूजर की ईमेल के आधार पर बुकिंग्स खोजना
 router.get("/user/:email", async (req, res) => {
   try {
     const userEmail = req.params.email;
-    
     const userBookings = await Booking.find({
-      $or: [
-        { email: userEmail },
-        { "bookingData.email": userEmail }
-      ]
+      $or: [{ email: userEmail }, { "bookingData.email": userEmail }]
     })
     .populate("hotelId", "name city price")
     .sort({ createdAt: -1 });
@@ -48,7 +41,6 @@ router.get("/user/:email", async (req, res) => {
   }
 });
 
-// 4️⃣ एंडपॉइंट: सभी बुकिंग्स निकालना (एडमिन पैनल के लिए)
 router.get("/", async (req, res) => {
   try {
     const bookings = await Booking.find()
