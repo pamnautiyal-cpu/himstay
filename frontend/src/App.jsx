@@ -15,34 +15,6 @@ import AdminBookings from "./pages/AdminBookings";
 import Terms from "./pages/Terms";
 import "./App.css";
 
-// ✅ Professional Footer Component
-const Footer = () => (
-  <footer style={{ background: "#0f1e36", color: "#fff", padding: "40px 20px", marginTop: "50px" }}>
-    <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
-      <div>
-        <h4>The Himalayans</h4>
-        <p style={{ fontSize: "14px", color: "#94a3b8" }}>Authentic Himalayan experiences & stays.</p>
-      </div>
-      <div>
-        <h4>Support</h4>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li><a href="/mytrips" style={{ color: "#94a3b8", textDecoration: "none" }}>Manage My Trips</a></li>
-          <li><a href="/contact" style={{ color: "#94a3b8", textDecoration: "none" }}>Contact Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Legal</h4>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li><a href="/terms" style={{ color: "#94a3b8", textDecoration: "none" }}>Terms of Service</a></li>
-        </ul>
-      </div>
-    </div>
-    <div style={{ textAlign: "center", marginTop: "30px", borderTop: "1px solid #1e293b", paddingTop: "20px", fontSize: "12px", color: "#64748b" }}>
-      © 2026 The Himalayans. All rights reserved.
-    </div>
-  </footer>
-);
-
 export default function App() {
   return (
     <HelmetProvider>
@@ -66,9 +38,7 @@ export default function App() {
           <Route path="/admin/bookings" element={<AdminBookings />} />
         </Routes>
       </Layout>
-      
-      {/* ✅ Footer यहाँ जुड़ गया है */}
-      <Footer />
+      {/* Footer यहाँ से हटा दिया गया है */}
     </HelmetProvider>
   );
 }
