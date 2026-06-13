@@ -9,14 +9,12 @@ export default function Footer() {
         {/* ─── GRID LAYOUT ─── */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px", marginBottom: "40px" }}>
           
-          {/* Column 1: Contact/Support */}
+          {/* Column 1: Contact/Support (Phone/Email removed) */}
           <div>
             <h4 style={columnTitleStyle}>Support</h4>
             <ul style={ulStyle}>
               <li><Link to="/contact" style={linkStyle}>Customer Service</Link></li>
               <li><Link to="/mytrips" style={linkStyle}>Manage your trips</Link></li>
-              <li style={{ fontSize: "13px", color: "#475569" }}>📞 +91 9410106470</li>
-              <li style={{ fontSize: "13px", color: "#475569" }}>📧 infothehimalayans@gmail.com</li>
             </ul>
           </div>
 
