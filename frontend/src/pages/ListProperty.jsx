@@ -9,7 +9,9 @@ export default function ListProperty() {
     name: "", city: "Uttarkashi", location: "", price: "", 
     phone: "", roomType: "", guests: "2", view: "", description: ""
   });
-  const [file, setFile] = useState(null); // File state add ki
+  
+  // ✅ State ko array mein change kiya
+  const [files, setFiles] = useState([]); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,17 +22,16 @@ export default function ListProperty() {
     setLoading(true);
 
     const data = new FormData();
-    // Saara text data append karo
     for (let key in formData) {
       data.append(key, formData[key]);
     }
-    // File append karo
-    if (file) {
-      data.append("image", file);
+    
+    // ✅ Files ko loop karke append kiya
+    for (let i = 0; i < files.length; i++) {
+      data.append("images", files[i]);
     }
 
     try {
-      // Endpoint /api/hotels/add par request bhejo
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
         headers: { "Content-Type": "multipart/form-data" }
       });
@@ -63,9 +64,17 @@ export default function ListProperty() {
         <input name="location" placeholder="Full Address *" required onChange={handleChange} style={inputStyle} />
         <input name="phone" placeholder="Contact Number *" required onChange={handleChange} style={inputStyle} />
         
-        {/* File Input yahan dala hai */}
-        <label style={{ fontSize: "14px", fontWeight: "600" }}>Upload Image *</label>
-        <input type="file" name="image" accept="image/*" required onChange={(e) => setFile(e.target.files[0])} style={inputStyle} />
+        {/* ✅ multiple attribute add kiya aur setFiles(e.target.files) kiya */}
+        <label style={{ fontSize: "14px", fontWeight: "600" }}>Upload Multiple Images *</label>
+        <input 
+          type="file" 
+          name="images" 
+          accept="image/*" 
+          multiple 
+          required 
+          onChange={(e) => setFiles(e.target.files)} 
+          style={inputStyle} 
+        />
         
         <textarea name="description" placeholder="Short description..." onChange={handleChange} style={{...inputStyle, height: "80px"}}></textarea>
         
