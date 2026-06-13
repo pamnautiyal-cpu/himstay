@@ -9,7 +9,6 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // ✅ पूरा डेटा अपडेट कर दिया गया है, सभी 16 होटल्स के लिए rooms और inclusions के साथ
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri.", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay.", images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
@@ -69,6 +68,19 @@ export default function HotelDetails() {
       <img src={hotel.images[0]} alt={hotel.name} style={{ width: "100%", borderRadius: "15px" }} />
       <p style={{ fontSize: "18px", marginTop: "20px" }}>{hotel.description}</p>
 
+      {/* ✅ नया एड्रेस और फैसिलिटी सेक्शन */}
+      <div style={{ border: "1px solid #e2e8f0", padding: "20px", borderRadius: "12px", marginTop: "20px", display: "flex", gap: "20px" }}>
+        <span>📍 {hotel.location}</span>
+        <span style={{ marginLeft: "auto" }}>✉️ info@himalayans.com</span>
+      </div>
+
+      <div style={{ border: "1px solid #e2e8f0", padding: "20px", borderRadius: "12px", marginTop: "20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+        <div><h3>Facilities:</h3><p>Food, Parking, Drinking Water, Hot Water, CCTV, Attached Toilet.</p></div>
+        <div style={{ borderLeft: "1px solid #e2e8f0", paddingLeft: "20px" }}>
+          <strong>Check-in: 12:00 PM</strong> | <strong>Check-Out: 11:00 AM</strong>
+        </div>
+      </div>
+
       {/* YatraDham स्टाइल टेबल लेआउट */}
       <div className="room-options" style={{ marginTop: "40px" }}>
         <h3>Hotel Rooms</h3>
@@ -83,9 +95,7 @@ export default function HotelDetails() {
               <ul style={{ fontSize: "13px", color: "#555", margin: 0, paddingLeft: "15px" }}>
                 {room.inclusions?.map((inc, i) => <li key={i}>{inc}</li>)}
               </ul>
-              <div>
-                <p style={{ fontWeight: "bold", fontSize: "1.1rem", margin: 0 }}>₹{room.price}</p>
-              </div>
+              <div><p style={{ fontWeight: "bold", fontSize: "1.1rem", margin: 0 }}>₹{room.price}</p></div>
               <button onClick={() => handlePayment(room.price)} style={{ padding: "10px", background: "#f97316", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}>
                 Book this Room
               </button>
