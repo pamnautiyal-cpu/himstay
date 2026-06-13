@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary").v2;
 
 const router = express.Router();
 
-// Cloudinary Configuration (Ye wahi keys use karega jo process.env mein hain)
+// Cloudinary Configuration
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -17,27 +17,27 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 
 // ============================
-// ADD HOTEL (ADMIN) - UPDATED WITH CLOUDINARY
+// ADD HOTEL (ADMIN) - UPDATED FOR MULTIPLE IMAGES
 // ============================
-router.post("/add", upload.single("image"), async (req, res) => {
+router.post("/add", upload.array("images", 5), async (req, res) => {
   try {
-    // Cloudinary se milne wala secure_url save karenge
-    const imageUrl = req.file ? req.file.path : null;
+    // ✅ req.files array se saare Cloudinary URLs nikalenge
+    const imageUrls = req.files ? req.files.map(file => file.path) : [];
 
     const hotelData = {
       ...req.body,
-      image: imageUrl, // Yahan ab asali Cloudinary URL aayega
+      images: imageUrls, // ✅ Ab yahan array of URLs store hoga
     };
 
     const hotel = await Hotel.create(hotelData);
-    res.json({ message: "Hotel added!", hotel });
+    res.json({ message: "Hotel added with multiple images!", hotel });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
 // ============================
-// SEARCH, FILTER, GET, UPDATE, DELETE (Purana code same rakha hai)
+// SEARCH, FILTER, GET, UPDATE, DELETE
 // ============================
 
 router.get("/search/city", async (req, res) => {
