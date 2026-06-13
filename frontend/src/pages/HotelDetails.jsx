@@ -10,6 +10,7 @@ export default function HotelDetails() {
   const [hotel, setHotel] = useState(null);
 
   const localHotels = {
+    // ... (आपका पुराना 16 होटल्स वाला डेटा यहाँ पहले जैसा ही रहेगा)
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri.", images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay.", images: ["https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
     "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range", description: "Best hygiene stay.", images: ["https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Attached Bath", "Hygienic"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Space", "TV"] }] },
@@ -68,7 +69,7 @@ export default function HotelDetails() {
       <img src={hotel.images[0]} alt={hotel.name} style={{ width: "100%", borderRadius: "15px" }} />
       <p style={{ fontSize: "18px", marginTop: "20px" }}>{hotel.description}</p>
 
-      {/* ✅ नया एड्रेस और फैसिलिटी सेक्शन */}
+      {/* एड्रेस और फैसिलिटी सेक्शन */}
       <div style={{ border: "1px solid #e2e8f0", padding: "20px", borderRadius: "12px", marginTop: "20px", display: "flex", gap: "20px" }}>
         <span>📍 {hotel.location}</span>
         <span style={{ marginLeft: "auto" }}>✉️ info@himalayans.com</span>
@@ -102,6 +103,11 @@ export default function HotelDetails() {
             </div>
           )) || <p>Contact for booking: ₹{hotel.price}</p>}
         </div>
+      </div>
+
+      {/* ✅ Terms & Conditions Link */}
+      <div style={{ marginTop: "40px", padding: "20px", border: "1px solid #ddd", borderRadius: "8px" }}>
+        <p>By booking, you agree to our <a href="/terms" target="_blank" style={{ color: "#006ce4", fontWeight: "bold" }}>Terms & Conditions</a>.</p>
       </div>
     </div>
   );
