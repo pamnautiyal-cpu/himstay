@@ -90,7 +90,7 @@ export default function HotelDetails() {
       {/* Terms & Conditions (Embedded) */}
       <div style={{ marginTop: "40px", padding: "20px", background: "#f8fafc", borderRadius: "10px" }}>
         <h3>Terms & Conditions</h3>
-        <ol style={{ fontSize: "12px", color: "#444" }}>
+        <ol style={{ fontSize: "13px", color: "#444" }}>
           <li>According to government rules, all guests must bring a valid government ID proof at the time of check-in. Guests are not allowed under the age of 18.</li>
           <li>Guest cannot bring any illegal things at the accommodation.</li>
           <li>Room capacity limit is strictly followed.</li>
@@ -107,7 +107,7 @@ export default function HotelDetails() {
           <li><strong>Conduct:</strong> Misbehavior leads to immediate eviction without refund.</li>
           <li><strong>Data Privacy:</strong> Info used only for booking.</li>
           <li><strong>Technical Errors:</strong> Management can modify/cancel bookings due to errors.</li>
-          <li>Any dispute subject to Bhavnagar (Gujarat) jurisdiction.</li>
+          <li>Any dispute subject to Dehradun (Uttarakhand) jurisdiction.</li>
         </ol>
       </div>
     </div>
