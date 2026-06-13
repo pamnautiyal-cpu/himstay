@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
+  // यहाँ अपना वो कोड पेस्ट करें जो Firebase ने आपको दिया था
   apiKey: "YOUR_API_KEY",
   authDomain: "thehimalayans-in.firebaseapp.com",
   projectId: "thehimalayans-in",
