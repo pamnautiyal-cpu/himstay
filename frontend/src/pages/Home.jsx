@@ -110,11 +110,11 @@ export default function Home() {
             <h2 style={{ marginBottom: "30px", color: "#333" }}>Stories for your inspiration</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "25px" }}>
               {[
-                { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", desc: "Jyotirlinga is a Hindu shrine dedicated to Lord Shiva." },
-                { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", desc: "Once Sati Mata's father Daksha Prajapati organized a Yagya..." },
-                { title: "YatraDham.Org से धर्मशाला बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", desc: "YatraDham.org एक बड़ा ऑनलाइन प्लेटफॉर्म है जो भक्तों को..." }
+                { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", desc: "Jyotirlinga is a Hindu shrine dedicated to Lord Shiva.", path: "/blog/jyotirlinga" },
+                { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", desc: "Once Sati Mata's father Daksha Prajapati organized a Yagya...", path: "/blog/shakti-peeth" },
+                { title: "YatraDham.Org से धर्मशाला बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", desc: "YatraDham.org एक बड़ा ऑनलाइन प्लेटफॉर्म है जो भक्तों को...", path: "/blog/yatradham-benefits" }
               ].map((blog, index) => (
-                <div key={index} style={{ border: "1px solid #eee", borderRadius: "12px", padding: "15px", background: "#fff" }}>
+                <div key={index} onClick={() => navigate(blog.path)} style={{ border: "1px solid #eee", borderRadius: "12px", padding: "15px", background: "#fff", cursor: "pointer" }}>
                   <img src={blog.img} alt="blog" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }} />
                   <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold", margin: "15px 0 5px 0" }}>{blog.category}</p>
                   <h4 style={{ margin: "5px 0", color: "#2d3748" }}>{blog.title}</h4>
@@ -123,7 +123,7 @@ export default function Home() {
               ))}
             </div>
             <div style={{ textAlign: "center", marginTop: "40px" }}>
-              <button style={{ padding: "12px 40px", borderRadius: "6px", border: "1px solid #f97316", color: "#f97316", background: "transparent", cursor: "pointer", fontWeight: "bold" }}>
+              <button onClick={() => navigate("/blogs")} style={{ padding: "12px 40px", borderRadius: "6px", border: "1px solid #f97316", color: "#f97316", background: "transparent", cursor: "pointer", fontWeight: "bold" }}>
                 View All Blogs
               </button>
             </div>
