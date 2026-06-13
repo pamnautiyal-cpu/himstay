@@ -13,7 +13,8 @@ import MyTrips from "./pages/MyTrips";
 import ListProperty from "./pages/ListProperty";
 import AdminBookings from "./pages/AdminBookings";
 import Terms from "./pages/Terms";
-import Blogs from "./pages/Blogs"; // ✅ नया इम्पोर्ट
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail"; // ✅ नया इम्पोर्ट (Detail Page के लिए)
 import "./App.css";
 
 export default function App() {
@@ -36,7 +37,8 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/list-property" element={<ListProperty />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/blogs" element={<Blogs />} /> {/* ✅ नया रूट जोड़ा गया */}
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blog/:id" element={<BlogDetail />} /> {/* ✅ यह रूट ब्लॉग डिटेल खोलेगा */}
           <Route path="/admin/bookings" element={<AdminBookings />} />
         </Routes>
       </Layout>
