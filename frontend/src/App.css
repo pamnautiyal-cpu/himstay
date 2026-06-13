@@ -5,12 +5,13 @@
   padding: 0 20px;
 }
 
-/* --- Specific Image Handling (Global "img" tag hata diya) --- */
+/* --- Specific Image Handling --- */
 .scroll-item img, 
 .home-card img, 
 .hotel-card img {
   display: block !important;
   width: 100% !important;
+  height: 100% !important; /* ✅ यह इमेज को कंटेनर के अंदर पूरा खींच देगा */
   object-fit: cover !important;
   background-color: #f0f0f0;
 }
@@ -21,11 +22,12 @@
   overflow-x: auto !important;
   gap: 20px !important;
   padding: 20px !important;
-  justify-content: center !important; 
+  justify-content: flex-start !important; /* ✅ बेहतर अलाइनमेंट के लिए */
 }
 
 .scroll-item {
-  width: 200px;
+  width: 200px !important; /* ✅ Width फिक्स की */
+  min-width: 200px !important; /* ✅ ताकि कार्ड सिकुड़ें नहीं */
   cursor: pointer;
   text-align: center;
 }
@@ -35,21 +37,21 @@
   border-radius: 8px;
 }
 
-/* --- GRIDS (Home & Hotels dono ke liye common alignment) --- */
+/* --- GRIDS --- */
 .home-grid, 
 .hotel-grid-container {
   display: grid !important;
-  /* repeat(auto-fit, 300px) cards ko grid mein fix rakhega */
-  grid-template-columns: repeat(auto-fit, 300px) !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; /* ✅ फ्लेक्सिबल ग्रिड */
   gap: 25px !important;
-  justify-content: center !important; /* Ye grid ko center karta hai */
+  justify-items: center; /* ✅ सेंटरिंग के लिए */
   margin: 30px auto !important;
 }
 
 /* --- CARDS --- */
 .home-card, 
 .hotel-card {
-  width: 300px !important;
+  width: 100% !important; /* ✅ ग्रिड के हिसाब से रिस्पॉन्सिव */
+  max-width: 300px !important;
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -70,18 +72,6 @@
 
 .card-info, 
 .hotel-info { 
-  padding: 16px; 
+  padding: 16px;  
   text-align: left;
-}
-
-.view-btn {
-  width: 90% !important;
-  margin: 10px auto 15px auto !important;
-  display: block !important;
-  padding: 10px;
-  background: #006ce4;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
 }
