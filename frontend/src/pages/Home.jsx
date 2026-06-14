@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -98,6 +96,11 @@ export default function Home() {
               <h3>Happy Travelers</h3>
               <p>Join our growing community exploring the Himalayas.</p>
             </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="small-feature"><strong>Save more</strong><br/>Get exclusive member discounts.</div>
+              <div className="small-feature"><strong>Experience more</strong><br/>Handpicked local tours.</div>
+              <div className="small-feature"><strong>Always easy</strong><br/>Book entirely on your phone.</div>
+            </div>
           </div>
         </section>
 
@@ -119,15 +122,13 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            <div style={{ textAlign: "center", marginTop: "40px" }}>
+              <button onClick={() => navigate("/blogs")} style={{ padding: "12px 40px", borderRadius: "6px", border: "1px solid #f97316", color: "#f97316", background: "transparent", cursor: "pointer", fontWeight: "bold" }}>
+                View All Blogs
+              </button>
+            </div>
           </div>
         </section>
-
-        {/* SOCIAL ICONS (केवल ये जोड़ा है, बाकी पुराना कोड वैसा ही है) */}
-        <div style={{ padding: "30px", textAlign: "center" }}>
-           <FontAwesomeIcon icon={faFacebook} size="2x" style={{ margin: "0 15px", color: "#4267B2", cursor: "pointer" }} />
-           <FontAwesomeIcon icon={faInstagram} size="2x" style={{ margin: "0 15px", color: "#C13584", cursor: "pointer" }} />
-           <FontAwesomeIcon icon={faWhatsapp} size="2x" style={{ margin: "0 15px", color: "#25D366", cursor: "pointer" }} />
-        </div>
       </div>
     </div>
   );
