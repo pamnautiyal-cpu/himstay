@@ -14,7 +14,8 @@ import ListProperty from "./pages/ListProperty";
 import AdminBookings from "./pages/AdminBookings";
 import Terms from "./pages/Terms";
 import Blogs from "./pages/Blogs";
-import BlogDetail from "./pages/BlogDetail"; // ✅ नया इम्पोर्ट (Detail Page के लिए)
+import BlogDetail from "./pages/BlogDetail";
+import AdminDashboard from "./pages/AdminDashboard"; // ✅ नया इम्पोर्ट (Admin Panel के लिए)
 import "./App.css";
 
 export default function App() {
@@ -38,8 +39,9 @@ export default function App() {
           <Route path="/list-property" element={<ListProperty />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blog/:id" element={<BlogDetail />} /> {/* ✅ यह रूट ब्लॉग डिटेल खोलेगा */}
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
+          <Route path="/admin/post" element={<AdminDashboard />} /> {/* ✅ एडमिन पैनल का नया रूट */}
         </Routes>
       </Layout>
     </HelmetProvider>
