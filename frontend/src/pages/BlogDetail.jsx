@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async"; // SEO के लिए Helmet इम्पोर्ट किया
 import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -48,6 +49,12 @@ export default function BlogDetail() {
 
   return (
     <div style={{ padding: "40px 20px", maxWidth: "800px", margin: "auto" }}>
+      {/* SEO Meta Tags */}
+      <Helmet>
+        <title>{blog.title} | The Himalayans</title>
+        <meta name="description" content={blog.content ? blog.content.substring(0, 160) : "Read our latest blog on The Himalayans."} />
+      </Helmet>
+
       <img src={blog.img} alt={blog.title} style={{ width: "100%", borderRadius: "12px" }} />
       <h1 style={{ marginTop: "20px" }}>{blog.title}</h1>
       <p style={{ fontSize: "18px", lineHeight: "1.7", color: "#333" }}>{blog.content}</p>
