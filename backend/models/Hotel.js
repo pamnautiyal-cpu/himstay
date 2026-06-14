@@ -7,7 +7,8 @@ const HotelSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     rating: { type: Number, default: 0 },
     images: { type: [String], required: true }, // ✅ Array of Strings
-    description: { type: String }
+    description: { type: String },
+    isApproved: { type: Boolean, default: false } // ✅ नया: प्रॉपर्टी अप्रूवल के लिए
   },
   { timestamps: true }
 );
