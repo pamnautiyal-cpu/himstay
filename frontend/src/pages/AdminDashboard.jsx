@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // पेंडिंग होटल्स फेच करने के लिए
+import axios from "axios"; 
 import { doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase";
@@ -11,26 +11,34 @@ export default function AdminDashboard() {
   const [password, setPassword] = useState("");
   const [uploading, setUploading] = useState(false);
   
-  // होटल अप्रूवल के लिए स्टेट
   const [pendingHotels, setPendingHotels] = useState([]);
+  const [activeHotels, setActiveHotels] = useState([]); // ✅ Active प्रॉपर्टीज़ के लिए
 
-  // पेंडिंग होटल्स लोड करने का फंक्शन
   useEffect(() => {
     if (isAuth) {
+      // पेंडिंग होटल्स फेच करें
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/pending`)
         .then((res) => setPendingHotels(res.data))
-        .catch((err) => console.error("Error fetching pending hotels:", err));
+        .catch((err) => console.error(err));
+
+      // अप्रूव्ड होटल्स फेच करें (Manage के लिए)
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/`)
+        .then((res) => setActiveHotels(res.data.filter(h => h.isApproved)))
+        .catch((err) => console.error(err));
     }
   }, [isAuth]);
 
-  // होटल अप्रूव करने का फंक्शन
   const approveHotel = async (id) => {
-    try {
-      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/approve/${id}`);
-      alert("Property Approved!");
-      setPendingHotels(pendingHotels.filter(h => h._id !== id));
-    } catch (err) {
-      alert("Approval Failed!");
+    await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/approve/${id}`);
+    alert("Property Approved!");
+    window.location.reload(); // पेज रिफ्रेश ताकि लिस्ट अपडेट हो जाए
+  };
+
+  const deleteHotel = async (id) => {
+    if (window.confirm("क्या आप वाकई इस प्रॉपर्टी को डिलीट करना चाहते हैं?")) {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/${id}`);
+      alert("Property deleted!");
+      window.location.reload();
     }
   };
 
@@ -96,19 +104,26 @@ export default function AdminDashboard() {
 
       <hr style={{ margin: "50px 0" }} />
 
-      {/* PENDING HOTELS SECTION */}
+      {/* PENDING HOTELS */}
       <h1>Pending Property Approvals</h1>
-      {pendingHotels.length === 0 ? <p>Koi pending property nahi hai.</p> : 
-        pendingHotels.map(hotel => (
-          <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px" }}>
-            <h3>{hotel.name}</h3>
-            <p>{hotel.city} - ₹{hotel.price}</p>
-            <button onClick={() => approveHotel(hotel._id)} style={{ padding: "8px 15px", background: "green", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-              Approve Property
-            </button>
-          </div>
-        ))
-      }
+      {pendingHotels.map(hotel => (
+        <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px" }}>
+          <h3>{hotel.name}</h3>
+          <p>{hotel.city} - ₹{hotel.price}</p>
+          <button onClick={() => approveHotel(hotel._id)} style={{ background: "green", color: "white", padding: "8px" }}>Approve</button>
+        </div>
+      ))}
+
+      <hr style={{ margin: "50px 0" }} />
+
+      {/* ACTIVE HOTELS (DELETE SECTION) */}
+      <h1>Manage Active Properties</h1>
+      {activeHotels.map(hotel => (
+        <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px", display: "flex", justifyContent: "space-between" }}>
+          <span>{hotel.name}</span>
+          <button onClick={() => deleteHotel(hotel._id)} style={{ background: "red", color: "white", padding: "8px" }}>Delete</button>
+        </div>
+      ))}
     </div>
   );
 }
