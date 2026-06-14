@@ -7,7 +7,6 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
 
-  // आपका ओरिजिनल डेटा स्ट्रक्चर
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
     { n: "Badrinath", img: "/images/chardham/badrinath.jpg" },
@@ -38,13 +37,14 @@ export default function Home() {
   );
 
   return (
-    <div className="home-container">
-      {/* 1. HERO SECTION */}
+    <div className="home-container" style={{ minHeight: "100vh", backgroundColor: "#fdfdfd" }}>
+      
+      {/* 1. HERO SECTION (सिर्फ यहीं इमेज है) */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1626618012640-6723444569d5?q=80&w=2000')", 
         height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
         flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
-        textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
+        textAlign: "center", borderRadius: "0 0 20px 20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
         <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>Find your next escape</h1>
         <div style={{ background: "white", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
@@ -59,20 +59,20 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="home-content">
+      {/* 2. CONTENT SECTIONS (साफ़ बैकग्राउंड) */}
+      <div className="home-content" style={{ maxWidth: "1200px", margin: "auto" }}>
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
-        {/* FEATURED HOMES GRID */}
         <section className="section-wrapper">
           <h2 className="section-heading">Featured Homes</h2>
-          <div className="home-grid">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "25px" }}>
             {featuredHomes.map((h, i) => (
-              <div key={i} className="home-card" onClick={() => navigate(`/details/hotel/${h.name}`)}>
-                <img src={h.img} alt={h.name} className="consistent-card-img" />
-                <div className="card-info">
-                  <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
+              <div key={i} className="home-card" style={{ border: "4px solid #f97316", borderRadius: "12px", overflow: "hidden", background: "#fff" }} onClick={() => navigate(`/details/hotel/${h.name}`)}>
+                <img src={h.img} alt={h.name} className="consistent-card-img" style={{ width: "100%" }} />
+                <div className="card-info" style={{ padding: "12px" }}>
+                  <h3 style={{ fontSize: "15px" }}>{h.name}</h3>
                   <p style={{ color: "#059669", fontWeight: "bold" }}>{h.price === "0,000" ? "Price on Request" : `INR ${h.price}`}</p>
                 </div>
               </div>
@@ -80,17 +80,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TRUST SECTION (पुराना वाला) */}
-        <section className="trust-section">
-           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
-        </section>
-
-        {/* BLOG SECTION (पुराना वाला) */}
-        <section style={{ backgroundColor: "#fffcf8", padding: "60px 20px", marginTop: "40px" }}>
-            {/* यहाँ अपना ब्लॉग वाला कोड पेस्ट कर दें */}
-        </section>
-
-        {/* SOCIAL FOOTER (आइकन्स वाला फुटर) */}
+        {/* SOCIAL FOOTER */}
         <div style={{ textAlign: "center", marginTop: "80px", padding: "40px", background: "rgba(0,0,0,0.8)", borderRadius: "20px", color: "white" }}>
           <h3>Connect with us</h3>
           <div style={{ fontSize: "30px", display: "flex", justifyContent: "center", gap: "25px", marginTop: "15px" }}>
