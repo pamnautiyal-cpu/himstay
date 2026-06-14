@@ -8,9 +8,16 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
 
-  const uttarakhandExperiences = [/* ... आपका पुराना डेटा सुरक्षित है ... */];
-  const yogaExperiences = [/* ... आपका पुराना डेटा सुरक्षित है ... */];
-  const trekExperiences = [/* ... आपका पुराना डेटा सुरक्षित है ... */];
+  const uttarakhandExperiences = [
+    { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
+    { n: "Badrinath", img: "/images/chardham/badrinath.jpg" },
+    { n: "Gangotri", img: "/images/chardham/gangotri.jpg" },
+    { n: "Yamunotri", img: "/images/chardham/yamunotri.jpg" },
+    { n: "Haridwar", img: "/images/destinations/haridwar.jpg" },
+    { n: "Rishikesh", img: "/images/destinations/rishikesh.jpg" }
+  ];
+  const yogaExperiences = [{ n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" }, { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" }, { n: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" }];
+  const trekExperiences = [{ n: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" }, { n: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" }, { n: "Roopkund", img: "/images/treks/roopkund.jpg" }];
   const featuredHomes = [
     { name: "VANYA LUXURY RESORT", location: "Bangalore", price: "0,000", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" },
     { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600" }
@@ -31,38 +38,61 @@ export default function Home() {
   );
 
   return (
-    // ✅ यहाँ बैकग्राउंड इमेज लगाई है
-    <div className="home-container" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600')", backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
+    // ✅ अपडेटेड बैकग्राउंड स्टाइलिंग (पूरे पेज पर)
+    <div className="home-container" style={{ 
+      backgroundImage: "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600')", 
+      backgroundSize: 'cover', backgroundAttachment: 'fixed', minHeight: '100vh' 
+    }}>
       
-      {/* 1. PREMIUM HERO SECTION (पुराना स्ट्रक्चर) */}
+      {/* 1. PREMIUM HERO SECTION */}
       <section style={{ 
-        background: "rgba(255, 255, 255, 0.1)", backdropFilter: "blur(5px)", 
-        padding: "80px 20px", textAlign: "center", color: "white", marginBottom: "40px"
+        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1626618012640-6723444569d5?q=80&w=2000')", 
+        height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
+        flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
+        textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
-        <h1 style={{ fontSize: "3rem", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>Find your next escape</h1>
-        {/* ... सर्च बार और बाकी इनपुट्स वैसे ही हैं ... */}
-      </section>
-
-      {/* 2. FEATURED HOMES GRID (✅ यहाँ बॉर्डर और ग्रिड दिया है) */}
-      <section className="section-wrapper">
-        <h2 className="section-heading">Featured Homes</h2>
-        <div className="home-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
-          {featuredHomes.map((h, i) => (
-            <div key={i} className="home-card" style={{ border: "2px solid #f97316", borderRadius: "15px", padding: "10px" }} onClick={() => navigate(`/details/hotel/${h.name}`)}>
-              <img src={h.img} alt={h.name} className="consistent-card-img" />
-              <div className="card-info"><h3>{h.name}</h3></div>
-            </div>
-          ))}
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>Find your next escape</h1>
+        <div style={{ background: "white", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
+          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
+          <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
+            <option value="All">All Cities</option>
+            <option value="Rishikesh">Rishikesh</option>
+            <option value="Uttarkashi">Uttarkashi</option>
+            <option value="Haridwar">Haridwar</option>
+          </select>
+          <button onClick={() => navigate("/hotels")} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
         </div>
       </section>
 
-      {/* ✅ सोशल मीडिया आइकन्स (Footer के पास) */}
-      <div style={{ textAlign: "center", padding: "40px", color: "white", background: "rgba(0,0,0,0.7)" }}>
-        <h3>Connect with us</h3>
-        <div style={{ fontSize: "2rem", display: "flex", justifyContent: "center", gap: "20px", marginTop: "10px" }}>
-          <FontAwesomeIcon icon={faFacebook} style={{ cursor: "pointer", color: "#4267B2" }} />
-          <FontAwesomeIcon icon={faInstagram} style={{ cursor: "pointer", color: "#C13584" }} />
-          <FontAwesomeIcon icon={faWhatsapp} style={{ cursor: "pointer", color: "#25D366" }} />
+      <div className="home-content">
+        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
+        {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
+        {renderScrollSection("Popular Treks", trekExperiences, "trek")}
+
+        {/* FEATURED HOMES GRID (✅ यहाँ बॉर्डर और ग्रिड अपडेट किया है) */}
+        <section className="section-wrapper">
+          <h2 className="section-heading">Featured Homes</h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "25px" }}>
+            {featuredHomes.map((h, i) => (
+              <div key={i} className="home-card" style={{ border: "4px solid #f97316", borderRadius: "15px", overflow: "hidden", background: "#fff" }} onClick={() => navigate(`/details/hotel/${h.name}`)}>
+                <img src={h.img} alt={h.name} className="consistent-card-img" style={{ width: "100%" }} />
+                <div className="card-info" style={{ padding: "15px" }}>
+                  <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
+                  <p style={{ color: "#059669", fontWeight: "bold" }}>{h.price === "0,000" ? "Price on Request" : `INR ${h.price}`}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ✅ सोशल मीडिया फुटर्स (नया सेक्शन) */}
+        <div style={{ textAlign: "center", marginTop: "80px", padding: "40px", background: "rgba(0,0,0,0.8)", borderRadius: "20px", color: "white" }}>
+          <h3>Connect with us</h3>
+          <div style={{ fontSize: "30px", display: "flex", justifyContent: "center", gap: "25px", marginTop: "15px" }}>
+            <FontAwesomeIcon icon={faFacebook} style={{ cursor: "pointer", color: "#4267B2" }} />
+            <FontAwesomeIcon icon={faInstagram} style={{ cursor: "pointer", color: "#C13584" }} />
+            <FontAwesomeIcon icon={faWhatsapp} style={{ cursor: "pointer", color: "#25D366" }} />
+          </div>
         </div>
       </div>
     </div>
