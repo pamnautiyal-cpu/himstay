@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage"; // ✅ यह ज़रूरी है
+import { getStorage } from "firebase/storage"; 
 
 const firebaseConfig = {
-  // यहाँ अपना वो कोड पेस्ट करें जो Firebase ने आपको दिया था
+  // अपना ओरिजिनल कॉन्फ़िगरेशन यहाँ रखें
   apiKey: "YOUR_API_KEY",
   authDomain: "thehimalayans-in.firebaseapp.com",
   projectId: "thehimalayans-in",
@@ -14,8 +14,5 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// पुराना डेटाबेस वाला कोड सुरक्षित है
 export const db = getFirestore(app);
-
-// यह नया स्टोरेज वाला कोड है जो फाइल अपलोड के लिए चाहिए
-export const storage = getStorage(app);
+export const storage = getStorage(app); // ✅ हमने यहाँ 'export' जोड़ दिया है
