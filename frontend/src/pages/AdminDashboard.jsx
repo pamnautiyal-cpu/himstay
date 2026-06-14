@@ -9,7 +9,7 @@ export default function AdminDashboard() {
 
   // पासवर्ड चेक करने का फंक्शन
   const handleLogin = () => {
-    if (password === "admin123") { // यहाँ अपना पासवर्ड रखें
+    if (password === "040788") { // यहाँ अपना पासवर्ड रखें
       setIsAuth(true);
     } else {
       alert("Galat Password!");
