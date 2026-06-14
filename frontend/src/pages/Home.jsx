@@ -91,10 +91,12 @@ export default function Home() {
             <div className="trust-card">
               <h2>100+</h2>
               <h3>Verified Stays</h3>
+              <p>From luxury resorts to hidden homestays, we've got you covered.</p>
             </div>
             <div className="trust-card">
               <h2>10k+</h2>
               <h3>Happy Travelers</h3>
+              <p>Join our growing community exploring the Himalayas.</p>
             </div>
           </div>
         </section>
@@ -105,26 +107,26 @@ export default function Home() {
             <h2 className="section-heading">Stories for your inspiration</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "25px", marginTop: "30px" }}>
               {[
-                { title: "12 Jyotirlinga Name with Photos", path: "/blog/jyotirlinga" },
-                { title: "51 Shakti Peeth List with Name, Location", path: "/blog/shakti-peeth" },
-                { title: "YatraDham.Org से धर्मशाला बुकिंग के फायदे", path: "/blog/yatradham-benefits" }
+                { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", desc: "Jyotirlinga is a Hindu shrine dedicated to Lord Shiva.", path: "/blog/jyotirlinga" },
+                { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", desc: "Once Sati Mata's father Daksha Prajapati organized a Yagya...", path: "/blog/shakti-peeth" },
+                { title: "YatraDham.Org से धर्मशाला बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", desc: "YatraDham.org एक बड़ा ऑनलाइन प्लेटफॉर्म है जो भक्तों को...", path: "/blog/yatradham-benefits" }
               ].map((blog, index) => (
                 <div key={index} onClick={() => navigate(blog.path)} style={{ border: "1px solid #eee", borderRadius: "12px", padding: "15px", background: "#fff", cursor: "pointer" }}>
+                  <img src={blog.img} alt="blog" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }} />
+                  <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold", margin: "15px 0 5px 0" }}>{blog.category}</p>
                   <h4 style={{ margin: "5px 0", color: "#2d3748" }}>{blog.title}</h4>
+                  <p style={{ fontSize: "13px", color: "#718096" }}>{blog.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* SOCIAL FOOTER (आइकन्स जोड़े गए हैं) */}
-        <div style={{ textAlign: "center", padding: "40px", background: "#333", color: "white", marginTop: "40px" }}>
-           <h3>Connect with us</h3>
-           <div style={{ fontSize: "30px", display: "flex", justifyContent: "center", gap: "25px", marginTop: "15px" }}>
-             <FontAwesomeIcon icon={faFacebook} style={{ color: "#4267B2", cursor: "pointer" }} />
-             <FontAwesomeIcon icon={faInstagram} style={{ color: "#C13584", cursor: "pointer" }} />
-             <FontAwesomeIcon icon={faWhatsapp} style={{ color: "#25D366", cursor: "pointer" }} />
-           </div>
+        {/* SOCIAL ICONS (केवल ये जोड़ा है, बाकी पुराना कोड वैसा ही है) */}
+        <div style={{ padding: "30px", textAlign: "center" }}>
+           <FontAwesomeIcon icon={faFacebook} size="2x" style={{ margin: "0 15px", color: "#4267B2", cursor: "pointer" }} />
+           <FontAwesomeIcon icon={faInstagram} size="2x" style={{ margin: "0 15px", color: "#C13584", cursor: "pointer" }} />
+           <FontAwesomeIcon icon={faWhatsapp} size="2x" style={{ margin: "0 15px", color: "#25D366", cursor: "pointer" }} />
         </div>
       </div>
     </div>
