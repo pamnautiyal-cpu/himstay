@@ -17,51 +17,86 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 
 // ============================
-// ADD HOTEL (ADMIN) - UPDATED FOR MULTIPLE IMAGES
+// ADD HOTEL (PENDING FOR APPROVAL)
 // ============================
 router.post("/add", upload.array("images", 5), async (req, res) => {
   try {
-    // ✅ req.files array se saare Cloudinary URLs nikalenge
     const imageUrls = req.files ? req.files.map(file => file.path) : [];
-
     const hotelData = {
       ...req.body,
-      images: imageUrls, // ✅ Ab yahan array of URLs store hoga
+      images: imageUrls,
+      isApproved: false, // Default status pending
     };
 
     const hotel = await Hotel.create(hotelData);
-    res.json({ message: "Hotel added with multiple images!", hotel });
+    res.json({ message: "Property submitted for approval!", hotel });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
 // ============================
-// SEARCH, FILTER, GET, UPDATE, DELETE
+// ADMIN: GET PENDING PROPERTIES
+// ============================
+router.get("/pending", async (req, res) => {
+  try {
+    const hotels = await Hotel.find({ isApproved: false });
+    res.json(hotels);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================
+// ADMIN: APPROVE PROPERTY
+// ============================
+router.put("/approve/:id", async (req, res) => {
+  try {
+    const hotel = await Hotel.findByIdAndUpdate(
+      req.params.id, 
+      { isApproved: true }, 
+      { new: true }
+    );
+    res.json({ message: "Property Approved & Live!", hotel });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================
+// PUBLIC: GET ONLY APPROVED PROPERTIES
+// ============================
+router.get("/", async (req, res) => {
+  try {
+    const hotels = await Hotel.find({ isApproved: true });
+    res.json(hotels);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================
+// SEARCH, FILTER, UPDATE, DELETE (बाकी कोड सुरक्षित)
 // ============================
 
 router.get("/search/city", async (req, res) => {
   const { city } = req.query;
   const hotels = await Hotel.find({
     city: { $regex: city, $options: "i" },
+    isApproved: true // Search me sirf approved dikhen
   });
   res.json(hotels);
 });
 
 router.get("/filter", async (req, res) => {
   const { city, minPrice, maxPrice, rating } = req.query;
-  let filter = {};
+  let filter = { isApproved: true };
   if (city) filter.city = { $regex: city, $options: "i" };
   if (rating) filter.rating = { $gte: rating };
   if (minPrice && maxPrice)
     filter.price = { $gte: minPrice, $lte: maxPrice };
 
   const hotels = await Hotel.find(filter);
-  res.json(hotels);
-});
-
-router.get("/", async (req, res) => {
-  const hotels = await Hotel.find();
   res.json(hotels);
 });
 
