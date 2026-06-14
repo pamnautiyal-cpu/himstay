@@ -24,12 +24,12 @@ export default function Home() {
 
   const renderScrollSection = (title, data, category) => (
     <section className="section-wrapper">
-      <h2 className="section-heading" style={{ fontFamily: "'Poppins', sans-serif" }}>{title}</h2>
+      <h2 className="section-heading">{title}</h2>
       <div className="horizontal-scroll-container">
         {data.map((item, i) => (
           <div key={i} className="scroll-item" onClick={() => navigate(`/details/${category}/${item.n || item.name}`)}>
             <img src={item.img} alt={item.n || item.name} className="consistent-card-img" />
-            <h3 style={{ marginTop: "10px", fontSize: "14px", fontFamily: "'Inter', sans-serif" }}>{item.n || item.name}</h3>
+            <h3 style={{ marginTop: "10px", fontSize: "14px" }}>{item.n || item.name}</h3>
           </div>
         ))}
       </div>
@@ -37,16 +37,16 @@ export default function Home() {
   );
 
   return (
-    <div className="home-container" style={{ minHeight: "100vh", backgroundColor: "#fdfdfd", fontFamily: "'Inter', sans-serif" }}>
+    <div className="home-container" style={{ minHeight: "100vh", backgroundColor: "#fdfdfd" }}>
       
-      {/* 1. HERO SECTION */}
+      {/* 1. PREMIUM HERO SECTION (इमेज के साथ) */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1626618012640-6723444569d5?q=80&w=2000')", 
         height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
         flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
         textAlign: "center", borderRadius: "0 0 20px 20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
-        <h1 style={{ fontFamily: "'Poppins', sans-serif", fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>Find your next escape</h1>
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>Find your next escape</h1>
         <div style={{ background: "white", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
           <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
           <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
@@ -59,20 +59,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. CONTENT SECTIONS */}
       <div className="home-content" style={{ maxWidth: "1200px", margin: "auto" }}>
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
+        {/* FEATURED HOMES GRID */}
         <section className="section-wrapper">
-          <h2 className="section-heading" style={{ fontFamily: "'Poppins', sans-serif" }}>Featured Homes</h2>
+          <h2 className="section-heading">Featured Homes</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "25px" }}>
             {featuredHomes.map((h, i) => (
               <div key={i} className="home-card" style={{ border: "4px solid #f97316", borderRadius: "12px", overflow: "hidden", background: "#fff" }} onClick={() => navigate(`/details/hotel/${h.name}`)}>
                 <img src={h.img} alt={h.name} className="consistent-card-img" style={{ width: "100%" }} />
-                <div className="card-info" style={{ padding: "12px" }}>
-                  <h3 style={{ fontSize: "15px", fontFamily: "'Poppins', sans-serif" }}>{h.name}</h3>
+                <div style={{ padding: "12px" }}>
+                  <h3 style={{ fontSize: "15px" }}>{h.name}</h3>
                   <p style={{ color: "#059669", fontWeight: "bold" }}>{h.price === "0,000" ? "Price on Request" : `INR ${h.price}`}</p>
                 </div>
               </div>
@@ -80,9 +80,19 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ✅ ट्रस्ट सेक्शन (वापस आ गया) */}
+        <section className="trust-section" style={{ padding: "40px 20px", textAlign: "center" }}>
+          <h2>Why choose The Himalayans?</h2>
+        </section>
+
+        {/* ✅ ब्लॉग सेक्शन (वापस आ गया) */}
+        <section style={{ backgroundColor: "#fffcf8", padding: "60px 20px", marginTop: "40px" }}>
+          <h2 className="section-heading">Stories for your inspiration</h2>
+        </section>
+
         {/* SOCIAL FOOTER */}
         <div style={{ textAlign: "center", marginTop: "80px", padding: "40px", background: "rgba(0,0,0,0.8)", borderRadius: "20px", color: "white" }}>
-          <h3 style={{ fontFamily: "'Poppins', sans-serif" }}>Connect with us</h3>
+          <h3>Connect with us</h3>
           <div style={{ fontSize: "30px", display: "flex", justifyContent: "center", gap: "25px", marginTop: "15px" }}>
             <FontAwesomeIcon icon={faFacebook} style={{ cursor: "pointer", color: "#4267B2" }} />
             <FontAwesomeIcon icon={faInstagram} style={{ cursor: "pointer", color: "#C13584" }} />
