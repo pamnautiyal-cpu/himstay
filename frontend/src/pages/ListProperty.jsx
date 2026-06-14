@@ -7,7 +7,9 @@ export default function ListProperty() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "", city: "Uttarkashi", location: "", price: "", 
-    phone: "", roomType: "", guests: "2", view: "", description: ""
+    phone: "", description: "", 
+    // ✅ नई फील्ड्स यहाँ जोड़ दी गई हैं
+    facilities: "", checkIn: "12:00 PM", checkOut: "11:00 AM", roomDetails: ""
   });
   
   const [files, setFiles] = useState([]); 
@@ -75,33 +77,30 @@ export default function ListProperty() {
         <input name="location" placeholder="Full Address *" required onChange={handleChange} style={inputStyle} />
         <input name="phone" placeholder="Contact Number *" required onChange={handleChange} style={inputStyle} />
         
+        {/* ✅ नई फील्ड्स का UI */}
+        <input name="facilities" placeholder="Facilities (e.g., Food, Parking, CCTV)" onChange={handleChange} style={inputStyle} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+          <input name="checkIn" placeholder="Check-in (e.g. 12:00 PM)" onChange={handleChange} style={inputStyle} />
+          <input name="checkOut" placeholder="Check-out (e.g. 11:00 AM)" onChange={handleChange} style={inputStyle} />
+        </div>
+        <textarea name="roomDetails" placeholder="Room Details (e.g., 2 Bedroom Set, Double Bed, TV)" onChange={handleChange} style={{...inputStyle, height: "60px"}}></textarea>
+
         <label style={{ fontSize: "14px", fontWeight: "600" }}>Upload Multiple Images *</label>
-        <input 
-          type="file" 
-          name="images" 
-          accept="image/*" 
-          multiple 
-          onChange={handleFileChange} 
-          style={inputStyle} 
-        />
+        <input type="file" multiple onChange={handleFileChange} style={inputStyle} />
         
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "5px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
           {files.map((file, index) => (
-            <div key={index} style={{ padding: "5px 10px", background: "#e2e8f0", borderRadius: "15px", fontSize: "12px", display: "flex", alignItems: "center", gap: "5px" }}>
-              {file.name.substring(0, 15)}...
-              <span onClick={() => removeFile(index)} style={{ cursor: "pointer", color: "red", fontWeight: "bold" }}>x</span>
+            <div key={index} style={{ padding: "5px 10px", background: "#e2e8f0", borderRadius: "15px", fontSize: "12px" }}>
+              {file.name.substring(0, 15)}... <span onClick={() => removeFile(index)} style={{ cursor: "pointer", color: "red" }}>x</span>
             </div>
           ))}
         </div>
 
         <textarea name="description" placeholder="Short description..." onChange={handleChange} style={{...inputStyle, height: "80px"}}></textarea>
         
-        {/* ✅ Terms & Conditions Checkbox */}
         <div style={{ fontSize: "13px", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px" }}>
-          <input type="checkbox" required style={{ marginTop: "3px" }} />
-          <span>
-            I agree to the Terms & Conditions and confirm that all property information and images are verified and owned by me.
-          </span>
+          <input type="checkbox" required />
+          <span>I agree to the Terms & Conditions and confirm all info is verified.</span>
         </div>
         
         <button type="submit" style={btnStyle} disabled={loading}>
