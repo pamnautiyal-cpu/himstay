@@ -18,8 +18,8 @@ export default function Home() {
   const yogaExperiences = [{ n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" }, { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" }, { n: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" }];
   const trekExperiences = [{ n: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" }, { n: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" }, { n: "Roopkund", img: "/images/treks/roopkund.jpg" }];
   const featuredHomes = [
-    { name: "VANYA LUXURY RESORT", location: "Bangalore", price: "0,000", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" },
-    { name: "Sliceinn Sylva", location: "Bangalore", price: "1,588", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600" }
+    { name: "VANYA LUXURY RESORT", location: "Bangalore", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" },
+    { name: "Sliceinn Sylva", location: "Bangalore", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600" }
   ];
 
   const renderScrollSection = (title, data, category) => (
@@ -59,7 +59,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. CONTENT SECTIONS (साफ़ बैकग्राउंड) */}
+      {/* 2. CONTENT SECTIONS */}
       <div className="home-content" style={{ maxWidth: "1200px", margin: "auto" }}>
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}

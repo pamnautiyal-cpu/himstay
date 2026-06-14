@@ -8,7 +8,7 @@ export default function ListProperty() {
   const [formData, setFormData] = useState({
     name: "", city: "Uttarkashi", location: "", price: "", 
     phone: "", description: "", 
-    // ✅ नई फील्ड्स यहाँ जोड़ दी गई हैं
+ 
     facilities: "", checkIn: "12:00 PM", checkOut: "11:00 AM", roomDetails: ""
   });
   
@@ -31,7 +31,7 @@ export default function ListProperty() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (files.length === 0) return alert("कम से कम एक इमेज ज़रूर चुनें!");
+    if (files.length === 0) return alert;
     
     setLoading(true);
     const data = new FormData();
