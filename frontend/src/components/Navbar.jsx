@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase"; // Firebase इम्पोर्ट
-import { onAuthStateChanged, signOut } from "firebase/auth"; // Auth फंक्शन्स
+import { auth } from "../firebase"; 
+import { onAuthStateChanged, signOut } from "firebase/auth"; 
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -38,6 +38,7 @@ export default function Navbar() {
             🔥 Offers
           </Link>
           
+          {/* Admin Link */}
           <Link to="/admin/bookings" style={{ color: "#94a3b8", textDecoration: "none", fontSize: "12px", border: "1px solid #475569", padding: "2px 8px", borderRadius: "4px" }}>
             Admin
           </Link>
