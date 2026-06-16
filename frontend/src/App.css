@@ -1,4 +1,4 @@
-/* --- ORIGINAL STRUCTURE (Preserved) --- */
+/* --- ORIGINAL STRUCTURE --- */
 .home-container, .stays-page-wrap {
   max-width: 1200px;
   margin: 0 auto !important;
@@ -81,9 +81,7 @@
 }
 
 .card-info { padding: 20px; text-align: left; }
-
 .card-info h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: #1e293b; }
-
 .price-tag { color: #059669; font-weight: 700; font-size: 1rem; }
 
 /* --- TRUST SECTION --- */
@@ -120,4 +118,30 @@
   margin-bottom: 10px;
   border-radius: 8px;
   text-align: left;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  header > div {
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+
+  .home-container section {
+    height: 350px !important;
+  }
+
+  .home-container section div {
+    flex-direction: column !important;
+    width: 90% !important;
+    padding: 10px !important;
+  }
+
+  .home-grid, .trust-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
 }
