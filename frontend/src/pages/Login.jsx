@@ -1,35 +1,31 @@
 import React, { useState } from "react";
-import { loginUser } from "../api/api";
-   // <-- Correct API import
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase"; // Firebase इम्पोर्ट किया
+import { signInWithEmailAndPassword } from "firebase/auth"; // Firebase Auth फंक्शन
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const res = await loginUser({ email, password });
+      // API कॉल के बजाय Firebase Auth का उपयोग
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      console.log("Login successful:", userCredential.user);
 
-      console.log("Login response:", res.data);
+      setMessage("Login successful!");
 
-      if (res.data.token) {
-        // Save token & user
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-
-        setMessage("Login successful!");
-
-        // Redirect to dashboard after 1 second
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1000);
-      } else {
-        setMessage("Login failed!");
-      }
+      // डैशबोर्ड पर भेजें
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+      
     } catch (err) {
       console.log("Login error:", err);
-      setMessage("Invalid credentials!");
+      setMessage("Invalid credentials or user not found!");
     }
   };
 
@@ -38,7 +34,7 @@ const Login = () => {
       <h2>Login</h2>
 
       <input
-        type="text"
+        type="email" // 'text' से बदलकर 'email' कर दिया ताकि सही इनपुट मिले
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
