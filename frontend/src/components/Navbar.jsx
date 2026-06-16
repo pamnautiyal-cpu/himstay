@@ -1,7 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase"; // Firebase इम्पोर्ट
+import { onAuthStateChanged, signOut } from "firebase/auth"; // Auth फंक्शन्स
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // यूजर का स्टेट ट्रैक करें
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/");
+  };
+
   return (
     <header style={{ background: "#0b132b", padding: "15px 20px", borderBottom: "1px solid #334155" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -16,7 +34,6 @@ export default function Navbar() {
           <Link to="/hotels" style={{ color: "#fff", textDecoration: "none", fontSize: "14px" }}>🏨 Hotels</Link>
           <Link to="/mytrips" style={{ color: "#fff", textDecoration: "none", fontSize: "14px" }}>🧳 My Trips</Link>
           
-          {/* New Professional Button: Offers/Deals */}
           <Link to="/offers" style={{ color: "#f59e0b", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}>
             🔥 Offers
           </Link>
@@ -29,10 +46,26 @@ export default function Navbar() {
             📢 List Property
           </Link>
           
-          <div style={{ height: "20px", width: "1px", background: "#475569" }} /> {/* Divider */}
+          <div style={{ height: "20px", width: "1px", background: "#475569" }} /> 
           
-          <Link to="/login" style={{ color: "#fff", textDecoration: "none", fontSize: "14px" }}>🔐 Login</Link>
-          <Link to="/signup" style={{ background: "#22c55e", padding: "8px 16px", borderRadius: "20px", color: "#fff", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}>Sign up</Link>
+          {user ? (
+            // अगर लॉगिन है तो ये दिखेगा:
+            <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+              <span style={{ color: "#fff", fontSize: "12px" }}>Hi, {user.email.split('@')[0]}</span>
+              <button 
+                onClick={handleLogout} 
+                style={{ background: "#ef4444", border: "none", color: "#fff", padding: "5px 10px", borderRadius: "4px", cursor: "pointer", fontSize: "12px" }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            // अगर लॉगिन नहीं है तो ये दिखेगा:
+            <>
+              <Link to="/login" style={{ color: "#fff", textDecoration: "none", fontSize: "14px" }}>🔐 Login</Link>
+              <Link to="/signup" style={{ background: "#22c55e", padding: "8px 16px", borderRadius: "20px", color: "#fff", textDecoration: "none", fontWeight: "bold", fontSize: "14px" }}>Sign up</Link>
+            </>
+          )}
         </div>
       </div>
     </header>
