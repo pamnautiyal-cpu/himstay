@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase"; // Firebase इम्पोर्ट किया
-import { signInWithEmailAndPassword } from "firebase/auth"; // Firebase Auth फंक्शन
+import { auth } from "../firebase"; 
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,11 +11,16 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      // API कॉल के बजाय Firebase Auth का उपयोग
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
+      // ✅ LOGIC UPDATE: Firebase login ke baad localStorage mein user save karein
+      // Hum user object ka 'uid' aur 'email' store kar rahe hain
+      localStorage.setItem("user", JSON.stringify({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email
+      }));
+      
       console.log("Login successful:", userCredential.user);
-
       setMessage("Login successful!");
 
       // डैशबोर्ड पर भेजें
@@ -34,7 +39,7 @@ const Login = () => {
       <h2>Login</h2>
 
       <input
-        type="email" // 'text' से बदलकर 'email' कर दिया ताकि सही इनपुट मिले
+        type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
