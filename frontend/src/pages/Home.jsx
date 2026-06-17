@@ -58,19 +58,24 @@ export default function Home() {
   return (
     <div className="home-container">
       
-      {/* नया सर्च बार सेक्शन (जैसा आपने कहा था) */}
-      <section className="hero-search-refined">
-        <h2>Where to?</h2>
-        <div className="search-box-himalayan">
-          <input type="text" placeholder="Search for hotels, treks..." />
-          <div className="category-tabs">
-            <button>Stays</button>
-            <button>Treks</button>
-            <button>Yoga</button>
-          </div>
-          <button className="search-main-btn">Find my Escape</button>
-        </div>
-      </section>
+      
+     <section className="hero-search-refined">
+  <h1 className="hero-title">Where to?</h1>
+  <div className="search-box-himalayan">
+    <div className="search-input-group">
+      <input 
+        type="text" 
+        placeholder="Places to go, things to do, hotels..." 
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} 
+      />
+      <div className="search-actions">
+        <button className="ask-ai-btn">Ask AI</button>
+        <button className="search-main-btn">Search</button>
+      </div>
+    </div>
+  </div>
+</section>
 
       <div className="home-content">
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
