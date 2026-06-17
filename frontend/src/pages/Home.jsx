@@ -37,20 +37,16 @@ export default function Home() {
 
   const renderScrollSection = (title, data, category) => (
     <section className="section-wrapper">
-      <h2 className="section-heading">{title}</h2>
+      <h2 className="section-title">{title}</h2>
       <div className="horizontal-scroll-container">
         {data.map((item, i) => (
-          <div 
-            key={i} 
-            className="scroll-item" 
-            onClick={() => {
+          <div key={i} className="scroll-item" onClick={() => {
               if (["tourism", "yoga", "trek"].includes(category)) {
                 window.open(`https://www.google.com/search?q=${item.n || item.name}`, "_blank");
               } else {
                 navigate(`/details/${category}/${item.n || item.name}`);
               }
-            }}
-          >
+            }}>
             <img src={item.img} alt={item.n || item.name} className="consistent-card-img" />
             <h3 style={{ marginTop: "10px", fontSize: "14px" }}>{item.n || item.name}</h3>
           </div>
@@ -61,81 +57,70 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      <section style={{ 
-        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
-        height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
-        flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
-        textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
-      }}>
-        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
-          Find your next escape
-        </h1>
-        <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
-          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
-          <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
+      {/* 1. Tripadvisor स्टाइल सर्च बार */}
+      <section className="hero-search" style={{ margin: "40px 0", textAlign: "center" }}>
+        <h1>Where to?</h1>
+        <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: "10px", borderRadius: "50px", display: "inline-flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.1)", border: "1px solid #ddd" }}>
+          <input type="text" placeholder="Search hotels, stays, or treks..." style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none" }} />
+          <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none" }}>
             <option value="All">All Cities</option>
             <option value="Rishikesh">Rishikesh</option>
             <option value="Uttarkashi">Uttarkashi</option>
-            <option value="Haridwar">Haridwar</option>
           </select>
-          <button onClick={() => navigate("/hotels")} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
+          <button onClick={() => navigate("/hotels")} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer" }}>Search</button>
         </div>
       </section>
 
-      <div className="home-content">
-        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
-        {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
-        {renderScrollSection("Popular Treks", trekExperiences, "trek")}
-
-        <section className="section-wrapper">
-          <h2 className="section-heading">Featured Properties</h2>
-          <div className="home-grid">
-            {listings.map((h) => (
-              <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
-                <img src={h.image} alt={h.name} className="consistent-card-img" />
-                <div className="card-info">
-                  <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
-                  <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
-                </div>
+      {/* 2. Featured Properties (Tripadvisor स्टाइल Grid) */}
+      <section className="section-wrapper">
+        <h2 className="section-title">Featured Properties</h2>
+        <div className="stays-grid">
+          {listings.map((h) => (
+            <div key={h.id} className="tripadvisor-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
+              <img src={h.image} alt={h.name} className="card-img" />
+              <div className="card-body">
+                <h3>{h.name}</h3>
+                <p style={{ color: "#64748b", fontSize: "14px" }}>{h.location}</p>
+                <p className="price-tag">From ₹{h.price || "---"}</p>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        <section className="trust-section">
-          <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
-          <div className="trust-grid">
-            <div className="trust-card">
-              <h2>100+</h2>
-              <h3>Verified Stays</h3>
-            </div>
-            <div className="trust-card">
-              <h2>10k+</h2>
-              <h3>Happy Travelers</h3>
-            </div>
-          </div>
-        </section>
+      {/* 3. पुराने स्क्रॉल सेक्शन्स */}
+      {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
+      {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
+      {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
-        <section style={{ backgroundColor: "#fffcf8", padding: "60px 20px", marginTop: "40px" }}>
-          <div style={{ maxWidth: "1200px", margin: "auto" }}>
-            <h2 className="section-heading">Stories for your inspiration</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "25px", marginTop: "30px" }}>
-              {[
-                { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", desc: "Jyotirlinga is a Hindu shrine dedicated to Lord Shiva.", path: "/blog/jyotirlinga" },
-                { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", desc: "Once Sati Mata's father Daksha Prajapati organized a Yagya...", path: "/blog/shakti-peeth" },
-                { title: "YatraDham.Org से धर्मशाला बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", desc: "YatraDham.org एक बड़ा ऑनलाइन प्लेटफॉर्म है जो भक्तों को...", path: "/blog/yatradham-benefits" }
-              ].map((blog, index) => (
-                <div key={index} onClick={() => navigate(blog.path)} style={{ border: "1px solid #eee", borderRadius: "12px", padding: "15px", background: "#fff", cursor: "pointer" }}>
-                  <img src={blog.img} alt="blog" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }} />
-                  <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold", margin: "15px 0 5px 0" }}>{blog.category}</p>
-                  <h4 style={{ margin: "5px 0", color: "#2d3748" }}>{blog.title}</h4>
-                  <p style={{ fontSize: "13px", color: "#718096" }}>{blog.desc}</p>
-                </div>
-              ))}
+      {/* 4. ट्रस्ट और ब्लॉग सेक्शन */}
+      <section className="trust-section">
+        <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
+        <div className="trust-grid">
+          <div className="trust-card"><h2>100+</h2><h3>Verified Stays</h3></div>
+          <div className="trust-card"><h2>10k+</h2><h3>Happy Travelers</h3></div>
+        </div>
+      </section>
+
+      {/* ब्लॉग फीड */}
+      <section style={{ padding: "60px 20px" }}>
+        <h2 className="section-title">Stories for your inspiration</h2>
+        <div className="home-grid">
+          {[
+            { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", path: "/blog/jyotirlinga" },
+            { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", path: "/blog/shakti-peeth" },
+            { title: "YatraDham.Org से बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", path: "/blog/yatradham-benefits" }
+          ].map((blog, index) => (
+            <div key={index} onClick={() => navigate(blog.path)} className="home-card">
+              <img src={blog.img} alt="blog" className="consistent-card-img" />
+              <div className="card-info">
+                <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold" }}>{blog.category}</p>
+                <h4>{blog.title}</h4>
+              </div>
             </div>
-          </div>
-        </section>
-      </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

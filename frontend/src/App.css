@@ -84,6 +84,28 @@
 .card-info h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: #1e293b; }
 .price-tag { color: #059669; font-weight: 700; font-size: 1rem; }
 
+/* --- TRIPADVISOR STYLE GRID (NEW ADDITION) --- */
+.tripadvisor-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.hero-search { text-align: center; margin: 40px 0; }
+.hero-search input { width: 60%; padding: 15px; border-radius: 30px; border: 1px solid #ddd; outline: none; }
+.stays-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin: 40px auto !important;
+}
+.tripadvisor-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  background: #fff;
+  border: 1px solid #e2e8f0;
+}
+.tripadvisor-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.card-img { width: 100%; height: 200px; object-fit: cover !important; }
+.card-body { padding: 15px; text-align: left; }
+
 /* --- TRUST SECTION --- */
 .trust-section {
   background-color: #002b36; 
@@ -147,57 +169,18 @@
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
-  /* Updated Header Fix */
-  header {
-    width: 100% !important;
-    position: relative !important;
-    overflow: hidden !important;
-    padding: 10px 5px !important;
-  }
+  /* Header Fix */
+  header { width: 100% !important; position: relative !important; overflow: hidden !important; padding: 10px 5px !important; }
+  header > div { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; gap: 10px !important; }
+  header img, header .logo { max-width: 120px !important; }
 
-  header > div {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100% !important;
-    gap: 10px !important;
-  }
-
-  header img, header .logo {
-    max-width: 120px !important;
-  }
-
-  body {
-    overflow-x: hidden !important;
-    width: 100% !important;
-  }
-
-  .sign-up-btn {
-    width: 100% !important;
-    margin-top: 10px !important;
-  }
-
-  .home-container section {
-    height: auto !important; /* Fixed height issue */
-    padding: 20px !important;
-  }
-
-  .home-grid, .trust-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  h1 {
-    font-size: 1.5rem !important;
-  }
-
-  .admin-mobile-menu {
-    display: flex;
-  }
+  /* Grid & General */
+  .home-container section { height: auto !important; padding: 20px !important; }
+  .home-grid, .trust-grid, .stays-grid { grid-template-columns: 1fr !important; }
+  .hero-search input { width: 90% !important; }
   
-  input, textarea, button {
-    font-size: 16px !important;
-    padding: 12px !important;
-  }
+  body { overflow-x: hidden !important; width: 100% !important; }
+  h1 { font-size: 1.5rem !important; }
+  .admin-mobile-menu { display: flex; }
+  input, textarea, button { font-size: 16px !important; padding: 12px !important; }
 }
