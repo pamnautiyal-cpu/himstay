@@ -18,15 +18,32 @@ export default function VisitorCounter() {
 
   return (
     <div style={{ 
-      textAlign: "center", 
-      padding: "20px", 
-      marginTop: "-40px", // हीरो सेक्शन के थोड़ा करीब लाने के लिए
-      marginBottom: "20px",
-      fontSize: "18px", 
-      fontWeight: "bold",
-      color: "#006ce4" // इसे थोड़ा डार्क और साफ नीले रंग में किया है
+      display: "flex", 
+      alignItems: "center", 
+      gap: "8px", 
+      fontSize: "13px", 
+      color: "#475569" 
     }}>
-      Live Visitors: <span>{visitCount}</span>
+      {/* यह छोटा सा गोला रीयल-टाइम GIF जैसा फील देगा */}
+      <span style={{ 
+        height: "8px", 
+        width: "8px", 
+        backgroundColor: "#22c55e", 
+        borderRadius: "50%", 
+        display: "inline-block",
+        animation: "pulse 1.5s infinite"
+      }}></span>
+      
+      <span>Visitors: <strong>{visitCount}</strong></span>
+
+      {/* Pulsing Animation स्टाइल */}
+      <style>{`
+        @keyframes pulse {
+          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+          70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+      `}</style>
     </div>
   );
 }
