@@ -86,25 +86,12 @@
 
 /* --- TRIPADVISOR STYLE GRID --- */
 .tripadvisor-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.hero-search { text-align: center; margin: 40px 0; }
-.hero-search input { width: 60%; padding: 15px; border-radius: 30px; border: 1px solid #ddd; outline: none; }
 .stays-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 30px;
   margin: 40px auto !important;
 }
-.tripadvisor-card {
-  border-radius: 12px;
-  overflow: hidden;
-  transition: 0.3s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  background: #fff;
-  border: 1px solid #e2e8f0;
-}
-.tripadvisor-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-.card-img { width: 100%; height: 200px; object-fit: cover !important; }
-.card-body { padding: 15px; text-align: left; }
 
 /* --- TRUST SECTION --- */
 .trust-section {
@@ -132,45 +119,18 @@
 
 .trust-card h2 { font-size: 2.5rem; color: #00e5ff; margin: 0; }
 .trust-card h3 { margin: 10px 0; }
-.trust-card p { color: #94a3b8; font-size: 0.9rem; }
-
-.small-feature {
-  background: #004554;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  text-align: left;
-}
-
-/* --- ADMIN DASHBOARD --- */
-.admin-mobile-menu { display: none; gap: 10px; margin-bottom: 20px; overflow-x: auto; white-space: nowrap; padding: 10px 0; }
-.admin-mobile-menu button { padding: 8px 16px; border: none; background: #f97316; color: white; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
-.responsive-table-wrap { width: 100%; overflow-x: auto; }
-
-/* --- MOBILE RESPONSIVE --- */
-@media (max-width: 768px) {
-  header { width: 100% !important; position: relative !important; overflow: hidden !important; padding: 10px 5px !important; }
-  header > div { display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; gap: 10px !important; }
-  header img, header .logo { max-width: 120px !important; }
-  .home-container section { height: auto !important; padding: 20px !important; }
-  .home-grid, .trust-grid, .stays-grid { grid-template-columns: 1fr !important; }
-  .hero-search input { width: 90% !important; }
-  body { overflow-x: hidden !important; width: 100% !important; }
-  h1 { font-size: 1.5rem !important; }
-  .admin-mobile-menu { display: flex; }
-  input, textarea, button { font-size: 16px !important; padding: 12px !important; }
-}
 
 /* --- NO RESULTS STYLE --- */
 .no-results-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
 .add-place-btn { padding: 10px 20px; border-radius: 50px; border: 1px solid #000; background: white; cursor: pointer; font-weight: bold; }
 .add-place-btn:hover { background: #f2f2f2; }
 
-/* --- PREMIUM HERO SEARCH STYLE --- */
+/* --- PREMIUM HERO SEARCH STYLE (REPLACED EVERYTHING OLD) --- */
 .hero-search-refined {
   text-align: center;
   padding: 80px 20px;
   background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  margin-bottom: 60px;
 }
 .hero-title {
   font-size: 4rem;
@@ -223,27 +183,11 @@
   cursor: pointer;
 }
 
-/* --- MOBILE RESPONSIVE FIX FOR NEW SEARCH BAR --- */
+/* --- MOBILE RESPONSIVE FIX --- */
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem !important;
-  }
-  .search-input-group {
-    flex-direction: column !important;
-    gap: 10px !important;
-    padding: 10px !important;
-    border-radius: 20px !important;
-  }
-  .search-input-group input {
-    width: 100% !important;
-    padding: 15px !important;
-    font-size: 1rem !important;
-  }
-  .search-actions {
-    width: 100% !important;
-    justify-content: center !important;
-  }
-  .search-main-btn {
-    width: 100% !important;
-  }
+  .hero-title { font-size: 2.5rem !important; }
+  .search-input-group { flex-direction: column !important; gap: 10px !important; padding: 10px !important; border-radius: 20px !important; }
+  .search-input-group input { width: 100% !important; padding: 15px !important; font-size: 1rem !important; }
+  .search-actions { width: 100% !important; justify-content: center !important; }
+  .search-main-btn { width: 100% !important; }
 }
