@@ -147,11 +147,25 @@
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
+  /* Header adjustments */
   header > div {
-    flex-direction: column !important;
-    gap: 15px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 10px !important;
   }
 
+  header {
+    width: 100% !important;
+  }
+
+  .sign-up-btn {
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+
+  /* Existing home container adjustments */
   .home-container section {
     height: 350px !important;
   }
