@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import VisitorCounter from "../components/VisitorCounter"; // इम्पोर्ट सुरक्षित है
 
 export default function Home() {
   const navigate = useNavigate();
@@ -7,11 +8,11 @@ export default function Home() {
 
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
-    { n: "Badrinath", img: "/images/chardham/badrinath.jpg" },
-    { n: "Gangotri", img: "/images/chardham/gangotri.jpg" },
-    { n: "Yamunotri", img: "/images/chardham/yamunotri.jpg" },
-    { n: "Haridwar", img: "/images/destinations/haridwar.jpg" },
-    { n: "Rishikesh", img: "/images/destinations/rishikesh.jpg" }
+    { n: "Badrinath", img: "/images/badrinath.jpg" },
+    { n: "Gangotri", img: "/images/gangotri.jpg" },
+    { n: "Yamunotri", img: "/images/yamunotri.jpg" },
+    { n: "Haridwar", img: "/images/haridwar.jpg" },
+    { n: "Rishikesh", img: "/images/rishikesh.jpg" }
   ];
   const yogaExperiences = [{ n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" }, { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" }, { n: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" }];
   const trekExperiences = [{ n: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" }, { n: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" }, { n: "Roopkund", img: "/images/treks/roopkund.jpg" }];
@@ -60,6 +61,8 @@ export default function Home() {
 
       {/* 2. CONTENT SECTIONS */}
       <div className="home-content">
+        <VisitorCounter /> {/* काउंटर हीरो सेक्शन के नीचे जोड़ा गया है */}
+        
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
@@ -94,7 +97,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* BLOG SECTION - RE-ADDED */}
+        {/* BLOG SECTION */}
         <section style={{ backgroundColor: "#fffcf8", padding: "60px 20px", marginTop: "40px" }}>
           <div style={{ maxWidth: "1200px", margin: "auto" }}>
             <h2 className="section-heading">Stories for your inspiration</h2>
