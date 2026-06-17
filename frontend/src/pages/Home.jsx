@@ -8,7 +8,7 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
-  const [displaySearch, setDisplaySearch] = useState(""); // सर्च बटन के लिए जरूरी
+  const [displaySearch, setDisplaySearch] = useState(""); 
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -26,12 +26,10 @@ export default function Home() {
     fetchListings();
   }, []);
 
-  // सर्च बटन पर क्लिक करने के लिए फंक्शन
   const handleSearch = () => {
     setDisplaySearch(searchTerm);
   };
 
-  // फिल्टर लॉजिक: अब यह displaySearch पर निर्भर है
   const filteredListings = listings.filter((h) => 
     h.name.toLowerCase().includes(displaySearch.toLowerCase()) &&
     (selectedCity === "All" || h.location === selectedCity)
@@ -93,7 +91,8 @@ export default function Home() {
             <option value="Uttarkashi">Uttarkashi</option>
             <option value="Haridwar">Haridwar</option>
           </select>
-          <button onClick={handleSearch} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
+          {/* यहाँ क्लास जोड़ी गई है और स्टाइल हटाया गया है */}
+          <button onClick={handleSearch} className="search-main-btn">Search</button>
         </div>
       </section>
 
@@ -124,7 +123,8 @@ export default function Home() {
             </div>
           )}
         </section>
-
+        
+        {/* बाकी का हिस्सा वैसा ही है */}
         <section className="trust-section">
           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
           <div className="trust-grid">
