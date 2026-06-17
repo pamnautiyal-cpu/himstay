@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; 
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs } from "firebase/firestore"; // collection, getDocs जोड़ दिया
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase";
 
@@ -12,26 +12,35 @@ export default function AdminDashboard() {
   const [uploading, setUploading] = useState(false);
   
   const [pendingHotels, setPendingHotels] = useState([]);
-  const [activeHotels, setActiveHotels] = useState([]); // ✅ Active प्रॉपर्टीज़ के लिए
+  const [activeHotels, setActiveHotels] = useState([]);
+  const [registeredUsers, setRegisteredUsers] = useState([]); // नया स्टेट
 
   useEffect(() => {
     if (isAuth) {
-      // पेंडिंग होटल्स फेच करें
+      // 1. पेंडिंग होटल्स
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/pending`)
         .then((res) => setPendingHotels(res.data))
         .catch((err) => console.error(err));
 
-      // अप्रूव्ड होटल्स फेच करें (Manage के लिए)
+      // 2. अप्रूव्ड होटल्स
       axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/`)
         .then((res) => setActiveHotels(res.data.filter(h => h.isApproved)))
         .catch((err) => console.error(err));
+
+      // 3. Firebase से Registered Users लाएं
+      const fetchUsers = async () => {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        setRegisteredUsers(querySnapshot.docs.map(doc => doc.data()));
+      };
+      fetchUsers();
     }
   }, [isAuth]);
 
+  // ... (approveHotel, deleteHotel, handleLogin, saveBlog फंक्शन्स वही रहेंगे)
   const approveHotel = async (id) => {
     await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/approve/${id}`);
     alert("Property Approved!");
-    window.location.reload(); // पेज रिफ्रेश ताकि लिस्ट अपडेट हो जाए
+    window.location.reload();
   };
 
   const deleteHotel = async (id) => {
@@ -43,40 +52,21 @@ export default function AdminDashboard() {
   };
 
   const handleLogin = () => {
-    if (password === "040788") {
-      setIsAuth(true);
-    } else {
-      alert("Galat Password!");
-    }
+    if (password === "040788") setIsAuth(true);
+    else alert("Galat Password!");
   };
 
   const saveBlog = async () => {
-    if (!blog.id || !blog.title || !imageFile) {
-      return alert("ID, Title aur Image file zaruri hai!");
-    }
-    
+    if (!blog.id || !blog.title || !imageFile) return alert("ID, Title aur Image file zaruri hai!");
     setUploading(true);
     try {
       const storageRef = ref(storage, `blog_images/${blog.id}`);
       await uploadBytes(storageRef, imageFile);
       const url = await getDownloadURL(storageRef);
-
-      await setDoc(doc(db, "blogs", blog.id), {
-        title: blog.title,
-        content: blog.content,
-        img: url,
-        comments: [] 
-      });
-
+      await setDoc(doc(db, "blogs", blog.id), { title: blog.title, content: blog.content, img: url, comments: [] });
       alert("Blog successfully upload ho gaya!");
-      setBlog({ id: "", title: "", content: "" });
-      setImageFile(null);
-    } catch (e) {
-      console.error("Firebase Error: ", e);
-      alert("Error aayi: " + e.message);
-    } finally {
-      setUploading(false);
-    }
+      setBlog({ id: "", title: "", content: "" }); setImageFile(null);
+    } catch (e) { alert("Error: " + e.message); } finally { setUploading(false); }
   };
 
   if (!isAuth) {
@@ -93,14 +83,23 @@ export default function AdminDashboard() {
     <div style={{ padding: "40px", maxWidth: "800px", margin: "auto" }}>
       {/* BLOG SECTION */}
       <h1>Admin Panel - New Blog</h1>
+      {/* ... (ब्लॉग इनपुट फील्ड्स वही रहेंगी) */}
       <input placeholder="Blog ID" value={blog.id} onChange={(e) => setBlog({...blog, id: e.target.value})} style={{ display: "block", width: "100%", padding: "10px", margin: "10px 0" }} />
       <input placeholder="Title" value={blog.title} onChange={(e) => setBlog({...blog, title: e.target.value})} style={{ display: "block", width: "100%", padding: "10px", margin: "10px 0" }} />
       <textarea placeholder="Content" value={blog.content} onChange={(e) => setBlog({...blog, content: e.target.value})} style={{ display: "block", width: "100%", padding: "10px", margin: "10px 0", height: "150px" }} />
-      <label>Select Image:</label>
       <input type="file" onChange={(e) => setImageFile(e.target.files[0])} style={{ display: "block", margin: "10px 0" }} />
-      <button onClick={saveBlog} disabled={uploading} style={{ padding: "10px 20px", background: uploading ? "#ccc" : "#f97316", color: "white", border: "none", borderRadius: "5px", cursor: uploading ? "not-allowed" : "pointer" }}>
-        {uploading ? "Uploading..." : "Post Blog"}
-      </button>
+      <button onClick={saveBlog} disabled={uploading} style={{ padding: "10px 20px", background: "#f97316", color: "white", border: "none", borderRadius: "5px" }}>{uploading ? "Uploading..." : "Post Blog"}</button>
+
+      <hr style={{ margin: "50px 0" }} />
+
+      {/* NEW: REGISTERED USERS */}
+      <h1>Registered Members ({registeredUsers.length})</h1>
+      <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "30px" }}>
+        <thead><tr style={{ background: "#f1f1f1" }}><th style={thStyle}>Name</th><th style={thStyle}>Email</th></tr></thead>
+        <tbody>
+          {registeredUsers.map((u, i) => (<tr key={i}><td style={tdStyle}>{u.name}</td><td style={tdStyle}>{u.email}</td></tr>))}
+        </tbody>
+      </table>
 
       <hr style={{ margin: "50px 0" }} />
 
@@ -114,9 +113,7 @@ export default function AdminDashboard() {
         </div>
       ))}
 
-      <hr style={{ margin: "50px 0" }} />
-
-      {/* ACTIVE HOTELS (DELETE SECTION) */}
+      {/* ACTIVE HOTELS */}
       <h1>Manage Active Properties</h1>
       {activeHotels.map(hotel => (
         <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px", display: "flex", justifyContent: "space-between" }}>
@@ -127,3 +124,6 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+const thStyle = { padding: "10px", border: "1px solid #ddd", textAlign: "left" };
+const tdStyle = { padding: "10px", border: "1px solid #ddd" };
