@@ -39,31 +39,14 @@ export default function Home() {
       {/* 1. PREMIUM HERO SECTION */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
-        height: "500px", 
-        backgroundSize: "cover", 
-        backgroundPosition: "center", 
-        display: "flex", 
-        flexDirection: "column", 
-        justifyContent: "center", 
-        alignItems: "center", 
-        color: "white", 
-        textAlign: "center", 
-        borderRadius: "20px", 
-        marginBottom: "60px", 
-        boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
+        height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
+        flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
+        textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
         <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
           Find your next escape
         </h1>
-        
-        <div style={{ 
-          background: "rgba(255, 255, 255, 0.95)", 
-          padding: "10px", 
-          borderRadius: "50px", 
-          display: "flex", 
-          gap: "10px", 
-          boxShadow: "0 10px 30px rgba(0,0,0,0.2)" 
-        }}>
+        <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
           <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
           <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
             <option value="All">All Cities</option>
@@ -90,33 +73,44 @@ export default function Home() {
                 <img src={h.img} alt={h.name} className="consistent-card-img" />
                 <div className="card-info">
                   <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
-                  <p style={{ color: "#059669", fontWeight: "bold" }}>
-                    {h.price === "0,000" ? "Price on Request" : `INR ${h.price}`}
-                  </p>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* STYLISH TRUST SECTION */}
+        {/* TRUST SECTION */}
         <section className="trust-section">
           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
           <div className="trust-grid">
             <div className="trust-card">
               <h2>100+</h2>
               <h3>Verified Stays</h3>
-              <p>From luxury resorts to hidden homestays, we've got you covered.</p>
             </div>
             <div className="trust-card">
               <h2>10k+</h2>
               <h3>Happy Travelers</h3>
-              <p>Join our growing community exploring the Himalayas.</p>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className="small-feature"><strong>Save more</strong><br/>Get exclusive member discounts.</div>
-              <div className="small-feature"><strong>Experience more</strong><br/>Handpicked local tours.</div>
-              <div className="small-feature"><strong>Always easy</strong><br/>Book entirely on your phone.</div>
+          </div>
+        </section>
+
+        {/* BLOG SECTION - RE-ADDED */}
+        <section style={{ backgroundColor: "#fffcf8", padding: "60px 20px", marginTop: "40px" }}>
+          <div style={{ maxWidth: "1200px", margin: "auto" }}>
+            <h2 className="section-heading">Stories for your inspiration</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "25px", marginTop: "30px" }}>
+              {[
+                { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", desc: "Jyotirlinga is a Hindu shrine dedicated to Lord Shiva.", path: "/blog/jyotirlinga" },
+                { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", desc: "Once Sati Mata's father Daksha Prajapati organized a Yagya...", path: "/blog/shakti-peeth" },
+                { title: "YatraDham.Org से धर्मशाला बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", desc: "YatraDham.org एक बड़ा ऑनलाइन प्लेटफॉर्म है जो भक्तों को...", path: "/blog/yatradham-benefits" }
+              ].map((blog, index) => (
+                <div key={index} onClick={() => navigate(blog.path)} style={{ border: "1px solid #eee", borderRadius: "12px", padding: "15px", background: "#fff", cursor: "pointer" }}>
+                  <img src={blog.img} alt="blog" style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }} />
+                  <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold", margin: "15px 0 5px 0" }}>{blog.category}</p>
+                  <h4 style={{ margin: "5px 0", color: "#2d3748" }}>{blog.title}</h4>
+                  <p style={{ fontSize: "13px", color: "#718096" }}>{blog.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
