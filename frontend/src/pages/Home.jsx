@@ -7,7 +7,8 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // सर्च के लिए नया स्टेट
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [displaySearch, setDisplaySearch] = useState(""); // यह सर्च बटन के लिए है
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -25,10 +26,15 @@ export default function Home() {
     fetchListings();
   }, []);
 
-  // फिल्टर लॉजिक: सर्च टर्म के आधार पर प्रॉपर्टीज को फिल्टर करें
+  // फिल्टर लॉजिक: सर्च और सिटी के आधार पर
   const filteredListings = listings.filter((h) => 
-    h.name.toLowerCase().includes(searchTerm.toLowerCase())
+    h.name.toLowerCase().includes(displaySearch.toLowerCase()) &&
+    (selectedCity === "All" || h.location === selectedCity)
   );
+
+  const handleSearch = () => {
+    setDisplaySearch(searchTerm);
+  };
 
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
@@ -63,7 +69,6 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* पहाड़ वाली बैकग्राउंड इमेज और सर्च बार */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
         height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
@@ -87,7 +92,7 @@ export default function Home() {
             <option value="Uttarkashi">Uttarkashi</option>
             <option value="Haridwar">Haridwar</option>
           </select>
-          <button style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
+          <button onClick={handleSearch} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
         </div>
       </section>
 
@@ -98,8 +103,6 @@ export default function Home() {
 
         <section className="section-wrapper">
           <h2 className="section-title">Featured Properties</h2>
-          
-          {/* यहाँ हमने फिल्टर लॉजिक और सॉरी मैसेज जोड़ा है */}
           {filteredListings.length > 0 ? (
             <div className="home-grid">
               {filteredListings.map((h) => (
@@ -114,9 +117,9 @@ export default function Home() {
             </div>
           ) : (
             <div className="no-results-container" style={{ textAlign: "center", padding: "50px" }}>
-              <h2>Sorry, we couldn't find "{searchTerm}."</h2>
+              <h2>Sorry, we couldn't find "{displaySearch}."</h2>
               <p>Is your search missing a place? Tell us about it.</p>
-              <button className="add-place-btn" onClick={() => setSearchTerm("")}>Clear Search</button>
+              <button className="add-place-btn" onClick={() => {setSearchTerm(""); setDisplaySearch("");}}>Clear Search</button>
             </div>
           )}
         </section>
