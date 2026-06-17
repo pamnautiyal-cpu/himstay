@@ -66,19 +66,36 @@ export default function DetailsPage() {
       
       <p style={{ marginTop: "20px" }}>{data?.description}</p>
 
-      {/* Professional Layout Sections */}
+      {/* Facilities & Check-in */}
       <div style={{ border: "1px solid #e2e8f0", padding: "20px", borderRadius: "12px", margin: "20px 0", display: "flex", gap: "40px" }}>
         <div><h3>Facilities:</h3><p>{data?.facilities || "Food, Parking, CCTV"}</p></div>
         <div><h3>Check-in:</h3><p>12:00 PM | Check-Out: 11:00 AM</p></div>
       </div>
 
+      {/* DYNAMIC ROOM TYPES */}
       <div style={{ margin: "30px 0" }}>
-        <h3>Hotel Pricing</h3>
-        <div style={{ display: "flex", justifyContent: "space-between", padding: "15px", border: "1px solid #eee", borderRadius: "8px" }}>
-          <span><strong>Base Room</strong></span>
-          <span>₹{data?.price}</span>
-          <button onClick={() => setShowModal(true)} style={{ background: "#f97316", color: "white", padding: "10px 20px", border: "none", borderRadius: "5px" }}>Book Now</button>
-        </div>
+        <h3>Hotel Rooms</h3>
+        {data?.rooms && data.rooms.length > 0 ? (
+          data.rooms.map((room, index) => (
+            <div key={index} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px", borderBottom: "1px solid #eee" }}>
+              <span><strong>{room.type}</strong></span>
+              <span>₹{room.price}</span>
+              <button onClick={() => setShowModal(true)} style={{ background: "#f97316", color: "white", padding: "10px 20px", border: "none", borderRadius: "5px", cursor: "pointer" }}>Book Now</button>
+            </div>
+          ))
+        ) : (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px", borderBottom: "1px solid #eee" }}>
+            <span><strong>Base Room</strong></span>
+            <span>₹{data?.price}</span>
+            <button onClick={() => setShowModal(true)} style={{ background: "#f97316", color: "white", padding: "10px 20px", border: "none", borderRadius: "5px", cursor: "pointer" }}>Book Now</button>
+          </div>
+        )}
+      </div>
+
+      {/* TERMS & CONDITIONS */}
+      <div style={{ background: "#f8fafc", padding: "20px", borderRadius: "8px", fontSize: "0.85rem", color: "#64748b", marginTop: "30px" }}>
+        <h3>Terms & Conditions</h3>
+        <p>{data?.terms || "1. Guests must carry valid ID proof. 2. Management is not liable for theft. 3. Food choices are limited."}</p>
       </div>
 
       {showModal && (
