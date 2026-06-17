@@ -1,9 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
+  const [listings, setListings] = useState([]);
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "listings"));
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setListings(data);
+      } catch (error) {
+        console.error("Firebase Fetch Error:", error);
+      }
+    };
+    fetchListings();
+  }, []);
 
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
@@ -15,10 +34,6 @@ export default function Home() {
   ];
   const yogaExperiences = [{ n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" }, { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" }, { n: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" }];
   const trekExperiences = [{ n: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" }, { n: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" }, { n: "Roopkund", img: "/images/treks/roopkund.jpg" }];
-  const featuredHomes = [
-    { name: "VANYA LUXURY RESORT", location: "Bangalore", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" },
-    { name: "Sliceinn Sylva", location: "Bangalore", img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600" }
-  ];
 
   const renderScrollSection = (title, data, category) => (
     <section className="section-wrapper">
@@ -64,15 +79,16 @@ export default function Home() {
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
-        {/* FEATURED HOMES GRID */}
+        {/* FEATURED HOMES GRID - अब यहाँ Firebase का डेटा दिखेगा */}
         <section className="section-wrapper">
-          <h2 className="section-heading">Featured Homes</h2>
+          <h2 className="section-heading">Featured Properties</h2>
           <div className="home-grid">
-            {featuredHomes.map((h, i) => (
-              <div key={i} className="home-card" onClick={() => navigate(`/details/hotel/${h.name}`)}>
-                <img src={h.img} alt={h.name} className="consistent-card-img" />
+            {listings.map((h) => (
+              <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
+                <img src={h.image} alt={h.name} className="consistent-card-img" />
                 <div className="card-info">
                   <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
+                  <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
                 </div>
               </div>
             ))}
