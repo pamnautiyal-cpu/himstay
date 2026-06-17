@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import emailjs from '@emailjs/browser';
 
 export default function ListProperty() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  
+  // 1. LOGIN CHECK - Auth Check
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      alert("Please login to list your property!");
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const [formData, setFormData] = useState({
     name: "", city: "Uttarkashi", location: "", price: "", 
-    phone: "", description: "", 
- 
-    facilities: "", checkIn: "12:00 PM", checkOut: "11:00 AM", roomDetails: ""
+    phone: "", description: "", facilities: "", checkIn: "12:00 PM", checkOut: "11:00 AM", roomDetails: ""
   });
   
   const [files, setFiles] = useState([]); 
@@ -31,24 +40,33 @@ export default function ListProperty() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (files.length === 0) return alert;
+    if (files.length === 0) return alert("Please upload at least one image");
     
     setLoading(true);
     const data = new FormData();
-    
-    for (let key in formData) {
-      data.append(key, formData[key]);
-    }
-    
-    files.forEach((file) => {
-      data.append("images", file);
-    });
+    for (let key in formData) { data.append(key, formData[key]); }
+    files.forEach((file) => { data.append("images", file); });
 
     try {
+      // प्रॉपर्टी सबमिट करें
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
         headers: { "Content-Type": "multipart/form-data" }
       });
-      alert("Property Listed Successfully!");
+
+      // 2. EMAIL NOTIFICATION - सबमिट होने पर ईमेल भेजें
+      await emailjs.send(
+        "service_lvjl1yl", 
+        "template_17qwwpa", 
+        {
+          name: "Admin",
+          title: formData.name, 
+          message: `Location: ${formData.location}, Price: ${formData.price}, Phone: ${formData.phone}`,
+          email: "system@thehimalayans.com"
+        }, 
+        "BN7sU5C5l-KUXpOj"
+      );
+
+      alert("Property Listed Successfully & Email Sent!");
       navigate("/hotels");
     } catch (err) {
       console.error(err);
@@ -62,9 +80,7 @@ export default function ListProperty() {
     <div style={{ maxWidth: "600px", margin: "40px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
       <h2 style={{ textAlign: "center" }}>List Your Property</h2>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        
         <input name="name" placeholder="Hotel Name *" required onChange={handleChange} style={inputStyle} />
-        
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
           <select name="city" onChange={handleChange} style={inputStyle}>
             <option value="Uttarkashi">Uttarkashi</option>
@@ -73,21 +89,16 @@ export default function ListProperty() {
           </select>
           <input name="price" type="number" placeholder="Price/Night *" required onChange={handleChange} style={inputStyle} />
         </div>
-
         <input name="location" placeholder="Full Address *" required onChange={handleChange} style={inputStyle} />
         <input name="phone" placeholder="Contact Number *" required onChange={handleChange} style={inputStyle} />
-        
-        {/* ✅ नई फील्ड्स का UI */}
         <input name="facilities" placeholder="Facilities (e.g., Food, Parking, CCTV)" onChange={handleChange} style={inputStyle} />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
           <input name="checkIn" placeholder="Check-in (e.g. 12:00 PM)" onChange={handleChange} style={inputStyle} />
           <input name="checkOut" placeholder="Check-out (e.g. 11:00 AM)" onChange={handleChange} style={inputStyle} />
         </div>
-        <textarea name="roomDetails" placeholder="Room Details (e.g., 2 Bedroom Set, Double Bed, TV)" onChange={handleChange} style={{...inputStyle, height: "60px"}}></textarea>
-
+        <textarea name="roomDetails" placeholder="Room Details (e.g., 2 Bedroom Set, Double Bed)" onChange={handleChange} style={{...inputStyle, height: "60px"}}></textarea>
         <label style={{ fontSize: "14px", fontWeight: "600" }}>Upload Multiple Images *</label>
         <input type="file" multiple onChange={handleFileChange} style={inputStyle} />
-        
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
           {files.map((file, index) => (
             <div key={index} style={{ padding: "5px 10px", background: "#e2e8f0", borderRadius: "15px", fontSize: "12px" }}>
@@ -95,14 +106,11 @@ export default function ListProperty() {
             </div>
           ))}
         </div>
-
         <textarea name="description" placeholder="Short description..." onChange={handleChange} style={{...inputStyle, height: "80px"}}></textarea>
-        
         <div style={{ fontSize: "13px", color: "#475569", display: "flex", alignItems: "flex-start", gap: "8px" }}>
           <input type="checkbox" required />
           <span>I agree to the Terms & Conditions and confirm all info is verified.</span>
         </div>
-        
         <button type="submit" style={btnStyle} disabled={loading}>
           {loading ? "Uploading..." : "Complete Listing"}
         </button>
