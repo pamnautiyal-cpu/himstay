@@ -37,7 +37,7 @@ export default function Home() {
 
   const renderScrollSection = (title, data, category) => (
     <section className="section-wrapper">
-      <h2 className="section-title">{title}</h2>
+      <h2 className="section-heading">{title}</h2>
       <div className="horizontal-scroll-container">
         {data.map((item, i) => (
           <div key={i} className="scroll-item" onClick={() => {
@@ -57,25 +57,27 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      
-      
-     <section className="hero-search-refined">
-  <h1 className="hero-title">Where to?</h1>
-  <div className="search-box-himalayan">
-    <div className="search-input-group">
-      <input 
-        type="text" 
-        placeholder="Places to go, things to do, hotels..." 
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)} 
-      />
-      <div className="search-actions">
-        <button className="ask-ai-btn">Ask AI</button>
-        <button className="search-main-btn">Search</button>
-      </div>
-    </div>
-  </div>
-</section>
+      {/* ओरिजिनल पहाड़ वाली बैकग्राउंड इमेज और सर्च बार */}
+      <section style={{ 
+        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
+        height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
+        flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
+        textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
+      }}>
+        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
+          Find your next escape
+        </h1>
+        <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
+          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
+          <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
+            <option value="All">All Cities</option>
+            <option value="Rishikesh">Rishikesh</option>
+            <option value="Uttarkashi">Uttarkashi</option>
+            <option value="Haridwar">Haridwar</option>
+          </select>
+          <button onClick={() => navigate("/hotels")} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
+        </div>
+      </section>
 
       <div className="home-content">
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
@@ -83,7 +85,7 @@ export default function Home() {
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
         <section className="section-wrapper">
-          <h2 className="section-title">Featured Properties</h2>
+          <h2 className="section-heading">Featured Properties</h2>
           <div className="home-grid">
             {listings.map((h) => (
               <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
@@ -91,33 +93,6 @@ export default function Home() {
                 <div className="card-info">
                   <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
                   <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="trust-section">
-          <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
-          <div className="trust-grid">
-            <div className="trust-card"><h2>100+</h2><h3>Verified Stays</h3></div>
-            <div className="trust-card"><h2>10k+</h2><h3>Happy Travelers</h3></div>
-          </div>
-        </section>
-
-        <section style={{ padding: "60px 20px" }}>
-          <h2 className="section-title">Stories for your inspiration</h2>
-          <div className="home-grid">
-            {[
-              { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", path: "/blog/jyotirlinga" },
-              { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", path: "/blog/shakti-peeth" },
-              { title: "YatraDham.Org से बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", path: "/blog/yatradham-benefits" }
-            ].map((blog, index) => (
-              <div key={index} onClick={() => navigate(blog.path)} className="home-card">
-                <img src={blog.img} alt="blog" className="consistent-card-img" />
-                <div className="card-info">
-                  <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold" }}>{blog.category}</p>
-                  <h4>{blog.title}</h4>
                 </div>
               </div>
             ))}
