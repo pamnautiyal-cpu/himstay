@@ -7,6 +7,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // सर्च के लिए नया स्टेट
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -23,6 +24,11 @@ export default function Home() {
     };
     fetchListings();
   }, []);
+
+  // फिल्टर लॉजिक: सर्च टर्म के आधार पर प्रॉपर्टीज को फिल्टर करें
+  const filteredListings = listings.filter((h) => 
+    h.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
@@ -57,7 +63,7 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* पहाड़ वाली बैकग्राउंड इमेज और सर्च बार */}
+      {/* पहाड़ वाली बैकग्राउंड इमेज और सर्च बार */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
         height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
@@ -68,14 +74,20 @@ export default function Home() {
           Find your next escape
         </h1>
         <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
-          <input type="text" placeholder="Where to?" style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} />
+          <input 
+            type="text" 
+            placeholder="Where to?" 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} 
+          />
           <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
             <option value="All">All Cities</option>
             <option value="Rishikesh">Rishikesh</option>
             <option value="Uttarkashi">Uttarkashi</option>
             <option value="Haridwar">Haridwar</option>
           </select>
-          <button onClick={() => navigate("/hotels")} style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
+          <button style={{ padding: "15px 30px", background: "#006ce4", color: "white", border: "none", borderRadius: "50px", cursor: "pointer", fontWeight: "bold" }}>Search</button>
         </div>
       </section>
 
@@ -86,20 +98,29 @@ export default function Home() {
 
         <section className="section-wrapper">
           <h2 className="section-title">Featured Properties</h2>
-          <div className="home-grid">
-            {listings.map((h) => (
-              <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
-                <img src={h.image} alt={h.name} className="consistent-card-img" />
-                <div className="card-info">
-                  <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
-                  <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
+          
+          {/* यहाँ हमने फिल्टर लॉजिक और सॉरी मैसेज जोड़ा है */}
+          {filteredListings.length > 0 ? (
+            <div className="home-grid">
+              {filteredListings.map((h) => (
+                <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
+                  <img src={h.image} alt={h.name} className="consistent-card-img" />
+                  <div className="card-info">
+                    <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
+                    <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="no-results-container" style={{ textAlign: "center", padding: "50px" }}>
+              <h2>Sorry, we couldn't find "{searchTerm}."</h2>
+              <p>Is your search missing a place? Tell us about it.</p>
+              <button className="add-place-btn" onClick={() => setSearchTerm("")}>Clear Search</button>
+            </div>
+          )}
         </section>
 
-        {/* ट्रस्ट सेक्शन */}
         <section className="trust-section">
           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
           <div className="trust-grid">
@@ -108,7 +129,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ब्लॉग सेक्शन (Stories for your inspiration) */}
         <section style={{ padding: "60px 20px" }}>
           <h2 className="section-title">Stories for your inspiration</h2>
           <div className="home-grid">

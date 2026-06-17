@@ -222,3 +222,28 @@
   font-size: 1.1rem;
   cursor: pointer;
 }
+
+/* --- MOBILE RESPONSIVE FIX FOR NEW SEARCH BAR --- */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+  .search-input-group {
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 10px !important;
+    border-radius: 20px !important;
+  }
+  .search-input-group input {
+    width: 100% !important;
+    padding: 15px !important;
+    font-size: 1rem !important;
+  }
+  .search-actions {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .search-main-btn {
+    width: 100% !important;
+  }
+}
