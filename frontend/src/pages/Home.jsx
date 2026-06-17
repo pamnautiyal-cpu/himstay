@@ -8,7 +8,7 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
-  const [displaySearch, setDisplaySearch] = useState(""); // यह सर्च बटन के लिए है
+  const [displaySearch, setDisplaySearch] = useState(""); // सर्च बटन के लिए जरूरी
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -26,15 +26,16 @@ export default function Home() {
     fetchListings();
   }, []);
 
-  // फिल्टर लॉजिक: सर्च और सिटी के आधार पर
+  // सर्च बटन पर क्लिक करने के लिए फंक्शन
+  const handleSearch = () => {
+    setDisplaySearch(searchTerm);
+  };
+
+  // फिल्टर लॉजिक: अब यह displaySearch पर निर्भर है
   const filteredListings = listings.filter((h) => 
     h.name.toLowerCase().includes(displaySearch.toLowerCase()) &&
     (selectedCity === "All" || h.location === selectedCity)
   );
-
-  const handleSearch = () => {
-    setDisplaySearch(searchTerm);
-  };
 
   const uttarakhandExperiences = [
     { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
