@@ -40,7 +40,17 @@ export default function Home() {
       <h2 className="section-heading">{title}</h2>
       <div className="horizontal-scroll-container">
         {data.map((item, i) => (
-          <div key={i} className="scroll-item" onClick={() => navigate(`/details/${category}/${item.n || item.name}`)}>
+          <div 
+            key={i} 
+            className="scroll-item" 
+            onClick={() => {
+              if (["tourism", "yoga", "trek"].includes(category)) {
+                window.open(`https://www.google.com/search?q=${item.n || item.name}`, "_blank");
+              } else {
+                navigate(`/details/${category}/${item.n || item.name}`);
+              }
+            }}
+          >
             <img src={item.img} alt={item.n || item.name} className="consistent-card-img" />
             <h3 style={{ marginTop: "10px", fontSize: "14px" }}>{item.n || item.name}</h3>
           </div>
@@ -51,7 +61,6 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* 1. PREMIUM HERO SECTION */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
         height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
@@ -73,13 +82,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. CONTENT SECTIONS */}
       <div className="home-content">
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
 
-        {/* FEATURED HOMES GRID - अब यहाँ Firebase का डेटा दिखेगा */}
         <section className="section-wrapper">
           <h2 className="section-heading">Featured Properties</h2>
           <div className="home-grid">
@@ -95,7 +102,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TRUST SECTION */}
         <section className="trust-section">
           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
           <div className="trust-grid">
@@ -110,7 +116,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* BLOG SECTION */}
         <section style={{ backgroundColor: "#fffcf8", padding: "60px 20px", marginTop: "40px" }}>
           <div style={{ maxWidth: "1200px", margin: "auto" }}>
             <h2 className="section-heading">Stories for your inspiration</h2>
