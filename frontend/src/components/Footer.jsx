@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import VisitorCounter from "../components/VisitorCounter"; // इम्पोर्ट सुरक्षित है
 
 export default function Footer() {
   return (
@@ -47,9 +48,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "20px", display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#475569" }}>
+        <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", color: "#475569" }}>
           <div>© {new Date().getFullYear()} The Himalayans · All rights reserved.</div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          
+          {/* Visitor Counter यहाँ जोड़ा गया है */}
+          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+            <VisitorCounter />
             <span>🇮🇳 India (INR ₹)</span>
           </div>
         </div>

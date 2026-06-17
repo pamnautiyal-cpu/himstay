@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import VisitorCounter from "../components/VisitorCounter"; // इम्पोर्ट सुरक्षित है
 
 export default function Home() {
   const navigate = useNavigate();
@@ -61,8 +60,6 @@ export default function Home() {
 
       {/* 2. CONTENT SECTIONS */}
       <div className="home-content">
-        <VisitorCounter /> {/* काउंटर हीरो सेक्शन के नीचे जोड़ा गया है */}
-        
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
         {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
         {renderScrollSection("Popular Treks", trekExperiences, "trek")}
