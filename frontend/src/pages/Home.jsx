@@ -83,6 +83,7 @@ export default function Home() {
             placeholder="Where to?" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
             style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} 
           />
           <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
@@ -91,8 +92,7 @@ export default function Home() {
             <option value="Uttarkashi">Uttarkashi</option>
             <option value="Haridwar">Haridwar</option>
           </select>
-          {/* यहाँ क्लास जोड़ी गई है और स्टाइल हटाया गया है */}
-          <button onClick={handleSearch} className="search-main-btn">Search</button>
+          <button type="button" onClick={handleSearch} className="search-main-btn">Search</button>
         </div>
       </section>
 
@@ -123,8 +123,7 @@ export default function Home() {
             </div>
           )}
         </section>
-        
-        {/* बाकी का हिस्सा वैसा ही है */}
+
         <section className="trust-section">
           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
           <div className="trust-grid">
