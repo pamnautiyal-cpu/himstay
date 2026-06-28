@@ -68,33 +68,36 @@ export default function Home() {
 
   return (
     <div className="home-container">
+      {/* Hero Section */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
-        height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
+        height: "450px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
         flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
-        textAlign: "center", borderRadius: "20px", marginBottom: "60px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
+        textAlign: "center", borderRadius: "20px", marginBottom: "80px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
       }}>
-        <h1 style={{ fontSize: "3.5rem", marginBottom: "20px", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
+        <h1 style={{ fontSize: "3.5rem", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
           Find your next escape
         </h1>
-        <div style={{ background: "rgba(255, 255, 255, 0.95)", padding: "10px", borderRadius: "50px", display: "flex", gap: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}>
-          <input 
-            type="text" 
-            placeholder="Where to?" 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
-            style={{ padding: "15px 25px", border: "none", borderRadius: "50px", outline: "none", color: "#333" }} 
-          />
-          <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", borderRadius: "50px", outline: "none", color: "#666" }}>
-            <option value="All">All Cities</option>
-            <option value="Rishikesh">Rishikesh</option>
-            <option value="Uttarkashi">Uttarkashi</option>
-            <option value="Haridwar">Haridwar</option>
-          </select>
-          <button type="button" onClick={handleSearch} className="search-main-btn">Search</button>
-        </div>
       </section>
+
+      {/* Floating Search Bar */}
+      <div className="hero-search-refined">
+        <input 
+          type="text" 
+          placeholder="Where to?" 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+          style={{ flex: 1, padding: "15px 25px", border: "none", outline: "none", fontSize: "1.1rem", background: "transparent" }} 
+        />
+        <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", outline: "none", color: "#666", fontSize: "1.1rem", background: "transparent" }}>
+          <option value="All">All Cities</option>
+          <option value="Rishikesh">Rishikesh</option>
+          <option value="Uttarkashi">Uttarkashi</option>
+          <option value="Haridwar">Haridwar</option>
+        </select>
+        <button type="button" onClick={handleSearch} className="search-main-btn">Search</button>
+      </div>
 
       <div className="home-content">
         {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
