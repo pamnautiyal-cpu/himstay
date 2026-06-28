@@ -26,6 +26,9 @@ export default function Home() {
     fetchListings();
   }, []);
 
+  // डायनामिक शहरों की लिस्ट बनाना
+  const uniqueCities = ["All", ...new Set(listings.map((h) => h.location).filter(Boolean))];
+
   const handleSearch = () => {
     setDisplaySearch(searchTerm);
   };
@@ -68,7 +71,6 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* Hero Section */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
         height: "450px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
@@ -80,7 +82,7 @@ export default function Home() {
         </h1>
       </section>
 
-      {/* Premium Floating Search Bar */}
+      {/* Dynamic Floating Search Bar */}
       <div className="hero-search-refined">
         <input 
           type="text" 
@@ -90,10 +92,9 @@ export default function Home() {
           onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
         />
         <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
-          <option value="All">All Cities</option>
-          <option value="Rishikesh">Rishikesh</option>
-          <option value="Uttarkashi">Uttarkashi</option>
-          <option value="Haridwar">Haridwar</option>
+          {uniqueCities.map((city) => (
+            <option key={city} value={city}>{city}</option>
+          ))}
         </select>
         <button type="button" onClick={handleSearch} className="search-main-btn">Search</button>
       </div>
@@ -120,8 +121,7 @@ export default function Home() {
           ) : (
             <div className="no-results-container" style={{ textAlign: "center", padding: "50px" }}>
               <h2>Sorry, we couldn't find "{displaySearch}."</h2>
-              <p>Is your search missing a place? Tell us about it.</p>
-              <button className="add-place-btn" onClick={() => {setSearchTerm(""); setDisplaySearch("");}}>Clear Search</button>
+              <button className="add-place-btn" onClick={() => {setSearchTerm(""); setDisplaySearch(""); setSelectedCity("All");}}>Clear Search</button>
             </div>
           )}
         </section>
@@ -131,25 +131,6 @@ export default function Home() {
           <div className="trust-grid">
             <div className="trust-card"><h2>100+</h2><h3>Verified Stays</h3></div>
             <div className="trust-card"><h2>10k+</h2><h3>Happy Travelers</h3></div>
-          </div>
-        </section>
-
-        <section style={{ padding: "60px 20px" }}>
-          <h2 className="section-title">Stories for your inspiration</h2>
-          <div className="home-grid">
-            {[
-              { title: "12 Jyotirlinga Name with Photos", category: "EVENTS", img: "https://images.unsplash.com/photo-1583937107767-f31f9b3ec763?w=500", path: "/blog/jyotirlinga" },
-              { title: "51 Shakti Peeth List with Name, Location", category: "EVENTS", img: "https://images.unsplash.com/photo-1599666433231-0570077c5c16?w=500", path: "/blog/shakti-peeth" },
-              { title: "YatraDham.Org से बुकिंग के फायदे", category: "EVENTS", img: "https://images.unsplash.com/photo-1544644181-1484b3fdf362?w=500", path: "/blog/yatradham-benefits" }
-            ].map((blog, index) => (
-              <div key={index} onClick={() => navigate(blog.path)} className="home-card">
-                <img src={blog.img} alt="blog" className="consistent-card-img" />
-                <div className="card-info">
-                  <p style={{ color: "#f97316", fontSize: "12px", fontWeight: "bold" }}>{blog.category}</p>
-                  <h4>{blog.title}</h4>
-                </div>
-              </div>
-            ))}
           </div>
         </section>
       </div>
