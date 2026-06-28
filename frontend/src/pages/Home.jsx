@@ -26,8 +26,10 @@ export default function Home() {
     fetchListings();
   }, []);
 
-  // डायनामिक शहरों की लिस्ट बनाना
-  const uniqueCities = ["All", ...new Set(listings.map((h) => h.location).filter(Boolean))];
+  // Fixed list + Dynamic list combining
+  const majorCities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Dehradun", "Delhi", "Mumbai", "Other"];
+  const dbCities = [...new Set(listings.map((h) => h.location).filter(Boolean))];
+  const cityOptions = [...new Set([...majorCities, ...dbCities])];
 
   const handleSearch = () => {
     setDisplaySearch(searchTerm);
@@ -71,6 +73,7 @@ export default function Home() {
 
   return (
     <div className="home-container">
+      {/* Hero Section */}
       <section style={{ 
         backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
         height: "450px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
@@ -92,7 +95,7 @@ export default function Home() {
           onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
         />
         <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
-          {uniqueCities.map((city) => (
+          {cityOptions.map((city) => (
             <option key={city} value={city}>{city}</option>
           ))}
         </select>
