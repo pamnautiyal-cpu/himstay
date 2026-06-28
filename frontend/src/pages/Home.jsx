@@ -80,7 +80,7 @@ export default function Home() {
         </h1>
       </section>
 
-      {/* Floating Search Bar */}
+      {/* Premium Floating Search Bar */}
       <div className="hero-search-refined">
         <input 
           type="text" 
@@ -88,9 +88,8 @@ export default function Home() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
-          style={{ flex: 1, padding: "15px 25px", border: "none", outline: "none", fontSize: "1.1rem", background: "transparent" }} 
         />
-        <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} style={{ padding: "15px", border: "none", outline: "none", color: "#666", fontSize: "1.1rem", background: "transparent" }}>
+        <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
           <option value="All">All Cities</option>
           <option value="Rishikesh">Rishikesh</option>
           <option value="Uttarkashi">Uttarkashi</option>
