@@ -8,7 +8,6 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // यूजर का स्टेट ट्रैक करें
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
@@ -18,6 +17,17 @@ export default function Navbar() {
   const handleLogout = async () => {
     await signOut(auth);
     navigate("/");
+  };
+
+  // सभी नेविगेशन लिंक्स के लिए एक जैसी कॉमन स्टाइल
+  const navLinkStyle = {
+    color: "#e2e8f0",
+    textDecoration: "none",
+    fontSize: "14px",
+    fontWeight: "500",
+    padding: "6px 10px",
+    borderRadius: "6px",
+    transition: "all 0.2s ease"
   };
 
   return (
@@ -37,24 +47,16 @@ export default function Navbar() {
         </Link>
 
         {/* Navigation Links */}
-        <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-          <Link to="/hotels" style={{ color: "#e2e8f0", textDecoration: "none", fontSize: "14px", transition: "0.3s" }}>🏨 Hotels</Link>
-          <Link to="/mytrips" style={{ color: "#e2e8f0", textDecoration: "none", fontSize: "14px", transition: "0.3s" }}>🧳 My Trips</Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+          <Link to="/hotels" style={navLinkStyle}>🏨 Hotels</Link>
+          <Link to="/mytrips" style={navLinkStyle}>🧳 My Trips</Link>
+          <Link to="/offers" style={navLinkStyle}>🔥 Offers</Link>
+          <Link to="/admin/bookings" style={navLinkStyle}>🛠️ Admin</Link>
+          <Link to="/list-property" style={navLinkStyle}>📢 List Property</Link>
           
-          <Link to="/offers" style={{ color: "#f59e0b", textDecoration: "none", fontSize: "14px", fontWeight: "600" }}>🔥 Offers</Link>
-          
-          <Link to="/admin/bookings" style={{ color: "#94a3b8", textDecoration: "none", fontSize: "12px", border: "1px solid #475569", padding: "4px 10px", borderRadius: "6px" }}>
-            Admin
-          </Link>
-
-          <Link to="/list-property" style={{ color: "#38bdf8", textDecoration: "none", fontWeight: "600", fontSize: "14px" }}>
-            📢 List Property
-          </Link>
-          
-          <div style={{ height: "24px", width: "1px", background: "#475569" }} /> 
+          <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 5px" }} /> 
           
           {user ? (
-            /* अगर लॉगिन है तो ये दिखेगा */
             <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
               <span style={{ color: "#fff", fontSize: "13px", fontWeight: "500" }}>Hi, {user.email.split('@')[0]}</span>
               <button 
@@ -65,9 +67,8 @@ export default function Navbar() {
               </button>
             </div>
           ) : (
-            /* अगर लॉगिन नहीं है तो ये दिखेगा */
             <>
-              <Link to="/login" style={{ color: "#fff", textDecoration: "none", fontSize: "14px", fontWeight: "500" }}>🔐 Login</Link>
+              <Link to="/login" style={navLinkStyle}>🔐 Login</Link>
               <Link to="/signup" style={{ background: "#22c55e", padding: "8px 20px", borderRadius: "8px", color: "#fff", textDecoration: "none", fontWeight: "bold", fontSize: "14px", transition: "0.3s" }}>Sign up</Link>
             </>
           )}
