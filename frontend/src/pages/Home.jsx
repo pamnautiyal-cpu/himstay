@@ -5,6 +5,7 @@ import { db } from "../firebase";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("Hotels"); // Hotels, Treks, Yoga
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
@@ -40,167 +41,155 @@ export default function Home() {
     fetchListings();
   }, []);
 
-  const majorCities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Dehradun", "Delhi", "Mumbai", "Other"];
+  const majorCities = ["All", "Rishikesh", "Uttarkashi", "Kedarnath", "Badrinath", "Haridwar", "Dehradun", "Delhi", "Mumbai"];
   const dbCities = [...new Set(listings.map((h) => h.location).filter(Boolean))];
   const cityOptions = [...new Set([...majorCities, ...dbCities])];
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
-    if (!searchTerm && selectedCity === "All") return;
-    navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}`);
+    navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${activeTab}`);
   };
 
-  const uttarakhandExperiences = [
-    { name: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
-    { name: "Badrinath", img: "/images/chardham/badrinath.jpg" },
-    { name: "Gangotri", img: "/images/chardham/gangotri.jpg" },
-    { name: "Yamunotri", img: "/images/chardham/yamunotri.jpg" }
-  ];
-
-  const yogaExperiences = [
-    { name: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" },
-    { name: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
-    { name: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" },
-    { name: "Panchakarma", img: "/images/yoga/panchakarma.jpg" }
-  ];
-
-  const trekExperiences = [
-    { name: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" },
-    { name: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" },
-    { name: "Roopkund", img: "/images/treks/roopkund.jpg" },
-    { name: "Har Ki Dun", img: "/images/treks/har-ki-dun.jpg" },
-    { name: "Nag Tibba", img: "/images/treks/nag-tibba.jpg" }
-  ];
-
-  const blogPosts = [
+  // Featured Hotel & Stay Ads / Listings for Home Page to give true Travel Portal feel
+  const featuredStays = [
     {
-      title: "10 Essential Tips for Your First Kedarkantha Trek",
-      date: "May 12, 2026",
-      desc: "Everything you need to know about weather, packing, and fitness before embarking on the winter wonderland trek.",
-      img: "/images/treks/kedarkantha.jpg"
+      id: "1",
+      title: "Himalayan Eco Lodge & Retreat",
+      location: "Uttarkashi",
+      price: "₹2,499",
+      rating: "4.8",
+      type: "Hotel",
+      img: "/images/hero/himalayas.jpg"
     },
     {
-      title: "Finding Peace: A Guide to Rishikesh Yoga Retreats",
-      date: "April 28, 2026",
-      desc: "Discover the best ashrams and holistic healing centers nestled along the banks of the holy Ganges.",
+      id: "2",
+      title: "Ganges Riverside Ashram & Yoga Stay",
+      location: "Rishikesh",
+      price: "₹1,899",
+      rating: "4.9",
+      type: "Yoga",
       img: "/images/yoga/himalayan-yoga-retreat.jpg"
     },
     {
-      title: "Exploring the Mystical Trails of Valley of Flowers",
-      date: "April 15, 2026",
-      desc: "A breathtaking journey through UNESCO's World Heritage site filled with endemic alpine flowers.",
-      img: "/images/treks/valley-of-flowers.jpg"
+      id: "3",
+      title: "Kedarkantha Base Camp Wooden Cottage",
+      location: "Sankri, Kedarkantha",
+      price: "₹3,199",
+      rating: "4.7",
+      type: "Trek",
+      img: "/images/treks/kedarkantha.jpg"
+    },
+    {
+      id: "4",
+      title: "Badrinath Pilgrim Valley Hotel",
+      location: "Badrinath",
+      price: "₹2,200",
+      rating: "4.6",
+      type: "Hotel",
+      img: "/images/chardham/badrinath.jpg"
     }
   ];
 
-  // Helper function to render sections with custom colorful subtitles and reduced gap
-  const renderCardSection = (title, subtitle, subtitleColor, data) => (
-    <section style={{ margin: "28px 0" }}>
-      <div style={{ marginBottom: "12px", borderLeft: "4px solid " + subtitleColor, paddingLeft: "10px" }}>
-        <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: 0 }}>
-          {title}
-        </h2>
-        <p style={{ fontSize: "13px", fontWeight: "600", color: subtitleColor, margin: "2px 0 0 0" }}>
-          {subtitle}
-        </p>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "16px" }}>
-        {data.map((item, i) => (
-          <div 
-            key={i} 
-            onClick={() => window.open(`https://www.google.com/search?q=${item.name}`, "_blank")}
-            style={{
-              background: "#fff",
-              borderRadius: "12px",
-              overflow: "hidden",
-              border: "1px solid #e2e8f0",
-              cursor: "pointer",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease"
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.06)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.03)";
-            }}
-          >
-            <img 
-              src={item.img} 
-              alt={item.name} 
-              style={{ width: "100%", height: "150px", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hero/himalayas.jpg"; }}
-            />
-            <div style={{ padding: "12px" }}>
-              <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#1e293b", margin: 0 }}>{item.name}</h3>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+  // Combine Firebase listings with hardcoded featured stays
+  const allDisplayListings = listings.length > 0 ? [...listings, ...featuredStays] : featuredStays;
 
   return (
-    <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "40px" }}>
+    <div style={{ fontFamily: "sans-serif", background: "#f1f5f9", minHeight: "100vh", paddingBottom: "50px" }}>
       
-      {/* Hero Banner */}
+      {/* MakeMyTrip Style Floating Search Widget Banner */}
       <div style={{
         position: "relative",
-        backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('${heroImages[currentSlide]}')`,
+        backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.6), rgba(11, 19, 43, 0.8)), url('${heroImages[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "85px 20px",
+        padding: "70px 20px 90px 20px",
         textAlign: "center",
         color: "white",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
         transition: "background-image 1s ease-in-out"
       }}>
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h1 style={{ fontSize: "40px", fontWeight: "800", marginBottom: "10px", letterSpacing: "-0.5px" }}>
-            Find Your Next Escape
+        <div style={{ maxWidth: "850px", margin: "0 auto" }}>
+          <h1 style={{ fontSize: "38px", fontWeight: "800", marginBottom: "8px" }}>
+            Book Your Himalayan Experience
           </h1>
-          <p style={{ fontSize: "16px", color: "#e2e8f0", marginBottom: "30px", fontWeight: "400" }}>
-            Discover breathtaking stays, holy shrines, and peaceful mountain retreats across Uttarakhand.
+          <p style={{ fontSize: "16px", color: "#cbd5e1", marginBottom: "30px" }}>
+            Handpicked Hotels, Sacred Char Dham Stays, Yoga Retreats & Trekking Camps
           </p>
 
-          <form onSubmit={handleSearch} style={{
+          {/* MMT Style Search Box Container */}
+          <div style={{
             background: "white",
-            padding: "8px",
-            borderRadius: "12px",
-            display: "flex",
-            gap: "8px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-            maxWidth: "720px",
-            margin: "0 auto",
-            border: "1px solid #e2e8f0"
+            borderRadius: "16px",
+            padding: "16px",
+            boxShadow: "0 15px 35px rgba(0,0,0,0.25)",
+            textAlign: "left",
+            color: "#0f172a"
           }}>
-            <input 
-              type="text" 
-              placeholder="Where to explore?" 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
-              style={{ flex: 2, padding: "10px 14px", border: "1px solid #cbd5e1", borderRadius: "8px", fontSize: "14px", outline: "none" }}
-            />
-            <select 
-              value={selectedCity} 
-              onChange={(e) => setSelectedCity(e.target.value)}
-              style={{ flex: 1, padding: "10px 14px", border: "1px solid #cbd5e1", borderRadius: "8px", fontSize: "14px", outline: "none", background: "#fff" }}
-            >
-              {cityOptions.map((city) => (
-                <option key={city} value={city}>{city}</option>
+            {/* Tabs inside Search Widget */}
+            <div style={{ display: "flex", gap: "12px", marginBottom: "15px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px" }}>
+              {[
+                { id: "Hotels", label: "🏨 Hotels & Stays" },
+                { id: "Yoga", label: "🌿 Yoga Retreats" },
+                { id: "Treks", label: "⚡ Trekking Camps" }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    background: activeTab === tab.id ? "#e0f2fe" : "transparent",
+                    color: activeTab === tab.id ? "#0284c7" : "#64748b",
+                    border: activeTab === tab.id ? "1px solid #bae6fd" : "1px solid transparent",
+                    padding: "8px 16px",
+                    borderRadius: "20px",
+                    fontWeight: "700",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                    transition: "0.2s"
+                  }}
+                >
+                  {tab.label}
+                </button>
               ))}
-            </select>
-            <button type="button" onClick={handleSearch} style={{
-              background: "#0ea5e9", color: "white", border: "none", padding: "10px 24px", 
-              borderRadius: "8px", fontWeight: "700", fontSize: "14px", cursor: "pointer", transition: "0.2s"
-            }}>
-              Search
-            </button>
-          </form>
+            </div>
 
+            {/* Inputs Form */}
+            <form onSubmit={handleSearch} style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+              <div style={{ flex: 2, minWidth: "220px" }}>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#64748b", textTransform: "uppercase", marginBottom: "4px" }}>City / Destination</label>
+                <select 
+                  value={selectedCity} 
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  style={{ width: "100%", padding: "12px", border: "1px solid #cbd5e1", borderRadius: "10px", fontSize: "14px", outline: "none", background: "#f8fafc", fontWeight: "600" }}
+                >
+                  {cityOptions.map((city) => (
+                    <option key={city} value={city}>{city}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ flex: 3, minWidth: "240px" }}>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#64748b", textTransform: "uppercase", marginBottom: "4px" }}>Search Property / Keyword</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Riverside Cottage, Kedarnath Hotel..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ width: "100%", padding: "12px", border: "1px solid #cbd5e1", borderRadius: "10px", fontSize: "14px", outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
+
+              <div style={{ flex: 1, minWidth: "140px", alignSelf: "flex-end" }}>
+                <button type="submit" style={{
+                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "13px", 
+                  borderRadius: "10px", fontWeight: "700", fontSize: "15px", cursor: "pointer", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.4)"
+                }}>
+                  SEARCH
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Slide Dots */}
           <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "20px" }}>
             {heroImages.map((_, idx) => (
               <span 
@@ -220,93 +209,167 @@ export default function Home() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1200px", margin: "25px auto 0", padding: "0 20px" }}>
+      <div style={{ maxWidth: "1200px", margin: "30px auto 0", padding: "0 20px" }}>
         
-        {/* Trust Badges */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "15px", marginBottom: "20px" }}>
-          <div style={badgeStyle}>
-            <span style={{ fontSize: "24px" }}>🏔️</span>
+        {/* Trust Badges Bar */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "15px", marginBottom: "35px" }}>
+          <div style={badgeCardStyle}>
+            <span style={{ fontSize: "26px" }}>🛡️</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>100+ Verified Stays</h4>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Handpicked mountain properties.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>100% Verified Properties</h4>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Direct verified stays with best prices.</p>
             </div>
           </div>
-          <div style={badgeStyle}>
-            <span style={{ fontSize: "24px" }}>🛡️</span>
+          <div style={badgeCardStyle}>
+            <span style={{ fontSize: "26px" }}>⚡</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>Secure Booking</h4>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Safe instant confirmations.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>Instant Confirmation</h4>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Get booking details instantly on SMS & Email.</p>
             </div>
           </div>
-          <div style={badgeStyle}>
-            <span style={{ fontSize: "24px" }}>📞</span>
+          <div style={badgeCardStyle}>
+            <span style={{ fontSize: "26px" }}>📞</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>24/7 Local Support</h4>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Assistance on your journey.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>24/7 Pahadi Support</h4>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Dedicated local assistance during Yatra.</p>
             </div>
           </div>
         </div>
 
-        {/* Card Sections with Distinct Subtitle Colors */}
-        {renderCardSection("Uttarakhand Tourism", "✨ Divine Shrines & Sacred Char Dham Trails", "#0284c7", uttarakhandExperiences)}
-        {renderCardSection("Yoga & Wellness", "🌿 Rejuvenate Body & Soul in Mountain Silence", "#059669", yogaExperiences)}
-        {renderCardSection("Popular Treks", "⚡ Thrilling Alpine Routes & Snowy Expeditions", "#d97706", trekExperiences)}
-
-        {/* Travel Stories & Blogs */}
-        <section style={{ margin: "35px 0" }}>
-          <div style={{ marginBottom: "12px", borderLeft: "4px solid #7c3aed", paddingLeft: "10px" }}>
-            <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: 0 }}>
-              Travel Stories & Blogs
+        {/* Live Hotels & Stay Ads Section */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
+          <div>
+            <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>
+              🔥 Handpicked Stays & Retreat Ads
             </h2>
-            <p style={{ fontSize: "13px", fontWeight: "600", color: "#7c3aed", margin: "2px 0 0 0" }}>
-              📖 Insider Guides, Tips & Himalayan Experiences
-            </p>
+            <p style={{ fontSize: "13px", color: "#64748b", margin: "3px 0 0 0" }}>Explore top-rated hotels, yoga centers, and mountain camps</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
-            {blogPosts.map((blog, index) => (
-              <div 
-                key={index} 
-                style={{ background: "#fff", borderRadius: "12px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }} 
-                onClick={() => window.open(`https://www.google.com/search?q=${blog.title}`, "_blank")}
-              >
-                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "15px" }}>
-                  <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: "700", textTransform: "uppercase" }}>{blog.date}</span>
-                  <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#1e293b", margin: "6px 0" }}>{blog.title}</h3>
-                  <p style={{ fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>{blog.desc}</p>
+          <button 
+            onClick={() => navigate("/stays")}
+            style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}
+          >
+            View All Stays →
+          </button>
+        </div>
+
+        {/* Property Grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "20px" }}>
+          {allDisplayListings.map((item, index) => (
+            <div 
+              key={item.id || index}
+              onClick={() => navigate(`/stays`)}
+              style={{
+                background: "#fff",
+                borderRadius: "14px",
+                overflow: "hidden",
+                border: "1px solid #e2e8f0",
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.04)";
+              }}
+            >
+              <div style={{ position: "relative" }}>
+                <img 
+                  src={item.img || item.image || "/images/hero/himalayas.jpg"} 
+                  alt={item.title || item.name} 
+                  style={{ width: "100%", height: "170px", objectFit: "cover" }} 
+                  onError={(e) => { e.target.src = "/images/hero/himalayas.jpg"; }}
+                />
+                <span style={{
+                  position: "absolute", top: "10px", right: "10px", background: "rgba(15, 23, 42, 0.8)",
+                  color: "white", padding: "3px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700"
+                }}>
+                  ⭐ {item.rating || "4.8"}
+                </span>
+              </div>
+
+              <div style={{ padding: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
+                    📍 {item.location || "Uttarakhand"}
+                  </span>
+                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "6px 0 10px 0", lineHeight: "1.3" }}>
+                    {item.title || item.name}
+                  </h3>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "10px" }}>
+                  <div>
+                    <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
+                    <span style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a" }}>{item.price || "₹2,499"}</span>
+                    <span style={{ fontSize: "11px", color: "#64748b" }}> / night</span>
+                  </div>
+                  <button style={{
+                    background: "#0284c7", color: "white", border: "none", padding: "8px 14px",
+                    borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer"
+                  }}>
+                    Book Now
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+          ))}
+        </div>
 
-        {/* Stats Section */}
-        <section style={{ marginTop: "40px", background: "#0f172a", color: "#fff", padding: "35px 20px", borderRadius: "18px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.8rem", marginBottom: "25px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
-          <div style={{ display: "flex", justifyContent: "center", gap: "50px", flexWrap: "wrap" }}>
-            <div>
-              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>100+</h2>
-              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Verified Stays</h3>
-            </div>
-            <div>
-              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>10k+</h2>
-              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Happy Travelers</h3>
-            </div>
+        {/* Banner Strip for Char Dham / Special Packages */}
+        <div style={{
+          marginTop: "50px",
+          background: "linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)",
+          borderRadius: "18px",
+          padding: "35px 30px",
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "20px",
+          boxShadow: "0 10px 25px rgba(15, 23, 42, 0.2)"
+        }}>
+          <div>
+            <span style={{ background: "#0ea5e9", color: "white", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "700", textTransform: "uppercase" }}>
+              Special Yatra Season Offer
+            </span>
+            <h2 style={{ fontSize: "24px", fontWeight: "800", margin: "10px 0 5px 0" }}>
+              Char Dham Yatra Stays & Cabs Package
+            </h2>
+            <p style={{ fontSize: "14px", color: "#cbd5e1", margin: 0 }}>
+              Get flat 15% off on booking Kedarnath & Badrinath premium stays together.
+            </p>
           </div>
-        </section>
+          <button 
+            onClick={() => navigate("/stays")}
+            style={{
+              background: "#38bdf8", color: "#0f172a", border: "none", padding: "12px 24px",
+              borderRadius: "10px", fontWeight: "800", fontSize: "14px", cursor: "pointer", transition: "0.2s"
+            }}
+          >
+            Explore Packages
+          </button>
+        </div>
 
       </div>
     </div>
   );
 }
 
-const badgeStyle = {
+const badgeCardStyle = {
   background: "white",
-  padding: "15px",
+  padding: "16px",
   borderRadius: "12px",
   border: "1px solid #e2e8f0",
   display: "flex",
   alignItems: "center",
-  gap: "12px",
+  gap: "14px",
   boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
 };
