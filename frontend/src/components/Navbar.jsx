@@ -24,8 +24,9 @@ export default function Navbar() {
     textDecoration: "none",
     fontSize: "13px",
     fontWeight: "600",
-    padding: "6px 10px",
+    padding: "6px 8px",
     borderRadius: "6px",
+    whiteSpace: "nowrap",
     transition: "all 0.2s ease-in-out",
   };
 
@@ -33,7 +34,7 @@ export default function Navbar() {
     <header style={{ 
       background: "rgba(11, 19, 43, 0.98)", 
       backdropFilter: "blur(10px)",
-      padding: "12px 30px", 
+      padding: "12px 24px", 
       borderBottom: "1px solid rgba(51, 65, 85, 0.6)",
       position: "sticky",
       top: 0,
@@ -41,38 +42,35 @@ export default function Navbar() {
       boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
       fontFamily: "'Inter', system-ui, sans-serif"
     }}>
-      <div style={{ maxWidth: 1300, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+      <div style={{ maxWidth: 1350, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         
         {/* Brand Name */}
-        <Link to="/" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "22px", letterSpacing: "0.5px", display: "flex", alignItems: "center", gap: "8px" }}>
+        <Link to="/" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "20px", letterSpacing: "0.5px", display: "flex", alignItems: "center", gap: "8px", whiteSpace: "nowrap" }}>
           <span>🏔️</span> The Himalayans
         </Link>
 
-        {/* Central Category Links (Char Dham, Yoga, Treks, etc.) */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+        {/* Combined & Compact Navigation Links */}
+        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
           <Link to="/chardham" style={navLinkStyle}>Char Dham</Link>
           <Link to="/stays" style={navLinkStyle}>Stays</Link>
-          <Link to="/yoga" style={navLinkStyle}>Yoga & Wellness</Link>
-          <Link to="/treks" style={navLinkStyle}>Alpine Treks</Link>
+          <Link to="/yoga" style={navLinkStyle}>Yoga</Link>
+          <Link to="/treks" style={navLinkStyle}>Treks</Link>
           <Link to="/cabs" style={navLinkStyle}>Transfers</Link>
           <Link to="/blogs" style={navLinkStyle}>Guides</Link>
           <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "700" }}>🔥 Offers</Link>
-        </div>
-
-        {/* Right Side Actions (Hotels, Admin, Login/Signup) */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link to="/mytrips" style={navLinkStyle}>🧳 My Trips</Link>
           <Link to="/list-property" style={navLinkStyle}>📢 List Property</Link>
           <Link to="/admin" style={navLinkStyle}>🛠️ Admin</Link>
-          
-          <div style={{ height: "20px", width: "1px", background: "#475569", margin: "0 4px" }} /> 
-          
+        </div>
+
+        {/* Right Side Authentication (Login / Signup) */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", whiteSpace: "nowrap" }}>
           {user ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <span style={{ color: "#cbd5e1", fontSize: "12px", fontWeight: "500" }}>Hi, {user.email.split('@')[0]}</span>
               <button 
                 onClick={handleLogout} 
-                style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", padding: "5px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontWeight: "600", transition: "0.2s" }}
+                style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", padding: "5px 10px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", fontWeight: "600", transition: "0.2s" }}
               >
                 Logout
               </button>
