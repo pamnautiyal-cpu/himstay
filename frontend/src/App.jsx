@@ -16,7 +16,7 @@ import Terms from "./pages/Terms";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
 import AdminDashboard from "./pages/AdminDashboard";
-import Search from "./components/Search"; // ✅ सर्च पेज को यहाँ इम्पोर्ट किया गया है
+import Search from "./components/Search";
 import "./App.css";
 
 export default function App() {
@@ -30,7 +30,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} /> {/* ✅ यह नया सर्च रूट जोड़ा गया है */}
+          <Route path="/search" element={<Search />} />
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />
@@ -43,7 +43,7 @@ export default function App() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
-          <Route path="/admin/post" element={<AdminDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </Layout>
     </HelmetProvider>
