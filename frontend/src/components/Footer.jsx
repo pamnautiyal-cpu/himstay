@@ -35,6 +35,7 @@ export default function Footer() {
             <h4 style={columnTitleStyle}>Partners</h4>
             <ul style={ulStyle}>
               <li><Link to="/list-property" style={linkStyle}>List your property</Link></li>
+              <li><Link to="/admin/bookings" style={linkStyle}>Admin Bookings</Link></li>
               <li><span style={linkStyle}>Partner Help</span></li>
             </ul>
           </div>

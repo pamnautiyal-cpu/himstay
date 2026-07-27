@@ -52,7 +52,7 @@ export default function Navbar() {
           <Link to="/hotels" style={navLinkStyle}>🏨 Hotels</Link>
           <Link to="/mytrips" style={navLinkStyle}>🧳 My Trips</Link>
           <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}>🔥 Offers</Link>
-          <Link to="/admin/bookings" style={navLinkStyle}>🛠️ Admin</Link>
+          <Link to="/admin" style={navLinkStyle}>🛠️ Admin</Link>
           <Link to="/list-property" style={navLinkStyle}>📢 List Property</Link>
           
           <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 8px" }} /> 
