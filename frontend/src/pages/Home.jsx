@@ -9,20 +9,19 @@ export default function Home() {
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
 
-  // 🌟 Hero Banner Slideshow Images (लोकल फोल्डर वाली इमेजेस जो ऑटो-रोटेट होंगी)
+  // 🌟 Hero section ke liye specially designed wide/landscape Unsplash images jo kabi nahi phategi
   const heroImages = [
-    "/images/hero/himalayas.jpg",
-    "/images/chardham/kedarnath.jpg",
-    "/images/chardham/badrinath.jpg",
-    "/images/treks/kedarkantha.jpg"
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600",
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600",
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600",
+    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1600"
   ];
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // हर 4 सेकंड में बैनर इमेज बदलने का इफ़ेक्ट
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(slideInterval);
   }, [heroImages.length]);
 
@@ -141,13 +140,13 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "60px" }}>
       
-      {/* 🌟 Live Auto-Sliding Hero Banner */}
+      {/* 🌟 Professional Wide Hero Banner with Smooth Sliding */}
       <div style={{
         position: "relative",
-        backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.55), rgba(11, 19, 43, 0.75)), url('${heroImages[currentSlide]}')`,
+        backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('${heroImages[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "110px 20px",
+        padding: "100px 20px",
         textAlign: "center",
         color: "white",
         boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
