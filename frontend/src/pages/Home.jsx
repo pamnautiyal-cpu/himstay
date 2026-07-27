@@ -62,6 +62,28 @@ export default function Home() {
     { n: "Nag Tibba", img: "/images/treks/nag-tibba.jpg" }
   ];
 
+  // Blog / Travel Stories Data
+  const blogPosts = [
+    {
+      title: "10 Essential Tips for Your First Kedarkantha Trek",
+      date: "May 12, 2026",
+      desc: "Everything you need to know about weather, packing, and fitness before embarking on the winter wonderland trek.",
+      img: "/images/treks/kedarkantha.jpg"
+    },
+    {
+      title: "Finding Peace: A Guide to Rishikesh Yoga Retreats",
+      date: "April 28, 2026",
+      desc: "Discover the best ashrams and holistic healing centers nestled along the banks of the holy Ganges.",
+      img: "/images/yoga/himalayan-yoga-retreat.jpg"
+    },
+    {
+      title: "Exploring the Mystical Trails of Valley of Flowers",
+      date: "April 15, 2026",
+      desc: "A breathtaking journey through UNESCO's World Heritage site filled with endemic alpine flowers.",
+      img: "/images/treks/valley-of-flowers.jpg"
+    }
+  ];
+
   const renderScrollSection = (title, data, category) => (
     <section className="section-wrapper">
       <h2 className="section-title">{title}</h2>
@@ -140,7 +162,24 @@ export default function Home() {
           )}
         </section>
 
-        <section className="trust-section">
+        {/* Blog / Travel Stories Section */}
+        <section className="section-wrapper" style={{ marginTop: "60px" }}>
+          <h2 className="section-title">Travel Stories & Blogs</h2>
+          <div className="home-grid">
+            {blogPosts.map((blog, index) => (
+              <div key={index} className="home-card" style={{ cursor: "pointer" }} onClick={() => window.open(`https://www.google.com/search?q=${blog.title}`, "_blank")}>
+                <img src={blog.img} alt={blog.title} className="consistent-card-img" />
+                <div className="card-info" style={{ padding: "15px" }}>
+                  <span style={{ fontSize: "12px", color: "#0071c2", fontWeight: "600" }}>{blog.date}</span>
+                  <h3 style={{ fontSize: "16px", margin: "8px 0" }}>{blog.title}</h3>
+                  <p style={{ fontSize: "13px", color: "#64748b" }}>{blog.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="trust-section" style={{ marginTop: "60px" }}>
           <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
           <div className="trust-grid">
             <div className="trust-card"><h2>100+</h2><h3>Verified Stays</h3></div>
