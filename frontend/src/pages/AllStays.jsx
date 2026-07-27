@@ -46,7 +46,16 @@ export default function AllStays() {
 
   return (
     <div className="stays-page-wrap" style={{ padding: "20px" }}> 
-      <h1 style={{ textAlign: "center", marginBottom: "30px" }}>Stays in Uttarakhand</h1>
+      
+      {/* 🌟 Professional Header Section */}
+      <div style={{ textAlign: "center", marginBottom: "35px", padding: "0 20px" }}>
+        <h1 style={{ fontSize: "32px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
+          Stays in Uttarakhand
+        </h1>
+        <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "650px", margin: "0 auto", lineHeight: "1.5" }}>
+          Discover handpicked mountain retreats, cozy homestays, and scenic luxury hotels crafted for an unforgettable Himalayan experience.
+        </p>
+      </div>
       
       {/* अपडेटेड CSS Grid जो कार्ड्स को छोटा और रिस्पॉन्सिव रखेगा */}
       <div className="hotel-grid-container" style={{ 
@@ -74,10 +83,10 @@ export default function AllStays() {
                 ₹{hotel.price} <small style={{ color: "#999" }}>per night</small>
               </div>
               <button className="view-btn" style={{ 
-                  width: "100%", padding: "8px", background: "#006ce4", 
-                  color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" 
-                }}
-                onClick={() => navigate(`/hotels/${hotel._id}`)}
+                width: "100%", padding: "8px", background: "#006ce4", 
+                color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" 
+              }}
+              onClick={() => navigate(`/hotels/${hotel._id}`)}
               >
                 View Details
               </button>
