@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // पेज बदलने के लिए
-import { auth } from "../firebase"; // अपना firebase पाथ चेक कर लें
+import { useNavigate } from "react-router-dom";
+import { auth, db } from "../firebase"; // 'db' इम्पोर्ट करना जरूरी है
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore"; // Firestore के लिए
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -10,10 +11,28 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    if (!email || !password) return alert("Please fill all fields");
+    if (!email || !password || !name) return alert("Please fill all fields");
     
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // 1. Firebase Authentication में यूजर बनाएं
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // 2. Firestore की 'users' कलेक्शन में यूजर का डेटा सेव करें (ताकि Admin Panel में दिखे)
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: name,
+        email: email,
+        createdAt: new Date().toISOString()
+      });
+
+      // 3. localStorage में भी सेशन सेव करें (ताकि ListProperty आदि काम करे)
+      localStorage.setItem("user", JSON.stringify({
+        uid: user.uid,
+        email: user.email,
+        name: name
+      }));
+
       alert("Account created successfully!");
       navigate("/"); // साइनअप के बाद होम पेज पर भेजें
     } catch (error) {
@@ -27,18 +46,21 @@ export default function Signup() {
 
       <input 
         placeholder="Full Name" 
+        value={name}
         onChange={(e) => setName(e.target.value)}
         style={{ width: "100%", margin: 8, padding: 10, boxSizing: "border-box" }} 
       />
       <input 
         type="email" 
         placeholder="Email" 
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
         style={{ width: "100%", margin: 8, padding: 10, boxSizing: "border-box" }} 
       />
       <input 
         type="password" 
         placeholder="Password" 
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
         style={{ width: "100%", margin: 8, padding: 10, boxSizing: "border-box" }} 
       />

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase"; 
+import { auth, db } from "../firebase"; 
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,20 +13,29 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
       
       // ✅ LOGIC UPDATE: Firebase login ke baad localStorage mein user save karein
-      // Hum user object ka 'uid' aur 'email' store kar rahe hain
       localStorage.setItem("user", JSON.stringify({
-        uid: userCredential.user.uid,
-        email: userCredential.user.email
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName || email.split("@")[0]
       }));
+
+      // ✅ ADMIN SYNC: Firestore ki 'users' collection mein bhi data save karein taaki Admin Dashboard mein dikhe
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName || email.split("@")[0],
+        lastLogin: new Date().toISOString()
+      }, { merge: true });
       
-      console.log("Login successful:", userCredential.user);
+      console.log("Login successful:", user);
       setMessage("Login successful!");
 
-      // डैशबोर्ड पर भेजें
+      // डैशबोर्ड या होम पेज पर भेजें (आप चाहें तो यहाँ "/" या "/dashboard" रख सकते हैं)
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/");
       }, 1000);
       
     } catch (err) {
