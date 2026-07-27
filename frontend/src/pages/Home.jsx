@@ -9,7 +9,6 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
-  const [activeCategoryModal, setActiveCategoryModal] = useState(null); // 🌟 Modal state for category details
 
   const heroImages = [
     "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600",
@@ -88,55 +87,30 @@ export default function Home() {
 
   const allDisplayListings = listings.length > 0 ? listings : defaultStays;
 
-  // Detailed data for categories to show in popup modal
-  const uttarakhandExperiences = [
-    { name: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
-    { name: "Badrinath", img: "/images/chardham/badrinath.jpg" },
-    { name: "Gangotri", img: "/images/chardham/gangotri.jpg" },
-    { name: "Yamunotri", img: "/images/chardham/yamunotri.jpg" }
-  ];
-
-  const yogaExperiences = [
-    { name: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" },
-    { name: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
-    { name: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" },
-    { name: "Panchakarma", img: "/images/yoga/panchakarma.jpg" }
-  ];
-
-  const trekExperiences = [
-    { name: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" },
-    { name: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" },
-    { name: "Roopkund", img: "/images/treks/roopkund.jpg" },
-    { name: "Har Ki Dun", img: "/images/treks/har-ki-dun.jpg" },
-    { name: "Nag Tibba", img: "/images/treks/nag-tibba.jpg" }
-  ];
-
+  // Category Banners with distinct route paths
   const categoryBanners = [
     {
       title: "Uttarakhand Tourism",
       subtitle: "✨ Divine Shrines & Sacred Char Dham Trails",
-      color: "#0284c7",
       img: "/images/chardham/kedarnath.jpg",
-      data: uttarakhandExperiences
+      path: "/category/tourism"
     },
     {
       title: "Yoga & Wellness",
       subtitle: "🌿 Rejuvenate Body & Soul in Mountain Silence",
-      color: "#059669",
       img: "/images/yoga/himalayan-yoga-retreat.jpg",
-      data: yogaExperiences
+      path: "/category/yoga"
     },
     {
       title: "Popular Treks",
       subtitle: "⚡ Thrilling Alpine Routes & Snowy Expeditions",
-      color: "#d97706",
       img: "/images/treks/kedarkantha.jpg",
-      data: trekExperiences
+      path: "/category/treks"
     }
   ];
 
   return (
-    <div style={{ fontFamily: "sans-serif", background: "#f1f5f9", minHeight: "100vh", paddingBottom: "50px", position: "relative" }}>
+    <div style={{ fontFamily: "sans-serif", background: "#f1f5f9", minHeight: "100vh", paddingBottom: "50px" }}>
       
       {/* MakeMyTrip Style Search Widget Banner */}
       <div style={{
@@ -360,7 +334,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Explore Himalayan Categories Cards */}
+        {/* Explore Himalayan Categories Cards (Opens separate page) */}
         <div style={{ marginBottom: "20px" }}>
           <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", marginBottom: "15px" }}>
             🌟 Explore Himalayan Categories
@@ -369,7 +343,7 @@ export default function Home() {
             {categoryBanners.map((cat, idx) => (
               <div 
                 key={idx}
-                onClick={() => setActiveCategoryModal(cat)} // 🌟 Opens modal popup with all details
+                onClick={() => navigate(cat.path)} // 🌟 Navigates to a separate dedicated page route
                 style={{
                   position: "relative",
                   borderRadius: "16px",
@@ -394,7 +368,7 @@ export default function Home() {
                   </span>
                   <h3 style={{ fontSize: "20px", fontWeight: "800", margin: 0, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     {cat.title}
-                    <span style={{ fontSize: "16px", background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "8px" }}>View All →</span>
+                    <span style={{ fontSize: "16px", background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "8px" }}>Explore →</span>
                   </h3>
                 </div>
               </div>
@@ -418,67 +392,6 @@ export default function Home() {
         </section>
 
       </div>
-
-      {/* 🌟 POPUP MODAL FOR CATEGORY DETAILS */}
-      {activeCategoryModal && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-          background: "rgba(11, 19, 43, 0.75)", zIndex: 1000,
-          display: "flex", justifyContent: "center", alignItems: "center", padding: "20px"
-        }}>
-          <div style={{
-            background: "white", borderRadius: "20px", maxWidth: "800px", width: "100%",
-            maxHeight: "85vh", overflowY: "auto", padding: "30px", position: "relative",
-            boxShadow: "0 25px 50px rgba(0,0,0,0.3)"
-          }}>
-            {/* Close Button */}
-            <button 
-              onClick={() => setActiveCategoryModal(null)}
-              style={{
-                position: "absolute", top: "20px", right: "20px", background: "#f1f5f9",
-                border: "none", fontSize: "18px", fontWeight: "800", width: "36px", height: "36px",
-                borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#0f172a"
-              }}
-            >
-              ✕
-            </button>
-
-            <span style={{ fontSize: "13px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
-              {activeCategoryModal.subtitle}
-            </span>
-            <h2 style={{ fontSize: "26px", fontWeight: "800", color: "#0f172a", margin: "6px 0 20px 0" }}>
-              {activeCategoryModal.title} Details
-            </h2>
-
-            {/* Grid of items inside category */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "16px" }}>
-              {activeCategoryModal.data.map((item, i) => (
-                <div 
-                  key={i}
-                  onClick={() => {
-                    setActiveCategoryModal(null);
-                    window.open(`https://www.google.com/search?q=${item.name}`, "_blank");
-                  }}
-                  style={{
-                    background: "#f8fafc", borderRadius: "12px", overflow: "hidden",
-                    border: "1px solid #e2e8f0", cursor: "pointer", transition: "0.2s",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.03)"
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-3px)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
-                >
-                  <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} />
-                  <div style={{ padding: "14px" }}>
-                    <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: 0 }}>{item.name}</h3>
-                    <span style={{ fontSize: "12px", color: "#0284c7", fontWeight: "700", display: "inline-block", marginTop: "6px" }}>Read More →</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }
