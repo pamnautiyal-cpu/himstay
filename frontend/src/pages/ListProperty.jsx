@@ -7,11 +7,11 @@ export default function ListProperty() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   
-  // 1. LOGIN CHECK - Auth Check
+  // 1. LOGIN CHECK - Auth Check (यदि यूजर लॉगिन नहीं है तो लॉगिन पेज पर भेजें)
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      alert("Please login to list your property!");
+      alert("Please login first to list your property!");
       navigate("/login");
     }
   }, [navigate]);
@@ -47,6 +47,12 @@ export default function ListProperty() {
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
 
+    // किस यूजर ने प्रॉपर्टी लिस्ट की है, उसकी जानकारी जोड़ें
+    const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+    if (currentUser.email) {
+      data.append("ownerEmail", currentUser.email);
+    }
+
     try {
       // प्रॉपर्टी सबमिट करें
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
@@ -58,9 +64,9 @@ export default function ListProperty() {
         "service_lvjl1yl", 
         "template_17qwwpa", 
         {
-          name: "Admin",
+          name: currentUser.name || "Admin",
           title: formData.name, 
-          message: `Location: ${formData.location}, Price: ${formData.price}, Phone: ${formData.phone}`,
+          message: `Location: ${formData.location}, Price: ${formData.price}, Phone: ${formData.phone}, Owner: ${currentUser.email || 'N/A'}`,
           email: "system@thehimalayans.com"
         }, 
         "BN7sU5C5l-KUXpOj"
