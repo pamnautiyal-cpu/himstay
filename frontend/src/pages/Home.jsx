@@ -9,7 +9,6 @@ export default function Home() {
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
 
-  // 🌟 Firebase Listings Fetch (पुराने कोड से सुरक्षित)
   useEffect(() => {
     const fetchListings = async () => {
       try {
@@ -30,7 +29,6 @@ export default function Home() {
   const dbCities = [...new Set(listings.map((h) => h.location).filter(Boolean))];
   const cityOptions = [...new Set([...majorCities, ...dbCities])];
 
-  // 🌟 Dynamic Search Handler (पुराने लॉजिक के साथ)
   const handleSearch = (e) => {
     if (e) e.preventDefault();
     if (!searchTerm && selectedCity === "All") return;
@@ -38,23 +36,25 @@ export default function Home() {
   };
 
   const uttarakhandExperiences = [
-    { name: "Kedarnath", img: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a566?w=600" },
-    { name: "Badrinath", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600" },
-    { name: "Gangotri", img: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=600" },
-    { name: "Yamunotri", img: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600" }
+    { name: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
+    { name: "Badrinath", img: "/images/chardham/badrinath.jpg" },
+    { name: "Gangotri", img: "/images/chardham/gangotri.jpg" },
+    { name: "Yamunotri", img: "/images/chardham/yamunotri.jpg" }
   ];
 
   const yogaExperiences = [
-    { name: "Ayurvedic Therapy", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600" },
-    { name: "Himalayan Yoga", img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600" },
-    { name: "Meditation", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600" },
-    { name: "Panchakarma", img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=600" }
+    { name: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" },
+    { name: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
+    { name: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" },
+    { name: "Panchakarma", img: "/images/yoga/panchakarma.jpg" }
   ];
 
   const trekExperiences = [
-    { name: "Kedarkantha", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600" },
-    { name: "Valley of Flowers", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600" },
-    { name: "Nag Tibba", img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600" }
+    { name: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" },
+    { name: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" },
+    { name: "Roopkund", img: "/images/treks/roopkund.jpg" },
+    { name: "Har Ki Dun", img: "/images/treks/har-ki-dun.jpg" },
+    { name: "Nag Tibba", img: "/images/treks/nag-tibba.jpg" }
   ];
 
   const blogPosts = [
@@ -62,19 +62,19 @@ export default function Home() {
       title: "10 Essential Tips for Your First Kedarkantha Trek",
       date: "May 12, 2026",
       desc: "Everything you need to know about weather, packing, and fitness before embarking on the winter wonderland trek.",
-      img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600"
+      img: "/images/treks/kedarkantha.jpg"
     },
     {
       title: "Finding Peace: A Guide to Rishikesh Yoga Retreats",
       date: "April 28, 2026",
       desc: "Discover the best ashrams and holistic healing centers nestled along the banks of the holy Ganges.",
-      img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600"
+      img: "/images/yoga/himalayan-yoga-retreat.jpg"
     },
     {
       title: "Exploring the Mystical Trails of Valley of Flowers",
       date: "April 15, 2026",
       desc: "A breathtaking journey through UNESCO's World Heritage site filled with endemic alpine flowers.",
-      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600"
+      img: "/images/treks/valley-of-flowers.jpg"
     }
   ];
 
@@ -110,7 +110,7 @@ export default function Home() {
               src={item.img} 
               alt={item.name} 
               style={{ width: "100%", height: "160px", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600"; }}
+              onError={(e) => { e.target.src = "/images/hero/himalayas.jpg"; }}
             />
             <div style={{ padding: "15px" }}>
               <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: 0 }}>{item.name}</h3>
@@ -124,10 +124,12 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "60px" }}>
       
-      {/* 🌟 1. Full-Width Premium Hero Banner with Advanced Search */}
+      {/* Hero Banner with Local Background Image */}
       <div style={{
         position: "relative",
-        background: "linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600') center/cover no-repeat",
+        backgroundImage: "linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('/images/hero/himalayas.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         padding: "90px 20px",
         textAlign: "center",
         color: "white",
@@ -141,7 +143,6 @@ export default function Home() {
             Discover breathtaking stays, holy shrines, and peaceful mountain retreats across Uttarakhand.
           </p>
 
-          {/* Floating Search Bar (Connected to Firebase City options & Search route) */}
           <form onSubmit={handleSearch} style={{
             background: "white",
             padding: "10px",
@@ -182,7 +183,7 @@ export default function Home() {
 
       <div style={{ maxWidth: "1200px", margin: "40px auto 0", padding: "0 20px" }}>
         
-        {/* 🌟 2. Trust Badges Section */}
+        {/* Trust Badges */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px", marginBottom: "30px" }}>
           <div style={badgeStyle}>
             <span style={{ fontSize: "28px" }}>🏔️</span>
@@ -207,12 +208,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🌟 3. Card Sections */}
         {renderCardSection("Uttarakhand Tourism", uttarakhandExperiences)}
         {renderCardSection("Yoga & Wellness", yogaExperiences)}
         {renderCardSection("Popular Treks", trekExperiences)}
 
-        {/* 🌟 4. Travel Stories & Blogs Section */}
+        {/* Travel Stories & Blogs */}
         <section className="section-wrapper" style={{ margin: "50px 0" }}>
           <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#0f172a", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
             Travel Stories & Blogs
@@ -235,7 +235,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 🌟 5. Stats / Why Choose Us Section */}
+        {/* Stats Section */}
         <section style={{ marginTop: "70px", background: "#0f172a", color: "#fff", padding: "50px 20px", borderRadius: "24px", textAlign: "center" }}>
           <h2 style={{ fontSize: "2.2rem", marginBottom: "35px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
           <div style={{ display: "flex", justifyContent: "center", gap: "60px", flexWrap: "wrap" }}>
