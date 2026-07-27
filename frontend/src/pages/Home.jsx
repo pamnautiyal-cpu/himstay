@@ -9,7 +9,6 @@ export default function Home() {
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
 
-  // 🌟 Hero section ke liye specially designed wide/landscape Unsplash images jo kabi nahi phategi
   const heroImages = [
     "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600",
@@ -94,42 +93,48 @@ export default function Home() {
     }
   ];
 
-  const renderCardSection = (title, data) => (
-    <section className="section-wrapper" style={{ margin: "45px 0" }}>
-      <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#0f172a", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
-        {title}
-      </h2>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
+  // Helper function to render sections with custom colorful subtitles and reduced gap
+  const renderCardSection = (title, subtitle, subtitleColor, data) => (
+    <section style={{ margin: "28px 0" }}>
+      <div style={{ marginBottom: "12px", borderLeft: "4px solid " + subtitleColor, paddingLeft: "10px" }}>
+        <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: 0 }}>
+          {title}
+        </h2>
+        <p style={{ fontSize: "13px", fontWeight: "600", color: subtitleColor, margin: "2px 0 0 0" }}>
+          {subtitle}
+        </p>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "16px" }}>
         {data.map((item, i) => (
           <div 
             key={i} 
             onClick={() => window.open(`https://www.google.com/search?q=${item.name}`, "_blank")}
             style={{
               background: "#fff",
-              borderRadius: "14px",
+              borderRadius: "12px",
               overflow: "hidden",
               border: "1px solid #e2e8f0",
               cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
               transition: "transform 0.2s ease, box-shadow 0.2s ease"
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-4px)";
-              e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.08)";
+              e.currentTarget.style.transform = "translateY(-3px)";
+              e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.06)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.03)";
+              e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.03)";
             }}
           >
             <img 
               src={item.img} 
               alt={item.name} 
-              style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+              style={{ width: "100%", height: "150px", objectFit: "cover" }} 
               onError={(e) => { e.target.src = "/images/hero/himalayas.jpg"; }}
             />
-            <div style={{ padding: "15px" }}>
-              <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: 0 }}>{item.name}</h3>
+            <div style={{ padding: "12px" }}>
+              <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#1e293b", margin: 0 }}>{item.name}</h3>
             </div>
           </div>
         ))}
@@ -138,36 +143,36 @@ export default function Home() {
   );
 
   return (
-    <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "60px" }}>
+    <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "40px" }}>
       
-      {/* 🌟 Professional Wide Hero Banner with Smooth Sliding */}
+      {/* Hero Banner */}
       <div style={{
         position: "relative",
         backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('${heroImages[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "100px 20px",
+        padding: "85px 20px",
         textAlign: "center",
         color: "white",
         boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
         transition: "background-image 1s ease-in-out"
       }}>
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <h1 style={{ fontSize: "42px", fontWeight: "800", marginBottom: "12px", letterSpacing: "-0.5px" }}>
+          <h1 style={{ fontSize: "40px", fontWeight: "800", marginBottom: "10px", letterSpacing: "-0.5px" }}>
             Find Your Next Escape
           </h1>
-          <p style={{ fontSize: "18px", color: "#e2e8f0", marginBottom: "35px", fontWeight: "400" }}>
+          <p style={{ fontSize: "16px", color: "#e2e8f0", marginBottom: "30px", fontWeight: "400" }}>
             Discover breathtaking stays, holy shrines, and peaceful mountain retreats across Uttarakhand.
           </p>
 
           <form onSubmit={handleSearch} style={{
             background: "white",
-            padding: "10px",
-            borderRadius: "14px",
+            padding: "8px",
+            borderRadius: "12px",
             display: "flex",
-            gap: "10px",
+            gap: "8px",
             boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-            maxWidth: "750px",
+            maxWidth: "720px",
             margin: "0 auto",
             border: "1px solid #e2e8f0"
           }}>
@@ -177,35 +182,34 @@ export default function Home() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
-              style={{ flex: 2, padding: "12px 16px", border: "1px solid #cbd5e1", borderRadius: "10px", fontSize: "15px", outline: "none" }}
+              style={{ flex: 2, padding: "10px 14px", border: "1px solid #cbd5e1", borderRadius: "8px", fontSize: "14px", outline: "none" }}
             />
             <select 
               value={selectedCity} 
               onChange={(e) => setSelectedCity(e.target.value)}
-              style={{ flex: 1, padding: "12px 16px", border: "1px solid #cbd5e1", borderRadius: "10px", fontSize: "15px", outline: "none", background: "#fff" }}
+              style={{ flex: 1, padding: "10px 14px", border: "1px solid #cbd5e1", borderRadius: "8px", fontSize: "14px", outline: "none", background: "#fff" }}
             >
               {cityOptions.map((city) => (
                 <option key={city} value={city}>{city}</option>
               ))}
             </select>
             <button type="button" onClick={handleSearch} style={{
-              background: "#0ea5e9", color: "white", border: "none", padding: "12px 28px", 
-              borderRadius: "10px", fontWeight: "700", fontSize: "15px", cursor: "pointer", transition: "0.2s"
+              background: "#0ea5e9", color: "white", border: "none", padding: "10px 24px", 
+              borderRadius: "8px", fontWeight: "700", fontSize: "14px", cursor: "pointer", transition: "0.2s"
             }}>
               Search
             </button>
           </form>
 
-          {/* Slide Indicator Dots */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "25px" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "20px" }}>
             {heroImages.map((_, idx) => (
               <span 
                 key={idx} 
                 onClick={() => setCurrentSlide(idx)}
                 style={{
-                  width: currentSlide === idx ? "24px" : "8px",
-                  height: "8px",
-                  borderRadius: "4px",
+                  width: currentSlide === idx ? "20px" : "6px",
+                  height: "6px",
+                  borderRadius: "3px",
                   background: currentSlide === idx ? "#38bdf8" : "rgba(255,255,255,0.4)",
                   cursor: "pointer",
                   transition: "all 0.3s ease"
@@ -216,54 +220,60 @@ export default function Home() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1200px", margin: "40px auto 0", padding: "0 20px" }}>
+      <div style={{ maxWidth: "1200px", margin: "25px auto 0", padding: "0 20px" }}>
         
         {/* Trust Badges */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "20px", marginBottom: "30px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "15px", marginBottom: "20px" }}>
           <div style={badgeStyle}>
-            <span style={{ fontSize: "28px" }}>🏔️</span>
+            <span style={{ fontSize: "24px" }}>🏔️</span>
             <div>
-              <h4 style={{ margin: "0 0 4px 0", color: "#0f172a" }}>100+ Verified Stays</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>Handpicked mountain properties and cozy homestays.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>100+ Verified Stays</h4>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Handpicked mountain properties.</p>
             </div>
           </div>
           <div style={badgeStyle}>
-            <span style={{ fontSize: "28px" }}>🛡️</span>
+            <span style={{ fontSize: "24px" }}>🛡️</span>
             <div>
-              <h4 style={{ margin: "0 0 4px 0", color: "#0f172a" }}>Secure Booking</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>Safe transactions with instant confirmations.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>Secure Booking</h4>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Safe instant confirmations.</p>
             </div>
           </div>
           <div style={badgeStyle}>
-            <span style={{ fontSize: "28px" }}>📞</span>
+            <span style={{ fontSize: "24px" }}>📞</span>
             <div>
-              <h4 style={{ margin: "0 0 4px 0", color: "#0f172a" }}>24/7 Local Support</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>Assistance throughout your Himalayan journey.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px" }}>24/7 Local Support</h4>
+              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Assistance on your journey.</p>
             </div>
           </div>
         </div>
 
-        {renderCardSection("Uttarakhand Tourism", uttarakhandExperiences)}
-        {renderCardSection("Yoga & Wellness", yogaExperiences)}
-        {renderCardSection("Popular Treks", trekExperiences)}
+        {/* Card Sections with Distinct Subtitle Colors */}
+        {renderCardSection("Uttarakhand Tourism", "✨ Divine Shrines & Sacred Char Dham Trails", "#0284c7", uttarakhandExperiences)}
+        {renderCardSection("Yoga & Wellness", "🌿 Rejuvenate Body & Soul in Mountain Silence", "#059669", yogaExperiences)}
+        {renderCardSection("Popular Treks", "⚡ Thrilling Alpine Routes & Snowy Expeditions", "#d97706", trekExperiences)}
 
         {/* Travel Stories & Blogs */}
-        <section className="section-wrapper" style={{ margin: "50px 0" }}>
-          <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#0f172a", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
-            Travel Stories & Blogs
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "25px" }}>
+        <section style={{ margin: "35px 0" }}>
+          <div style={{ marginBottom: "12px", borderLeft: "4px solid #7c3aed", paddingLeft: "10px" }}>
+            <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#0f172a", margin: 0 }}>
+              Travel Stories & Blogs
+            </h2>
+            <p style={{ fontSize: "13px", fontWeight: "600", color: "#7c3aed", margin: "2px 0 0 0" }}>
+              📖 Insider Guides, Tips & Himalayan Experiences
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
             {blogPosts.map((blog, index) => (
               <div 
                 key={index} 
-                style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }} 
+                style={{ background: "#fff", borderRadius: "12px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }} 
                 onClick={() => window.open(`https://www.google.com/search?q=${blog.title}`, "_blank")}
               >
-                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "180px", objectFit: "cover" }} />
-                <div style={{ padding: "18px" }}>
-                  <span style={{ fontSize: "12px", color: "#0ea5e9", fontWeight: "700", textTransform: "uppercase" }}>{blog.date}</span>
-                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "8px 0" }}>{blog.title}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", lineHeight: "1.5" }}>{blog.desc}</p>
+                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
+                <div style={{ padding: "15px" }}>
+                  <span style={{ fontSize: "11px", color: "#7c3aed", fontWeight: "700", textTransform: "uppercase" }}>{blog.date}</span>
+                  <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#1e293b", margin: "6px 0" }}>{blog.title}</h3>
+                  <p style={{ fontSize: "12px", color: "#64748b", lineHeight: "1.4" }}>{blog.desc}</p>
                 </div>
               </div>
             ))}
@@ -271,16 +281,16 @@ export default function Home() {
         </section>
 
         {/* Stats Section */}
-        <section style={{ marginTop: "70px", background: "#0f172a", color: "#fff", padding: "50px 20px", borderRadius: "24px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "2.2rem", marginBottom: "35px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
-          <div style={{ display: "flex", justifyContent: "center", gap: "60px", flexWrap: "wrap" }}>
+        <section style={{ marginTop: "40px", background: "#0f172a", color: "#fff", padding: "35px 20px", borderRadius: "18px", textAlign: "center" }}>
+          <h2 style={{ fontSize: "1.8rem", marginBottom: "25px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
+          <div style={{ display: "flex", justifyContent: "center", gap: "50px", flexWrap: "wrap" }}>
             <div>
-              <h2 style={{ fontSize: "2.5rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>100+</h2>
-              <h3 style={{ fontSize: "16px", color: "#cbd5e1", marginTop: "5px" }}>Verified Stays</h3>
+              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>100+</h2>
+              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Verified Stays</h3>
             </div>
             <div>
-              <h2 style={{ fontSize: "2.5rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>10k+</h2>
-              <h3 style={{ fontSize: "16px", color: "#cbd5e1", marginTop: "5px" }}>Happy Travelers</h3>
+              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>10k+</h2>
+              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Happy Travelers</h3>
             </div>
           </div>
         </section>
@@ -292,11 +302,11 @@ export default function Home() {
 
 const badgeStyle = {
   background: "white",
-  padding: "20px",
-  borderRadius: "14px",
+  padding: "15px",
+  borderRadius: "12px",
   border: "1px solid #e2e8f0",
   display: "flex",
   alignItems: "center",
-  gap: "15px",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
+  gap: "12px",
+  boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
 };
