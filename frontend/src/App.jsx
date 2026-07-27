@@ -7,6 +7,7 @@ import AllStays from "./pages/AllStays";
 import HotelDetails from "./pages/HotelDetails";
 import DetailsPage from "./pages/DetailsPage";
 import ComingSoon from "./pages/ComingSoon";
+import About from "./pages/About"; // 👈 यहाँ About पेज इम्पोर्ट कर दिया है
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
@@ -34,13 +35,14 @@ export default function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
+          <Route path="/about" element={<About />} /> {/* 👈 यहाँ About पेज का रूट जोड़ दिया है */}
           <Route path="/details/:id" element={<ComingSoon />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/mytrips" element={<MyTrips />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/list-property" element={<ListProperty />} />
+          <Route path="/list-property" element="<ListProperty />" />
           <Route path="/terms" element={<Terms />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
