@@ -36,7 +36,7 @@ router.post("/add", upload.array("images", 5), async (req, res) => {
 });
 
 // ============================
-// ADMIN: GET PENDING PROPERTIES
+// ADMIN: GET PENDING PROPERTIES (इसे /:id से ऊपर रखना ज़रूरी है)
 // ============================
 router.get("/pending", async (req, res) => {
   try {
@@ -76,28 +76,36 @@ router.get("/", async (req, res) => {
 });
 
 // ============================
-// SEARCH, FILTER, UPDATE, DELETE (बाकी कोड सुरक्षित)
+// SEARCH, FILTER, UPDATE, DELETE
 // ============================
 
 router.get("/search/city", async (req, res) => {
-  const { city } = req.query;
-  const hotels = await Hotel.find({
-    city: { $regex: city, $options: "i" },
-    isApproved: true // Search me sirf approved dikhen
-  });
-  res.json(hotels);
+  try {
+    const { city } = req.query;
+    const hotels = await Hotel.find({
+      city: { $regex: city, $options: "i" },
+      isApproved: true
+    });
+    res.json(hotels);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 router.get("/filter", async (req, res) => {
-  const { city, minPrice, maxPrice, rating } = req.query;
-  let filter = { isApproved: true };
-  if (city) filter.city = { $regex: city, $options: "i" };
-  if (rating) filter.rating = { $gte: rating };
-  if (minPrice && maxPrice)
-    filter.price = { $gte: minPrice, $lte: maxPrice };
+  try {
+    const { city, minPrice, maxPrice, rating } = req.query;
+    let filter = { isApproved: true };
+    if (city) filter.city = { $regex: city, $options: "i" };
+    if (rating) filter.rating = { $gte: rating };
+    if (minPrice && maxPrice)
+      filter.price = { $gte: minPrice, $lte: maxPrice };
 
-  const hotels = await Hotel.find(filter);
-  res.json(hotels);
+    const hotels = await Hotel.find(filter);
+    res.json(hotels);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 router.put("/:id", async (req, res) => {
@@ -118,9 +126,16 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// ============================
+// GET HOTEL BY ID (इसे हमेशा नीचे रखें)
+// ============================
 router.get("/:id", async (req, res) => {
-  const hotel = await Hotel.findById(req.params.id);
-  res.json(hotel);
+  try {
+    const hotel = await Hotel.findById(req.params.id);
+    res.json(hotel);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 module.exports = router;
