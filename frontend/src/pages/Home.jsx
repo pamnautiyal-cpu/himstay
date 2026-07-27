@@ -47,9 +47,11 @@ export default function Home() {
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
+    // Fixed Navigation: Search query URL is now properly encoded and sends correct parameters
     navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${activeTab}`);
   };
 
+  // Original Handpicked Stays Data
   const featuredStays = [
     {
       id: "1",
@@ -87,32 +89,46 @@ export default function Home() {
 
   const allDisplayListings = listings.length > 0 ? [...listings, ...featuredStays] : featuredStays;
 
-  // Clean, professional category cards that link to a dedicated Explore/Guides page
+  // Blog Data
+  const travelBlogs = [
+    { title: "Complete Guide to Char Dham Yatra 2026", date: "April 12, 2026", img: "/images/chardham/kedarnath.jpg" },
+    { title: "Top 5 Meditation Spots in Rishikesh", date: "March 28, 2026", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
+    { title: "Packing Essentials for Kedarkantha Trek", date: "March 15, 2026", img: "/images/treks/kedarkantha.jpg" }
+  ];
+
+  // Category Banners: Updated onClick to directly navigate to relevant search
   const categoryBanners = [
     {
       title: "Uttarakhand Tourism",
       subtitle: "✨ Divine Shrines & Sacred Char Dham Trails",
       img: "/images/chardham/kedarnath.jpg",
-      path: "/explore" // Links to the separate dedicated page containing all Char Dham & Tourism details
+      query: "Char Dham Yatra", // This keyword will trigger search for relevant stays
+      tab: "Hotels"
     },
     {
       title: "Yoga & Wellness",
       subtitle: "🌿 Rejuvenate Body & Soul in Mountain Silence",
       img: "/images/yoga/himalayan-yoga-retreat.jpg",
-      path: "/explore"
+      query: "Yoga Retreat", // This keyword will trigger search for yoga stays
+      tab: "Yoga"
     },
     {
       title: "Popular Treks",
       subtitle: "⚡ Thrilling Alpine Routes & Snowy Expeditions",
       img: "/images/treks/kedarkantha.jpg",
-      path: "/explore"
+      query: "Trekking Camp", // This keyword will trigger search for trek stays
+      tab: "Treks"
     }
   ];
+
+  const handleCategoryClick = (cat) => {
+    navigate(`/search?query=${encodeURIComponent(cat.query)}&city=All&tab=${cat.tab}`);
+  };
 
   return (
     <div style={{ fontFamily: "sans-serif", background: "#f1f5f9", minHeight: "100vh", paddingBottom: "50px" }}>
       
-      {/* MakeMyTrip Style Search Widget Banner */}
+      {/* Header and Search Widget Banner */}
       <div style={{
         position: "relative",
         backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.6), rgba(11, 19, 43, 0.8)), url('${heroImages[currentSlide]}')`,
@@ -223,7 +239,7 @@ export default function Home() {
 
       <div style={{ maxWidth: "1200px", margin: "30px auto 0", padding: "0 20px" }}>
         
-        {/* Trust Badges Bar */}
+        {/* Trust Badges */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "15px", marginBottom: "35px" }}>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "26px" }}>🛡️</span>
@@ -248,7 +264,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Handpicked Stays & Retreat Ads Section */}
+        {/* Handpicked Stays Section */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
           <div>
             <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>
@@ -287,130 +303,4 @@ export default function Home() {
                 e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.08)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.04)";
-              }}
-            >
-              <div style={{ position: "relative" }}>
-                <img 
-                  src={item.img || item.image || "/images/hero/himalayas.jpg"} 
-                  alt={item.title || item.name} 
-                  style={{ width: "100%", height: "170px", objectFit: "cover" }} 
-                  onError={(e) => { e.target.src = "/images/hero/himalayas.jpg"; }}
-                />
-                <span style={{
-                  position: "absolute", top: "10px", right: "10px", background: "rgba(15, 23, 42, 0.8)",
-                  color: "white", padding: "3px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700"
-                }}>
-                  ⭐ {item.rating || "4.8"}
-                </span>
-              </div>
-
-              <div style={{ padding: "15px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <div>
-                  <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
-                    📍 {item.location || "Uttarakhand"}
-                  </span>
-                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "6px 0 10px 0", lineHeight: "1.3" }}>
-                    {item.title || item.name}
-                  </h3>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "10px" }}>
-                  <div>
-                    <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
-                    <span style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a" }}>{item.price || "₹2,499"}</span>
-                    <span style={{ fontSize: "11px", color: "#64748b" }}> / night</span>
-                  </div>
-                  <button style={{
-                    background: "#0284c7", color: "white", border: "none", padding: "8px 14px",
-                    borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer"
-                  }}>
-                    Book Now
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Compact Clean Category Banner Cards linking to Explore/Guides page */}
-        <div style={{ marginBottom: "20px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>
-              🌟 Explore Himalayan Categories & Guides
-            </h2>
-            <button 
-              onClick={() => navigate("/explore")}
-              style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}
-            >
-              View All Guides →
-            </button>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
-            {categoryBanners.map((cat, idx) => (
-              <div 
-                key={idx}
-                onClick={() => navigate(cat.path)}
-                style={{
-                  position: "relative",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  height: "180px",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
-                  transition: "transform 0.2s ease",
-                  border: "1px solid #e2e8f0"
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
-              >
-                <img src={cat.img} alt={cat.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                <div style={{
-                  position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-                  background: "linear-gradient(to top, rgba(11,19,43,0.9), rgba(11,19,43,0.3))",
-                  padding: "20px", display: "flex", flexDirection: "column", justifyContent: "flex-end", color: "white"
-                }}>
-                  <span style={{ fontSize: "12px", fontWeight: "700", color: "#38bdf8", marginBottom: "4px" }}>
-                    {cat.subtitle}
-                  </span>
-                  <h3 style={{ fontSize: "20px", fontWeight: "800", margin: 0, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    {cat.title}
-                    <span style={{ fontSize: "16px", background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "8px" }}>Explore →</span>
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Stats Section */}
-        <section style={{ marginTop: "40px", background: "#0f172a", color: "#fff", padding: "40px 20px", borderRadius: "18px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.8rem", marginBottom: "25px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
-          <div style={{ display: "flex", justifyContent: "center", gap: "50px", flexWrap: "wrap" }}>
-            <div>
-              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>100+</h2>
-              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Verified Stays</h3>
-            </div>
-            <div>
-              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>10k+</h2>
-              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Happy Travelers</h3>
-            </div>
-          </div>
-        </section>
-
-      </div>
-    </div>
-  );
-}
-
-const badgeCardStyle = {
-  background: "white",
-  padding: "16px",
-  borderRadius: "12px",
-  border: "1px solid #e2e8f0",
-  display: "flex",
-  alignItems: "center",
-  gap: "14px",
-  boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
-};
+                e.currentTarget.style.transform = "translateY
