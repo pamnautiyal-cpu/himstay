@@ -9,6 +9,8 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState("All");
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
+  const [tripType, setTripType] = useState("One Way");
+  const [specialFare, setSpecialFare] = useState("Regular");
 
   const heroImages = [
     "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600",
@@ -87,7 +89,6 @@ export default function Home() {
 
   const allDisplayListings = listings.length > 0 ? [...listings, ...featuredStays] : featuredStays;
 
-  // Original Data Preserved
   const tourismDestinations = [
     { name: "Kedarnath", desc: "Sacred Jyotirlinga in Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg" },
     { name: "Badrinath", desc: "Holy abode of Lord Vishnu on Alaknanda.", img: "/images/chardham/badrinath.jpg" },
@@ -118,57 +119,92 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#f1f5f9", minHeight: "100vh", paddingBottom: "50px" }}>
       
-      {/* MakeMyTrip Style Search Widget Banner */}
+      {/* MakeMyTrip Style Top Navigation Bar */}
+      <div style={{ background: "#ffffff", borderBottom: "1px solid #e2e8f0", padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+        <div style={{ display: "flex", gap: "20px", overflowX: "auto", whiteSpace: "nowrap" }}>
+          {[
+            { label: "✈️ Flights" },
+            { label: "🏨 Hotels" },
+            { label: "🏡 Villas & Homestays" },
+            { label: "🏖️ Holiday Packages" },
+            { label: "🚆 Trains" },
+            { label: "🚌 Buses" },
+            { label: "🚖 Cabs" },
+            { label: "🛂 Visa" },
+            { label: "💱 Forex" },
+            { label: "🛡️ Insurance" }
+          ].map((item, idx) => (
+            <span key={idx} style={{ fontSize: "13px", fontWeight: "700", color: "#334155", cursor: "pointer" }}>
+              {item.label}
+            </span>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
+          <span style={{ fontSize: "12px", fontWeight: "700", color: "#0284c7", background: "#e0f2fe", padding: "4px 10px", borderRadius: "6px" }}>🇮🇳 India | INR</span>
+          <button style={{ background: "#0284c7", color: "white", border: "none", padding: "6px 16px", borderRadius: "6px", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}>
+            Login / Create Account
+          </button>
+        </div>
+      </div>
+
+      {/* Hero Banner with MakeMyTrip Tabbed Booking Widget */}
       <div style={{
         position: "relative",
         backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.6), rgba(11, 19, 43, 0.8)), url('${heroImages[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "70px 20px 90px 20px",
+        padding: "50px 20px 80px 20px",
         textAlign: "center",
         color: "white",
         transition: "background-image 1s ease-in-out"
       }}>
-        <div style={{ maxWidth: "850px", margin: "0 auto" }}>
-          <h1 style={{ fontSize: "38px", fontWeight: "800", marginBottom: "8px" }}>
-            Book Your Himalayan Experience
-          </h1>
-          <p style={{ fontSize: "16px", color: "#cbd5e1", marginBottom: "30px" }}>
-            Handpicked Hotels, Sacred Char Dham Stays, Yoga Retreats & Trekking Camps
-          </p>
+        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+          
+          {/* MMT Service Sub-Tabs */}
+          <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
+            {[
+              { id: "Hotels", label: "🏨 Hotels & Stays" },
+              { id: "Flights", label: "✈️ Flights" },
+              { id: "Yoga", label: "🌿 Yoga Retreats" },
+              { id: "Treks", label: "⚡ Trekking Camps" }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  background: activeTab === tab.id ? "#0284c7" : "rgba(255, 255, 255, 0.2)",
+                  color: "white",
+                  border: "none",
+                  padding: "8px 18px",
+                  borderRadius: "20px",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                  cursor: "pointer",
+                  transition: "0.2s"
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
 
+          {/* Main Booking / Search Box */}
           <div style={{
             background: "white",
             borderRadius: "16px",
-            padding: "16px",
+            padding: "20px",
             boxShadow: "0 15px 35px rgba(0,0,0,0.25)",
             textAlign: "left",
             color: "#0f172a"
           }}>
-            <div style={{ display: "flex", gap: "12px", marginBottom: "15px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px" }}>
-              {[
-                { id: "Hotels", label: "🏨 Hotels & Stays" },
-                { id: "Yoga", label: "🌿 Yoga Retreats" },
-                { id: "Treks", label: "⚡ Trekking Camps" }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  style={{
-                    background: activeTab === tab.id ? "#e0f2fe" : "transparent",
-                    color: activeTab === tab.id ? "#0284c7" : "#64748b",
-                    border: activeTab === tab.id ? "1px solid #bae6fd" : "1px solid transparent",
-                    padding: "8px 16px",
-                    borderRadius: "20px",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    cursor: "pointer",
-                    transition: "0.2s"
-                  }}
-                >
-                  {tab.label}
-                </button>
+            {/* Trip Type Options */}
+            <div style={{ display: "flex", gap: "20px", marginBottom: "15px", fontSize: "13px", fontWeight: "700", color: "#64748b" }}>
+              {["One Way", "Round Trip", "Multi City"].map((type) => (
+                <label key={type} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "5px", color: tripType === type ? "#0284c7" : "#64748b" }}>
+                  <input type="radio" name="tripType" checked={tripType === type} onChange={() => setTripType(type)} />
+                  {type}
+                </label>
               ))}
             </div>
 
@@ -206,6 +242,31 @@ export default function Home() {
                 </button>
               </div>
             </form>
+
+            {/* Special Fare Bar */}
+            <div style={{ marginTop: "15px", paddingTop: "12px", borderTop: "1px solid #e2e8f0", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center", fontSize: "12px" }}>
+              <span style={{ fontWeight: "700", color: "#334155" }}>Select a special fare:</span>
+              {["Regular", "Student (Extra discounts)", "Armed Forces (Up to ₹600 off)", "Senior Citizen"].map((fare) => (
+                <button
+                  key={fare}
+                  type="button"
+                  onClick={() => setSpecialFare(fare)}
+                  style={{
+                    background: specialFare === fare ? "#e0f2fe" : "#f1f5f9",
+                    color: specialFare === fare ? "#0284c7" : "#475569",
+                    border: specialFare === fare ? "1px solid #0284c7" : "1px solid #cbd5e1",
+                    padding: "4px 10px",
+                    borderRadius: "12px",
+                    cursor: "pointer",
+                    fontWeight: "600",
+                    fontSize: "11px"
+                  }}
+                >
+                  {fare}
+                </button>
+              ))}
+            </div>
+
           </div>
 
           <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "20px" }}>
@@ -339,7 +400,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Horizontal Scrolling Sections for Clean MakeMyTrip Feel */}
+        {/* Horizontal Scrolling Sections for Categories (Preserving all old data cleanly) */}
         
         {/* 1. Uttarakhand Tourism Horizontal Scroll */}
         <div style={{ marginBottom: "35px" }}>
@@ -454,7 +515,7 @@ const horizontalScrollContainer = {
   overflowX: "auto",
   paddingBottom: "10px",
   scrollBehavior: "smooth",
-  scrollbarWidth: "none" // Hides scrollbar for clean UI
+  scrollbarWidth: "none"
 };
 
 const horizontalCardStyle = {
