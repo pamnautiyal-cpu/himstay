@@ -7,6 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrende
 export default function AllStays() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(6); // 👈 शुरुआत में केवल 6 होटल्स दिखेंगे
   const navigate = useNavigate();
 
   const localUttarkashiHotels = [
@@ -51,10 +52,13 @@ export default function AllStays() {
 
   if (loading) return <div style={{ textAlign: "center", padding: "80px", fontSize: "20px", color: "#64748b" }}>🏔️ Loading Stays...</div>;
 
+  // 🌟 केवल उतने ही होटल्स काट कर दिखाएंगे जितने visibleCount में सेट हैं
+  const currentHotels = hotels.slice(0, visibleCount);
+
   return (
     <div className="stays-page-wrap" style={{ padding: "30px 20px", background: "#f8fafc", minHeight: "100vh" }}> 
       
-      {/* 🌟 Professional Header Section */}
+      {/* Header Section */}
       <div style={{ textAlign: "center", marginBottom: "40px", maxWidth: "800px", margin: "0 auto 40px auto" }}>
         <h1 style={{ fontSize: "32px", fontWeight: "800", color: "#0f172a", marginBottom: "10px", letterSpacing: "-0.5px" }}>
           Stays in Uttarakhand
@@ -72,7 +76,7 @@ export default function AllStays() {
         gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", 
         gap: "24px" 
       }}> 
-        {hotels.map((hotel) => (
+        {currentHotels.map((hotel) => (
           <div key={hotel._id} className="hotel-card" style={{ 
             background: "#ffffff",
             border: "1px solid #e2e8f0", 
@@ -142,6 +146,33 @@ export default function AllStays() {
           </div>
         ))}
       </div>
+
+      {/* 🌟 Dynamic Load More / Show Less Buttons */}
+      <div style={{ textAlign: "center", marginTop: "40px" }}>
+        {visibleCount < hotels.length ? (
+          <button 
+            onClick={() => setVisibleCount(prev => prev + 6)}
+            style={{
+              background: "#0284c7", color: "white", border: "none", padding: "12px 30px",
+              borderRadius: "10px", fontWeight: "700", fontSize: "15px", cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)"
+            }}
+          >
+            Load More Stays ({hotels.length - visibleCount} more) ↓
+          </button>
+        ) : (
+          <button 
+            onClick={() => setVisibleCount(6)}
+            style={{
+              background: "#64748b", color: "white", border: "none", padding: "12px 30px",
+              borderRadius: "10px", fontWeight: "700", fontSize: "15px", cursor: "pointer"
+            }}
+          >
+            Show Less ↑
+          </button>
+        )}
+      </div>
+
     </div>
   );
 }
