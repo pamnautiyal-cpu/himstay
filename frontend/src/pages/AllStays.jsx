@@ -7,7 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrende
 export default function AllStays() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(6); // 👈 शुरुआत में केवल 6 होटल्स दिखेंगे
+  const [visibleCount, setVisibleCount] = useState(5); // 👈 प्रति पेज 5 होटल्स दिखेंगे
   const navigate = useNavigate();
 
   const localUttarkashiHotels = [
@@ -52,120 +52,117 @@ export default function AllStays() {
 
   if (loading) return <div style={{ textAlign: "center", padding: "80px", fontSize: "20px", color: "#64748b" }}>🏔️ Loading Stays...</div>;
 
-  // 🌟 केवल उतने ही होटल्स काट कर दिखाएंगे जितने visibleCount में सेट हैं
   const currentHotels = hotels.slice(0, visibleCount);
 
   return (
-    <div className="stays-page-wrap" style={{ padding: "30px 20px", background: "#f8fafc", minHeight: "100vh" }}> 
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", minHeight: "100vh", padding: "30px 20px" }}>
       
-      {/* Header Section */}
-      <div style={{ textAlign: "center", marginBottom: "40px", maxWidth: "800px", margin: "0 auto 40px auto" }}>
-        <h1 style={{ fontSize: "32px", fontWeight: "800", color: "#0f172a", marginBottom: "10px", letterSpacing: "-0.5px" }}>
-          Stays in Uttarakhand
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: "35px", maxWidth: "800px", margin: "0 auto 35px auto" }}>
+        <h1 style={{ fontSize: "30px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
+          Stays in Uttarakhand ({hotels.length} Properties)
         </h1>
-        <p style={{ fontSize: "15px", color: "#64748b", lineHeight: "1.6", margin: 0 }}>
+        <p style={{ fontSize: "14px", color: "#64748b", margin: 0 }}>
           Discover handpicked mountain retreats, cozy homestays, and scenic luxury hotels crafted for an unforgettable Himalayan experience.
         </p>
       </div>
-      
-      {/* Responsive Grid Container */}
-      <div className="hotel-grid-container" style={{ 
-        maxWidth: "1250px",
-        margin: "0 auto",
-        display: "grid", 
-        gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", 
-        gap: "24px" 
-      }}> 
+
+      {/* MakeMyTrip Style Horizontal Layout Container */}
+      <div style={{ maxWidth: "1000px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
+        
         {currentHotels.map((hotel) => (
-          <div key={hotel._id} className="hotel-card" style={{ 
-            background: "#ffffff",
-            border: "1px solid #e2e8f0", 
-            borderRadius: "16px", 
-            overflow: "hidden", 
-            boxShadow: "0 4px 15px rgba(0,0,0,0.03)",
-            transition: "transform 0.2s ease, box-shadow 0.2s ease",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            cursor: "pointer"
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-4px)";
-            e.currentTarget.style.boxShadow = "0 12px 25px rgba(0,0,0,0.08)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.03)";
-          }}
-          > 
+          <div 
+            key={hotel._id} 
+            style={{ 
+              background: "#ffffff",
+              border: "1px solid #e2e8f0", 
+              borderRadius: "14px", 
+              overflow: "hidden", 
+              boxShadow: "0 2px 10px rgba(0,0,0,0.02)",
+              display: "grid",
+              gridTemplateColumns: "260px 1fr 200px",
+              alignItems: "stretch",
+              transition: "all 0.2s ease"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.06)"}
+            onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.02)"}
+          >
+            {/* Left: Hotel Image */}
             <div style={{ position: "relative" }}>
               <img 
                 src={hotel.image} 
                 alt={hotel.name} 
-                style={{ width: "100%", height: "175px", objectFit: "cover" }} 
+                style={{ width: "100%", height: "100%", minHeight: "160px", objectFit: "cover" }} 
                 onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"; }}
               />
               <span style={{
-                position: "absolute", top: "10px", right: "10px", background: "rgba(15, 23, 42, 0.85)",
-                color: "white", padding: "3px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700", backdropFilter: "blur(4px)"
+                position: "absolute", top: "10px", left: "10px", background: "rgba(15, 23, 42, 0.8)",
+                color: "white", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "700"
               }}>
                 ⭐ {hotel.rating || "4.8"}
               </span>
             </div>
-            
-            <div className="hotel-info" style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+
+            {/* Middle: Details */}
+            <div style={{ padding: "18px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
               <div>
-                <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                  📍 {hotel.location || hotel.city}
+                <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
+                  📍 {hotel.location || hotel.city}, Uttarkashi
                 </span>
-                <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "6px 0 8px 0", lineHeight: "1.3" }}>
+                <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "6px 0 8px 0" }}>
                   {hotel.name}
                 </h3>
+                <p style={{ fontSize: "12px", color: "#16a34a", fontWeight: "600", margin: "0 0 4px 0" }}>
+                  ✓ Couple Friendly & Verified Property
+                </p>
+                <p style={{ fontSize: "12px", color: "#64748b", margin: 0 }}>
+                  Free cancellation available • Breakfast included options
+                </p>
+              </div>
+            </div>
+
+            {/* Right: Price & CTA */}
+            <div style={{ padding: "18px", background: "#f8fafc", borderLeft: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end", textAlign: "right" }}>
+              <div>
+                <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
+                <span style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a" }}>₹{hotel.price}</span>
+                <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>+ ₹300 taxes & fees</span>
               </div>
 
-              <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: "12px", marginTop: "10px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                  <div>
-                    <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
-                    <span style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a" }}>₹{hotel.price}</span>
-                    <span style={{ fontSize: "11px", color: "#64748b" }}> / night</span>
-                  </div>
-                </div>
-
-                <button className="view-btn" style={{ 
-                  width: "100%", padding: "10px", background: "#0284c7", 
+              <button 
+                onClick={() => navigate(`/hotels/${hotel._id}`)}
+                style={{ 
+                  width: "100%", padding: "10px 0", background: "#0284c7", 
                   color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "13px", cursor: "pointer",
                   boxShadow: "0 2px 6px rgba(2, 132, 199, 0.3)"
                 }}
-                onClick={() => navigate(`/hotels/${hotel._id}`)}
-                >
-                  View Details
-                </button>
-              </div>
+              >
+                View Details
+              </button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* 🌟 Dynamic Load More / Show Less Buttons */}
-      <div style={{ textAlign: "center", marginTop: "40px" }}>
+      {/* Pagination / Load More Button Section */}
+      <div style={{ textAlign: "center", marginTop: "35px" }}>
         {visibleCount < hotels.length ? (
           <button 
-            onClick={() => setVisibleCount(prev => prev + 6)}
+            onClick={() => setVisibleCount(prev => prev + 5)}
             style={{
-              background: "#0284c7", color: "white", border: "none", padding: "12px 30px",
-              borderRadius: "10px", fontWeight: "700", fontSize: "15px", cursor: "pointer",
+              background: "#0284c7", color: "white", border: "none", padding: "12px 35px",
+              borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer",
               boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)"
             }}
           >
-            Load More Stays ({hotels.length - visibleCount} more) ↓
+            Load More Stays ({hotels.length - visibleCount} remaining) ↓
           </button>
         ) : (
           <button 
-            onClick={() => setVisibleCount(6)}
+            onClick={() => setVisibleCount(5)}
             style={{
-              background: "#64748b", color: "white", border: "none", padding: "12px 30px",
-              borderRadius: "10px", fontWeight: "700", fontSize: "15px", cursor: "pointer"
+              background: "#64748b", color: "white", border: "none", padding: "12px 35px",
+              borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer"
             }}
           >
             Show Less ↑
