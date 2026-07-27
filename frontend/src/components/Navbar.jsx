@@ -19,49 +19,50 @@ export default function Navbar() {
     navigate("/");
   };
 
-  // सभी नेविगेशन लिंक्स के लिए एक जैसी कॉमन स्टाइल
   const navLinkStyle = {
-    color: "#e2e8f0",
+    color: "#cbd5e1",
     textDecoration: "none",
     fontSize: "14px",
     fontWeight: "500",
-    padding: "6px 10px",
-    borderRadius: "6px",
-    transition: "all 0.2s ease"
+    padding: "8px 12px",
+    borderRadius: "8px",
+    transition: "all 0.2s ease-in-out",
   };
 
   return (
     <header style={{ 
-      background: "#0b132b", 
+      background: "rgba(11, 19, 43, 0.95)", 
+      backdropFilter: "blur(10px)",
       padding: "15px 40px", 
-      borderBottom: "1px solid #334155",
+      borderBottom: "1px solid rgba(51, 65, 85, 0.6)",
       position: "sticky",
       top: 0,
-      zIndex: 1000
+      zIndex: 1000,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
     }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         
         {/* Brand Name */}
-        <Link to="/" style={{ color: "#fff", textDecoration: "none", fontWeight: "800", fontSize: "22px", letterSpacing: "1px" }}>
-          The Himalayans
+        <Link to="/" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "24px", letterSpacing: "0.5px" }}>
+          🏔️ The Himalayans
         </Link>
 
         {/* Navigation Links */}
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link to="/hotels" style={navLinkStyle}>🏨 Hotels</Link>
           <Link to="/mytrips" style={navLinkStyle}>🧳 My Trips</Link>
-          <Link to="/offers" style={navLinkStyle}>🔥 Offers</Link>
+          <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}>🔥 Offers</Link>
           <Link to="/admin/bookings" style={navLinkStyle}>🛠️ Admin</Link>
           <Link to="/list-property" style={navLinkStyle}>📢 List Property</Link>
           
-          <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 5px" }} /> 
+          <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 8px" }} /> 
           
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-              <span style={{ color: "#fff", fontSize: "13px", fontWeight: "500" }}>Hi, {user.email.split('@')[0]}</span>
+              <span style={{ color: "#cbd5e1", fontSize: "13px", fontWeight: "500" }}>Hi, {user.email.split('@')[0]}</span>
               <button 
                 onClick={handleLogout} 
-                style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", transition: "0.3s" }}
+                style={{ background: "transparent", border: "1px solid #ef4444", color: "#ef4444", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontSize: "13px", fontWeight: "600", transition: "0.2s" }}
               >
                 Logout
               </button>
@@ -69,7 +70,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link to="/login" style={navLinkStyle}>🔐 Login</Link>
-              <Link to="/signup" style={{ background: "#22c55e", padding: "8px 20px", borderRadius: "8px", color: "#fff", textDecoration: "none", fontWeight: "bold", fontSize: "14px", transition: "0.3s" }}>Sign up</Link>
+              <Link to="/signup" style={{ background: "#0ea5e9", padding: "8px 20px", borderRadius: "8px", color: "#fff", textDecoration: "none", fontWeight: "600", fontSize: "14px", boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)", transition: "0.2s" }}>Sign up</Link>
             </>
           )}
         </div>
