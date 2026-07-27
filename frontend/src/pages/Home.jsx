@@ -39,27 +39,27 @@ export default function Home() {
     (selectedCity === "All" || h.location === selectedCity)
   );
 
-  // Original Data with Images for Sections
+  // Local Public Folder Image Paths mapping your exact folder structure
   const uttarakhandExperiences = [
-    { name: "Kedarnath", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600" },
-    { name: "Badrinath", img: "https://images.unsplash.com/photo-1590059392345-21d37a50785f?q=80&w=600" },
-    { name: "Gangotri", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=600" },
-    { name: "Yamunotri", img: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a566?q=80&w=600" }
+    { name: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
+    { name: "Badrinath", img: "/images/chardham/badrinath.jpg" },
+    { name: "Gangotri", img: "/images/chardham/gangotri.jpg" },
+    { name: "Yamunotri", img: "/images/chardham/yamunotri.jpg" }
   ];
 
   const yogaExperiences = [
-    { name: "Ayurvedic Therapy", img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600" },
-    { name: "Himalayan Yoga", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=600" },
-    { name: "Meditation", img: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600" },
-    { name: "Panchakarma", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=600" }
+    { name: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" },
+    { name: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
+    { name: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" },
+    { name: "Panchakarma", img: "/images/yoga/panchakarma.jpg" }
   ];
 
   const trekExperiences = [
     { name: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" },
     { name: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" },
-    { name: "Roopkund", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600" },
-    { name: "Har Ki Dun", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=600" },
-    { name: "Nag Tibba", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600" }
+    { name: "Roopkund", img: "/images/treks/roopkund.jpg" },
+    { name: "Har Ki Dun", img: "/images/treks/har-ki-dun.jpg" },
+    { name: "Nag Tibba", img: "/images/treks/nag-tibba.jpg" }
   ];
 
   const blogPosts = [
@@ -83,7 +83,7 @@ export default function Home() {
     }
   ];
 
-  const renderCardSection = (title, data, category) => (
+  const renderCardSection = (title, data) => (
     <section className="section-wrapper" style={{ margin: "40px 0" }}>
       <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#1e293b", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
         {title}
@@ -116,7 +116,7 @@ export default function Home() {
               alt={item.name} 
               style={{ width: "100%", height: "160px", objectFit: "cover" }} 
               onError={(e) => {
-                e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600";
+                e.target.src = "/images/hero/himalayas.jpg";
               }}
             />
             <div style={{ padding: "15px" }}>
@@ -132,7 +132,7 @@ export default function Home() {
     <div className="home-container" style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
       {/* Hero Section */}
       <section style={{ 
-        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
+        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero/himalayas.jpg')", 
         height: "500px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
         flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
         textAlign: "center", borderRadius: "24px", marginBottom: "70px", boxShadow: "0 20px 40px rgba(0,0,0,0.2)" 
@@ -170,9 +170,9 @@ export default function Home() {
       </div>
 
       <div className="home-content">
-        {renderCardSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
-        {renderCardSection("Yoga & Wellness", yogaExperiences, "yoga")}
-        {renderCardSection("Popular Treks", trekExperiences, "trek")}
+        {renderCardSection("Uttarakhand Tourism", uttarakhandExperiences)}
+        {renderCardSection("Yoga & Wellness", yogaExperiences)}
+        {renderCardSection("Popular Treks", trekExperiences)}
 
         {/* Featured Properties */}
         <section className="section-wrapper" style={{ margin: "50px 0" }}>
@@ -207,7 +207,7 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "25px" }}>
             {blogPosts.map((blog, index) => (
               <div key={index} style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }} onClick={() => window.open(`https://www.google.com/search?q=${blog.title}`, "_blank")}>
-                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "180px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600"; }} />
+                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "180px", objectFit: "cover" }} />
                 <div style={{ padding: "18px" }}>
                   <span style={{ fontSize: "12px", color: "#0ea5e9", fontWeight: "700", textTransform: "uppercase" }}>{blog.date}</span>
                   <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "8px 0" }}>{blog.title}</h3>
