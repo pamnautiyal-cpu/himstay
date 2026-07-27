@@ -87,26 +87,26 @@ export default function Home() {
 
   const allDisplayListings = listings.length > 0 ? [...listings, ...featuredStays] : featuredStays;
 
-  // Complete data sections restored perfectly
+  // Original Data Preserved
   const tourismDestinations = [
-    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in high Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg" },
-    { name: "Badrinath", desc: "Holy abode of Lord Vishnu on the banks of Alaknanda.", img: "/images/chardham/badrinath.jpg" },
+    { name: "Kedarnath", desc: "Sacred Jyotirlinga in Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg" },
+    { name: "Badrinath", desc: "Holy abode of Lord Vishnu on Alaknanda.", img: "/images/chardham/badrinath.jpg" },
     { name: "Gangotri", desc: "Origin of the holy river Ganga.", img: "/images/chardham/gangotri.jpg" },
     { name: "Yamunotri", desc: "Sacred source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg" }
   ];
 
   const yogaRetreats = [
-    { name: "Himalayan Yoga Retreat", desc: "Deep meditation and spiritual awakening in silence.", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
-    { name: "Ayurvedic Therapy", desc: "Holistic healing through ancient Pahadi herbs.", img: "/images/yoga/ayurvedic-therapy.jpg" },
-    { name: "Meditation & Pranayama", desc: "Master your breath by the sacred Ganges.", img: "/images/yoga/meditation-pranayama.jpg" },
-    { name: "Panchakarma Detox", desc: "Complete body purification and rejuvenation.", img: "/images/yoga/panchakarma.jpg" }
+    { name: "Himalayan Yoga Retreat", desc: "Deep meditation in mountain silence.", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
+    { name: "Ayurvedic Therapy", desc: "Holistic healing through ancient herbs.", img: "/images/yoga/ayurvedic-therapy.jpg" },
+    { name: "Meditation & Pranayama", desc: "Master your breath by the Ganges.", img: "/images/yoga/meditation-pranayama.jpg" },
+    { name: "Panchakarma Detox", desc: "Complete body purification.", img: "/images/yoga/panchakarma.jpg" }
   ];
 
   const popularTreks = [
-    { name: "Kedarkantha Trek", desc: "Classic winter snow trek with panoramic summit views.", img: "/images/treks/kedarkantha.jpg" },
-    { name: "Valley of Flowers", desc: "UNESCO World Heritage site filled with alpine flora.", img: "/images/treks/valley-of-flowers.jpg" },
-    { name: "Roopkund Trek", desc: "The mystical skeleton lake glacial expedition.", img: "/images/treks/roopkund.jpg" },
-    { name: "Har Ki Dun", desc: "Cradle of Swargarohini in ancient Garhwal.", img: "/images/treks/har-ki-dun.jpg" }
+    { name: "Kedarkantha Trek", desc: "Classic winter snow summit trek.", img: "/images/treks/kedarkantha.jpg" },
+    { name: "Valley of Flowers", desc: "UNESCO World Heritage site alpine flora.", img: "/images/treks/valley-of-flowers.jpg" },
+    { name: "Roopkund Trek", desc: "Mystical skeleton lake expedition.", img: "/images/treks/roopkund.jpg" },
+    { name: "Har Ki Dun", desc: "Cradle of Swargarohini in Garhwal.", img: "/images/treks/har-ki-dun.jpg" }
   ];
 
   const travelBlogs = [
@@ -270,7 +270,6 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Property Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "20px", marginBottom: "40px" }}>
           {allDisplayListings.map((item, index) => (
             <div 
@@ -340,57 +339,59 @@ export default function Home() {
           ))}
         </div>
 
-        {/* 1. Uttarakhand Tourism Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <span style={{ fontSize: "12px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>✨ Divine Shrines & Sacred Char Dham Trails</span>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Uttarakhand Tourism</h2>
+        {/* Horizontal Scrolling Sections for Clean MakeMyTrip Feel */}
+        
+        {/* 1. Uttarakhand Tourism Horizontal Scroll */}
+        <div style={{ marginBottom: "35px" }}>
+          <div style={{ marginBottom: "12px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>✨ Divine Shrines & Sacred Char Dham Trails</span>
+            <h2 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Uttarakhand Tourism</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
+          <div style={horizontalScrollContainer}>
             {tourismDestinations.map((item, idx) => (
-              <div key={idx} style={cardStyle} onClick={() => navigate(`/search?query=${encodeURIComponent(item.name)}`)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
+              <div key={idx} style={horizontalCardStyle} onClick={() => navigate(`/search?query=${encodeURIComponent(item.name)}`)}>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "130px", objectFit: "cover" }} />
+                <div style={{ padding: "12px" }}>
+                  <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0" }}>{item.name}</h3>
+                  <p style={{ fontSize: "12px", color: "#64748b", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 2. Yoga & Wellness Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <span style={{ fontSize: "12px", fontWeight: "700", color: "#059669", textTransform: "uppercase" }}>🌿 Rejuvenate Body & Soul in Mountain Silence</span>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Yoga & Wellness</h2>
+        {/* 2. Yoga & Wellness Horizontal Scroll */}
+        <div style={{ marginBottom: "35px" }}>
+          <div style={{ marginBottom: "12px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "700", color: "#059669", textTransform: "uppercase" }}>🌿 Rejuvenate Body & Soul in Mountain Silence</span>
+            <h2 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Yoga & Wellness</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
+          <div style={horizontalScrollContainer}>
             {yogaRetreats.map((item, idx) => (
-              <div key={idx} style={cardStyle} onClick={() => navigate(`/search?query=Yoga`)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
+              <div key={idx} style={horizontalCardStyle} onClick={() => navigate(`/search?query=Yoga`)}>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "130px", objectFit: "cover" }} />
+                <div style={{ padding: "12px" }}>
+                  <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0" }}>{item.name}</h3>
+                  <p style={{ fontSize: "12px", color: "#64748b", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 3. Popular Treks Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <span style={{ fontSize: "12px", fontWeight: "700", color: "#d97706", textTransform: "uppercase" }}>⚡ Thrilling Alpine Routes & Snowy Expeditions</span>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Popular Treks</h2>
+        {/* 3. Popular Treks Horizontal Scroll */}
+        <div style={{ marginBottom: "35px" }}>
+          <div style={{ marginBottom: "12px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "700", color: "#d97706", textTransform: "uppercase" }}>⚡ Thrilling Alpine Routes & Snowy Expeditions</span>
+            <h2 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Popular Treks</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
+          <div style={horizontalScrollContainer}>
             {popularTreks.map((item, idx) => (
-              <div key={idx} style={cardStyle} onClick={() => navigate(`/search?query=Kedarkantha`)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
+              <div key={idx} style={horizontalCardStyle} onClick={() => navigate(`/search?query=Kedarkantha`)}>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "130px", objectFit: "cover" }} />
+                <div style={{ padding: "12px" }}>
+                  <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0" }}>{item.name}</h3>
+                  <p style={{ fontSize: "12px", color: "#64748b", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -399,17 +400,17 @@ export default function Home() {
 
         {/* Travel Blog / Stories Section */}
         <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>📖 Pahadi Travel Stories & Guides</h2>
-            <p style={{ fontSize: "13px", color: "#64748b", margin: "3px 0 0 0" }}>Read travel tips from local experts</p>
+          <div style={{ marginBottom: "12px" }}>
+            <h2 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", margin: 0 }}>📖 Pahadi Travel Stories & Guides</h2>
+            <p style={{ fontSize: "12px", color: "#64748b", margin: "2px 0 0 0" }}>Read travel tips from local experts</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
+          <div style={horizontalScrollContainer}>
             {travelBlogs.map((blog, idx) => (
-              <div key={idx} style={{ background: "white", borderRadius: "14px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
-                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "150px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
+              <div key={idx} style={{ ...horizontalCardStyle, minWidth: "280px" }}>
+                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "130px", objectFit: "cover" }} />
+                <div style={{ padding: "12px" }}>
                   <span style={{ fontSize: "11px", color: "#0284c7", fontWeight: "700" }}>{blog.date}</span>
-                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#0f172a", margin: "6px 0 0 0" }}>{blog.title}</h3>
+                  <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#0f172a", margin: "4px 0 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{blog.title}</h3>
                 </div>
               </div>
             ))}
@@ -417,16 +418,16 @@ export default function Home() {
         </div>
 
         {/* Stats Section */}
-        <section style={{ marginTop: "40px", background: "#0f172a", color: "#fff", padding: "40px 20px", borderRadius: "18px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "1.8rem", marginBottom: "25px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
+        <section style={{ marginTop: "40px", background: "#0f172a", color: "#fff", padding: "35px 20px", borderRadius: "18px", textAlign: "center" }}>
+          <h2 style={{ fontSize: "1.6rem", marginBottom: "20px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
           <div style={{ display: "flex", justifyContent: "center", gap: "50px", flexWrap: "wrap" }}>
             <div>
-              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>100+</h2>
-              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Verified Stays</h3>
+              <h2 style={{ fontSize: "2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>100+</h2>
+              <h3 style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px" }}>Verified Stays</h3>
             </div>
             <div>
-              <h2 style={{ fontSize: "2.2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>10k+</h2>
-              <h3 style={{ fontSize: "14px", color: "#cbd5e1", marginTop: "4px" }}>Happy Travelers</h3>
+              <h2 style={{ fontSize: "2rem", color: "#38bdf8", fontWeight: "800", margin: 0 }}>10k+</h2>
+              <h3 style={{ fontSize: "13px", color: "#cbd5e1", marginTop: "4px" }}>Happy Travelers</h3>
             </div>
           </div>
         </section>
@@ -438,7 +439,7 @@ export default function Home() {
 
 const badgeCardStyle = {
   background: "white",
-  padding: "16px",
+  padding: "14px",
   borderRadius: "12px",
   border: "1px solid #e2e8f0",
   display: "flex",
@@ -447,12 +448,23 @@ const badgeCardStyle = {
   boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
 };
 
-const cardStyle = {
+const horizontalScrollContainer = {
+  display: "flex",
+  gap: "16px",
+  overflowX: "auto",
+  paddingBottom: "10px",
+  scrollBehavior: "smooth",
+  scrollbarWidth: "none" // Hides scrollbar for clean UI
+};
+
+const horizontalCardStyle = {
   background: "#fff",
-  borderRadius: "14px",
+  borderRadius: "12px",
   overflow: "hidden",
   border: "1px solid #e2e8f0",
   cursor: "pointer",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
-  transition: "transform 0.2s ease",
+  minWidth: "220px",
+  flex: "0 0 auto",
+  boxShadow: "0 3px 10px rgba(0,0,0,0.03)",
+  transition: "transform 0.2s ease"
 };
