@@ -4,139 +4,150 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [selectedCity, setSelectedCity] = useState("All");
-  const [listings, setListings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [displaySearch, setDisplaySearch] = useState(""); 
+  const navigate = useNavigate();
+  const [selectedCity, setSelectedCity] = useState("All");
+  const [listings, setListings] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [displaySearch, setDisplaySearch] = useState(""); 
 
-  useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "listings"));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setListings(data);
-      } catch (error) {
-        console.error("Firebase Fetch Error:", error);
-      }
-    };
-    fetchListings();
-  }, []);
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "listings"));
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setListings(data);
+      } catch (error) {
+        console.error("Firebase Fetch Error:", error);
+      }
+    };
+    fetchListings();
+  }, []);
 
-  // Fixed list + Dynamic list combining
-  const majorCities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Dehradun", "Delhi", "Mumbai", "Other"];
-  const dbCities = [...new Set(listings.map((h) => h.location).filter(Boolean))];
-  const cityOptions = [...new Set([...majorCities, ...dbCities])];
+  // Fixed list + Dynamic list combining
+  const majorCities = ["All", "Rishikesh", "Uttarkashi", "Haridwar", "Dehradun", "Delhi", "Mumbai", "Other"];
+  const dbCities = [...new Set(listings.map((h) => h.location).filter(Boolean))];
+  const cityOptions = [...new Set([...majorCities, ...dbCities])];
 
-  const handleSearch = () => {
-    setDisplaySearch(searchTerm);
-  };
+  const handleSearch = () => {
+    setDisplaySearch(searchTerm);
+  };
 
-  const filteredListings = listings.filter((h) => 
-    h.name.toLowerCase().includes(displaySearch.toLowerCase()) &&
-    (selectedCity === "All" || h.location === selectedCity)
-  );
+  const filteredListings = listings.filter((h) => 
+    h.name.toLowerCase().includes(displaySearch.toLowerCase()) &&
+    (selectedCity === "All" || h.location === selectedCity)
+  );
 
-  const uttarakhandExperiences = [
-    { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
-    { n: "Badrinath", img: "/images/badrinath.jpg" },
-    { n: "Gangotri", img: "/images/gangotri.jpg" },
-    { n: "Yamunotri", img: "/images/yamunotri.jpg" },
-    { n: "Haridwar", img: "/images/haridwar.jpg" },
-    { n: "Rishikesh", img: "/images/rishikesh.jpg" }
-  ];
-  const yogaExperiences = [{ n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" }, { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" }, { n: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" }];
-  const trekExperiences = [{ n: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" }, { n: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" }, { n: "Roopkund", img: "/images/treks/roopkund.jpg" }];
+  const uttarakhandExperiences = [
+    { n: "Kedarnath", img: "/images/chardham/kedarnath.jpg" },
+    { n: "Badrinath", img: "/images/chardham/badrinath.jpg" },
+    { n: "Gangotri", img: "/images/chardham/gangotri.jpg" },
+    { n: "Yamunotri", img: "/images/chardham/yamunotri.jpg" }
+  ];
 
-  const renderScrollSection = (title, data, category) => (
-    <section className="section-wrapper">
-      <h2 className="section-title">{title}</h2>
-      <div className="horizontal-scroll-container">
-        {data.map((item, i) => (
-          <div key={i} className="scroll-item" onClick={() => {
-              if (["tourism", "yoga", "trek"].includes(category)) {
-                window.open(`https://www.google.com/search?q=${item.n || item.name}`, "_blank");
-              } else {
-                navigate(`/details/${category}/${item.n || item.name}`);
-              }
-            }}>
-            <img src={item.img} alt={item.n || item.name} className="consistent-card-img" />
-            <h3 style={{ marginTop: "10px", fontSize: "14px" }}>{item.n || item.name}</h3>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+  const yogaExperiences = [
+    { n: "Ayurvedic Therapy", img: "/images/yoga/ayurvedic-therapy.jpg" },
+    { n: "Himalayan Yoga", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
+    { n: "Meditation", img: "/images/yoga/meditation-pranayama.jpg" },
+    { n: "Panchakarma", img: "/images/yoga/panchakarma.jpg" }
+  ];
 
-  return (
-    <div className="home-container">
-      {/* Hero Section */}
-      <section style={{ 
-        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
-        height: "450px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
-        flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
-        textAlign: "center", borderRadius: "20px", marginBottom: "80px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
-      }}>
-        <h1 style={{ fontSize: "3.5rem", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
-          Find your next escape
-        </h1>
-      </section>
+  const trekExperiences = [
+    { n: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" },
+    { n: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" },
+    { n: "Roopkund", img: "/images/treks/roopkund.jpg" },
+    { n: "Har Ki Dun", img: "/images/treks/har-ki-dun.jpg" },
+    { n: "Nag Tibba", img: "/images/treks/nag-tibba.jpg" }
+  ];
 
-      {/* Dynamic Floating Search Bar */}
-      <div className="hero-search-refined">
-        <input 
-          type="text" 
-          placeholder="Where to?" 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
-        />
-        <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
-          {cityOptions.map((city) => (
-            <option key={city} value={city}>{city}</option>
-          ))}
-        </select>
-        <button type="button" onClick={handleSearch} className="search-main-btn">Search</button>
-      </div>
+  const renderScrollSection = (title, data, category) => (
+    <section className="section-wrapper">
+      <h2 className="section-title">{title}</h2>
+      <div className="horizontal-scroll-container">
+        {data.map((item, i) => (
+          <div key={i} className="scroll-item" onClick={() => {
+              if (["tourism", "yoga", "trek"].includes(category)) {
+                window.open(`https://www.google.com/search?q=${item.n || item.name}`, "_blank");
+              } else {
+                navigate(`/details/${category}/${item.n || item.name}`);
+              }
+            }}>
+            <img src={item.img} alt={item.n || item.name} className="consistent-card-img" />
+            <h3 style={{ marginTop: "10px", fontSize: "14px" }}>{item.n || item.name}</h3>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 
-      <div className="home-content">
-        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
-        {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
-        {renderScrollSection("Popular Treks", trekExperiences, "trek")}
+  return (
+    <div className="home-container">
+      {/* Hero Section */}
+      <section style={{ 
+        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000')", 
+        height: "450px", backgroundSize: "cover", backgroundPosition: "center", display: "flex", 
+        flexDirection: "column", justifyContent: "center", alignItems: "center", color: "white", 
+        textAlign: "center", borderRadius: "20px", marginBottom: "80px", boxShadow: "0 10px 30px rgba(0,0,0,0.3)" 
+      }}>
+        <h1 style={{ fontSize: "3.5rem", fontWeight: "800", textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
+          Find your next escape
+        </h1>
+      </section>
 
-        <section className="section-wrapper">
-          <h2 className="section-title">Featured Properties</h2>
-          {filteredListings.length > 0 ? (
-            <div className="home-grid">
-              {filteredListings.map((h) => (
-                <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
-                  <img src={h.image} alt={h.name} className="consistent-card-img" />
-                  <div className="card-info">
-                    <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
-                    <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="no-results-container" style={{ textAlign: "center", padding: "50px" }}>
-              <h2>Sorry, we couldn't find "{displaySearch}."</h2>
-              <button className="add-place-btn" onClick={() => {setSearchTerm(""); setDisplaySearch(""); setSelectedCity("All");}}>Clear Search</button>
-            </div>
-          )}
-        </section>
+      {/* Dynamic Floating Search Bar */}
+      <div className="hero-search-refined">
+        <input 
+          type="text" 
+          placeholder="Where to?" 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+        />
+        <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
+          {cityOptions.map((city) => (
+            <option key={city} value={city}>{city}</option>
+          ))}
+        </select>
+        <button type="button" onClick={handleSearch} className="search-main-btn">Search</button>
+      </div>
 
-        <section className="trust-section">
-          <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
-          <div className="trust-grid">
-            <div className="trust-card"><h2>100+</h2><h3>Verified Stays</h3></div>
-            <div className="trust-card"><h2>10k+</h2><h3>Happy Travelers</h3></div>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+      <div className="home-content">
+        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
+        {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
+        {renderScrollSection("Popular Treks", trekExperiences, "trek")}
+
+        <section className="section-wrapper">
+          <h2 className="section-title">Featured Properties</h2>
+          {filteredListings.length > 0 ? (
+            <div className="home-grid">
+              {filteredListings.map((h) => (
+                <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)}>
+                  <img src={h.image} alt={h.name} className="consistent-card-img" />
+                  <div className="card-info">
+                    <h3 style={{ fontSize: "18px" }}>{h.name}</h3>
+                    <p style={{ fontSize: "14px", color: "#64748b" }}>{h.location}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="no-results-container" style={{ textAlign: "center", padding: "50px" }}>
+              <h2>Sorry, we couldn't find "{displaySearch}."</h2>
+              <button className="add-place-btn" onClick={() => {setSearchTerm(""); setDisplaySearch(""); setSelectedCity("All");}}>Clear Search</button>
+            </div>
+          )}
+        </section>
+
+        <section className="trust-section">
+          <h2 style={{ fontSize: "2rem", marginBottom: "40px" }}>Why choose The Himalayans?</h2>
+          <div className="trust-grid">
+            <div className="trust-card"><h2>100+</h2><h3>Verified Stays</h3></div>
+            <div className="trust-card"><h2>10k+</h2><h3>Happy Travelers</h3></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }
