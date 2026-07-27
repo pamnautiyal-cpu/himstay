@@ -50,7 +50,6 @@ export default function Home() {
     navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${activeTab}`);
   };
 
-  // Original Handpicked / Featured Stays data
   const featuredStays = [
     {
       id: "1",
@@ -88,33 +87,26 @@ export default function Home() {
 
   const allDisplayListings = listings.length > 0 ? [...listings, ...featuredStays] : featuredStays;
 
-  // Complete Category Sections matching old rich content structure
-  const tourismDestinations = [
-    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in high Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg" },
-    { name: "Badrinath", desc: "Holy abode of Lord Vishnu on the banks of Alaknanda.", img: "/images/chardham/badrinath.jpg" },
-    { name: "Gangotri", desc: "Origin of the holy river Ganga.", img: "/images/chardham/gangotri.jpg" },
-    { name: "Yamunotri", desc: "Sacred source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg" }
-  ];
-
-  const yogaRetreats = [
-    { name: "Himalayan Yoga Retreat", desc: "Deep meditation and spiritual awakening in silence.", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
-    { name: "Ayurvedic Therapy", desc: "Holistic healing through ancient Pahadi herbs.", img: "/images/yoga/ayurvedic-therapy.jpg" },
-    { name: "Meditation & Pranayama", desc: "Master your breath by the sacred Ganges.", img: "/images/yoga/meditation-pranayama.jpg" },
-    { name: "Panchakarma Detox", desc: "Complete body purification and rejuvenation.", img: "/images/yoga/panchakarma.jpg" }
-  ];
-
-  const popularTreks = [
-    { name: "Kedarkantha Trek", desc: "Classic winter snow trek with panoramic summit views.", img: "/images/treks/kedarkantha.jpg" },
-    { name: "Valley of Flowers", desc: "UNESCO World Heritage site filled with alpine flora.", img: "/images/treks/valley-of-flowers.jpg" },
-    { name: "Roopkund Trek", desc: "The mystical skeleton lake glacial expedition.", img: "/images/treks/roopkund.jpg" },
-    { name: "Har Ki Dun", desc: "Cradle of Swargarohini in ancient Garhwal.", img: "/images/treks/har-ki-dun.jpg" }
-  ];
-
-  // Blog / Stories Section data
-  const travelBlogs = [
-    { title: "Complete Guide to Char Dham Yatra 2026", date: "April 12, 2026", img: "/images/chardham/kedarnath.jpg" },
-    { title: "Top 5 Meditation Spots in Rishikesh", date: "March 28, 2026", img: "/images/yoga/himalayan-yoga-retreat.jpg" },
-    { title: "Packing Essentials for Kedarkantha Trek", date: "March 15, 2026", img: "/images/treks/kedarkantha.jpg" }
+  // Clean, professional category cards that link to a dedicated Explore/Guides page
+  const categoryBanners = [
+    {
+      title: "Uttarakhand Tourism",
+      subtitle: "✨ Divine Shrines & Sacred Char Dham Trails",
+      img: "/images/chardham/kedarnath.jpg",
+      path: "/explore" // Links to the separate dedicated page containing all Char Dham & Tourism details
+    },
+    {
+      title: "Yoga & Wellness",
+      subtitle: "🌿 Rejuvenate Body & Soul in Mountain Silence",
+      img: "/images/yoga/himalayan-yoga-retreat.jpg",
+      path: "/explore"
+    },
+    {
+      title: "Popular Treks",
+      subtitle: "⚡ Thrilling Alpine Routes & Snowy Expeditions",
+      img: "/images/treks/kedarkantha.jpg",
+      path: "/explore"
+    }
   ];
 
   return (
@@ -342,76 +334,50 @@ export default function Home() {
           ))}
         </div>
 
-        {/* 1. Uttarakhand Tourism Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <span style={{ fontSize: "12px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>✨ Divine Shrines & Sacred Char Dham Trails</span>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Uttarakhand Tourism</h2>
+        {/* Compact Clean Category Banner Cards linking to Explore/Guides page */}
+        <div style={{ marginBottom: "20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "15px" }}>
+            <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>
+              🌟 Explore Himalayan Categories & Guides
+            </h2>
+            <button 
+              onClick={() => navigate("/explore")}
+              style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "700", cursor: "pointer", fontSize: "14px" }}
+            >
+              View All Guides →
+            </button>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
-            {tourismDestinations.map((item, idx) => (
-              <div key={idx} style={cardStyle} onClick={() => navigate(`/search?query=${encodeURIComponent(item.name)}`)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 2. Yoga & Wellness Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <span style={{ fontSize: "12px", fontWeight: "700", color: "#059669", textTransform: "uppercase" }}>🌿 Rejuvenate Body & Soul in Mountain Silence</span>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Yoga & Wellness</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
-            {yogaRetreats.map((item, idx) => (
-              <div key={idx} style={cardStyle} onClick={() => navigate(`/search?query=Yoga`)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 3. Popular Treks Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <span style={{ fontSize: "12px", fontWeight: "700", color: "#d97706", textTransform: "uppercase" }}>⚡ Thrilling Alpine Routes & Snowy Expeditions</span>
-            <h2 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", margin: "2px 0 0 0" }}>Popular Treks</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
-            {popularTreks.map((item, idx) => (
-              <div key={idx} style={cardStyle} onClick={() => navigate(`/search?query=Kedarkantha`)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Travel Blog / Stories Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "15px" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>📖 Pahadi Travel Stories & Guides</h2>
-            <p style={{ fontSize: "13px", color: "#64748b", margin: "3px 0 0 0" }}>Read travel tips from local experts</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
-            {travelBlogs.map((blog, idx) => (
-              <div key={idx} style={{ background: "white", borderRadius: "14px", overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 2px 8px rgba(0,0,0,0.03)" }}>
-                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "150px", objectFit: "cover" }} />
-                <div style={{ padding: "16px" }}>
-                  <span style={{ fontSize: "11px", color: "#0284c7", fontWeight: "700" }}>{blog.date}</span>
-                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#0f172a", margin: "6px 0 0 0" }}>{blog.title}</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
+            {categoryBanners.map((cat, idx) => (
+              <div 
+                key={idx}
+                onClick={() => navigate(cat.path)}
+                style={{
+                  position: "relative",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  height: "180px",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+                  transition: "transform 0.2s ease",
+                  border: "1px solid #e2e8f0"
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                <img src={cat.img} alt={cat.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+                  background: "linear-gradient(to top, rgba(11,19,43,0.9), rgba(11,19,43,0.3))",
+                  padding: "20px", display: "flex", flexDirection: "column", justifyContent: "flex-end", color: "white"
+                }}>
+                  <span style={{ fontSize: "12px", fontWeight: "700", color: "#38bdf8", marginBottom: "4px" }}>
+                    {cat.subtitle}
+                  </span>
+                  <h3 style={{ fontSize: "20px", fontWeight: "800", margin: 0, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    {cat.title}
+                    <span style={{ fontSize: "16px", background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "8px" }}>Explore →</span>
+                  </h3>
                 </div>
               </div>
             ))}
@@ -447,14 +413,4 @@ const badgeCardStyle = {
   alignItems: "center",
   gap: "14px",
   boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
-};
-
-const cardStyle = {
-  background: "#fff",
-  borderRadius: "14px",
-  overflow: "hidden",
-  border: "1px solid #e2e8f0",
-  cursor: "pointer",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
-  transition: "transform 0.2s ease",
 };
