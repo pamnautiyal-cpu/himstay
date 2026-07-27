@@ -36,11 +36,23 @@ router.post("/add", upload.array("images", 5), async (req, res) => {
 });
 
 // ============================
-// ADMIN: GET PENDING PROPERTIES (इसे /:id से ऊपर रखना ज़रूरी है)
+// ADMIN: GET PENDING PROPERTIES
 // ============================
 router.get("/pending", async (req, res) => {
   try {
     const hotels = await Hotel.find({ isApproved: false });
+    res.json(hotels);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ============================
+// ADMIN: GET ALL HOTELS (Pending + Approved) - सही जगह जोड़ा गया
+// ============================
+router.get("/admin/all", async (req, res) => {
+  try {
+    const hotels = await Hotel.find({});
     res.json(hotels);
   } catch (err) {
     res.status(400).json({ error: err.message });
