@@ -39,26 +39,27 @@ export default function Home() {
     (selectedCity === "All" || h.location === selectedCity)
   );
 
+  // Original Data with Images for Sections
   const uttarakhandExperiences = [
-    { n: "Kedarnath" },
-    { n: "Badrinath" },
-    { n: "Gangotri" },
-    { n: "Yamunotri" }
+    { name: "Kedarnath", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600" },
+    { name: "Badrinath", img: "https://images.unsplash.com/photo-1590059392345-21d37a50785f?q=80&w=600" },
+    { name: "Gangotri", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=600" },
+    { name: "Yamunotri", img: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a566?q=80&w=600" }
   ];
 
   const yogaExperiences = [
-    { n: "Ayurvedic Therapy" },
-    { n: "Himalayan Yoga" },
-    { n: "Meditation" },
-    { n: "Panchakarma" }
+    { name: "Ayurvedic Therapy", img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600" },
+    { name: "Himalayan Yoga", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=600" },
+    { name: "Meditation", img: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600" },
+    { name: "Panchakarma", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=600" }
   ];
 
   const trekExperiences = [
-    { n: "Kedarkantha" },
-    { n: "Valley of Flowers" },
-    { n: "Roopkund" },
-    { n: "Har Ki Dun" },
-    { n: "Nag Tibba" }
+    { name: "Kedarkantha", img: "/images/treks/kedarkantha.jpg" },
+    { name: "Valley of Flowers", img: "/images/treks/valley-of-flowers.jpg" },
+    { name: "Roopkund", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600" },
+    { name: "Har Ki Dun", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=600" },
+    { name: "Nag Tibba", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600" }
   ];
 
   const blogPosts = [
@@ -82,49 +83,45 @@ export default function Home() {
     }
   ];
 
-  const renderScrollSection = (title, data, category) => (
+  const renderCardSection = (title, data, category) => (
     <section className="section-wrapper" style={{ margin: "40px 0" }}>
-      <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#1e293b", marginBottom: "15px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
+      <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#1e293b", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
         {title}
       </h2>
-      <div className="horizontal-scroll-container" style={{ display: "flex", gap: "15px", overflowX: "auto", paddingBottom: "10px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "20px" }}>
         {data.map((item, i) => (
           <div 
             key={i} 
-            onClick={() => {
-              if (["tourism", "yoga", "trek"].includes(category)) {
-                window.open(`https://www.google.com/search?q=${item.n || item.name}`, "_blank");
-              } else {
-                navigate(`/details/${category}/${item.n || item.name}`);
-              }
-            }}
+            onClick={() => window.open(`https://www.google.com/search?q=${item.name}`, "_blank")}
             style={{
-              padding: "14px 28px",
-              background: "#ffffff",
-              border: "1px solid #cbd5e1",
-              borderRadius: "12px",
+              background: "#fff",
+              borderRadius: "16px",
+              overflow: "hidden",
+              border: "1px solid #e2e8f0",
               cursor: "pointer",
-              whiteSpace: "nowrap",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-              fontWeight: "600",
-              fontSize: "14px",
-              color: "#334155",
-              transition: "all 0.2s ease"
+              boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+              transition: "transform 0.2s ease, box-shadow 0.2s ease"
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#0ea5e9";
-              e.currentTarget.style.color = "#ffffff";
-              e.currentTarget.style.borderColor = "#0ea5e9";
-              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.transform = "translateY(-4px)";
+              e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.08)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = "#ffffff";
-              e.currentTarget.style.color = "#334155";
-              e.currentTarget.style.borderColor = "#cbd5e1";
               e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.03)";
             }}
           >
-            {item.n || item.name}
+            <img 
+              src={item.img} 
+              alt={item.name} 
+              style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+              onError={(e) => {
+                e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600";
+              }}
+            />
+            <div style={{ padding: "15px" }}>
+              <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b" }}>{item.name}</h3>
+            </div>
           </div>
         ))}
       </div>
@@ -167,26 +164,27 @@ export default function Home() {
             <option key={city} value={city}>{city}</option>
           ))}
         </select>
-        <button type="button" onClick={handleSearch} className="search-main-btn" style={{
-          background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 28px", borderRadius: "10px", fontWeight: "700", cursor: "pointer", fontSize: "15px", transition: "0.2s"
+        <button type="button" onClick={handleSearch} style={{
+          background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 28px", borderRadius: "10px", fontWeight: "700", cursor: "pointer", fontSize: "15px"
         }}>Search</button>
       </div>
 
       <div className="home-content">
-        {renderScrollSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
-        {renderScrollSection("Yoga & Wellness", yogaExperiences, "yoga")}
-        {renderScrollSection("Popular Treks", trekExperiences, "trek")}
+        {renderCardSection("Uttarakhand Tourism", uttarakhandExperiences, "tourism")}
+        {renderCardSection("Yoga & Wellness", yogaExperiences, "yoga")}
+        {renderCardSection("Popular Treks", trekExperiences, "trek")}
 
+        {/* Featured Properties */}
         <section className="section-wrapper" style={{ margin: "50px 0" }}>
           <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#1e293b", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
             Featured Properties
           </h2>
           {filteredListings.length > 0 ? (
-            <div className="home-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "25px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "25px" }}>
               {filteredListings.map((h) => (
-                <div key={h.id} className="home-card" onClick={() => navigate(`/details/${h.type}/${h.id}`)} style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)", transition: "0.3s" }}>
-                  <img src={h.image} alt={h.name} className="consistent-card-img" style={{ width: "100%", height: "200px", objectFit: "cover" }} />
-                  <div className="card-info" style={{ padding: "18px" }}>
+                <div key={h.id} onClick={() => navigate(`/details/${h.type}/${h.id}`)} style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)", transition: "0.3s" }}>
+                  <img src={h.image} alt={h.name} style={{ width: "100%", height: "200px", objectFit: "cover" }} />
+                  <div style={{ padding: "18px" }}>
                     <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "5px" }}>{h.name}</h3>
                     <p style={{ fontSize: "14px", color: "#64748b" }}>📍 {h.location}</p>
                   </div>
@@ -194,9 +192,9 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="no-results-container" style={{ textAlign: "center", padding: "50px" }}>
+            <div style={{ textAlign: "center", padding: "50px" }}>
               <h2>Sorry, we couldn't find "{displaySearch}."</h2>
-              <button className="add-place-btn" onClick={() => {setSearchTerm(""); setDisplaySearch(""); setSelectedCity("All");}} style={{ marginTop: "15px", padding: "10px 20px", background: "#0ea5e9", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "600" }}>Clear Search</button>
+              <button onClick={() => {setSearchTerm(""); setDisplaySearch(""); setSelectedCity("All");}} style={{ marginTop: "15px", padding: "10px 20px", background: "#0ea5e9", color: "#fff", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "600" }}>Clear Search</button>
             </div>
           )}
         </section>
@@ -206,11 +204,11 @@ export default function Home() {
           <h2 style={{ fontSize: "22px", fontWeight: "700", color: "#1e293b", marginBottom: "20px", borderLeft: "4px solid #0ea5e9", paddingLeft: "10px" }}>
             Travel Stories & Blogs
           </h2>
-          <div className="home-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "25px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "25px" }}>
             {blogPosts.map((blog, index) => (
-              <div key={index} className="home-card" style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)", transition: "0.3s" }} onClick={() => window.open(`https://www.google.com/search?q=${blog.title}`, "_blank")}>
-                <img src={blog.img} alt={blog.title} className="consistent-card-img" style={{ width: "100%", height: "180px", objectFit: "cover" }} />
-                <div className="card-info" style={{ padding: "18px" }}>
+              <div key={index} style={{ background: "#fff", borderRadius: "16px", overflow: "hidden", border: "1px solid #e2e8f0", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }} onClick={() => window.open(`https://www.google.com/search?q=${blog.title}`, "_blank")}>
+                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "180px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600"; }} />
+                <div style={{ padding: "18px" }}>
                   <span style={{ fontSize: "12px", color: "#0ea5e9", fontWeight: "700", textTransform: "uppercase" }}>{blog.date}</span>
                   <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "8px 0" }}>{blog.title}</h3>
                   <p style={{ fontSize: "13px", color: "#64748b", lineHeight: "1.5" }}>{blog.desc}</p>
@@ -220,14 +218,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="trust-section" style={{ marginTop: "70px", background: "#0f172a", color: "#fff", padding: "50px 20px", borderRadius: "24px", textAlign: "center" }}>
+        <section style={{ marginTop: "70px", background: "#0f172a", color: "#fff", padding: "50px 20px", borderRadius: "24px", textAlign: "center" }}>
           <h2 style={{ fontSize: "2.2rem", marginBottom: "35px", fontWeight: "800" }}>Why choose The Himalayans?</h2>
-          <div className="trust-grid" style={{ display: "flex", justifyContent: "center", gap: "60px", flexWrap: "wrap" }}>
-            <div className="trust-card">
+          <div style={{ display: "flex", justifyContent: "center", gap: "60px", flexWrap: "wrap" }}>
+            <div>
               <h2 style={{ fontSize: "2.5rem", color: "#38bdf8", fontWeight: "800" }}>100+</h2>
               <h3 style={{ fontSize: "16px", color: "#cbd5e1", marginTop: "5px" }}>Verified Stays</h3>
             </div>
-            <div className="trust-card">
+            <div>
               <h2 style={{ fontSize: "2.5rem", color: "#38bdf8", fontWeight: "800" }}>10k+</h2>
               <h3 style={{ fontSize: "16px", color: "#cbd5e1", marginTop: "5px" }}>Happy Travelers</h3>
             </div>
