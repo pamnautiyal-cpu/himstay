@@ -6,6 +6,7 @@ import emailjs from '@emailjs/browser';
 export default function ListProperty() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   
   // 1. LOGIN CHECK - Auth Check (यदि यूजर लॉगिन नहीं है तो लॉगिन पेज पर भेजें)
   useEffect(() => {
@@ -47,43 +48,47 @@ export default function ListProperty() {
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
 
-    // किस यूजर ने प्रॉपर्टी लिस्ट की है, उसकी जानकारी जोड़ें
+    // किस यूजर ने प्रॉपर्टी लिस्ट की है, उसकी जानकारी जोड़ें
     const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
     if (currentUser.email) {
       data.append("ownerEmail", currentUser.email);
     }
 
     try {
-      // प्रॉपर्टी सबमिट करें
+      // प्रॉपर्टी डेटाबेस में सबमिट करें
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
-      // 2. EMAIL NOTIFICATION - सबमिट होने पर ईमेल भेजें
-      await emailjs.send(
-        "service_lvjl1yl", 
-        "template_17qwwpa", 
-        {
-          name: currentUser.name || "Admin",
-          title: formData.name, 
-          message: `Location: ${formData.location}, Price: ${formData.price}, Phone: ${formData.phone}, Owner: ${currentUser.email || 'N/A'}`,
-          email: "system@thehimalayans.com"
-        }, 
-        "BN7sU5C5l-KUXpOj"
-      );
+      // 2. EMAIL NOTIFICATION - सबमिट होने पर ईमेल भेजें (अगर फेल हो तो भी फॉर्म न रुके)
+      try {
+        await emailjs.send(
+          "service_lvjl1yl", 
+          "template_17qwwpa", 
+          {
+            name: currentUser.name || "Admin",
+            title: formData.name, 
+            message: `Location: ${formData.location}, Price: ${formData.price}, Phone: ${formData.phone}, Owner: ${currentUser.email || 'N/A'}`,
+            email: "system@thehimalayans.com"
+          }, 
+          "BN7sU5C5l-KUXpOj"
+        );
+      } catch (emailErr) {
+        console.log("Email notification skipped/failed:", emailErr);
+      }
 
-      alert("Property Listed Successfully & Email Sent!");
-      navigate("/hotels");
+      setLoading(false);
+      setShowSuccessModal(true); // सफलता का पॉप-अप दिखाएं
+
     } catch (err) {
       console.error(err);
-      alert("Upload failed. Check console.");
-    } finally {
       setLoading(false);
+      alert("Upload failed. Check console.");
     }
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", position: "relative" }}>
       <h2 style={{ textAlign: "center" }}>List Your Property</h2>
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         <input name="name" placeholder="Hotel Name *" required onChange={handleChange} style={inputStyle} />
@@ -121,6 +126,37 @@ export default function ListProperty() {
           {loading ? "Uploading..." : "Complete Listing"}
         </button>
       </form>
+
+      {/* SUCCESS POPUP MODAL */}
+      {showSuccessModal && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+          background: "rgba(0,0,0,0.6)", display: "flex", justifyContent: "center",
+          alignItems: "center", zIndex: 1000
+        }}>
+          <div style={{
+            background: "#fff", padding: "30px", borderRadius: "16px",
+            textAlign: "center", maxWidth: "400px", width: "90%",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
+          }}>
+            <div style={{ fontSize: "50px", marginBottom: "10px" }}>🎉</div>
+            <h2 style={{ color: "#1e293b", marginBottom: "10px" }}>Property Listed Successfully!</h2>
+            <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "20px" }}>
+              Your property has been submitted and sent for admin review.
+            </p>
+            <button 
+              onClick={() => navigate("/hotels")} 
+              style={{
+                background: "#0ea5e9", color: "#fff", border: "none",
+                padding: "12px 24px", borderRadius: "8px", fontSize: "16px",
+                cursor: "pointer", fontWeight: "600", width: "100%"
+              }}
+            >
+              View All Properties
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
