@@ -50,7 +50,7 @@ export default function AllStays() {
       });
   }, []);
 
-  if (loading) return <div style={{ textAlign: "center", padding: "80px", fontSize: "20px", color: "#64748b" }}>🏔️ Loading Stays...</div>;
+  if (loading) return <div style={{ textAlign: "center", padding: "80px", fontSize: "20px", color: "#64748b" }}> Loading Stays...</div>;
 
   const currentHotels = hotels.slice(0, visibleCount);
 
