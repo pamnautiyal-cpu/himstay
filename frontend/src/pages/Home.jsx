@@ -124,12 +124,10 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "60px" }}>
       
-      {/* Hero Banner with Local Background Image */}
+      {/* 🌟 Hero Banner with Premium Live Background Image */}
       <div style={{
         position: "relative",
-        backgroundImage: "linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('/images/hero/himalayas.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: "linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600') center/cover no-repeat",
         padding: "90px 20px",
         textAlign: "center",
         color: "white",
