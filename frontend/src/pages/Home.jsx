@@ -74,30 +74,30 @@ export default function Home() {
   });
 
   const tourismDestinations = [
-    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", path: "/chardham" },
-    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "/images/chardham/badrinath.jpg", path: "/chardham" },
-    { name: "Gangotri", desc: "Pristine origin point of the holy river Ganga.", img: "/images/chardham/gangotri.jpg", path: "/chardham" },
-    { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", path: "/chardham" }
+    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600", path: "/details/kedarnath" },
+    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600", path: "/details/badrinath" },
+    { name: "Gangotri", desc: "Pristine origin point of the holy river Ganga.", img: "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600", path: "/details/gangotri" },
+    { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a566?w=600", path: "/details/yamunotri" }
   ];
 
   const yogaRetreats = [
-    { name: "Himalayan Yoga Sanctuary", desc: "Deep meditation and spiritual awakening in mountain silence.", img: "/images/yoga/himalayan-yoga-retreat.jpg", path: "/yoga" },
-    { name: "Ayurvedic Wellness & Therapy", desc: "Holistic healing through ancient Himalayan herbs.", img: "/images/yoga/ayurvedic-therapy.jpg", path: "/yoga" },
-    { name: "Meditation & Pranayama", desc: "Master your breath by the sacred Ganges flow.", img: "/images/yoga/meditation-pranayama.jpg", path: "/yoga" },
-    { name: "Panchakarma Detox", desc: "Complete body purification and holistic rejuvenation.", img: "/images/yoga/panchakarma.jpg", path: "/yoga" }
+    { name: "Himalayan Yoga Sanctuary", desc: "Deep meditation and spiritual awakening in mountain silence.", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600", path: "/details/himalayan-yoga" },
+    { name: "Ayurvedic Wellness & Therapy", desc: "Holistic healing through ancient Himalayan herbs.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/ayurvedic-therapy" },
+    { name: "Meditation & Pranayama", desc: "Master your breath by the sacred Ganges flow.", img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600", path: "/details/meditation" },
+    { name: "Panchakarma Detox", desc: "Complete body purification and holistic rejuvenation.", img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=600", path: "/details/panchakarma" }
   ];
 
   const popularTreks = [
-    { name: "Kedarkantha Winter Trek", desc: "Classic snow trail expedition with panoramic summit views.", img: "/images/treks/kedarkantha.jpg", path: "/trek-details" },
-    { name: "Valley of Flowers", desc: "UNESCO World Heritage alpine floral wonderland.", img: "/images/treks/valley-of-flowers.jpg", path: "/trek-details" },
-    { name: "Roopkund Glacial Trek", desc: "The mystical high-altitude glacial lake expedition.", img: "/images/treks/roopkund.jpg", path: "/trek-details" },
-    { name: "Har Ki Dun Expedition", desc: "Ancient cradle of Swargarohini in Garhwal.", img: "/images/treks/har-ki-dun.jpg", path: "/trek-details" }
+    { name: "Kedarkantha Winter Trek", desc: "Classic snow trail expedition with panoramic summit views.", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", path: "/details/kedarkantha" },
+    { name: "Valley of Flowers", desc: "UNESCO World Heritage alpine floral wonderland.", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600", path: "/details/valley-of-flowers" },
+    { name: "Roopkund Glacial Trek", desc: "The mystical high-altitude glacial lake expedition.", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600", path: "/details/roopkund" },
+    { name: "Har Ki Dun Expedition", desc: "Ancient cradle of Swargarohini in Garhwal.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", path: "/details/har-ki-dun" }
   ];
 
   const travelBlogs = [
-    { title: "Complete Master Guide to Char Dham Yatra 2026", date: "April 12, 2026", img: "/images/chardham/kedarnath.jpg", path: "/blogs" },
-    { title: "Top 5 Peaceful Meditation Spots in Rishikesh", date: "March 28, 2026", img: "/images/yoga/himalayan-yoga-retreat.jpg", path: "/blogs" },
-    { title: "Essential Packing Checklist for Kedarkantha Trek", date: "March 15, 2026", img: "/images/treks/kedarkantha.jpg", path: "/blogs" }
+    { title: "Complete Master Guide to Char Dham Yatra 2026", date: "April 12, 2026", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600", path: "/blogs" },
+    { title: "Top 5 Peaceful Meditation Spots in Rishikesh", date: "March 28, 2026", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600", path: "/blogs" },
+    { title: "Essential Packing Checklist for Kedarkantha Trek", date: "March 15, 2026", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", path: "/blogs" }
   ];
 
   return (

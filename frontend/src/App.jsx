@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import AllStays from "./pages/AllStays";
 import HotelDetails from "./pages/HotelDetails";
 import DetailsPage from "./pages/DetailsPage";
+import ComingSoon from "./pages/ComingSoon";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
+          <Route path="/details/:id" element={<ComingSoon />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/mytrips" element={<MyTrips />} />
