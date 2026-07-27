@@ -50,8 +50,8 @@ export default function Home() {
     navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${activeTab}`);
   };
 
-  // Default Stays (Hotel page style data)
-  const defaultStays = [
+  // Featured Live Stays
+  const featuredStays = [
     {
       id: "1",
       title: "Himalayan Eco Lodge & Retreat",
@@ -86,9 +86,9 @@ export default function Home() {
     }
   ];
 
-  // Combine Firebase listings so home page dynamically shows exact hotel page listings
-  const allDisplayListings = listings.length > 0 ? listings : defaultStays;
+  const allDisplayListings = listings.length > 0 ? [...listings, ...featuredStays] : featuredStays;
 
+  // Main Category Banners (Clicking opens category search or detail view)
   const categoryBanners = [
     {
       title: "Uttarakhand Tourism",
@@ -252,13 +252,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Live Hotels & Stay Ads Section - Linked to Hotel Page Data */}
+        {/* Live Hotels & Stay Ads Section */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
           <div>
             <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", margin: 0 }}>
               🔥 Handpicked Stays & Retreat Ads
             </h2>
-            <p style={{ fontSize: "13px", color: "#64748b", margin: "3px 0 0 0" }}>Explore exact properties listed on the stays page</p>
+            <p style={{ fontSize: "13px", color: "#64748b", margin: "3px 0 0 0" }}>Explore top-rated hotels, yoga centers, and mountain camps</p>
           </div>
           <button 
             onClick={() => navigate("/stays")}
@@ -268,7 +268,7 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Property Grid using Stays Page / Hotel Data */}
+        {/* Property Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "20px", marginBottom: "40px" }}>
           {allDisplayListings.map((item, index) => (
             <div 
@@ -297,7 +297,7 @@ export default function Home() {
             >
               <div style={{ position: "relative" }}>
                 <img 
-                  src={item.image || item.img || "/images/hero/himalayas.jpg"} 
+                  src={item.img || item.image || "/images/hero/himalayas.jpg"} 
                   alt={item.title || item.name} 
                   style={{ width: "100%", height: "170px", objectFit: "cover" }} 
                   onError={(e) => { e.target.src = "/images/hero/himalayas.jpg"; }}
@@ -318,24 +318,19 @@ export default function Home() {
                   <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "6px 0 10px 0", lineHeight: "1.3" }}>
                     {item.title || item.name}
                   </h3>
-                  {item.description && (
-                    <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px 0", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                      {item.description}
-                    </p>
-                  )}
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "10px" }}>
                   <div>
                     <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
-                    <span style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a" }}>{item.price ? `₹${item.price}` : "₹2,499"}</span>
+                    <span style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a" }}>{item.price || "₹2,499"}</span>
                     <span style={{ fontSize: "11px", color: "#64748b" }}> / night</span>
                   </div>
                   <button style={{
                     background: "#0284c7", color: "white", border: "none", padding: "8px 14px",
                     borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer"
                   }}>
-                    View Details
+                    Book Now
                   </button>
                 </div>
               </div>
@@ -343,7 +338,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Compact Category Banner Cards */}
+        {/* Compact Category Banner Cards (Clicking opens search/detail view cleanly) */}
         <div style={{ marginBottom: "20px" }}>
           <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", marginBottom: "15px" }}>
             🌟 Explore Himalayan Categories
