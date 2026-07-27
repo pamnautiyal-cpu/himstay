@@ -13,15 +13,25 @@ export default function AdminHotels() {
 
   function loadHotels() {
     setLoading(true);
+    // एडमिन को सभी होटल्स (Pending + Approved दोनों) देखने के लिए बैकएंड में एक राउट चाहिए या हम /api/hotels/pending और /api/hotels को मिला सकते हैं। 
+    // फिलहाल हम सभी होटल्स फेच करने के लिए एक एडमिन राउट बनाएंगे या /api/hotels/pending का इस्तेमाल करेंगे। 
+    // चूंकि एडमिन पैनल पर दोनों दिखनी चाहिए, आइए बैकएंड में एक ऑल-होटल्स राउट का उपयोग करें या यहाँ पेंडिंग और अप्रूव्ड दोनों फेच करें।
+    
+    // आसान तरीका: हम बैकएंड से सभी होटल्स फेच करने के लिए एक छोटा सा बदलाव कर सकते हैं या सीधे /api/hotels हिट करते हैं।
+    // लेकिन चूँकि /api/hotels सिर्फ approved देता है, हम बैकएंड में एक राउट जोड़ेंगे या नीचे दिए गए तरीके से करेंगे:
+    
     axios
-      .get(`${BACKEND_URL}/api/hotels`)
+      .get(`${BACKEND_URL}/api/hotels/admin/all`) // इसे अभी हम बैकएंड में जोड़ेंगे ताकि सारे होटल्स दिखें
       .then((res) => {
         setHotels(res.data || []);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error loading hotels:", err);
-        setLoading(false);
+        // अगर ऊपर वाला राउट न हो तो कम से कम पेंडिंग दिखें
+        axios.get(`${BACKEND_URL}/api/hotels/pending`)
+          .then(res => { setHotels(res.data || []); setLoading(false); })
+          .catch(() => setLoading(false));
       });
   }
 
@@ -34,10 +44,10 @@ export default function AdminHotels() {
       .catch((err) => alert("Delete failed: " + err.message));
   }
 
-  // नई प्रॉपर्टी को अप्रूव करने का फंक्शन
+  // नई प्रॉपर्टी को अप्रूव करने का सही फंक्शन
   function approveHotel(id) {
     axios
-      .put(`${BACKEND_URL}/api/hotels/${id}`, { isApproved: true, status: "approved" })
+      .put(`${BACKEND_URL}/api/hotels/approve/${id}`)
       .then(() => {
         alert("Property Approved Successfully!");
         loadHotels();
