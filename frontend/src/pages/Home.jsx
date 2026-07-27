@@ -73,11 +73,11 @@ export default function Home() {
     return item.category.toLowerCase() === activeTab.toLowerCase();
   });
 
-  const tourismDestinations = [
-    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600", path: "/details/kedarnath" },
-    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600", path: "/details/badrinath" },
-    { name: "Gangotri", desc: "Pristine origin point of the holy river Ganga.", img: "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600", path: "/details/gangotri" },
-    { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a566?w=600", path: "/details/yamunotri" }
+const tourismDestinations = [
+    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", path: "/details/kedarnath" },
+    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "/images/chardham/badrinath.jpg", path: "/details/badrinath" },
+    { name: "Gangotri", desc: "Pristine origin point of the holy river Ganga.", img: "/images/chardham/gangotri.jpg", path: "/details/gangotri" },
+    { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", path: "/details/yamunotri" }
   ];
 
   const yogaRetreats = [
