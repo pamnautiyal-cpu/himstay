@@ -9,6 +9,23 @@ export default function Home() {
   const [listings, setListings] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); 
 
+  // 🌟 Hero Banner Slideshow Images (लोकल फोल्डर वाली इमेजेस जो ऑटो-रोटेट होंगी)
+  const heroImages = [
+    "/images/hero/himalayas.jpg",
+    "/images/chardham/kedarnath.jpg",
+    "/images/chardham/badrinath.jpg",
+    "/images/treks/kedarkantha.jpg"
+  ];
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // हर 4 सेकंड में बैनर इमेज बदलने का इफ़ेक्ट
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(slideInterval);
+  }, [heroImages.length]);
+
   useEffect(() => {
     const fetchListings = async () => {
       try {
@@ -124,14 +141,17 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "60px" }}>
       
-      {/* 🌟 Hero Banner with Premium Live Background Image */}
+      {/* 🌟 Live Auto-Sliding Hero Banner */}
       <div style={{
         position: "relative",
-        background: "linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.7)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600') center/cover no-repeat",
-        padding: "90px 20px",
+        backgroundImage: `linear-gradient(rgba(11, 19, 43, 0.55), rgba(11, 19, 43, 0.75)), url('${heroImages[currentSlide]}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        padding: "110px 20px",
         textAlign: "center",
         color: "white",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.15)"
+        boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+        transition: "background-image 1s ease-in-out"
       }}>
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
           <h1 style={{ fontSize: "42px", fontWeight: "800", marginBottom: "12px", letterSpacing: "-0.5px" }}>
@@ -176,6 +196,24 @@ export default function Home() {
               Search
             </button>
           </form>
+
+          {/* Slide Indicator Dots */}
+          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "25px" }}>
+            {heroImages.map((_, idx) => (
+              <span 
+                key={idx} 
+                onClick={() => setCurrentSlide(idx)}
+                style={{
+                  width: currentSlide === idx ? "24px" : "8px",
+                  height: "8px",
+                  borderRadius: "4px",
+                  background: currentSlide === idx ? "#38bdf8" : "rgba(255,255,255,0.4)",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease"
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
