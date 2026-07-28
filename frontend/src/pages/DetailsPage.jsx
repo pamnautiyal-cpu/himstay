@@ -17,7 +17,7 @@ export default function DetailsPage() {
 
   // लोकल होटल्स का डेटा ताकि local_ वाले आइटम्स सीधे यहाँ से मिल जाएं
   const localUttarkashiHotels = {
-    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy, Matli", image: "/images/hotals/Hotel Nagraja Palac1.jpg", price: "2,499", rating: "4.8", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", facilities: "Food, Parking, CCTV, Wi-Fi" },
+    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy, Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", price: "2,499", rating: "4.8", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", facilities: "Food, Parking, CCTV, Wi-Fi" },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", image: "/images/hotals/Grandparents Homestay1.jpg", price: "1,899", rating: "4.9", description: "Peaceful family homestay offering authentic mountain hospitality.", facilities: "Home-cooked food, Parking" },
     "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range, Matli", image: "/images/hotals/Hotel Prisha Pahal1.jpg", price: "2,199", rating: "4.7", description: "Scenic valley views with comfortable modern rooms.", facilities: "Parking, Wi-Fi, Room Service" },
     "local_04": { name: "Hotel K.P Residency", location: "Near Medicose, Matli", image: "/images/hotals/Hotel K.P Residency1.jpg", price: "2,200", rating: "4.6", description: "Comfortable stay close to the main highway and market.", facilities: "Parking, Power Backup" },
@@ -93,10 +93,10 @@ export default function DetailsPage() {
       <p style={{ color: "#64748b", fontWeight: "600" }}>📍 {data?.location || data?.city}</p>
       
       <img 
-        src={data?.image || "/images/hotals/Hotel Nagraja Palac1.jpg"} 
+        src={data?.image || "/images/hotals/Hotel Nagraja Palace1.jpg"} 
         alt={data?.name} 
         style={{ width: "100%", borderRadius: "12px", height: "400px", objectFit: "cover", marginTop: "10px" }} 
-        onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac1.jpg"; }}
+        onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
       />
       
       <p style={{ marginTop: "20px", fontSize: "16px", color: "#334155", lineHeight: "1.6" }}>{data?.description}</p>

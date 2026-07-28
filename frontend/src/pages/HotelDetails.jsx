@@ -11,12 +11,12 @@ export default function HotelDetails() {
 
   // आपके सभी 16 लोकल होटल्स का ऑरिजिनल डेटा (सही 'hotals' फोल्डर पाथ के साथ)
   const localHotels = {
-    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", images: ["/images/hotals/Hotel Nagraja Palac1.jpg", "/images/hotals/Hotel Nagraja Palac2.jpg", "/images/hotals/Hotel Nagraja Palac3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
+    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", images: ["/images/hotals/Hotel Nagraja Palac1.jpg", "/images/hotals/Hotel Nagraja Palace2.jpg", "/images/hotals/Hotel Nagraja Palace3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay offering genuine pahadi hospitality and warmth.", images: ["/images/hotals/Grandparents Homestay1.jpg", "/images/hotals/Grandparents Homestay2.jpg", "/images/hotals/Grandparents Homestay3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
     "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range", description: "Best hygiene stay with scenic valley views and quiet ambiance.", images: ["/images/hotals/Hotel Prisha Pahal1.jpg", "/images/hotals/Hotel Prisha Pahal2.jpg", "/images/hotals/Hotel Prisha Pahal3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Attached Bath", "Hygienic"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Space", "TV"] }] },
     "local_04": { name: "Hotel K.P Residency", location: "Near Medicose", description: "Modern comfort right in town with high-speed connectivity.", images: ["/images/hotals/Hotel K.P Residency1.jpg", "/images/hotals/Hotel K.P Residency2.jpg", "/images/hotals/Hotel K.P Residency3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Modern Bed", "WiFi"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Luxury Suite", "TV"] }] },
     "local_05": { name: "Dhruvnanda Homestay", location: "ITBP Rd", description: "Nestled in nature's lap, perfect for meditation and peaceful holidays.", images: ["/images/hotals/Dhruvnanda Homestay1.jpg", "/images/hotals/Dhruvnanda Homestay2.jpg", "/images/hotals/Dhruvnanda Homestay3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Nature View"] }] },
-    "local_06": { name: "Himalayan Abode", location: "Main Market", description: "Premium market stay with easy access to local attractions.", images: ["/images/hotals/Himalayan Abode home stay.jpg", "/images/hotals/Hotel Nagraja Palac2.jpg", "/images/hotals/Hotel Nagraja Palac3.jpg"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["Market View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Premium Bed", "Attached Bath"] }] },
+    "local_06": { name: "Himalayan Abode", location: "Main Market", description: "Premium market stay with easy access to local attractions.", images: ["/images/hotals/Himalayan Abode home stay.jpg", "/images/hotals/Hotel Nagraja Palace2.jpg", "/images/hotals/Hotel Nagraja Palace3.jpg"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["Market View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Premium Bed", "Attached Bath"] }] },
     "local_07": { name: "Riverside Retreat", location: "Bhagirathi Bank", description: "Stunning river view retreat by the holy Bhagirathi river stream.", images: ["https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600", "https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["River View", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Balcony", "Hot Water"] }] },
     "local_08": { name: "Gangotri View Inn", location: "Gangori Bridge", description: "Scenic view overlooking the mountains and holy water streams.", images: ["https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Scenic View", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Mountain View", "Attached Bath"] }] },
     "local_09": { name: "Green Valley Homestay", location: "Village Road", description: "Simple, clean stay surrounded by lush green mountain vegetation.", images: ["https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed"] }] },
@@ -38,7 +38,7 @@ export default function HotelDetails() {
           const data = res.data;
           setHotel({
             ...data,
-            images: data.images || [data.image || "/images/hotals/Hotel Nagraja Palac1.jpg"],
+            images: data.images || [data.image || "/images/hotals/Hotel Nagraja Palace1.jpg"],
             rooms: data.rooms || [{ type: "Standard Room", price: data.price || 2200, inclusions: ["Double Bed", "Attached Bath"] }]
           });
         })
@@ -71,9 +71,9 @@ export default function HotelDetails() {
 
   if (!hotel) return <div style={{ textAlign: "center", padding: "100px", fontSize: "18px", color: "#64748b" }}>🏔️ Loading Details...</div>;
 
-  const mainImg = hotel.images?.[0] || "/images/hotals/Hotel Nagraja Palac1.jpg";
-  const subImg1 = hotel.images?.[1] || "/images/hotals/Hotel Nagraja Palac2.jpg";
-  const subImg2 = hotel.images?.[2] || "/images/hotals/Hotel Nagraja Palac3.jpg";
+  const mainImg = hotel.images?.[0] || "/images/hotals/Hotel Nagraja Palace1.jpg";
+  const subImg1 = hotel.images?.[1] || "/images/hotals/Hotel Nagraja Palace2.jpg";
+  const subImg2 = hotel.images?.[2] || "/images/hotals/Hotel Nagraja Palace3.jpg";
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", color: "#0f172a", minHeight: "100vh", paddingBottom: "60px" }}>
@@ -97,7 +97,7 @@ export default function HotelDetails() {
               src={mainImg} 
               alt={hotel.name} 
               style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac1.jpg"; }}
+              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
             />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", height: "100%" }}>
@@ -105,13 +105,13 @@ export default function HotelDetails() {
               src={subImg1} 
               alt="preview 1" 
               style={{ width: "100%", height: "calc(50% - 6px)", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac2.jpg"; }}
+              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace2.jpg"; }}
             />
             <img 
               src={subImg2} 
               alt="preview 2" 
               style={{ width: "100%", height: "calc(50% - 6px)", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac3.jpg"; }}
+              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace3.jpg"; }}
             />
           </div>
         </div>
