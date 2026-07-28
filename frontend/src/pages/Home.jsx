@@ -83,11 +83,11 @@ export default function Home() {
     { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", path: "/details/yamunotri" }
   ];
 
-  const yogaRetreats = [
+const yogaRetreats = [
     { name: "Himalayan Yoga Sanctuary", desc: "Deep meditation and spiritual awakening in mountain silence.", img: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", path: "/details/himalayan-yoga" },
     { name: "Ayurvedic Wellness & Therapy", desc: "Holistic healing through ancient Himalayan herbs.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/ayurvedic-therapy" },
     { name: "Meditation & Pranayama", desc: "Master your breath by the sacred Ganges flow.", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600", path: "/details/meditation" },
-    { name: "Panchakarma Detox", desc: "Complete body purification and holistic rejuvenation.", img: "https://images.unsplash.com/photo-1512290900722-9a70f8a85d39?w=600", path: "/details/panchakarma" }
+    { name: "Panchakarma Detox", desc: "Complete body purification and holistic rejuvenation.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/panchakarma" }
   ];
 
   const popularTreks = [
