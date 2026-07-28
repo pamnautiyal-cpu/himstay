@@ -10,7 +10,6 @@ export default function AllStays() {
   const [visibleCount, setVisibleCount] = useState(5); // 👈 प्रति पेज 5 होटल्स दिखेंगे
   const navigate = useNavigate();
 
-  // यहाँ UnsPlash की जगह अपने पब्लिक फोल्डर का पाथ दे दिया गया है (जैसे /images/hotels/...)
   const localUttarkashiHotels = [
     { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotels/hotel1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8" },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotels/hotel2.jpg", location: "NH 34", price: "1,899", rating: "4.9" },
@@ -83,22 +82,22 @@ export default function AllStays() {
               display: "grid",
               gridTemplateColumns: "260px 1fr 200px",
               alignItems: "stretch",
-              transition: "all 0.2s ease"
+              transition: "box-shadow 0.2s ease" // 👈 केवल shadow पर transition रखा है ताकि कार्ड हिले नहीं
             }}
             onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.06)"}
             onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.02)"}
           >
-            {/* Left: Hotel Image */}
-            <div style={{ position: "relative" }}>
+            {/* Left: Hotel Image with Fixed Container Height */}
+            <div style={{ position: "relative", width: "260px", minHeight: "180px", background: "#f1f5f9" }}>
               <img 
                 src={hotel.image} 
                 alt={hotel.name} 
-                style={{ width: "100%", height: "100%", minHeight: "160px", objectFit: "cover" }} 
+                style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0, objectFit: "cover" }} 
                 onError={(e) => { e.target.src = "/images/hotels/hotel1.jpg"; }}
               />
               <span style={{
                 position: "absolute", top: "10px", left: "10px", background: "rgba(15, 23, 42, 0.8)",
-                color: "white", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "700"
+                color: "white", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "700", zIndex: 2
               }}>
                 ⭐ {hotel.rating || "4.8"}
               </span>
