@@ -14,7 +14,7 @@ export default function Home() {
 
   // हीरो बैनर के लिए सही और रिलायबल इमेज पाथ्स
   const heroImages = [
-    "/images/hotals/Hotel Nagraja Palac1.jpg",
+    "/images/hotals/Hotel Nagraja Palace1.jpg",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
     "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200",
     "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200"
@@ -30,7 +30,7 @@ export default function Home() {
 
   // लोकल होटल्स (Hotel Nagraja Palace सही पाथ के साथ)
   const localUttarkashiHotels = [
-    { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palac1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
+    { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
     { _id: "local_03", name: "Hotel Prisha Pahal", city: "Matli", image: "/images/hotals/Hotel Prisha Pahal1.jpg", location: "Barahat Range", price: "2,199", rating: "4.7", category: "Hotels" },
     { _id: "local_04", name: "Hotel K.P Residency", city: "Matli", image: "/images/hotals/Hotel K.P Residency1.jpg", location: "Near Medicose", price: "2,200", rating: "4.6", category: "Hotels" },
@@ -49,7 +49,7 @@ export default function Home() {
           price: item.price || "2,499",
           rating: item.rating || "4.8",
           category: item.category || "Hotels",
-          image: item.image || item.img || "/images/hotals/Hotel Nagraja Palac1.jpg"
+          image: item.image || item.img || "/images/hotals/Hotel Nagraja Palace1.jpg"
         }));
         const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !bh._id.startsWith("local_"))];
         setHotels(merged);
@@ -75,12 +75,12 @@ export default function Home() {
     return item.category.toLowerCase() === activeTab.toLowerCase();
   });
 
-  // स्टेबलाइज्ड डेटा लिस्ट्स (बाउंस रोकने के लिए सही इमेजेस के साथ)
+  // चार धाम के लिए पब्लिक फोल्डर वाले सटीक इमेज पाथ्स
   const tourismDestinations = [
-    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600", path: "/details/kedarnath" },
-    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "https://images.unsplash.com/photo-1588534129524-7b4d1b827376?w=600", path: "/details/badrinath" },
-    { name: "Gangotri", desc: "Pristine origin point of the holy river Ganga.", img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600", path: "/details/gangotri" },
-    { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600", path: "/details/yamunotri" }
+    { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", path: "/details/kedarnath" },
+    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "/images/chardham/badrinath.jpg", path: "/details/badrinath" },
+    { name: "Gangotri", desc: "Pristine origin point of the holy river Ganga.", img: "/images/chardham/gangotri.jpg", path: "/details/gangotri" },
+    { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", path: "/details/yamunotri" }
   ];
 
   const yogaRetreats = [
@@ -94,11 +94,11 @@ export default function Home() {
     { name: "Kedarkantha Winter Trek", desc: "Classic snow trail expedition with panoramic summit views.", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", path: "/details/kedarkantha" },
     { name: "Valley of Flowers", desc: "UNESCO World Heritage alpine floral wonderland.", img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600", path: "/details/valley-of-flowers" },
     { name: "Roopkund Glacial Trek", desc: "The mystical high-altitude glacial lake expedition.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", path: "/details/roopkund" },
-    { name: "Har Ki Dun Expedition", desc: "Ancient cradle of Swargarohini in Garhwal.", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", path: "/details/har-ki-dun" }
+    { name: "Har Ki Dun Expedition", desc: "Ancient cradle of Swargarohini in Garhwal.", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", path: "/details/harkidun" }
   ];
 
   const travelBlogs = [
-    { title: "Complete Master Guide to Char Dham Yatra 2026", date: "April 12, 2026", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600", path: "/blogs" },
+    { title: "Complete Master Guide to Char Dham Yatra 2026", date: "April 12, 2026", img: "/images/chardham/kedarnath.jpg", path: "/blogs" },
     { title: "Top 5 Peaceful Meditation Spots in Rishikesh", date: "March 28, 2026", img: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", path: "/blogs" },
     { title: "Essential Packing Checklist for Kedarkantha Trek", date: "March 15, 2026", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", path: "/blogs" }
   ];
@@ -293,7 +293,7 @@ export default function Home() {
                       src={hotel.image} 
                       alt={hotel.name} 
                       style={{ width: "100%", height: "180px", objectFit: "cover" }} 
-                      onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac1.jpg"; }}
+                      onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                     />
                     <span style={{
                       position: "absolute", top: "12px", right: "12px", background: "rgba(15, 23, 42, 0.85)",
@@ -348,7 +348,7 @@ export default function Home() {
           <div style={horizontalScrollContainer}>
             {tourismDestinations.map((item, idx) => (
               <div key={idx} style={horizontalCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600"; }} />
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
                 <div style={{ padding: "14px", height: "85px", boxSizing: "border-box" }}>
                   <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</h3>
                   <p style={{ fontSize: "12px", color: "#64748b", margin: 0, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{item.desc}</p>
@@ -367,7 +367,7 @@ export default function Home() {
           <div style={horizontalScrollContainer}>
             {yogaRetreats.map((item, idx) => (
               <div key={idx} style={horizontalCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600"; }} />
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
                 <div style={{ padding: "14px", height: "85px", boxSizing: "border-box" }}>
                   <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</h3>
                   <p style={{ fontSize: "12px", color: "#64748b", margin: 0, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{item.desc}</p>
@@ -386,7 +386,7 @@ export default function Home() {
           <div style={horizontalScrollContainer}>
             {popularTreks.map((item, idx) => (
               <div key={idx} style={horizontalCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600"; }} />
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
                 <div style={{ padding: "14px", height: "85px", boxSizing: "border-box" }}>
                   <h3 style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</h3>
                   <p style={{ fontSize: "12px", color: "#64748b", margin: 0, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{item.desc}</p>
@@ -405,7 +405,7 @@ export default function Home() {
           <div style={horizontalScrollContainer}>
             {travelBlogs.map((blog, idx) => (
               <div key={idx} style={{ ...horizontalCardStyle, minWidth: "300px", width: "300px" }} onClick={() => navigate(blog.path)}>
-                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600"; }} />
+                <img src={blog.img} alt={blog.title} style={{ width: "100%", height: "140px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
                 <div style={{ padding: "14px", height: "85px", boxSizing: "border-box" }}>
                   <span style={{ fontSize: "11px", color: "#0284c7", fontWeight: "700" }}>{blog.date}</span>
                   <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#0f172a", margin: "4px 0 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{blog.title}</h3>
