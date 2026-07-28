@@ -17,16 +17,16 @@ export default function AllStays() {
     { _id: "local_04", name: "Hotel K.P Residency", city: "Matli", image: "/images/hotals/Hotel K.P Residency1.jpg", location: "Near Medicose", price: "2,200", rating: "4.6" },
     { _id: "local_05", name: "Dhruvnanda Homestay", city: "Athali", image: "/images/hotals/Dhruvnanda Homestay1.jpg", location: "ITBP Rd", price: "1,599", rating: "4.8" },
     { _id: "local_06", name: "Himalayan Abode", city: "Uttarkashi", image: "/images/hotals/Himalayan Abode home stay.jpg", location: "Main Market", price: "2,799", rating: "4.9" },
-    { _id: "local_07", name: "Riverside Retreat", city: "Maneri", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", location: "Bhagirathi Bank", price: "1,899", rating: "4.9" },
-    { _id: "local_08", name: "Gangotri View Inn", city: "Gangori", image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600", location: "Gangori Bridge", price: "3,199", rating: "4.7" },
-    { _id: "local_09", name: "Green Valley Homestay", city: "Matli", image: "https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600", location: "Village Road", price: "1,799", rating: "4.8" },
-    { _id: "local_10", name: "Uttarkashi Guest House", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600", location: "Old Town", price: "2,099", rating: "4.5" },
-    { _id: "local_11", name: "Mountain Peak Hotel", city: "Dunda", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", location: "Dunda Main Rd", price: "2,599", rating: "4.7" },
-    { _id: "local_12", name: "Peaceful Stay", city: "Matli", image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600", location: "Valley View", price: "1,699", rating: "4.8" },
-    { _id: "local_13", name: "Char Dham Camp", city: "Gangotri Rd", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Near Highway", price: "2,999", rating: "4.9" },
-    { _id: "local_14", name: "Sunrise Residency", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1496417263034-38ec4f0b655a?w=600", location: "Tiloth Road", price: "2,199", rating: "4.6" },
-    { _id: "local_15", name: "Nature's Nest", city: "Athali", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600", location: "Orchard Side", price: "1,999", rating: "4.8" },
-    { _id: "local_16", name: "Skyline Hotel", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600", location: "City Center", price: "2,899", rating: "4.7" }
+    { _id: "local_07", name: "Riverside Retreat", city: "Maneri", image: "/images/hotals/Hotel Nagraja Palac2.jpg", location: "Bhagirathi Bank", price: "1,899", rating: "4.9" },
+    { _id: "local_08", name: "Gangotri View Inn", city: "Gangori", image: "/images/hotals/Hotel Nagraja Palac3.jpg", location: "Gangori Bridge", price: "3,199", rating: "4.7" },
+    { _id: "local_09", name: "Green Valley Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay2.jpg", location: "Village Road", price: "1,799", rating: "4.8" },
+    { _id: "local_10", name: "Uttarkashi Guest House", city: "Uttarkashi", image: "/images/hotals/Hotel Prisha Pahal2.jpg", location: "Old Town", price: "2,099", rating: "4.5" },
+    { _id: "local_11", name: "Mountain Peak Hotel", city: "Dunda", image: "/images/hotals/Hotel K.P Residency2.jpg", location: "Dunda Main Rd", price: "2,599", rating: "4.7" },
+    { _id: "local_12", name: "Peaceful Stay", city: "Matli", image: "/images/hotals/Dhruvnanda Homestay2.jpg", location: "Valley View", price: "1,699", rating: "4.8" },
+    { _id: "local_13", name: "Char Dham Camp", city: "Gangotri Rd", image: "/images/hotals/Hotel Nagraja Palac1.jpg", location: "Near Highway", price: "2,999", rating: "4.9" },
+    { _id: "local_14", name: "Sunrise Residency", city: "Uttarkashi", image: "/images/hotals/Grandparents Homestay1.jpg", location: "Tiloth Road", price: "2,199", rating: "4.6" },
+    { _id: "local_15", name: "Nature's Nest", city: "Athali", image: "/images/hotals/Hotel Prisha Pahal1.jpg", location: "Orchard Side", price: "1,999", rating: "4.8" },
+    { _id: "local_16", name: "Skyline Hotel", city: "Uttarkashi", image: "/images/hotals/Hotel K.P Residency1.jpg", location: "City Center", price: "2,899", rating: "4.7" }
   ];
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function AllStays() {
           price: item.price || "2,499",
           rating: item.rating || "4.8",
           location: item.location || item.city || "Uttarakhand",
-          image: item.image || item.img || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
+          image: item.image || item.img || "/images/hotals/Hotel Nagraja Palac1.jpg"
         }));
         const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !bh._id.startsWith("local_"))];
         setHotels(merged);
@@ -90,7 +90,7 @@ export default function AllStays() {
                 src={hotel.image} 
                 alt={hotel.name} 
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
-                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"; }}
+                onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac1.jpg"; }}
               />
               <span style={{
                 position: "absolute", top: "10px", left: "10px", background: "rgba(15, 23, 42, 0.8)",

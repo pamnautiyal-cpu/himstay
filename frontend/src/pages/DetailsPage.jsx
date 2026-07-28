@@ -62,7 +62,12 @@ export default function DetailsPage() {
       <button onClick={() => navigate(-1)} style={{ marginBottom: "20px", cursor: "pointer" }}>← Back</button>
       <h1>{data?.name}</h1>
       <p>📍 {data?.location}</p>
-      <img src={data?.image} alt={data?.name} style={{ width: "100%", borderRadius: "12px", height: "400px", objectFit: "cover" }} />
+      <img 
+        src={data?.image || "/images/hotals/Hotel Nagraja Palac1.jpg"} 
+        alt={data?.name} 
+        style={{ width: "100%", borderRadius: "12px", height: "400px", objectFit: "cover" }} 
+        onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac1.jpg"; }}
+      />
       
       <p style={{ marginTop: "20px" }}>{data?.description}</p>
 
@@ -92,23 +97,23 @@ export default function DetailsPage() {
         )}
       </div>
 
-      {/* TERMS & CONDITIONS (सही तरीका) */}
-<div style={{ background: "#f8fafc", padding: "20px", borderRadius: "8px", fontSize: "0.85rem", color: "#64748b", marginTop: "30px" }}>
-  <h3>Terms & Conditions</h3>
-  <p style={{ whiteSpace: "pre-line" }}>
-    {data?.terms || `1. According to government rules, all guests must bring a valid government ID proof at the time of check-in. Guests are not allowed under the age of 18.
-    2. Guest cannot bring any illegal things at the accommodation.
-    3. Room capacity limit is strictly followed.
-    4. Check-in: 12:00 PM, Check-out: 11:00 AM. No early check-in/late check-out allowed.
-    5. Pay at check-in guests must arrive before 3:00 PM.
-    6. Certain religious properties only for specific Yatris.
-    7. Selected properties have no refund policy.
-    8. Food choices are limited; fixed North Indian vegetarian meals.
-    9. Basic facilities only; be prepared for power outages.
-    10. No refunds for natural disasters, weather, or travel issues.
-    11. Any dispute subject to Dehradun (Uttarakhand) jurisdiction.`}
-  </p>
-</div>
+      {/* TERMS & CONDITIONS */}
+      <div style={{ background: "#f8fafc", padding: "20px", borderRadius: "8px", fontSize: "0.85rem", color: "#64748b", marginTop: "30px" }}>
+        <h3>Terms & Conditions</h3>
+        <p style={{ whiteSpace: "pre-line" }}>
+          {data?.terms || `1. According to government rules, all guests must bring a valid government ID proof at the time of check-in. Guests are not allowed under the age of 18.
+          2. Guest cannot bring any illegal things at the accommodation.
+          3. Room capacity limit is strictly followed.
+          4. Check-in: 12:00 PM, Check-out: 11:00 AM. No early check-in/late check-out allowed.
+          5. Pay at check-in guests must arrive before 3:00 PM.
+          6. Certain religious properties only for specific Yatris.
+          7. Selected properties have no refund policy.
+          8. Food choices are limited; fixed North Indian vegetarian meals.
+          9. Basic facilities only; be prepared for power outages.
+          10. No refunds for natural disasters, weather, or travel issues.
+          11. Any dispute subject to Dehradun (Uttarakhand) jurisdiction.`}
+        </p>
+      </div>
 
       {showModal && (
         <div style={modalOverlay}>
