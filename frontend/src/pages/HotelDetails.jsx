@@ -9,24 +9,24 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // आपके सभी 16 लोकल होटल्स का ऑरिजिनल डेटा (लोकल इमेज पाथ के साथ)
+  // आपके सभी 16 लोकल होटल्स का ऑरिजिनल डेटा (सही 'hotals' फोल्डर पाथ के साथ)
   const localHotels = {
-    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", images: ["/images/hotels/hotel1.jpg", "/images/hotels/hotel1_sub1.jpg", "/images/hotels/hotel1_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
-    "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay offering genuine pahadi hospitality and warmth.", images: ["/images/hotels/hotel2.jpg", "/images/hotels/hotel2_sub1.jpg", "/images/hotels/hotel2_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
-    "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range", description: "Best hygiene stay with scenic valley views and quiet ambiance.", images: ["/images/hotels/hotel3.jpg", "/images/hotels/hotel3_sub1.jpg", "/images/hotels/hotel3_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Attached Bath", "Hygienic"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Space", "TV"] }] },
-    "local_04": { name: "Hotel K.P Residency", location: "Near Medicose", description: "Modern comfort right in town with high-speed connectivity.", images: ["/images/hotels/hotel4.jpg", "/images/hotels/hotel4_sub1.jpg", "/images/hotels/hotel4_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Modern Bed", "WiFi"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Luxury Suite", "TV"] }] },
-    "local_05": { name: "Dhruvnanda Homestay", location: "ITBP Rd", description: "Nestled in nature's lap, perfect for meditation and peaceful holidays.", images: ["/images/hotels/hotel5.jpg", "/images/hotels/hotel5_sub1.jpg", "/images/hotels/hotel5_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Nature View"] }] },
-    "local_06": { name: "Himalayan Abode", location: "Main Market", description: "Premium market stay with easy access to local attractions.", images: ["/images/hotels/hotel6.jpg", "/images/hotels/hotel6_sub1.jpg", "/images/hotels/hotel6_sub2.jpg"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["Market View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Premium Bed", "Attached Bath"] }] },
-    "local_07": { name: "Riverside Retreat", location: "Bhagirathi Bank", description: "Stunning river view retreat by the holy Bhagirathi river stream.", images: ["/images/hotels/hotel7.jpg", "/images/hotels/hotel7_sub1.jpg", "/images/hotels/hotel7_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["River View", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Balcony", "Hot Water"] }] },
-    "local_08": { name: "Gangotri View Inn", location: "Gangori Bridge", description: "Scenic view overlooking the mountains and holy water streams.", images: ["/images/hotels/hotel8.jpg", "/images/hotels/hotel8_sub1.jpg", "/images/hotels/hotel8_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Scenic View", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Mountain View", "Attached Bath"] }] },
-    "local_09": { name: "Green Valley Homestay", location: "Village Road", description: "Simple, clean stay surrounded by lush green mountain vegetation.", images: ["/images/hotels/hotel9.jpg", "/images/hotels/hotel9_sub1.jpg", "/images/hotels/hotel9_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed"] }] },
-    "local_10": { name: "Uttarkashi Guest House", location: "Old Town", description: "Authentic old town experience with traditional mountain culture.", images: ["/images/hotels/hotel10.jpg", "/images/hotels/hotel10_sub1.jpg", "/images/hotels/hotel10_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Traditional Bed"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Spacious", "TV"] }] },
-    "local_11": { name: "Mountain Peak Hotel", location: "Dunda Main Rd", description: "Breathtaking peak views with crisp Himalayan morning breeze.", images: ["/images/hotels/hotel11.jpg", "/images/hotels/hotel11_sub1.jpg", "/images/hotels/hotel11_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Peak View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Wide View", "Attached Bath"] }] },
-    "local_12": { name: "Peaceful Stay", location: "Valley View", description: "Ultra-peaceful environment away from city noise.", images: ["/images/hotels/hotel12.jpg", "/images/hotels/hotel12_sub1.jpg", "/images/hotels/hotel12_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Peaceful Env"] }] },
-    "local_13": { name: "Char Dham Camp", location: "Near Highway", description: "Adventurous camp-style stay equipped with comfortable bedding.", images: ["/images/hotels/hotel13.jpg", "/images/hotels/hotel13_sub1.jpg", "/images/hotels/hotel13_sub2.jpg"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["Adventure Bed"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Large Camp", "Attached Bath"] }] },
-    "local_14": { name: "Sunrise Residency", location: "Tiloth Road", description: "Wake up to stunning sunrise views over the Garhwal ridges.", images: ["/images/hotels/hotel14.jpg", "/images/hotels/hotel14_sub1.jpg", "/images/hotels/hotel14_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Sunrise View", "TV"] }] },
-    "local_15": { name: "Nature's Nest", location: "Orchard Side", description: "Tranquil retreat located right beside apple and fruit orchards.", images: ["/images/hotels/hotel15.jpg", "/images/hotels/hotel15_sub1.jpg", "/images/hotels/hotel15_sub2.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Orchard View"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Luxury Bed", "TV"] }] },
-    "local_16": { name: "Skyline Hotel", location: "City Center", description: "Convenient city center location with premium hospitality.", images: ["/images/hotels/hotel16.jpg", "/images/hotels/hotel16_sub1.jpg", "/images/hotels/hotel16_sub2.jpg"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["City View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Grand Bed", "Attached Bath"] }] }
+    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", images: ["/images/hotals/Hotel Nagraja Palac1.jpg", "/images/hotals/Hotel Nagraja Palac2.jpg", "/images/hotals/Hotel Nagraja Palac3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
+    "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay offering genuine pahadi hospitality and warmth.", images: ["/images/hotals/Grandparents Homestay1.jpg", "/images/hotals/Grandparents Homestay2.jpg", "/images/hotals/Grandparents Homestay3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
+    "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range", description: "Best hygiene stay with scenic valley views and quiet ambiance.", images: ["/images/hotals/Hotel Prisha Pahal1.jpg", "/images/hotals/Hotel Prisha Pahal2.jpg", "/images/hotals/Hotel Prisha Pahal3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Attached Bath", "Hygienic"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Space", "TV"] }] },
+    "local_04": { name: "Hotel K.P Residency", location: "Near Medicose", description: "Modern comfort right in town with high-speed connectivity.", images: ["/images/hotals/Hotel K.P Residency1.jpg", "/images/hotals/Hotel K.P Residency2.jpg", "/images/hotals/Hotel K.P Residency3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Modern Bed", "WiFi"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Luxury Suite", "TV"] }] },
+    "local_05": { name: "Dhruvnanda Homestay", location: "ITBP Rd", description: "Nestled in nature's lap, perfect for meditation and peaceful holidays.", images: ["/images/hotals/Dhruvnanda Homestay1.jpg", "/images/hotals/Dhruvnanda Homestay2.jpg", "/images/hotals/Dhruvnanda Homestay3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Nature View"] }] },
+    "local_06": { name: "Himalayan Abode", location: "Main Market", description: "Premium market stay with easy access to local attractions.", images: ["/images/hotals/Himalayan Abode home stay.jpg", "/images/hotals/Hotel Nagraja Palac2.jpg", "/images/hotals/Hotel Nagraja Palac3.jpg"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["Market View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Premium Bed", "Attached Bath"] }] },
+    "local_07": { name: "Riverside Retreat", location: "Bhagirathi Bank", description: "Stunning river view retreat by the holy Bhagirathi river stream.", images: ["https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600", "https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["River View", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Balcony", "Hot Water"] }] },
+    "local_08": { name: "Gangotri View Inn", location: "Gangori Bridge", description: "Scenic view overlooking the mountains and holy water streams.", images: ["https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Scenic View", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Mountain View", "Attached Bath"] }] },
+    "local_09": { name: "Green Valley Homestay", location: "Village Road", description: "Simple, clean stay surrounded by lush green mountain vegetation.", images: ["https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed"] }] },
+    "local_10": { name: "Uttarkashi Guest House", location: "Old Town", description: "Authentic old town experience with traditional mountain culture.", images: ["https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Traditional Bed"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Spacious", "TV"] }] },
+    "local_11": { name: "Mountain Peak Hotel", location: "Dunda Main Rd", description: "Breathtaking peak views with crisp Himalayan morning breeze.", images: ["https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Peak View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Wide View", "Attached Bath"] }] },
+    "local_12": { name: "Peaceful Stay", location: "Valley View", description: "Ultra-peaceful environment away from city noise.", images: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Peaceful Env"] }] },
+    "local_13": { name: "Char Dham Camp", location: "Near Highway", description: "Adventurous camp-style stay equipped with comfortable bedding.", images: ["https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["Adventure Bed"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Large Camp", "Attached Bath"] }] },
+    "local_14": { name: "Sunrise Residency", location: "Tiloth Road", description: "Wake up to stunning sunrise views over the Garhwal ridges.", images: ["https://images.unsplash.com/photo-1496417263034-38ec4f0b655a?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Sunrise View", "TV"] }] },
+    "local_15": { name: "Nature's Nest", location: "Orchard Side", description: "Tranquil retreat located right beside apple and fruit orchards.", images: ["https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Orchard View"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Luxury Bed", "TV"] }] },
+    "local_16": { name: "Skyline Hotel", location: "City Center", description: "Convenient city center location with premium hospitality.", images: ["https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"], rooms: [{ type: "3 Bedroom Set", price: 2800, inclusions: ["City View", "TV"] }, { type: "4 Bedroom Set", price: 3200, inclusions: ["Grand Bed", "Attached Bath"] }] }
   };
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function HotelDetails() {
           const data = res.data;
           setHotel({
             ...data,
-            images: data.images || [data.image || "/images/hotels/hotel1.jpg"],
+            images: data.images || [data.image || "/images/hotals/Hotel Nagraja Palac1.jpg"],
             rooms: data.rooms || [{ type: "Standard Room", price: data.price || 2200, inclusions: ["Double Bed", "Attached Bath"] }]
           });
         })
@@ -71,9 +71,9 @@ export default function HotelDetails() {
 
   if (!hotel) return <div style={{ textAlign: "center", padding: "100px", fontSize: "18px", color: "#64748b" }}>🏔️ Loading Details...</div>;
 
-  const mainImg = hotel.images?.[0] || "/images/hotels/hotel1.jpg";
-  const subImg1 = hotel.images?.[1] || "/images/hotels/hotel1_sub1.jpg";
-  const subImg2 = hotel.images?.[2] || "/images/hotels/hotel1_sub2.jpg";
+  const mainImg = hotel.images?.[0] || "/images/hotals/Hotel Nagraja Palac1.jpg";
+  const subImg1 = hotel.images?.[1] || "/images/hotals/Hotel Nagraja Palac2.jpg";
+  const subImg2 = hotel.images?.[2] || "/images/hotals/Hotel Nagraja Palac3.jpg";
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", color: "#0f172a", minHeight: "100vh", paddingBottom: "60px" }}>
@@ -97,7 +97,7 @@ export default function HotelDetails() {
               src={mainImg} 
               alt={hotel.name} 
               style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hotels/hotel1.jpg"; }}
+              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac1.jpg"; }}
             />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", height: "100%" }}>
@@ -105,13 +105,13 @@ export default function HotelDetails() {
               src={subImg1} 
               alt="preview 1" 
               style={{ width: "100%", height: "calc(50% - 6px)", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hotels/hotel1.jpg"; }}
+              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac2.jpg"; }}
             />
             <img 
               src={subImg2} 
               alt="preview 2" 
               style={{ width: "100%", height: "calc(50% - 6px)", objectFit: "cover" }} 
-              onError={(e) => { e.target.src = "/images/hotels/hotel1.jpg"; }}
+              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palac3.jpg"; }}
             />
           </div>
         </div>
