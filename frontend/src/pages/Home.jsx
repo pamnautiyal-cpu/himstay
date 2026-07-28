@@ -12,7 +12,7 @@ export default function Home() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // हीरो बैनर के लिए अपडेटेड लोकल इमेज पाथ्स
+  // हीरो बैनर के लिए सही 'hotals' फोल्डर वाले पाथ्स
   const heroImages = [
     "/images/hotals/Hotel Nagraja Palac1.jpg",
     "/images/hotals/Dhruvnanda Homestay1.jpg",
@@ -28,7 +28,7 @@ export default function Home() {
     return () => clearInterval(slideInterval);
   }, [heroImages.length]);
 
-  // लोकल होटल्स (सही 'hotals' फोल्डर और फाइलों के नाम के साथ)
+  // लोकल होटल्स (सही 'hotals' फोल्डर पाथ के साथ)
   const localUttarkashiHotels = [
     { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palac1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
