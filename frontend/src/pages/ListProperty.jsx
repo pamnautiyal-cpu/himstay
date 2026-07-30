@@ -10,6 +10,7 @@ export default function ListProperty() {
   
   // Current Step Tracker (1 to 6)
   const [currentStep, setCurrentStep] = useState(1);
+  const [highestStepVisited, setHighestStepVisited] = useState(1);
   const [ownerInfo, setOwnerInfo] = useState({ email: "", name: "" });
 
   // 1. LOGIN CHECK & OWNER SESSION
@@ -104,11 +105,23 @@ export default function ListProperty() {
         return;
       }
     }
-    setCurrentStep((prev) => prev + 1);
+    
+    const next = currentStep + 1;
+    setCurrentStep(next);
+    if (next > highestStepVisited) {
+      setHighestStepVisited(next);
+    }
   };
 
   const prevStep = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const goToStep = (stepNumber) => {
+    // Allow jumping to any step that has already been visited or is prior
+    if (stepNumber <= highestStepVisited || stepNumber < currentStep) {
+      setCurrentStep(stepNumber);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -185,11 +198,26 @@ export default function ListProperty() {
           { step: 4, label: "Amenities" },
           { step: 5, label: "Description" },
           { step: 6, label: "Photos" }
-        ].map((item) => (
-          <div key={item.step} onClick={() => item.step < currentStep && setCurrentStep(item.step)} style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === item.step ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px", cursor: item.step < currentStep ? "pointer" : "default" }}>
-            <span style={stepCircleStyle(currentStep === item.step)}>{item.step}</span> {item.label}
-          </div>
-        ))}
+        ].map((item) => {
+          const isClickable = item.step <= highestStepVisited;
+          return (
+            <div 
+              key={item.step} 
+              onClick={() => isClickable && goToStep(item.step)} 
+              style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "6px", 
+                color: currentStep === item.step ? "#0284c7" : isClickable ? "#334155" : "#94a3b8", 
+                fontWeight: "600", 
+                fontSize: "12px", 
+                cursor: isClickable ? "pointer" : "not-allowed" 
+              }}
+            >
+              <span style={stepCircleStyle(currentStep === item.step, isClickable)}>{item.step}</span> {item.label}
+            </div>
+          );
+        })}
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -533,9 +561,10 @@ export default function ListProperty() {
   );
 }
 
-const stepCircleStyle = (isActive) => ({
+const stepCircleStyle = (isActive, isClickable) => ({
   width: "24px", height: "24px", borderRadius: "50%",
-  background: isActive ? "#0284c7" : "#cbd5e1", color: "#fff",
+  background: isActive ? "#0284c7" : isClickable ? "#cbd5e1" : "#e2e8f0", 
+  color: isClickable ? "#fff" : "#94a3b8",
   display: "flex", alignItems: "center", justifyContent: "center",
   fontSize: "11px", fontWeight: "bold"
 });
