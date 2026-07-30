@@ -70,7 +70,11 @@ export default function Home() {
     navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${activeTab}`);
   };
 
+  // 🌟 RAVI GOVINDAM EXCLUSION FILTER FOR HOMEPAGE
   const filteredListings = hotels.filter((item) => {
+    const isRaviGovindam = item.name && item.name.trim().toLowerCase() === "ravi govindam";
+    if (isRaviGovindam) return false;
+
     if (!item.category) return true;
     return item.category.toLowerCase() === activeTab.toLowerCase();
   });
@@ -83,7 +87,7 @@ export default function Home() {
     { name: "Yamunotri", desc: "Sacred legendary source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", path: "/details/yamunotri" }
   ];
 
-const yogaRetreats = [
+  const yogaRetreats = [
     { name: "Himalayan Yoga Sanctuary", desc: "Deep meditation and spiritual awakening in mountain silence.", img: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", path: "/details/himalayan-yoga" },
     { name: "Ayurvedic Wellness & Therapy", desc: "Holistic healing through ancient Himalayan herbs.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/ayurvedic-therapy" },
     { name: "Meditation & Pranayama", desc: "Master your breath by the sacred Ganges flow.", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600", path: "/details/meditation" },
