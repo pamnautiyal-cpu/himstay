@@ -11,20 +11,24 @@ export default function ListProperty() {
   // Current Step Tracker (1 to 6)
   const [currentStep, setCurrentStep] = useState(1);
   const [highestStepVisited, setHighestStepVisited] = useState(1);
-  const [ownerInfo, setOwnerInfo] = useState({ email: "", name: "" });
+  const [ownerInfo, setOwnerInfo] = useState(null);
 
-  // 1. STRICT LOGIN & AUTH CHECK ON MOUNT
+  // 1. STRICT MANDATORY LOGIN CHECK ON INITIAL MOUNT
   useEffect(() => {
-    const userStr = localStorage.getItem("user");
-    if (!userStr) {
-      alert("Please login or sign up first to list your property!");
-      navigate("/login");
-    } else {
+    const checkUserAuth = () => {
+      const userStr = localStorage.getItem("user");
+      if (!userStr) {
+        alert("Access Denied! You must log in or sign up before listing a property.");
+        navigate("/login", { replace: true });
+        return;
+      }
+      
       try {
         const parsedUser = JSON.parse(userStr);
-        if (!parsedUser.email) {
-          alert("Invalid session. Please login again.");
-          navigate("/login");
+        if (!parsedUser || !parsedUser.email) {
+          localStorage.removeItem("user"); // Clean invalid session
+          alert("Session expired or invalid. Please login again.");
+          navigate("/login", { replace: true });
           return;
         }
         setOwnerInfo({
@@ -32,10 +36,13 @@ export default function ListProperty() {
           name: parsedUser.name || "Partner"
         });
       } catch (e) {
-        console.error("User session parse error", e);
-        navigate("/login");
+        console.error("Auth check failed", e);
+        localStorage.removeItem("user");
+        navigate("/login", { replace: true });
       }
-    }
+    };
+
+    checkUserAuth();
   }, [navigate]);
 
   const [formData, setFormData] = useState({
@@ -91,6 +98,14 @@ export default function ListProperty() {
 
   // STEP VALIDATION BEFORE GOING NEXT
   const nextStep = () => {
+    // Double check auth before proceeding steps
+    const activeUser = localStorage.getItem("user");
+    if (!activeUser) {
+      alert("Authentication required! Please login.");
+      navigate("/login");
+      return;
+    }
+
     if (currentStep === 1) {
       if (!formData.name.trim()) {
         alert("Please enter a valid Property Name.");
@@ -132,8 +147,21 @@ export default function ListProperty() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!ownerInfo.email) {
-      alert("Session expired. Please login again.");
+    // ABSOLUTE FINAL SECURITY CHECK BEFORE SUBMITTING TO BACKEND
+    const finalCheckUser = localStorage.getItem("user");
+    if (!finalCheckUser) {
+      alert("Security Error: You are not logged in! Listing cancelled.");
+      navigate("/login");
+      return;
+    }
+
+    let verifiedEmail = "";
+    try {
+      const parsed = JSON.parse(finalCheckUser);
+      if (!parsed || !parsed.email) throw new Error("No email found");
+      verifiedEmail = parsed.email;
+    } catch (err) {
+      alert("Invalid user session. Please login again.");
       navigate("/login");
       return;
     }
@@ -152,7 +180,7 @@ export default function ListProperty() {
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
-    data.append("ownerEmail", ownerInfo.email); // User's actual email sent securely to backend
+    data.append("ownerEmail", verifiedEmail); // Strictly bound to logged-in user's email
 
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
@@ -164,9 +192,9 @@ export default function ListProperty() {
           "service_lvjl1yl", 
           "template_17qwwpa", 
           {
-            name: ownerInfo.name,
+            name: ownerInfo?.name || "Partner",
             title: formData.name, 
-            message: `Owner Email: ${ownerInfo.email}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone}`,
+            message: `Owner Email: ${verifiedEmail}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone}`,
             email: "system@thehimalayans.com"
           }, 
           "BN7sU5C5l-KUXpOj"
