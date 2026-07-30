@@ -5,7 +5,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
-  const [showLoginModal, setShowLoginModal] = useState(false); // 🌟 Modern Modal State
+  const [modalInfo, setModalInfo] = useState({ show: false, title: "", message: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,22 @@ export default function Navbar() {
   const handleListPropertyClick = (e) => {
     if (!user) {
       e.preventDefault();
-      setShowLoginModal(true); // 🌟 Show Modern Popup instead of default browser alert
+      setModalInfo({
+        show: true,
+        title: "Authentication Required",
+        message: "You need to log in or sign up first before listing your property on The Himalayans."
+      });
+    }
+  };
+
+  const handleMyTripsClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      setModalInfo({
+        show: true,
+        title: "Authentication Required",
+        message: "Please log in or sign up first to view your trips!"
+      });
     }
   };
 
@@ -58,7 +73,7 @@ export default function Navbar() {
         {/* Navigation Links */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Link to="/hotels" style={navLinkStyle}> Hotels</Link>
-          <Link to="/mytrips" style={navLinkStyle}> My Trips</Link>
+          <Link to="/mytrips" onClick={handleMyTripsClick} style={navLinkStyle}> My Trips</Link>
           <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}> Offers</Link>
           <Link to="/admin" style={navLinkStyle}>🛠️ Admin</Link>
           <Link to="/list-property" onClick={handleListPropertyClick} style={navLinkStyle}> List Property</Link>
@@ -85,7 +100,7 @@ export default function Navbar() {
       </div>
 
       {/* 🌟 MODERN STYLISH POPUP MODAL */}
-      {showLoginModal && (
+      {modalInfo.show && (
         <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
           background: "rgba(0, 0, 0, 0.6)", backdropFilter: "blur(5px)",
@@ -99,15 +114,15 @@ export default function Navbar() {
           }}>
             <div style={{ fontSize: "45px", marginBottom: "15px" }}>🔒</div>
             <h3 style={{ color: "#1e293b", fontSize: "20px", fontWeight: "700", marginBottom: "10px" }}>
-              Authentication Required
+              {modalInfo.title}
             </h3>
             <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.5", marginBottom: "25px" }}>
-              You need to log in or sign up first before listing your property on The Himalayans.
+              {modalInfo.message}
             </p>
             
             <div style={{ display: "flex", gap: "12px" }}>
               <button 
-                onClick={() => setShowLoginModal(false)}
+                onClick={() => setModalInfo({ show: false, title: "", message: "" })}
                 style={{
                   flex: 1, background: "#f1f5f9", color: "#475569", border: "none",
                   padding: "12px", borderRadius: "8px", fontSize: "14px",
@@ -118,7 +133,7 @@ export default function Navbar() {
               </button>
               <button 
                 onClick={() => {
-                  setShowLoginModal(false);
+                  setModalInfo({ show: false, title: "", message: "" });
                   navigate("/login");
                 }}
                 style={{
