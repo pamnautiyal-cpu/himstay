@@ -21,11 +21,24 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Search from "./components/Search";
 import "./App.css";
 
-// 🛡️ PROTECTED ROUTE GUARD FOR STRICT AUTHENTICATION
+// 🛡️ STRICT PROTECTED ROUTE GUARD WITH EMAIL VALIDATION
 const ProtectedRoute = ({ children }) => {
-  const userStr = localStorage.getItem("user") || localStorage.getItem("userInfo") || localStorage.getItem("auth") || localStorage.getItem("currentUser");
+  let isAuthed = false;
+  try {
+    const userStr = localStorage.getItem("user") || localStorage.getItem("userInfo") || localStorage.getItem("auth") || localStorage.getItem("currentUser");
+    if (userStr) {
+      const parsed = JSON.parse(userStr);
+      if (parsed && (parsed.email || parsed.userEmail || (typeof parsed === 'string' && parsed.includes("@")))) {
+        isAuthed = true;
+      } else if (typeof userStr === 'string' && userStr.includes("@")) {
+        isAuthed = true;
+      }
+    }
+  } catch (e) {
+    isAuthed = false;
+  }
   
-  if (!userStr) {
+  if (!isAuthed) {
     alert("Please log in or sign up first to access this page.");
     return <Navigate to="/login" replace />;
   }
