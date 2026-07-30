@@ -5,6 +5,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false); // 🌟 Modern Modal State
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,12 +20,10 @@ export default function Navbar() {
     navigate("/");
   };
 
-  // 🛡️ FUNCTION TO BLOCK UNATHENTICATED USERS FROM CLICKING LIST PROPERTY
   const handleListPropertyClick = (e) => {
     if (!user) {
-      e.preventDefault(); // पेज खुलने या नेविगेट होने से रोकेगा
-      alert("Please login or sign up first to list your property!");
-      navigate("/login"); // सीधे लॉगिन पेज पर भेज देगा
+      e.preventDefault();
+      setShowLoginModal(true); // 🌟 Show Modern Popup instead of default browser alert
     }
   };
 
@@ -62,8 +61,6 @@ export default function Navbar() {
           <Link to="/mytrips" style={navLinkStyle}> My Trips</Link>
           <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}> Offers</Link>
           <Link to="/admin" style={navLinkStyle}>🛠️ Admin</Link>
-          
-          {/* 🔒 PROTECTED LIST PROPERTY LINK */}
           <Link to="/list-property" onClick={handleListPropertyClick} style={navLinkStyle}> List Property</Link>
           
           <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 8px" }} /> 
@@ -86,6 +83,56 @@ export default function Navbar() {
           )}
         </div>
       </div>
+
+      {/* 🌟 MODERN STYLISH POPUP MODAL */}
+      {showLoginModal && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+          background: "rgba(0, 0, 0, 0.6)", backdropFilter: "blur(5px)",
+          display: "flex", justifyContent: "center", alignItems: "center", zIndex: 2000
+        }}>
+          <div style={{
+            background: "#ffffff", padding: "35px 30px", borderRadius: "16px",
+            textAlign: "center", maxWidth: "420px", width: "90%",
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)",
+            animation: "fadeIn 0.3s ease-in-out"
+          }}>
+            <div style={{ fontSize: "45px", marginBottom: "15px" }}>🔒</div>
+            <h3 style={{ color: "#1e293b", fontSize: "20px", fontWeight: "700", marginBottom: "10px" }}>
+              Authentication Required
+            </h3>
+            <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.5", marginBottom: "25px" }}>
+              You need to log in or sign up first before listing your property on The Himalayans.
+            </p>
+            
+            <div style={{ display: "flex", gap: "12px" }}>
+              <button 
+                onClick={() => setShowLoginModal(false)}
+                style={{
+                  flex: 1, background: "#f1f5f9", color: "#475569", border: "none",
+                  padding: "12px", borderRadius: "8px", fontSize: "14px",
+                  cursor: "pointer", fontWeight: "600"
+                }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate("/login");
+                }}
+                style={{
+                  flex: 1, background: "#0ea5e9", color: "#fff", border: "none",
+                  padding: "12px", borderRadius: "8px", fontSize: "14px",
+                  cursor: "pointer", fontWeight: "600", boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)"
+                }}
+              >
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
