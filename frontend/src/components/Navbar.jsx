@@ -19,6 +19,15 @@ export default function Navbar() {
     navigate("/");
   };
 
+  // 🛡️ FUNCTION TO BLOCK UNATHENTICATED USERS FROM CLICKING LIST PROPERTY
+  const handleListPropertyClick = (e) => {
+    if (!user) {
+      e.preventDefault(); // पेज खुलने या नेविगेट होने से रोकेगा
+      alert("Please login or sign up first to list your property!");
+      navigate("/login"); // सीधे लॉगिन पेज पर भेज देगा
+    }
+  };
+
   const navLinkStyle = {
     color: "#cbd5e1",
     textDecoration: "none",
@@ -53,7 +62,9 @@ export default function Navbar() {
           <Link to="/mytrips" style={navLinkStyle}> My Trips</Link>
           <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}> Offers</Link>
           <Link to="/admin" style={navLinkStyle}>🛠️ Admin</Link>
-          <Link to="/list-property" style={navLinkStyle}> List Property</Link>
+          
+          {/* 🔒 PROTECTED LIST PROPERTY LINK */}
+          <Link to="/list-property" onClick={handleListPropertyClick} style={navLinkStyle}> List Property</Link>
           
           <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 8px" }} /> 
           
