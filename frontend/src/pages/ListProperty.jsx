@@ -13,21 +13,27 @@ export default function ListProperty() {
   const [highestStepVisited, setHighestStepVisited] = useState(1);
   const [ownerInfo, setOwnerInfo] = useState({ email: "", name: "" });
 
-  // 1. LOGIN CHECK & OWNER SESSION
+  // 1. STRICT LOGIN & AUTH CHECK ON MOUNT
   useEffect(() => {
     const userStr = localStorage.getItem("user");
     if (!userStr) {
-      alert("Please login first with your correct email and password to list a property!");
+      alert("Please login or sign up first to list your property!");
       navigate("/login");
     } else {
       try {
         const parsedUser = JSON.parse(userStr);
+        if (!parsedUser.email) {
+          alert("Invalid session. Please login again.");
+          navigate("/login");
+          return;
+        }
         setOwnerInfo({
-          email: parsedUser.email || "",
+          email: parsedUser.email,
           name: parsedUser.name || "Partner"
         });
       } catch (e) {
         console.error("User session parse error", e);
+        navigate("/login");
       }
     }
   }, [navigate]);
@@ -118,7 +124,6 @@ export default function ListProperty() {
   };
 
   const goToStep = (stepNumber) => {
-    // Allow jumping to any step that has already been visited or is prior
     if (stepNumber <= highestStepVisited || stepNumber < currentStep) {
       setCurrentStep(stepNumber);
     }
@@ -128,7 +133,7 @@ export default function ListProperty() {
     e.preventDefault();
     
     if (!ownerInfo.email) {
-      alert("Invalid session email. Please logout and login again with correct credentials.");
+      alert("Session expired. Please login again.");
       navigate("/login");
       return;
     }
@@ -147,7 +152,7 @@ export default function ListProperty() {
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
-    data.append("ownerEmail", ownerInfo.email);
+    data.append("ownerEmail", ownerInfo.email); // User's actual email sent securely to backend
 
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
@@ -183,12 +188,6 @@ export default function ListProperty() {
   return (
     <div style={{ maxWidth: "850px", margin: "30px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.08)" }}>
       
-      {/* 🌟 VERIFIED PARTNER INFO BAR */}
-      <div style={{ background: "#f8fafc", padding: "10px 15px", borderRadius: "6px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #e2e8f0", fontSize: "13px", color: "#475569" }}>
-        <span>Verified Partner Session: <strong>{ownerInfo.email || "Checking..."}</strong></span>
-        <span style={{ color: "#16a34a", fontWeight: "600" }}>● Secure Listing Mode</span>
-      </div>
-
       {/* 🌟 STEPPER HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px", borderBottom: "1px solid #e2e8f0", paddingBottom: "15px", overflowX: "auto", gap: "10px" }}>
         {[
