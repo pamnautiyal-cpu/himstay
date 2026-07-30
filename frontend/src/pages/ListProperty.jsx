@@ -10,20 +10,31 @@ export default function ListProperty() {
   
   // Current Step Tracker (1 to 6)
   const [currentStep, setCurrentStep] = useState(1);
+  const [ownerInfo, setOwnerInfo] = useState({ email: "", name: "" });
 
-  // 1. LOGIN CHECK
+  // 1. LOGIN CHECK & OWNER SESSION
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      alert("Please login first to list your property!");
+    const userStr = localStorage.getItem("user");
+    if (!userStr) {
+      alert("Please login first with your correct email and password to list a property!");
       navigate("/login");
+    } else {
+      try {
+        const parsedUser = JSON.parse(userStr);
+        setOwnerInfo({
+          email: parsedUser.email || "",
+          name: parsedUser.name || "Partner"
+        });
+      } catch (e) {
+        console.error("User session parse error", e);
+      }
     }
   }, [navigate]);
 
   const [formData, setFormData] = useState({
-    listingCategory: "hotel", // hotel, yoga, trek
+    listingCategory: "hotel",
     name: "",
-    propertyType: "Hotel", // Hotel, Homestay, Resort, Guest House
+    propertyType: "Hotel",
     city: "Uttarkashi",
     locality: "",
     pincode: "",
@@ -42,7 +53,6 @@ export default function ListProperty() {
     duration: "",
     difficulty: "Easy",
     batchDates: "",
-    // Amenities (Yes/No selections)
     wifi: "No",
     parking: "No",
     ac: "No",
@@ -55,6 +65,7 @@ export default function ListProperty() {
   });
   
   const [files, setFiles] = useState([]); 
+  const [agreedTerms, setAgreedTerms] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -71,34 +82,61 @@ export default function ListProperty() {
     setFiles(files.filter((_, i) => i !== index));
   };
 
+  // STEP VALIDATION BEFORE GOING NEXT
   const nextStep = () => {
-    if (currentStep === 1 && !formData.name) {
-      alert("Please enter the property name.");
-      return;
+    if (currentStep === 1) {
+      if (!formData.name.trim()) {
+        alert("Please enter a valid Property Name.");
+        return;
+      }
+    } else if (currentStep === 2) {
+      if (!formData.locality.trim() || !formData.pincode.trim()) {
+        alert("Please fill in both Locality and Pincode.");
+        return;
+      }
+    } else if (currentStep === 3) {
+      if (!formData.price || Number(formData.price) <= 0) {
+        alert("Please enter a valid price.");
+        return;
+      }
+      if (!formData.phone || formData.phone.length < 10) {
+        alert("Please enter a valid 10-digit contact phone number.");
+        return;
+      }
     }
     setCurrentStep((prev) => prev + 1);
   };
 
   const prevStep = () => {
-    setCurrentStep((prev) => prev - 1);
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (files.length === 0) return alert("Please upload at least one image");
+    
+    if (!ownerInfo.email) {
+      alert("Invalid session email. Please logout and login again with correct credentials.");
+      navigate("/login");
+      return;
+    }
+
+    if (files.length === 0) {
+      alert("Please upload at least one property image.");
+      return;
+    }
+
+    if (!agreedTerms) {
+      alert("You must agree to the terms and conditions before submitting.");
+      return;
+    }
     
     setLoading(true);
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
-
-    const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
-    if (currentUser.email) {
-      data.append("ownerEmail", currentUser.email);
-    }
+    data.append("ownerEmail", ownerInfo.email);
 
     try {
-      // Backend API & Cloudinary integration intact
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
         headers: { "Content-Type": "multipart/form-data" }
       });
@@ -108,9 +146,9 @@ export default function ListProperty() {
           "service_lvjl1yl", 
           "template_17qwwpa", 
           {
-            name: currentUser.name || "Admin",
+            name: ownerInfo.name,
             title: formData.name, 
-            message: `Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone}`,
+            message: `Owner Email: ${ownerInfo.email}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone}`,
             email: "system@thehimalayans.com"
           }, 
           "BN7sU5C5l-KUXpOj"
@@ -125,33 +163,33 @@ export default function ListProperty() {
     } catch (err) {
       console.error(err);
       setLoading(false);
-      alert("Upload failed. Check console.");
+      alert("Upload failed. Check console or verify your network.");
     }
   };
 
   return (
     <div style={{ maxWidth: "850px", margin: "30px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.08)" }}>
       
+      {/* 🌟 VERIFIED PARTNER INFO BAR */}
+      <div style={{ background: "#f8fafc", padding: "10px 15px", borderRadius: "6px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #e2e8f0", fontSize: "13px", color: "#475569" }}>
+        <span>Verified Partner Session: <strong>{ownerInfo.email || "Checking..."}</strong></span>
+        <span style={{ color: "#16a34a", fontWeight: "600" }}>● Secure Listing Mode</span>
+      </div>
+
       {/* 🌟 STEPPER HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px", borderBottom: "1px solid #e2e8f0", paddingBottom: "15px", overflowX: "auto", gap: "10px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === 1 ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px" }}>
-          <span style={stepCircleStyle(currentStep === 1)}>1</span> Basic Info
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === 2 ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px" }}>
-          <span style={stepCircleStyle(currentStep === 2)}>2</span> Location
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === 3 ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px" }}>
-          <span style={stepCircleStyle(currentStep === 3)}>3</span> Room Details
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === 4 ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px" }}>
-          <span style={stepCircleStyle(currentStep === 4)}>4</span> Amenities
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === 5 ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px" }}>
-          <span style={stepCircleStyle(currentStep === 5)}>5</span> Description
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === 6 ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px" }}>
-          <span style={stepCircleStyle(currentStep === 6)}>6</span> Photos
-        </div>
+        {[
+          { step: 1, label: "Basic Info" },
+          { step: 2, label: "Location" },
+          { step: 3, label: "Room Details" },
+          { step: 4, label: "Amenities" },
+          { step: 5, label: "Description" },
+          { step: 6, label: "Photos" }
+        ].map((item) => (
+          <div key={item.step} onClick={() => item.step < currentStep && setCurrentStep(item.step)} style={{ display: "flex", alignItems: "center", gap: "6px", color: currentStep === item.step ? "#0284c7" : "#64748b", fontWeight: "600", fontSize: "12px", cursor: item.step < currentStep ? "pointer" : "default" }}>
+            <span style={stepCircleStyle(currentStep === item.step)}>{item.step}</span> {item.label}
+          </div>
+        ))}
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -440,13 +478,19 @@ export default function ListProperty() {
             </div>
 
             <div style={{ fontSize: "13px", color: "#475569", display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
-              <input type="checkbox" required style={{ width: "16px", height: "16px" }} />
+              <input 
+                type="checkbox" 
+                checked={agreedTerms} 
+                onChange={(e) => setAgreedTerms(e.target.checked)} 
+                required 
+                style={{ width: "16px", height: "16px", cursor: "pointer" }} 
+              />
               <span>I agree to the terms and conditions and confirm the details provided are accurate.</span>
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
               <button type="button" onClick={prevStep} style={secondaryBtnStyle}>Back</button>
-              <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a" }} disabled={loading}>
+              <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a", opacity: (files.length === 0 || !agreedTerms) ? 0.6 : 1 }} disabled={loading}>
                 {loading ? "Publishing Listing..." : "Submit Listing"}
               </button>
             </div>
