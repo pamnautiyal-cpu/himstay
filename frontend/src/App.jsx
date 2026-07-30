@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -20,6 +20,18 @@ import BlogDetail from "./pages/BlogDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import Search from "./components/Search";
 import "./App.css";
+
+// 🛡️ PROTECTED ROUTE GUARD FOR STRICT AUTHENTICATION
+const ProtectedRoute = ({ children }) => {
+  const userStr = localStorage.getItem("user") || localStorage.getItem("userInfo") || localStorage.getItem("auth") || localStorage.getItem("currentUser");
+  
+  if (!userStr) {
+    alert("Please log in or sign up first to access this page.");
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
+};
 
 export default function App() {
   return (
@@ -42,7 +54,17 @@ export default function App() {
           <Route path="/mytrips" element={<MyTrips />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/list-property" element={<ListProperty />} />
+          
+          {/* 🔒 PROTECTED LIST PROPERTY ROUTE */}
+          <Route 
+            path="/list-property" 
+            element={
+              <ProtectedRoute>
+                <ListProperty />
+              </ProtectedRoute>
+            } 
+          />
+
           <Route path="/terms" element={<Terms />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<BlogDetail />} />
