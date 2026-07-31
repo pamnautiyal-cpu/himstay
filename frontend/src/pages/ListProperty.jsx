@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import emailjs from '@emailjs/browser';
 
 export default function ListProperty() {
   const navigate = useNavigate();
@@ -148,7 +147,7 @@ export default function ListProperty() {
     }
   };
 
-  // Trigger Email OTP Generation & Send via EmailJS with Exact Template Parameters
+  // Trigger Backend OTP Generation & Send via Node.js Nodemailer API
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
     
@@ -180,28 +179,21 @@ export default function ListProperty() {
 
     setLoading(true);
     try {
-      await emailjs.send(
-        "service_lvjl1yl", 
-        "y2ep65k", 
-        {
-          name: ownerInfo?.name || "Partner",
-          email: ownerInfo?.email,
-          message: otpCode, // Matches {{message}} in template
-          title: "Property Listing Verification OTP",
-          time: new Date().toLocaleString()
-        }, 
-        "BN7sU5C5l-KUXpOj"
-      );
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/send-otp`, {
+        email: ownerInfo?.email,
+        otp: otpCode,
+        propertyName: formData.name
+      });
 
       setLoading(false);
       setShowOtpModal(true);
       alert(`OTP sent successfully to your email: ${ownerInfo?.email}`);
     } catch (err) {
-      console.error("EmailJS Error:", err);
+      console.error("Backend OTP Error:", err);
       setLoading(false);
-      // Fallback: If EmailJS fails, show OTP in alert so testing is never blocked
+      // Fallback: If backend fails, show OTP in alert so testing is never blocked
       setShowOtpModal(true);
-      alert(`[Fallback Mode] EmailJS failed. Your backup verification OTP is: ${otpCode}`);
+      alert(`[Fallback Mode] Server failed to send email. Your backup verification OTP is: ${otpCode}`);
     }
   };
 
@@ -237,24 +229,6 @@ export default function ListProperty() {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
         headers: { "Content-Type": "multipart/form-data" }
       });
-
-      // Send confirmation notification to Admin email
-      try {
-        await emailjs.send(
-          "service_lvjl1yl", 
-          "y2ep65k", 
-          {
-            name: ownerInfo?.name || "Partner",
-            email: "infothehimalayans@gmail.com",
-            message: `Property Name: ${formData.name}, Owner Email: ${verifiedEmail}, Phone: ${formData.phone}, City: ${formData.city}, Price: ₹${formData.price}`,
-            title: "New Property Listed (Email Verified)",
-            time: new Date().toLocaleString()
-          }, 
-          "BN7sU5C5l-KUXpOj"
-        );
-      } catch (emailErr) {
-        console.log("Admin email notification skipped:", emailErr);
-      }
 
       setLoading(false);
       setShowSuccessModal(true);
@@ -574,7 +548,7 @@ export default function ListProperty() {
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
               <button type="button" onClick={prevStep} style={secondaryBtnStyle}>Back</button>
               <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a", opacity: (files.length === 0 || !agreedTerms) ? 0.6 : 1 }} disabled={loading}>
-                {loading ? "Sending Email OTP..." : "Verify Email & Submit"}
+                {loading ? "Sending Server OTP..." : "Verify Email & Submit"}
               </button>
             </div>
           </div>
@@ -588,7 +562,7 @@ export default function ListProperty() {
           <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", textAlign: "center", maxWidth: "400px", width: "90%", boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}>
             <h3 style={{ color: "#1e293b", marginBottom: "10px" }}>Verify Your Email</h3>
             <p style={{ color: "#64748b", fontSize: "13px", marginBottom: "20px" }}>
-              We have sent a 6-digit verification OTP to your login email: <b>{ownerInfo?.email}</b>
+              We have sent a 6-digit verification OTP via server to your login email: <b>{ownerInfo?.email}</b>
             </p>
             <input 
               type="text" 
@@ -616,7 +590,7 @@ export default function ListProperty() {
             <div style={{ fontSize: "50px", marginBottom: "10px" }}>🎉</div>
             <h2 style={{ color: "#1e293b", marginBottom: "10px" }}>Listing Added Successfully!</h2>
             <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "20px" }}>
-              Your property has been verified via Email OTP and submitted for admin review.
+              Your property has been verified via Server OTP and submitted for admin review.
             </p>
             <button onClick={() => navigate("/hotels")} style={{ background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 24px", borderRadius: "8px", fontSize: "16px", cursor: "pointer", fontWeight: "600", width: "100%" }}>
               View Listings
