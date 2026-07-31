@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
+import { auth } from "../firebase";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 export default function ListProperty() {
   const navigate = useNavigate();
@@ -12,6 +14,12 @@ export default function ListProperty() {
   const [currentStep, setCurrentStep] = useState(1);
   const [highestStepVisited, setHighestStepVisited] = useState(1);
   const [ownerInfo, setOwnerInfo] = useState(null);
+
+  // OTP Verification States
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [otpLoading, setOtpLoading] = useState(false);
 
   // 1. STRICT MANDATORY LOGIN CHECK ON INITIAL MOUNT
   useEffect(() => {
@@ -26,7 +34,7 @@ export default function ListProperty() {
       try {
         const parsedUser = JSON.parse(userStr);
         if (!parsedUser || !parsedUser.email) {
-          localStorage.removeItem("user"); // Clean invalid session
+          localStorage.removeItem("user"); 
           alert("Session expired or invalid. Please login again.");
           navigate("/login", { replace: true });
           return;
@@ -96,7 +104,6 @@ export default function ListProperty() {
     setFiles(files.filter((_, i) => i !== index));
   };
 
-  // STEP VALIDATION BEFORE GOING NEXT
   const nextStep = () => {
     const activeUser = localStorage.getItem("user");
     if (!activeUser) {
@@ -143,23 +150,24 @@ export default function ListProperty() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  // Setup reCAPTCHA and Send OTP
+  const setupRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        'size': 'invisible',
+        'callback': (response) => {
+          // reCAPTCHA solved
+        }
+      });
+    }
+  };
+
+  const handleInitialSubmit = async (e) => {
     e.preventDefault();
     
     const finalCheckUser = localStorage.getItem("user");
     if (!finalCheckUser) {
       alert("Security Error: You are not logged in! Listing cancelled.");
-      navigate("/login");
-      return;
-    }
-
-    let verifiedEmail = "";
-    try {
-      const parsed = JSON.parse(finalCheckUser);
-      if (!parsed || !parsed.email) throw new Error("No email found");
-      verifiedEmail = parsed.email;
-    } catch (err) {
-      alert("Invalid user session. Please login again.");
       navigate("/login");
       return;
     }
@@ -173,7 +181,61 @@ export default function ListProperty() {
       alert("You must agree to the terms and conditions before submitting.");
       return;
     }
-    
+
+    if (!formData.phone || formData.phone.length !== 10) {
+      alert("Please enter a valid 10-digit mobile number for OTP verification.");
+      return;
+    }
+
+    // Trigger OTP Flow
+    setLoading(true);
+    try {
+      setupRecaptcha();
+      const phoneNumber = "+91" + formData.phone; // Assuming Indian numbers (+91)
+      const appVerifier = window.recaptchaVerifier;
+
+      const confirmation = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+      setConfirmationResult(confirmation);
+      setLoading(false);
+      setShowOtpModal(true); // Open OTP Popup
+      alert("OTP has been sent to your mobile number: " + formData.phone);
+    } catch (err) {
+      console.error("OTP send error:", err);
+      setLoading(false);
+      alert("Failed to send OTP. Please check your phone number or try again later.");
+    }
+  };
+
+  // Verify OTP and Save Property
+  const verifyOtpAndSubmit = async () => {
+    if (!otp || otp.length < 6) {
+      alert("Please enter a valid 6-digit OTP.");
+      return;
+    }
+
+    setOtpLoading(true);
+    try {
+      await confirmationResult.confirm(otp);
+      // OTP Verified Successfully! Now proceed with backend save.
+      setShowOtpModal(false);
+      await finalizePropertyUpload();
+    } catch (err) {
+      console.error("Invalid OTP:", err);
+      alert("Invalid OTP! Please check and try again.");
+      setOtpLoading(false);
+    }
+  };
+
+  const finalizePropertyUpload = async () => {
+    const finalCheckUser = localStorage.getItem("user");
+    let verifiedEmail = "";
+    try {
+      const parsed = JSON.parse(finalCheckUser);
+      verifiedEmail = parsed.email;
+    } catch (err) {
+      verifiedEmail = "partner@thehimalayans.in";
+    }
+
     setLoading(true);
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
@@ -192,7 +254,7 @@ export default function ListProperty() {
           {
             name: ownerInfo?.name || "Partner",
             title: formData.name, 
-            message: `Owner Email: ${verifiedEmail}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone}`,
+            message: `Owner Email: ${verifiedEmail}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone} (OTP Verified)`,
             email: "system@thehimalayans.com"
           }, 
           "BN7sU5C5l-KUXpOj"
@@ -213,6 +275,7 @@ export default function ListProperty() {
 
   return (
     <div style={{ maxWidth: "850px", margin: "30px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.08)" }}>
+      <div id="recaptcha-container"></div>
       
       {/* 🌟 STEPPER HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px", borderBottom: "1px solid #e2e8f0", paddingBottom: "15px", overflowX: "auto", gap: "10px" }}>
@@ -245,13 +308,12 @@ export default function ListProperty() {
         })}
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleInitialSubmit}>
         
         {/* --- STEP 1: BASIC INFO --- */}
         {currentStep === 1 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Basic Information</h3>
-            
             <label style={{ fontSize: "14px", fontWeight: "700", color: "#166534", display: "block", marginBottom: "6px" }}>
               What would you like to list? *
             </label>
@@ -292,7 +354,6 @@ export default function ListProperty() {
         {currentStep === 2 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Location Details</h3>
-            
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
               <div>
                 <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Locality / Area / Sector *</label>
@@ -336,7 +397,6 @@ export default function ListProperty() {
         {currentStep === 3 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Room Details & Pricing</h3>
-
             {formData.listingCategory === "hotel" ? (
               <>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
@@ -427,8 +487,8 @@ export default function ListProperty() {
                 <input name="price" type="number" value={formData.price} placeholder="e.g. 2500" required onChange={handleChange} style={inputStyle} />
               </div>
               <div>
-                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Contact Phone Number *</label>
-                <input name="phone" value={formData.phone} placeholder="e.g. 9876543210" required onChange={handleChange} style={inputStyle} />
+                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Contact Phone Number (For OTP) *</label>
+                <input name="phone" maxLength="10" value={formData.phone} placeholder="e.g. 9876543210" required onChange={handleChange} style={inputStyle} />
               </div>
             </div>
 
@@ -461,24 +521,10 @@ export default function ListProperty() {
                   <span style={{ fontSize: "14px", fontWeight: "600", color: "#334155" }}>{item.label}</span>
                   <div style={{ display: "flex", gap: "15px" }}>
                     <label style={{ fontSize: "14px", cursor: "pointer" }}>
-                      <input 
-                        type="radio" 
-                        name={item.name} 
-                        value="No" 
-                        checked={formData[item.name] === "No"} 
-                        onChange={handleChange} 
-                        style={{ marginRight: "4px" }}
-                      /> No
+                      <input type="radio" name={item.name} value="No" checked={formData[item.name] === "No"} onChange={handleChange} style={{ marginRight: "4px" }} /> No
                     </label>
                     <label style={{ fontSize: "14px", cursor: "pointer" }}>
-                      <input 
-                        type="radio" 
-                        name={item.name} 
-                        value="Yes" 
-                        checked={formData[item.name] === "Yes"} 
-                        onChange={handleChange} 
-                        style={{ marginRight: "4px" }}
-                      /> Yes
+                      <input type="radio" name={item.name} value="Yes" checked={formData[item.name] === "Yes"} onChange={handleChange} style={{ marginRight: "4px" }} /> Yes
                     </label>
                   </div>
                 </div>
@@ -496,7 +542,6 @@ export default function ListProperty() {
         {currentStep === 5 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Description & House Rules</h3>
-
             <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Full Description *</label>
             <textarea 
               name="description" 
@@ -518,7 +563,6 @@ export default function ListProperty() {
         {currentStep === 6 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Photos & Final Submission</h3>
-
             <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "8px" }}>Upload Property Images *</label>
             <input type="file" multiple onChange={handleFileChange} style={{ ...inputStyle, marginBottom: "15px" }} />
             
@@ -531,20 +575,14 @@ export default function ListProperty() {
             </div>
 
             <div style={{ fontSize: "13px", color: "#475569", display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
-              <input 
-                type="checkbox" 
-                checked={agreedTerms} 
-                onChange={(e) => setAgreedTerms(e.target.checked)} 
-                required 
-                style={{ width: "16px", height: "16px", cursor: "pointer" }} 
-              />
+              <input type="checkbox" checked={agreedTerms} onChange={(e) => setAgreedTerms(e.target.checked)} required style={{ width: "16px", height: "16px", cursor: "pointer" }} />
               <span>I agree to the terms and conditions and confirm the details provided are accurate.</span>
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
               <button type="button" onClick={prevStep} style={secondaryBtnStyle}>Back</button>
               <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a", opacity: (files.length === 0 || !agreedTerms) ? 0.6 : 1 }} disabled={loading}>
-                {loading ? "Publishing Listing..." : "Submit Listing"}
+                {loading ? "Sending OTP..." : "Verify Phone & Submit"}
               </button>
             </div>
           </div>
@@ -552,31 +590,43 @@ export default function ListProperty() {
 
       </form>
 
+      {/* OTP VERIFICATION MODAL */}
+      {showOtpModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.6)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1100 }}>
+          <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", textAlign: "center", maxWidth: "400px", width: "90%", boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}>
+            <h3 style={{ color: "#1e293b", marginBottom: "10px" }}>Verify Mobile Number</h3>
+            <p style={{ color: "#64748b", fontSize: "13px", marginBottom: "20px" }}>
+              Enter the 6-digit OTP sent to <b>+91 {formData.phone}</b>
+            </p>
+            <input 
+              type="text" 
+              maxLength="6" 
+              placeholder="Enter 6-digit OTP" 
+              value={otp} 
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+              style={{ ...inputStyle, textAlign: "center", fontSize: "18px", letterSpacing: "4px", marginBottom: "20px" }} 
+            />
+            <button 
+              onClick={verifyOtpAndSubmit} 
+              disabled={otpLoading}
+              style={{ background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 24px", borderRadius: "8px", fontSize: "16px", cursor: "pointer", fontWeight: "600", width: "100%" }}
+            >
+              {otpLoading ? "Verifying..." : "Confirm & Submit Listing"}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* SUCCESS MODAL */}
       {showSuccessModal && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-          background: "rgba(0,0,0,0.6)", display: "flex", justifyContent: "center",
-          alignItems: "center", zIndex: 1000
-        }}>
-          <div style={{
-            background: "#fff", padding: "30px", borderRadius: "16px",
-            textAlign: "center", maxWidth: "400px", width: "90%",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
-          }}>
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.6)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }}>
+          <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", textAlign: "center", maxWidth: "400px", width: "90%", boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}>
             <div style={{ fontSize: "50px", marginBottom: "10px" }}>🎉</div>
             <h2 style={{ color: "#1e293b", marginBottom: "10px" }}>Listing Added Successfully!</h2>
             <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "20px" }}>
-              Your offering has been submitted for admin review.
+              Your offering has been verified via OTP and submitted for final admin review.
             </p>
-            <button 
-              onClick={() => navigate("/hotels")} 
-              style={{
-                background: "#0ea5e9", color: "#fff", border: "none",
-                padding: "12px 24px", borderRadius: "8px", fontSize: "16px",
-                cursor: "pointer", fontWeight: "600", width: "100%"
-              }}
-            >
+            <button onClick={() => navigate("/hotels")} style={{ background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 24px", borderRadius: "8px", fontSize: "16px", cursor: "pointer", fontWeight: "600", width: "100%" }}>
               View Listings
             </button>
           </div>
