@@ -56,8 +56,7 @@ export default function Booking() {
     }
 
     try {
-      // 1. सही बैकएंड एंडपॉइंट पर आर्डर रिक्वेस्ट भेजें (/api/create-order)
-      const amountInPaise = hotel ? Number(hotel.price) * 100 : 250000; // Razorpay takes amount in paise (₹2500 = 250000 paise)
+      const amountInPaise = hotel ? Number(hotel.price) * 100 : 250000;
       
       const orderRes = await axios.post(`${BACKEND_URL}/api/create-order`, {
         amount: amountInPaise, 
@@ -72,9 +71,8 @@ export default function Booking() {
         return;
       }
 
-      // 2. रेज़रपे पॉपअप कॉन्फ़िगरेशन
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TKBfYo6v5i4nor", 
+        key: "rzp_test_TKBfYo6v5i4nor", // सीधे सही टेस्ट की यहाँ सेट कर दी गई है
         amount: order.amount,
         currency: order.currency,
         name: "The Himalayans",
@@ -82,7 +80,6 @@ export default function Booking() {
         order_id: order.order_id,
         handler: async function (response) {
           try {
-            // 3. सही बैकएंड एंडपॉइंट पर पेमेंट वेरीफाई करें (/api/verify-payment)
             const verifyRes = await axios.post(`${BACKEND_URL}/api/verify-payment`, {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -90,7 +87,6 @@ export default function Booking() {
             });
 
             if (verifyRes.data.success) {
-              // 4. डेटाबेस में बुकिंग सेव करें
               await axios.post(`${BACKEND_URL}/api/bookings`, {
                 hotelId,
                 name,
