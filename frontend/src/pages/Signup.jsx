@@ -13,34 +13,36 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    // 1. सभी फील्ड्स चेक करें
-    if (!name || !email || !password || !phone) {
-      return alert("Please fill all fields including mobile number!");
+    // 1. सभी फील्ड्स खाली तो नहीं हैं
+    if (!name.trim() || !email.trim() || !password || !phone) {
+      alert("Please fill all fields including mobile number!");
+      return;
     }
 
-    // 2. सख्त ईमेल वैलिडेशन (यह .comf या किसी भी गलत डोमेन को रोक देगा)
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      return alert("Please enter a valid and real email address (e.g., user@gmail.com)!");
+    // 2. सख्त ईमेल चेक (यह .comm या किसी भी गलत एक्सटेंशन को तुरंत रोकेगा)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/;
+    if (!emailRegex.test(email) || email.endsWith("m") && email.endsWith("mm")) {
+      alert("Please enter a valid email address (e.g. user@gmail.com)!");
+      return;
     }
 
-    // 3. सटीक 10-डिजिट मोबाइल नंबर चेक
+    // 3. मोबाइल नंबर की सटीक जांच (पूरे 10 अंक होने चाहिए)
     if (phone.length !== 10) {
-      return alert("Mobile number must be exactly 10 digits!");
+      alert("Mobile number must be exactly 10 digits!");
+      return;
     }
 
-    // 4. पासवर्ड की लंबाई चेक (कम से कम 6 अक्षर)
+    // 4. पासवर्ड की लंबाई चेक
     if (password.length < 6) {
-      return alert("Password must be at least 6 characters long!");
+      alert("Password must be at least 6 characters long!");
+      return;
     }
 
     setLoading(true);
     try {
-      // 1. Firebase Authentication में यूजर बनाएं
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Firestore की 'users' कलेक्शन में डेटा सेव करें
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name: name,
@@ -49,7 +51,6 @@ export default function Signup() {
         createdAt: new Date().toISOString()
       });
 
-      // 3. localStorage में सेशन सेव करें
       localStorage.setItem("user", JSON.stringify({
         uid: user.uid,
         email: user.email,
@@ -66,10 +67,10 @@ export default function Signup() {
     }
   };
 
-  // 🔑 Password Reset Handler
   const handleForgotPassword = async () => {
     if (!email) {
-      return alert("Please enter your registered email address first to reset password.");
+      alert("Please enter your registered email address first to reset password.");
+      return;
     }
     try {
       await sendPasswordResetEmail(auth, email);
