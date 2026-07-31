@@ -50,6 +50,8 @@ export default function Navbar() {
     padding: "8px 12px",
     borderRadius: "8px",
     transition: "all 0.2s ease-in-out",
+    display: "flex",
+    alignItems: "center"
   };
 
   return (
@@ -65,14 +67,21 @@ export default function Navbar() {
     }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         
-        {/* Brand Name / Logo -> Click karne par ab /discover page khulega */}
-        <Link to="/discover" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "24px", letterSpacing: "0.5px" }}>
-           The Himalayans
-        </Link>
+        {/* Left Section: Home Icon + Brand Name / Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          {/* Home Icon Link (The Himalayans के ठीक पहले) */}
+          <Link to="/" style={navLinkStyle}>
+            🏠 Home
+          </Link>
 
-        {/* Navigation Links */}
+          {/* Brand Logo / Name */}
+          <Link to="/discover" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "22px", letterSpacing: "0.5px", display: "flex", alignItems: "center" }}>
+             The Himalayans
+          </Link>
+        </div>
+
+        {/* Right Section: Navigation Links & Auth */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Link to="/" style={navLinkStyle}>🏠 Home</Link>
           <Link to="/hotels" style={navLinkStyle}>Hotels</Link>
           <Link to="/mytrips" onClick={handleMyTripsClick} style={navLinkStyle}>My Trips</Link>
           <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}>Offers</Link>
@@ -94,7 +103,7 @@ export default function Navbar() {
           ) : (
             <>
               <Link to="/login" style={navLinkStyle}>Login</Link>
-              <Link to="/signup" style={{ background: "#0ea5e9", padding: "8px 20px", borderRadius: "8px", color: "#fff", textDecoration: "none", fontWeight: "600", fontSize: "14px", boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)", transition: "0.2s" }}>Sign up</Link>
+              <Link to="/signup" style={{ background: "#0ea5e9", padding: "8px 20px", borderRadius: "8px", color: "#fff", textDecoration: "none", fontWeight: "600", fontSize: "14px", boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)", transition: "0.2s", display: "flex", alignItems: "center" }}>Sign up</Link>
             </>
           )}
         </div>
