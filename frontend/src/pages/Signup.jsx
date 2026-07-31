@@ -76,7 +76,7 @@ export default function Signup() {
 
   return (
     <div style={{ maxWidth: 420, margin: "60px auto", padding: "30px", background: "#fff", borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
-      <h2 style={{ marginBottom: "20px", color: "#1e293b", textAlign: "center" }}>Create your account</h2>
+      <h2 style={{ marginBottom: "20px", color: "#1e293b", textAlign: "center" }}>Create Your account</h2>
 
       <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Full Name</label>
       <input 
