@@ -13,7 +13,7 @@ export default function ListProperty() {
   const [highestStepVisited, setHighestStepVisited] = useState(1);
   const [ownerInfo, setOwnerInfo] = useState(null);
 
-  // Email OTP Verification States
+  // Email OTP States
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [enteredOtp, setEnteredOtp] = useState("");
@@ -148,7 +148,7 @@ export default function ListProperty() {
     }
   };
 
-  // Trigger Email OTP Generation & Send
+  // Trigger Email OTP Generation & Send via EmailJS
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
     
@@ -175,19 +175,18 @@ export default function ListProperty() {
     }
 
     // Generate 6-digit random OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(otp);
+    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(otpCode);
 
     setLoading(true);
     try {
-      // Send OTP to owner's registered email via EmailJS
       await emailjs.send(
         "service_lvjl1yl", 
-        "template_17qwwpa", 
+        "y2ep65k", // Correct Template ID from your dashboard
         {
           name: ownerInfo?.name || "Partner",
           title: "Property Listing Verification OTP", 
-          message: `Your verification OTP for listing '${formData.name}' is: ${otp}. Please enter this code to complete your submission.`,
+          message: `Your verification OTP for listing '${formData.name}' is: ${otpCode}`,
           email: ownerInfo?.email
         }, 
         "BN7sU5C5l-KUXpOj"
@@ -195,18 +194,18 @@ export default function ListProperty() {
 
       setLoading(false);
       setShowOtpModal(true);
-      alert(`Verification OTP sent successfully to your email: ${ownerInfo?.email}`);
+      alert(`OTP sent successfully to your email: ${ownerInfo?.email}`);
     } catch (err) {
-      console.error("Email OTP send error:", err);
+      console.error("EmailJS Error:", err);
       setLoading(false);
-      alert("Failed to send Email OTP. Please try again later.");
+      alert("Failed to send Email OTP. Please check console for details.");
     }
   };
 
-  // Verify Email OTP and Save Property
+  // Verify OTP and Finalize Property Upload
   const verifyOtpAndSubmit = async () => {
     if (!enteredOtp || enteredOtp !== generatedOtp) {
-      alert("Invalid OTP! Please check your email and enter the correct 6-digit OTP.");
+      alert("Invalid OTP! Please check your email and enter the correct 6-digit code.");
       return;
     }
 
@@ -236,21 +235,21 @@ export default function ListProperty() {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
-      // Send confirmation notification to Admin email
+      // Send confirmation notification to Admin email (infothehimalayans@gmail.com)
       try {
         await emailjs.send(
           "service_lvjl1yl", 
-          "template_17qwwpa", 
+          "y2ep65k", 
           {
             name: ownerInfo?.name || "Partner",
-            title: formData.name, 
-            message: `New Property Listed! Owner Email: ${verifiedEmail}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone} (Email Verified via OTP)`,
-            email: "system@thehimalayans.com"
+            title: "New Property Listed (Email Verified)", 
+            message: `Property Name: ${formData.name}, Owner Email: ${verifiedEmail}, Phone: ${formData.phone}, City: ${formData.city}, Price: ₹${formData.price}`,
+            email: "infothehimalayans@gmail.com" // Admin email
           }, 
           "BN7sU5C5l-KUXpOj"
         );
       } catch (emailErr) {
-        console.log("Admin email notification skipped/failed:", emailErr);
+        console.log("Admin email notification skipped:", emailErr);
       }
 
       setLoading(false);
@@ -613,7 +612,7 @@ export default function ListProperty() {
             <div style={{ fontSize: "50px", marginBottom: "10px" }}>🎉</div>
             <h2 style={{ color: "#1e293b", marginBottom: "10px" }}>Listing Added Successfully!</h2>
             <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "20px" }}>
-              Your offering has been verified via Email OTP and submitted for final admin review.
+              Your property has been verified via Email OTP and submitted for admin review.
             </p>
             <button onClick={() => navigate("/hotels")} style={{ background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 24px", borderRadius: "8px", fontSize: "16px", cursor: "pointer", fontWeight: "600", width: "100%" }}>
               View Listings
