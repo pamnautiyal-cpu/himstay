@@ -7,10 +7,12 @@ const nodemailer = require("nodemailer");
 
 const router = express.Router();
 
-// Nodemailer Transporter Setup for OTP (Fixed with IPv4 family for Render)
+// Nodemailer Transporter Setup for OTP (Fixed with Host, Port & IPv4 for Render)
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  family: 4, // <--- यह लाइन जोड़ना अनिवार्य है ताकि Render पर नेटवर्क एरर न आए
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // port 465 के लिए true होना जरूरी है
+  family: 4,    // Render के IPv6 नेटवर्क एरर को रोकने के लिए
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
