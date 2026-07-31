@@ -72,7 +72,7 @@ export default function Booking() {
       }
 
       const options = {
-        key: "rzp_test_TKBfYo6v5i4nor", // सीधे सही टेस्ट की यहाँ सेट कर दी गई है
+        key: "rzp_test_TKBfYo6v5i4nor",
         amount: order.amount,
         currency: order.currency,
         name: "The Himalayans",
