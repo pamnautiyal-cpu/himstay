@@ -56,14 +56,17 @@ export default function Booking() {
     }
 
     try {
-      // 1. बैकएंड से Razorpay ऑर्डर जनरेट करें
-      const orderRes = await axios.post(`${BACKEND_URL}/api/payment/create-order`, {
-        amount: hotel ? hotel.price : 2500, 
+      // 1. सही बैकएंड एंडपॉइंट पर आर्डर रिक्वेस्ट भेजें (/api/create-order)
+      const amountInPaise = hotel ? Number(hotel.price) * 100 : 250000; // Razorpay takes amount in paise (₹2500 = 250000 paise)
+      
+      const orderRes = await axios.post(`${BACKEND_URL}/api/create-order`, {
+        amount: amountInPaise, 
+        currency: "INR"
       });
 
       const order = orderRes.data;
 
-      if (!order || !order.id) {
+      if (!order || !order.order_id) {
         alert("Server failed to initiate order.");
         setLoading(false);
         return;
@@ -71,23 +74,23 @@ export default function Booking() {
 
       // 2. रेज़रपे पॉपअप कॉन्फ़िगरेशन
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_placeholder", 
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TKBfYo6v5i4nor", 
         amount: order.amount,
-        currency: "INR",
-        name: "HimStay Services",
+        currency: order.currency,
+        name: "The Himalayans",
         description: hotel ? hotel.name : "Himalayan Booking",
-        order_id: order.id,
+        order_id: order.order_id,
         handler: async function (response) {
           try {
-            // 3. पेमेंट वेरिफिकेशन
-            const verifyRes = await axios.post(`${BACKEND_URL}/api/payment/verify`, {
+            // 3. सही बैकएंड एंडपॉइंट पर पेमेंट वेरीफाई करें (/api/verify-payment)
+            const verifyRes = await axios.post(`${BACKEND_URL}/api/verify-payment`, {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
             });
 
             if (verifyRes.data.success) {
-              // 4. डेटाबेस में बुकिंग सेव करें (सटीक स्कीमा के साथ)
+              // 4. डेटाबेस में बुकिंग सेव करें
               await axios.post(`${BACKEND_URL}/api/bookings`, {
                 hotelId,
                 name,
