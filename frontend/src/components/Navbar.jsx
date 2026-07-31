@@ -67,11 +67,11 @@ export default function Navbar() {
     }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         
-        {/* Left Section: Home Icon + Brand Name / Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          {/* Home Icon Link (The Himalayans के ठीक पहले) */}
-          <Link to="/" style={navLinkStyle}>
-            🏠 Home
+        {/* Left Section: Clean Home Icon + Brand Name */}
+        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+          {/* Sirf Icon bina kisi border/box ke */}
+          <Link to="/" title="Home" style={{ ...navLinkStyle, fontSize: "18px", padding: "6px" }}>
+            🏠
           </Link>
 
           {/* Brand Logo / Name */}
