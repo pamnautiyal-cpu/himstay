@@ -3,8 +3,18 @@ const Hotel = require("../models/Hotel");
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
+const nodemailer = require("nodemailer");
 
 const router = express.Router();
+
+// Nodemailer Transporter Setup for OTP
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "infothehimalayans@gmail.com",
+    pass: process.env.EMAIL_APP_PASSWORD, // Make sure to add this in your .env file
+  },
+});
 
 // Cloudinary Configuration
 const storage = new CloudinaryStorage({
@@ -15,6 +25,40 @@ const storage = new CloudinaryStorage({
   },
 });
 const upload = multer({ storage: storage });
+
+// ============================
+// SEND OTP ROUTE FOR PROPERTY VERIFICATION
+// ============================
+router.post("/send-otp", async (req, res) => {
+  const { email, otp, propertyName } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, message: "Email and OTP are required" });
+  }
+
+  const mailOptions = {
+    from: '"The Himalayans" <infothehimalayans@gmail.com>',
+    to: email,
+    subject: "Property Listing Verification OTP",
+    html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+        <h2 style="color: #0284c7;">The Himalayans - Property Verification</h2>
+        <p>Hello Partner,</p>
+        <p>Your verification OTP for listing <b>'${propertyName || "Your Property"}'</b> is:</p>
+        <h1 style="background: #f1f5f9; padding: 10px 20px; display: inline-block; letter-spacing: 4px; color: #1e293b; border-radius: 6px;">${otp}</h1>
+        <p style="font-size: 12px; color: #64748b; margin-top: 20px;">If you didn't request this, please ignore this email.</p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: "OTP sent successfully to email!" });
+  } catch (error) {
+    console.error("Nodemailer Error:", error);
+    res.status(500).json({ success: false, message: "Failed to send email via server" });
+  }
+});
 
 // ============================
 // ADD HOTEL (PENDING FOR APPROVAL)
@@ -48,7 +92,7 @@ router.get("/pending", async (req, res) => {
 });
 
 // ============================
-// ADMIN: GET ALL HOTELS (Pending + Approved) - सही जगह जोड़ा गया
+// ADMIN: GET ALL HOTELS (Pending + Approved)
 // ============================
 router.get("/admin/all", async (req, res) => {
   try {
