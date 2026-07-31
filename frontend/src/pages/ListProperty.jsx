@@ -98,7 +98,6 @@ export default function ListProperty() {
 
   // STEP VALIDATION BEFORE GOING NEXT
   const nextStep = () => {
-    // Double check auth before proceeding steps
     const activeUser = localStorage.getItem("user");
     if (!activeUser) {
       alert("Authentication required! Please login.");
@@ -147,7 +146,6 @@ export default function ListProperty() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // ABSOLUTE FINAL SECURITY CHECK BEFORE SUBMITTING TO BACKEND
     const finalCheckUser = localStorage.getItem("user");
     if (!finalCheckUser) {
       alert("Security Error: You are not logged in! Listing cancelled.");
@@ -180,7 +178,7 @@ export default function ListProperty() {
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
-    data.append("ownerEmail", verifiedEmail); // Strictly bound to logged-in user's email
+    data.append("ownerEmail", verifiedEmail); 
 
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
