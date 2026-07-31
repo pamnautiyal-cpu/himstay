@@ -22,6 +22,7 @@ const HotelSchema = new mongoose.Schema(
     ownerEmail: { type: String },
     description: { type: String },
     images: { type: [String], required: true },
+    rating: { type: Number, default: 0 },
     isApproved: { type: Boolean, default: false }
   },
   { timestamps: true }
