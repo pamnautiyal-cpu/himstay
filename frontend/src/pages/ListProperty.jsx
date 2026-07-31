@@ -148,7 +148,7 @@ export default function ListProperty() {
     }
   };
 
-  // Trigger Email OTP Generation & Send via EmailJS with Smart Fallback
+  // Trigger Email OTP Generation & Send via EmailJS with Exact Template Parameters
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
     
@@ -185,9 +185,10 @@ export default function ListProperty() {
         "y2ep65k", 
         {
           name: ownerInfo?.name || "Partner",
-          title: "Property Listing Verification OTP", 
-          message: otpCode, // Passing pure 6-digit OTP to match {{message}} in EmailJS template
-          email: ownerInfo?.email
+          email: ownerInfo?.email,
+          message: otpCode, // Matches {{message}} in template
+          title: "Property Listing Verification OTP",
+          time: new Date().toLocaleString()
         }, 
         "BN7sU5C5l-KUXpOj"
       );
@@ -237,16 +238,17 @@ export default function ListProperty() {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
-      // Send confirmation notification to Admin email (infothehimalayans@gmail.com) via Bcc / Direct send
+      // Send confirmation notification to Admin email
       try {
         await emailjs.send(
           "service_lvjl1yl", 
           "y2ep65k", 
           {
             name: ownerInfo?.name || "Partner",
-            title: "New Property Listed (Email Verified)", 
+            email: "infothehimalayans@gmail.com",
             message: `Property Name: ${formData.name}, Owner Email: ${verifiedEmail}, Phone: ${formData.phone}, City: ${formData.city}, Price: ₹${formData.price}`,
-            email: "infothehimalayans@gmail.com" 
+            title: "New Property Listed (Email Verified)",
+            time: new Date().toLocaleString()
           }, 
           "BN7sU5C5l-KUXpOj"
         );
