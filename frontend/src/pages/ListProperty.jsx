@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import emailjs from '@emailjs/browser';
-import { auth } from "../firebase";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 export default function ListProperty() {
   const navigate = useNavigate();
@@ -15,10 +13,10 @@ export default function ListProperty() {
   const [highestStepVisited, setHighestStepVisited] = useState(1);
   const [ownerInfo, setOwnerInfo] = useState(null);
 
-  // OTP Verification States
+  // Email OTP Verification States
   const [showOtpModal, setShowOtpModal] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [confirmationResult, setConfirmationResult] = useState(null);
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [enteredOtp, setEnteredOtp] = useState("");
   const [otpLoading, setOtpLoading] = useState(false);
 
   // 1. STRICT MANDATORY LOGIN CHECK ON INITIAL MOUNT
@@ -150,18 +148,7 @@ export default function ListProperty() {
     }
   };
 
-  // Setup reCAPTCHA and Send OTP
-  const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        'size': 'invisible',
-        'callback': (response) => {
-          // reCAPTCHA solved
-        }
-      });
-    }
-  };
-
+  // Trigger Email OTP Generation & Send
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
     
@@ -183,47 +170,49 @@ export default function ListProperty() {
     }
 
     if (!formData.phone || formData.phone.length !== 10) {
-      alert("Please enter a valid 10-digit mobile number for OTP verification.");
+      alert("Please enter a valid 10-digit mobile number.");
       return;
     }
 
-    // Trigger OTP Flow
+    // Generate 6-digit random OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(otp);
+
     setLoading(true);
     try {
-      setupRecaptcha();
-      const phoneNumber = "+91" + formData.phone; // Assuming Indian numbers (+91)
-      const appVerifier = window.recaptchaVerifier;
+      // Send OTP to owner's registered email via EmailJS
+      await emailjs.send(
+        "service_lvjl1yl", 
+        "template_17qwwpa", 
+        {
+          name: ownerInfo?.name || "Partner",
+          title: "Property Listing Verification OTP", 
+          message: `Your verification OTP for listing '${formData.name}' is: ${otp}. Please enter this code to complete your submission.`,
+          email: ownerInfo?.email
+        }, 
+        "BN7sU5C5l-KUXpOj"
+      );
 
-      const confirmation = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-      setConfirmationResult(confirmation);
       setLoading(false);
-      setShowOtpModal(true); // Open OTP Popup
-      alert("OTP has been sent to your mobile number: " + formData.phone);
+      setShowOtpModal(true);
+      alert(`Verification OTP sent successfully to your email: ${ownerInfo?.email}`);
     } catch (err) {
-      console.error("OTP send error:", err);
+      console.error("Email OTP send error:", err);
       setLoading(false);
-      alert("Failed to send OTP. Please check your phone number or try again later.");
+      alert("Failed to send Email OTP. Please try again later.");
     }
   };
 
-  // Verify OTP and Save Property
+  // Verify Email OTP and Save Property
   const verifyOtpAndSubmit = async () => {
-    if (!otp || otp.length < 6) {
-      alert("Please enter a valid 6-digit OTP.");
+    if (!enteredOtp || enteredOtp !== generatedOtp) {
+      alert("Invalid OTP! Please check your email and enter the correct 6-digit OTP.");
       return;
     }
 
     setOtpLoading(true);
-    try {
-      await confirmationResult.confirm(otp);
-      // OTP Verified Successfully! Now proceed with backend save.
-      setShowOtpModal(false);
-      await finalizePropertyUpload();
-    } catch (err) {
-      console.error("Invalid OTP:", err);
-      alert("Invalid OTP! Please check and try again.");
-      setOtpLoading(false);
-    }
+    setShowOtpModal(false);
+    await finalizePropertyUpload();
   };
 
   const finalizePropertyUpload = async () => {
@@ -247,6 +236,7 @@ export default function ListProperty() {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
+      // Send confirmation notification to Admin email
       try {
         await emailjs.send(
           "service_lvjl1yl", 
@@ -254,13 +244,13 @@ export default function ListProperty() {
           {
             name: ownerInfo?.name || "Partner",
             title: formData.name, 
-            message: `Owner Email: ${verifiedEmail}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone} (OTP Verified)`,
+            message: `New Property Listed! Owner Email: ${verifiedEmail}, Category: ${formData.listingCategory.toUpperCase()}, Location: ${formData.locality}, ${formData.city}, Price: ${formData.price}, Phone: ${formData.phone} (Email Verified via OTP)`,
             email: "system@thehimalayans.com"
           }, 
           "BN7sU5C5l-KUXpOj"
         );
       } catch (emailErr) {
-        console.log("Email notification skipped/failed:", emailErr);
+        console.log("Admin email notification skipped/failed:", emailErr);
       }
 
       setLoading(false);
@@ -275,7 +265,6 @@ export default function ListProperty() {
 
   return (
     <div style={{ maxWidth: "850px", margin: "30px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.08)" }}>
-      <div id="recaptcha-container"></div>
       
       {/* 🌟 STEPPER HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px", borderBottom: "1px solid #e2e8f0", paddingBottom: "15px", overflowX: "auto", gap: "10px" }}>
@@ -487,7 +476,7 @@ export default function ListProperty() {
                 <input name="price" type="number" value={formData.price} placeholder="e.g. 2500" required onChange={handleChange} style={inputStyle} />
               </div>
               <div>
-                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Contact Phone Number (For OTP) *</label>
+                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Contact Phone Number *</label>
                 <input name="phone" maxLength="10" value={formData.phone} placeholder="e.g. 9876543210" required onChange={handleChange} style={inputStyle} />
               </div>
             </div>
@@ -582,7 +571,7 @@ export default function ListProperty() {
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
               <button type="button" onClick={prevStep} style={secondaryBtnStyle}>Back</button>
               <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a", opacity: (files.length === 0 || !agreedTerms) ? 0.6 : 1 }} disabled={loading}>
-                {loading ? "Sending OTP..." : "Verify Phone & Submit"}
+                {loading ? "Sending Email OTP..." : "Verify Email & Submit"}
               </button>
             </div>
           </div>
@@ -590,20 +579,20 @@ export default function ListProperty() {
 
       </form>
 
-      {/* OTP VERIFICATION MODAL */}
+      {/* EMAIL OTP VERIFICATION MODAL */}
       {showOtpModal && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.6)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1100 }}>
           <div style={{ background: "#fff", padding: "30px", borderRadius: "16px", textAlign: "center", maxWidth: "400px", width: "90%", boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}>
-            <h3 style={{ color: "#1e293b", marginBottom: "10px" }}>Verify Mobile Number</h3>
+            <h3 style={{ color: "#1e293b", marginBottom: "10px" }}>Verify Your Email</h3>
             <p style={{ color: "#64748b", fontSize: "13px", marginBottom: "20px" }}>
-              Enter the 6-digit OTP sent to <b>+91 {formData.phone}</b>
+              We have sent a 6-digit verification OTP to your login email: <b>{ownerInfo?.email}</b>
             </p>
             <input 
               type="text" 
               maxLength="6" 
               placeholder="Enter 6-digit OTP" 
-              value={otp} 
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+              value={enteredOtp} 
+              onChange={(e) => setEnteredOtp(e.target.value.replace(/\D/g, ''))}
               style={{ ...inputStyle, textAlign: "center", fontSize: "18px", letterSpacing: "4px", marginBottom: "20px" }} 
             />
             <button 
@@ -624,7 +613,7 @@ export default function ListProperty() {
             <div style={{ fontSize: "50px", marginBottom: "10px" }}>🎉</div>
             <h2 style={{ color: "#1e293b", marginBottom: "10px" }}>Listing Added Successfully!</h2>
             <p style={{ color: "#64748b", fontSize: "14px", marginBottom: "20px" }}>
-              Your offering has been verified via OTP and submitted for final admin review.
+              Your offering has been verified via Email OTP and submitted for final admin review.
             </p>
             <button onClick={() => navigate("/hotels")} style={{ background: "#0ea5e9", color: "#fff", border: "none", padding: "12px 24px", borderRadius: "8px", fontSize: "16px", cursor: "pointer", fontWeight: "600", width: "100%" }}>
               View Listings
