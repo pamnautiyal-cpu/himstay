@@ -18,6 +18,7 @@ import Terms from "./pages/Terms";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
 import AdminDashboard from "./pages/AdminDashboard";
+import Discover from "./pages/Discover"; // 👈 Discover पेज यहाँ इम्पोर्ट किया गया है
 import Search from "./components/Search";
 import "./App.css";
 
@@ -57,10 +58,11 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/discover" element={<Discover />} /> {/* 👈 Discover पेज का राउट */}
           <Route path="/search" element={<Search />} />
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
-          <Route path="/hotel/:id" element={<HotelDetails />} /> {/* अतिरिक्त सुरक्षा के लिए ताकि दोनों राउट काम करें */}
+          <Route path="/hotel/:id" element={<HotelDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />

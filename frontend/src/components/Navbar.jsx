@@ -65,18 +65,19 @@ export default function Navbar() {
     }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         
-        {/* Brand Name */}
-        <Link to="/" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "24px", letterSpacing: "0.5px" }}>
+        {/* Brand Name / Logo -> Click karne par ab /discover page khulega */}
+        <Link to="/discover" style={{ color: "#ffffff", textDecoration: "none", fontWeight: "800", fontSize: "24px", letterSpacing: "0.5px" }}>
            The Himalayans
         </Link>
 
         {/* Navigation Links */}
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Link to="/hotels" style={navLinkStyle}> Hotels</Link>
-          <Link to="/mytrips" onClick={handleMyTripsClick} style={navLinkStyle}> My Trips</Link>
-          <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}> Offers</Link>
+          <Link to="/" style={navLinkStyle}>🏠 Home</Link>
+          <Link to="/hotels" style={navLinkStyle}>Hotels</Link>
+          <Link to="/mytrips" onClick={handleMyTripsClick} style={navLinkStyle}>My Trips</Link>
+          <Link to="/offers" style={{ ...navLinkStyle, color: "#f59e0b", fontWeight: "600" }}>Offers</Link>
           <Link to="/admin" style={navLinkStyle}>🛠️ Admin</Link>
-          <Link to="/list-property" onClick={handleListPropertyClick} style={navLinkStyle}> List Property</Link>
+          <Link to="/list-property" onClick={handleListPropertyClick} style={navLinkStyle}>List Property</Link>
           
           <div style={{ height: "24px", width: "1px", background: "#475569", margin: "0 8px" }} /> 
           
@@ -92,7 +93,7 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" style={navLinkStyle}> Login</Link>
+              <Link to="/login" style={navLinkStyle}>Login</Link>
               <Link to="/signup" style={{ background: "#0ea5e9", padding: "8px 20px", borderRadius: "8px", color: "#fff", textDecoration: "none", fontWeight: "600", fontSize: "14px", boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)", transition: "0.2s" }}>Sign up</Link>
             </>
           )}
