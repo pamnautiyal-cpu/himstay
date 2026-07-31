@@ -1,100 +1,55 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase"; 
-import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; 
+import { auth, db } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
-export default function Signup() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState(""); 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignup = async () => {
-    // 1. सभी फील्ड्स खाली तो नहीं हैं
-    if (!name.trim() || !email.trim() || !password || !phone) {
-      alert("Please fill all fields including mobile number!");
-      return;
-    }
-
-    // 2. सख्त ईमेल चेक
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov)$/i;
-    if (!emailRegex.test(email)) {
-      alert("Please enter a valid and proper email address (e.g. user@gmail.com)!");
-      return;
-    }
-
-    // 3. मोबाइल नंबर की सटीक जांच (10 डिजिट)
-    if (phone.length !== 10) {
-      alert("Mobile number must be exactly 10 digits!");
-      return;
-    }
-
-    // 4. पासवर्ड की लंबाई चेक
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters long!");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Please fill in both email and password!");
       return;
     }
 
     setLoading(true);
     try {
-      // Firebase में यूजर बनाएं
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // यूजर की असली जीमेल पर वेरिफिकेशन लिंक भेजें
-      await sendEmailVerification(user);
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
 
-      // Firestore में डेटा सेव करें
-      await setDoc(doc(db, "users", user.uid), {
+      let userData = {
         uid: user.uid,
-        name: name,
-        email: email,
-        phone: phone,
-        isVerified: false,
-        createdAt: new Date().toISOString()
-      });
+        email: user.email,
+        name: "User"
+      };
 
-      // चूँकि अभी ईमेल वेरीफाई नहीं हुआ है, यूजर को तुरंत लॉगआउट कर दें और बताएं
-      await signOut(auth);
+      if (userDocSnap.exists()) {
+        userData = userDocSnap.data();
+      }
 
-      alert("Account created successfully! A verification link has been sent to your Gmail. Please verify your email before logging in.");
-      navigate("/login"); // या जहाँ आप भेजना चाहें
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      alert("Login successful!");
+      navigate("/");
     } catch (error) {
-      alert(error.message);
+      alert("Invalid credentials or user not found!");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleForgotPassword = async () => {
-    if (!email) {
-      alert("Please enter your registered email address first to reset password.");
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Password reset link has been sent to your Gmail!");
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
   return (
     <div style={{ maxWidth: 420, margin: "60px auto", padding: "30px", background: "#fff", borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
-      <h2 style={{ marginBottom: "20px", color: "#1e293b", textAlign: "center" }}>Create Your Account</h2>
+      <h2 style={{ marginBottom: "20px", color: "#1e293b", textAlign: "center" }}>Login</h2>
 
-      <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Full Name</label>
-      <input 
-        placeholder="e.g. Ramesh Singh" 
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={{ width: "100%", margin: "6px 0 14px 0", padding: "12px", boxSizing: "border-box", borderRadius: "8px", border: "1px solid #cbd5e1" }} 
-      />
-
-      <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Valid Email (Gmail)</label>
+      <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Email Address</label>
       <input 
         type="email" 
         placeholder="e.g. user@gmail.com" 
@@ -103,40 +58,21 @@ export default function Signup() {
         style={{ width: "100%", margin: "6px 0 14px 0", padding: "12px", boxSizing: "border-box", borderRadius: "8px", border: "1px solid #cbd5e1" }} 
       />
 
-      <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Mobile Number</label>
-      <input 
-        type="tel" 
-        placeholder="e.g. 9876543210" 
-        maxLength="10"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))} 
-        style={{ width: "100%", margin: "6px 0 14px 0", padding: "12px", boxSizing: "border-box", borderRadius: "8px", border: "1px solid #cbd5e1" }} 
-      />
-
       <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Password</label>
       <input 
         type="password" 
-        placeholder="At least 6 characters" 
+        placeholder="Enter your password" 
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        style={{ width: "100%", margin: "6px 0 6px 0", padding: "12px", boxSizing: "border-box", borderRadius: "8px", border: "1px solid #cbd5e1" }} 
+        style={{ width: "100%", margin: "6px 0 20px 0", padding: "12px", boxSizing: "border-box", borderRadius: "8px", border: "1px solid #cbd5e1" }} 
       />
 
-      <div style={{ textAlign: "right", marginBottom: "15px" }}>
-        <span 
-          onClick={handleForgotPassword}
-          style={{ fontSize: "12px", color: "#0284c7", cursor: "pointer", fontWeight: "600" }}
-        >
-          Forgot Password?
-        </span>
-      </div>
-
       <button 
-        onClick={handleSignup}
+        onClick={handleLogin}
         disabled={loading}
-        style={{ width: "100%", padding: "14px", background: "#0ea5e9", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "700", fontSize: "15px", boxShadow: "0 4px 12px rgba(14, 165, 233, 0.3)" }}
+        style={{ width: "100%", padding: "14px", background: "#ef4444", color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "700", fontSize: "15px", boxShadow: "0 4px 12px rgba(239, 68, 68, 0.3)" }}
       >
-        {loading ? "Creating Account..." : "Sign up"}
+        {loading ? "Logging in..." : "Login"}
       </button>
     </div>
   );
