@@ -60,6 +60,7 @@ export default function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
+          <Route path="/hotel/:id" element={<HotelDetails />} /> {/* अतिरिक्त सुरक्षा के लिए ताकि दोनों राउट काम करें */}
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />

@@ -9,7 +9,7 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
 
-  // आपके सभी 16 लोकल होटल्स का ऑरिजिनल डेटा (सही 'hotals' फोल्डर पाथ के साथ)
+  // आपके सभी 16 लोकल होटल्स का ऑरिजिनल डेटा
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", images: ["/images/hotals/Hotel Nagraja Palac1.jpg", "/images/hotals/Hotel Nagraja Palace2.jpg", "/images/hotals/Hotel Nagraja Palace3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "Attached Bath", "TV"] }, { type: "3 Bedroom Set", price: 2800, inclusions: ["Extra Bed", "TV", "Hot Water"] }] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay offering genuine pahadi hospitality and warmth.", images: ["/images/hotals/Grandparents Homestay1.jpg", "/images/hotals/Grandparents Homestay2.jpg", "/images/hotals/Grandparents Homestay3.jpg"], rooms: [{ type: "2 Bedroom Set", price: 2200, inclusions: ["Double Bed", "TV"] }] },
@@ -32,17 +32,29 @@ export default function HotelDetails() {
   useEffect(() => {
     if (localHotels[id]) {
       setHotel(localHotels[id]);
-    } else if (id && id.length === 24) {
+    } else if (id) {
+      // डेटाबेस से अप्रूव्ड होटल/प्रॉपर्टी फेच करना
       axios.get(`${BACKEND_URL}/api/hotels/${id}`)
         .then((res) => {
           const data = res.data;
           setHotel({
             ...data,
-            images: data.images || [data.image || "/images/hotals/Hotel Nagraja Palace1.jpg"],
-            rooms: data.rooms || [{ type: "Standard Room", price: data.price || 2200, inclusions: ["Double Bed", "Attached Bath"] }]
+            location: data.city ? `${data.city}, ${data.state || ""}` : (data.location || "Uttarakhand"),
+            images: data.images && data.images.length > 0 ? data.images : ["/images/hotals/Hotel Nagraja Palace1.jpg"],
+            // डायनेमिक रूम या फॉर्म से आए डेटा को लेआउट के अनुरूप ढालना
+            rooms: data.rooms || [
+              { 
+                type: data.roomType || data.roomDetails || data.propertyType || "Standard Room", 
+                price: data.price || 2200, 
+                inclusions: [data.roomView || "Himalayan View", data.roomDetails || "Double Bed", "Attached Bath"] 
+              }
+            ]
           });
         })
-        .catch((err) => console.error("Error:", err));
+        .catch((err) => {
+          console.error("Error fetching property details:", err);
+          setHotel(localHotels["local_01"]);
+        });
     } else {
       setHotel(localHotels["local_01"]);
     }
@@ -72,8 +84,8 @@ export default function HotelDetails() {
   if (!hotel) return <div style={{ textAlign: "center", padding: "100px", fontSize: "18px", color: "#64748b" }}>🏔️ Loading Details...</div>;
 
   const mainImg = hotel.images?.[0] || "/images/hotals/Hotel Nagraja Palace1.jpg";
-  const subImg1 = hotel.images?.[1] || "/images/hotals/Hotel Nagraja Palace2.jpg";
-  const subImg2 = hotel.images?.[2] || "/images/hotals/Hotel Nagraja Palace3.jpg";
+  const subImg1 = hotel.images?.[1] || hotel.images?.[0] || "/images/hotals/Hotel Nagraja Palace2.jpg";
+  const subImg2 = hotel.images?.[2] || hotel.images?.[0] || "/images/hotals/Hotel Nagraja Palace3.jpg";
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", color: "#0f172a", minHeight: "100vh", paddingBottom: "60px" }}>
@@ -90,7 +102,7 @@ export default function HotelDetails() {
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
         
-        {/* 🌟 Professional Photo Gallery Grid (MMT Style) */}
+        {/* 🌟 Professional Photo Gallery Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "12px", borderRadius: "16px", overflow: "hidden", marginBottom: "30px", boxShadow: "0 4px 20px rgba(0,0,0,0.06)", height: "380px" }}>
           <div>
             <img 
@@ -136,17 +148,17 @@ export default function HotelDetails() {
 
             <div style={{ background: "white", padding: "24px", borderRadius: "16px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.02)" }}>
               <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", marginBottom: "10px" }}>About Property</h3>
-              <p style={{ fontSize: "14px", color: "#475569", lineHeight: "1.6", margin: 0 }}>{hotel.description}</p>
+              <p style={{ fontSize: "14px", color: "#475569", lineHeight: "1.6", margin: 0 }}>{hotel.description || "No description provided."}</p>
             </div>
 
             <div style={{ background: "white", padding: "24px", borderRadius: "16px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 2px 10px rgba(0,0,0,0.02)" }}>
               <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", marginBottom: "15px" }}>Top Amenities</h3>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", fontSize: "13px", color: "#334155", fontWeight: "600" }}>
-                <div style={amenityBox}>🅿️ Free Parking</div>
-                <div style={amenityBox}>🍽️ Restaurant</div>
-                <div style={amenityBox}>📶 High-speed Wi-Fi</div>
+                <div style={amenityBox}>🅿️ {hotel.parking === "Yes" ? "Parking Available" : "Free Parking"}</div>
+                <div style={amenityBox}>🍽️ {hotel.restaurant === "Yes" ? "Restaurant Inside" : "Restaurant"}</div>
+                <div style={amenityBox}>📶 {hotel.wifi === "Yes" ? "High-speed Wi-Fi" : "Wi-Fi"}</div>
                 <div style={amenityBox}>🚿 24/7 Hot Water</div>
-                <div style={amenityBox}>🛡️ CCTV Security</div>
+                <div style={amenityBox}>🛡️ {hotel.cctv === "Yes" ? "CCTV Security" : "Security"}</div>
                 <div style={amenityBox}>🚽 Attached Toilet</div>
               </div>
             </div>
@@ -201,14 +213,14 @@ export default function HotelDetails() {
             <div style={{ background: "white", padding: "24px", borderRadius: "16px", border: "1px solid #e2e8f0", boxShadow: "0 10px 25px rgba(0,0,0,0.05)" }}>
               <span style={{ fontSize: "11px", color: "#64748b", fontWeight: "700", textTransform: "uppercase" }}>Best Price Guarantee</span>
               <div style={{ display: "flex", alignItems: "baseline", gap: "8px", margin: "4px 0 12px 0" }}>
-                <span style={{ fontSize: "26px", fontWeight: "800", color: "#0f172a" }}>₹{hotel.rooms?.[0]?.price || 2200}</span>
+                <span style={{ fontSize: "26px", fontWeight: "800", color: "#0f172a" }}>₹{hotel.rooms?.[0]?.price || hotel.price || 2200}</span>
                 <span style={{ fontSize: "12px", color: "#64748b" }}>+ taxes / night</span>
               </div>
               <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "10px", borderRadius: "8px", fontSize: "12px", color: "#166534", fontWeight: "600", marginBottom: "16px" }}>
                 🎉 Instant Confirmation & Free Cancellation.
               </div>
               <button 
-                onClick={() => handlePayment(hotel.rooms?.[0]?.price || 2200)}
+                onClick={() => handlePayment(hotel.rooms?.[0]?.price || hotel.price || 2200)}
                 style={{ width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)", marginBottom: "14px" }}
               >
                 PROCEED TO BOOK
