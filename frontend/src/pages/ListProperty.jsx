@@ -7,18 +7,15 @@ export default function ListProperty() {
   const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   
-  // Current Step Tracker (1 to 6)
   const [currentStep, setCurrentStep] = useState(1);
   const [highestStepVisited, setHighestStepVisited] = useState(1);
   const [ownerInfo, setOwnerInfo] = useState(null);
 
-  // Email OTP States
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [enteredOtp, setEnteredOtp] = useState("");
   const [otpLoading, setOtpLoading] = useState(false);
 
-  // 1. STRICT MANDATORY LOGIN CHECK ON INITIAL MOUNT
   useEffect(() => {
     const checkUserAuth = () => {
       const userStr = localStorage.getItem("user");
@@ -54,10 +51,10 @@ export default function ListProperty() {
     listingCategory: "hotel",
     name: "",
     propertyType: "Hotel",
-    city: "Uttarkashi",
+    city: "",
     locality: "",
     pincode: "",
-    state: "Uttarakhand",
+    state: "",
     country: "India",
     price: "",
     maxGuests: "",
@@ -87,7 +84,15 @@ export default function ListProperty() {
   const [agreedTerms, setAgreedTerms] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "listingCategory") {
+      let defaultSub = "Hotel";
+      if (value === "yoga") defaultSub = "Hatha Yoga Retreat";
+      if (value === "trek") defaultSub = "Guided Trekking";
+      setFormData({ ...formData, listingCategory: value, propertyType: defaultSub });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -115,8 +120,8 @@ export default function ListProperty() {
         return;
       }
     } else if (currentStep === 2) {
-      if (!formData.locality.trim() || !formData.pincode.trim()) {
-        alert("Please fill in both Locality and Pincode.");
+      if (!formData.locality.trim() || !formData.city.trim() || !formData.state.trim() || !formData.pincode.trim()) {
+        alert("Please fill in all location details (Locality, City, State, Pincode).");
         return;
       }
     } else if (currentStep === 3) {
@@ -147,7 +152,6 @@ export default function ListProperty() {
     }
   };
 
-  // Trigger Backend OTP Generation with 5s Timeout Safety Fallback
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
     
@@ -173,7 +177,6 @@ export default function ListProperty() {
       return;
     }
 
-    // Generate 6-digit random OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(otpCode);
 
@@ -195,7 +198,6 @@ export default function ListProperty() {
     }
   };
 
-  // Verify OTP and Finalize Property Upload
   const verifyOtpAndSubmit = async () => {
     if (!enteredOtp || enteredOtp !== generatedOtp) {
       alert("Invalid OTP! Please check and enter the correct 6-digit code.");
@@ -297,17 +299,37 @@ export default function ListProperty() {
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
               <div>
-                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Property Name *</label>
+                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Property / Experience Name *</label>
                 <input name="name" value={formData.name} placeholder="e.g. Himalayan Heights" required onChange={handleChange} style={inputStyle} />
               </div>
               <div>
-                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Sub-Type</label>
-                <select name="propertyType" value={formData.propertyType} onChange={handleChange} style={inputStyle}>
-                  <option value="Hotel">Hotel</option>
-                  <option value="Homestay">Homestay & Villa</option>
-                  <option value="Resort">Resort</option>
-                  <option value="Guest House">Guest House / Lodge</option>
-                </select>
+                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Sub-Type / Category Style</label>
+                
+                {formData.listingCategory === "hotel" && (
+                  <select name="propertyType" value={formData.propertyType} onChange={handleChange} style={inputStyle}>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Homestay">Homestay & Villa</option>
+                    <option value="Resort">Resort</option>
+                    <option value="Guest House">Guest House / Lodge</option>
+                  </select>
+                )}
+
+                {formData.listingCategory === "yoga" && (
+                  <select name="propertyType" value={formData.propertyType} onChange={handleChange} style={inputStyle}>
+                    <option value="Hatha Yoga Retreat">Hatha Yoga Retreat</option>
+                    <option value="Meditation Center">Meditation Center</option>
+                    <option value="Ayurveda & Wellness">Ayurveda & Wellness Spa</option>
+                    <option value="Spiritual Ashram">Spiritual Ashram</option>
+                  </select>
+                )}
+
+                {formData.listingCategory === "trek" && (
+                  <select name="propertyType" value={formData.propertyType} onChange={handleChange} style={inputStyle}>
+                    <option value="Guided Trekking">Guided Trekking Expedition</option>
+                    <option value="Camping Site">Camping Site & Adventure Camp</option>
+                    <option value="Nature Trail">Nature Trail / Hiking</option>
+                  </select>
+                )}
               </div>
             </div>
 
@@ -317,24 +339,18 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 2: LOCATION --- */}
+        {/* --- STEP 2: LOCATION (Fully Editable) --- */}
         {currentStep === 2 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Location Details</h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
               <div>
                 <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Locality / Area / Sector *</label>
-                <input name="locality" value={formData.locality} placeholder="e.g. Kansen" required onChange={handleChange} style={inputStyle} />
+                <input name="locality" value={formData.locality} placeholder="e.g. Main Market / Road Name" required onChange={handleChange} style={inputStyle} />
               </div>
               <div>
-                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>City *</label>
-                <select name="city" value={formData.city} onChange={handleChange} style={inputStyle}>
-                  <option value="Uttarkashi">Uttarkashi</option>
-                  <option value="Rishikesh">Rishikesh</option>
-                  <option value="Mussoorie">Mussoorie</option>
-                  <option value="Dehradun">Dehradun</option>
-                  <option value="Chakrata">Chakrata</option>
-                </select>
+                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>City / Town *</label>
+                <input name="city" value={formData.city} placeholder="e.g. Uttarkashi, Manali, Rishikesh" required onChange={handleChange} style={inputStyle} />
               </div>
             </div>
 
@@ -344,12 +360,12 @@ export default function ListProperty() {
                 <input name="pincode" type="number" value={formData.pincode} placeholder="e.g. 249193" required onChange={handleChange} style={inputStyle} />
               </div>
               <div>
-                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>State</label>
-                <input name="state" value={formData.state} readOnly style={{ ...inputStyle, background: "#f8fafc" }} />
+                <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>State *</label>
+                <input name="state" value={formData.state} placeholder="e.g. Uttarakhand, Himachal" required onChange={handleChange} style={inputStyle} />
               </div>
               <div>
                 <label style={{ fontSize: "14px", fontWeight: "600", display: "block", marginBottom: "6px" }}>Country</label>
-                <input name="country" value={formData.country} readOnly style={{ ...inputStyle, background: "#f8fafc" }} />
+                <input name="country" value={formData.country} onChange={handleChange} style={inputStyle} />
               </div>
             </div>
 
