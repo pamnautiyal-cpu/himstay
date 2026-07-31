@@ -8,25 +8,30 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState(""); // 📱 Mobile Number State
+  const [phone, setPhone] = useState(""); 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    // Basic Validation
+    // 1. सभी फील्ड्स चेक करें
     if (!name || !email || !password || !phone) {
       return alert("Please fill all fields including mobile number!");
     }
 
-    // Simple Email Format Validation Check
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // 2. सख्त ईमेल वैलिडेशन (यह .comf या किसी भी गलत डोमेन को रोक देगा)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
-      return alert("Please enter a valid Gmail / Email address!");
+      return alert("Please enter a valid and real email address (e.g., user@gmail.com)!");
     }
 
-    // Phone Number Length Validation (10 digits check)
-    if (phone.length < 10) {
-      return alert("Please enter a valid 10-digit mobile number!");
+    // 3. सटीक 10-डिजिट मोबाइल नंबर चेक
+    if (phone.length !== 10) {
+      return alert("Mobile number must be exactly 10 digits!");
+    }
+
+    // 4. पासवर्ड की लंबाई चेक (कम से कम 6 अक्षर)
+    if (password.length < 6) {
+      return alert("Password must be at least 6 characters long!");
     }
 
     setLoading(true);
@@ -35,7 +40,7 @@ export default function Signup() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Firestore की 'users' कलेक्शन में नाम, ईमेल और मोबाइल नंबर सेव करें
+      // 2. Firestore की 'users' कलेक्शन में डेटा सेव करें
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name: name,
@@ -61,7 +66,7 @@ export default function Signup() {
     }
   };
 
-  // 🔑 Password Reset Handler (जीमेल पर पासवर्ड रिसेट लिंक भेजने के लिए)
+  // 🔑 Password Reset Handler
   const handleForgotPassword = async () => {
     if (!email) {
       return alert("Please enter your registered email address first to reset password.");
@@ -76,7 +81,7 @@ export default function Signup() {
 
   return (
     <div style={{ maxWidth: 420, margin: "60px auto", padding: "30px", background: "#fff", borderRadius: "16px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}>
-      <h2 style={{ marginBottom: "20px", color: "#1e293b", textAlign: "center" }}>Create Your account</h2>
+      <h2 style={{ marginBottom: "20px", color: "#1e293b", textAlign: "center" }}>Create Your Account</h2>
 
       <label style={{ fontSize: "12px", fontWeight: "700", color: "#64748b" }}>Full Name</label>
       <input 
@@ -101,7 +106,7 @@ export default function Signup() {
         placeholder="e.g. 9876543210" 
         maxLength="10"
         value={phone}
-        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))} // सिर्फ नंबर टाइप हो सके
+        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))} 
         style={{ width: "100%", margin: "6px 0 14px 0", padding: "12px", boxSizing: "border-box", borderRadius: "8px", border: "1px solid #cbd5e1" }} 
       />
 
