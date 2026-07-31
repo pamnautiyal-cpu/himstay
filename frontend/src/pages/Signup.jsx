@@ -19,10 +19,10 @@ export default function Signup() {
       return;
     }
 
-    // 2. सख्त ईमेल चेक (यह .comm या किसी भी गलत एक्सटेंशन को तुरंत रोकेगा)
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$/;
-    if (!emailRegex.test(email) || email.endsWith("m") && email.endsWith("mm")) {
-      alert("Please enter a valid email address (e.g. user@gmail.com)!");
+    // 2. सख्त ईमेल चेक (यह gmail.com के बाद फालतू टेक्स्ट जैसे .comcvbf... को तुरंत रोक देगा)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov)$/i;
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid and proper email address (e.g. user@gmail.com)!");
       return;
     }
 
