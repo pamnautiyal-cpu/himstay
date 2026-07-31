@@ -179,7 +179,6 @@ export default function ListProperty() {
 
     setLoading(true);
     try {
-      // 5 सेकंड का टाइमआउट ताकि सर्वर स्लो होने पर लोडिंग अटके ना
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/send-otp`, {
         email: ownerInfo?.email,
         otp: otpCode,
@@ -191,7 +190,6 @@ export default function ListProperty() {
     } catch (err) {
       console.warn("Server email delayed or route missing, using safety fallback:", err);
       setLoading(false);
-      // फॉलबैक: बटन का लोडिंग तुरंत बंद होगा और यूजर को ओटीपी मिल जाएगा
       setShowOtpModal(true);
       alert(`[Safety Mode] Your verification OTP is: ${otpCode}`);
     }
@@ -220,6 +218,8 @@ export default function ListProperty() {
     }
 
     setLoading(true);
+    setOtpLoading(false);
+
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
@@ -227,16 +227,17 @@ export default function ListProperty() {
 
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 15000 
       });
 
       setLoading(false);
       setShowSuccessModal(true);
 
     } catch (err) {
-      console.error(err);
+      console.error("Upload error details:", err);
       setLoading(false);
-      alert("Upload failed. Check console or verify your network.");
+      alert("Property upload failed. Please check your image size or network connection.");
     }
   };
 
