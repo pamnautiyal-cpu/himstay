@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase"; 
-import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
 
 export default function Signup() {
@@ -19,14 +19,14 @@ export default function Signup() {
       return;
     }
 
-    // 2. सख्त ईमेल चेक (यह gmail.com के बाद फालतू टेक्स्ट जैसे .comcvbf... को तुरंत रोक देगा)
+    // 2. सख्त ईमेल चेक
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in|org|net|edu|gov)$/i;
     if (!emailRegex.test(email)) {
       alert("Please enter a valid and proper email address (e.g. user@gmail.com)!");
       return;
     }
 
-    // 3. मोबाइल नंबर की सटीक जांच (पूरे 10 अंक होने चाहिए)
+    // 3. मोबाइल नंबर की सटीक जांच (10 डिजिट)
     if (phone.length !== 10) {
       alert("Mobile number must be exactly 10 digits!");
       return;
@@ -40,26 +40,28 @@ export default function Signup() {
 
     setLoading(true);
     try {
+      // Firebase में यूजर बनाएं
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // यूजर की असली जीमेल पर वेरिफिकेशन लिंक भेजें
+      await sendEmailVerification(user);
+
+      // Firestore में डेटा सेव करें
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
         name: name,
         email: email,
         phone: phone,
+        isVerified: false,
         createdAt: new Date().toISOString()
       });
 
-      localStorage.setItem("user", JSON.stringify({
-        uid: user.uid,
-        email: user.email,
-        name: name,
-        phone: phone
-      }));
+      // चूँकि अभी ईमेल वेरीफाई नहीं हुआ है, यूजर को तुरंत लॉगआउट कर दें और बताएं
+      await signOut(auth);
 
-      alert("Account created successfully!");
-      navigate("/"); 
+      alert("Account created successfully! A verification link has been sent to your Gmail. Please verify your email before logging in.");
+      navigate("/login"); // या जहाँ आप भेजना चाहें
     } catch (error) {
       alert(error.message);
     } finally {
