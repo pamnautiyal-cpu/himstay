@@ -7,12 +7,13 @@ const nodemailer = require("nodemailer");
 
 const router = express.Router();
 
-// Nodemailer Transporter Setup for OTP
+// Nodemailer Transporter Setup for OTP (Fixed with IPv4 family for Render)
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  family: 4, // <--- यह लाइन जोड़ना अनिवार्य है ताकि Render पर नेटवर्क एरर न आए
   auth: {
-    user: "infothehimalayans@gmail.com",
-    pass: process.env.EMAIL_APP_PASSWORD, // Make sure to add this in your .env file
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
