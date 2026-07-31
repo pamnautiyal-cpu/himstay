@@ -3,12 +3,26 @@ const mongoose = require("mongoose");
 const HotelSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    listingCategory: { type: String },
+    propertyType: { type: String },
     city: { type: String, required: true },
+    locality: { type: String },
+    pincode: { type: String },
+    state: { type: String },
+    country: { type: String },
     price: { type: Number, required: true },
-    rating: { type: Number, default: 0 },
-    images: { type: [String], required: true }, // ✅ Array of Strings
+    maxGuests: { type: String },
+    roomDetails: { type: String },
+    roomType: { type: String },
+    roomView: { type: String },
+    roomSize: { type: String },
+    sizeUnit: { type: String },
+    numberOfRooms: { type: String },
+    phone: { type: String },
+    ownerEmail: { type: String },
     description: { type: String },
-    isApproved: { type: Boolean, default: false } // ✅ नया: प्रॉपर्टी अप्रूवल के लिए
+    images: { type: [String], required: true },
+    isApproved: { type: Boolean, default: false }
   },
   { timestamps: true }
 );
