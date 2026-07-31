@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   const [pendingHotels, setPendingHotels] = useState([]);
   const [activeHotels, setActiveHotels] = useState([]);
   const [registeredUsers, setRegisteredUsers] = useState([]); 
-  const [activeTab, setActiveTab] = useState("all"); // नया स्टेट
+  const [activeTab, setActiveTab] = useState("all");
 
   useEffect(() => {
     if (isAuth) {
@@ -38,14 +38,14 @@ export default function AdminDashboard() {
 
   const approveHotel = async (id) => {
     await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/approve/${id}`);
-    alert("Property Approved!");
+    alert("Property Approved & Live successfully!");
     window.location.reload();
   };
 
   const deleteHotel = async (id) => {
-    if (window.confirm("क्या आप वाकई इस प्रॉपर्टी को डिलीट करना चाहते हैं?")) {
+    if (window.confirm("क्या आप वाकई इस प्रॉपर्टी को रिजेक्ट/डिलीट करना चाहते हैं?")) {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/${id}`);
-      alert("Property deleted!");
+      alert("Property rejected and deleted successfully!");
       window.location.reload();
     }
   };
@@ -80,12 +80,12 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
-      {/* MOBILE MENU - CSS class 'admin-mobile-menu' आपके CSS में मौजूद है */}
-      <div className="admin-mobile-menu">
-        <button onClick={() => setActiveTab("all")}>All</button>
-        <button onClick={() => setActiveTab("blogs")}>Blogs</button>
-        <button onClick={() => setActiveTab("users")}>Users</button>
-        <button onClick={() => setActiveTab("hotels")}>Hotels</button>
+      {/* MOBILE MENU */}
+      <div className="admin-mobile-menu" style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <button onClick={() => setActiveTab("all")} style={tabBtnStyle}>All</button>
+        <button onClick={() => setActiveTab("blogs")} style={tabBtnStyle}>Blogs</button>
+        <button onClick={() => setActiveTab("users")} style={tabBtnStyle}>Users</button>
+        <button onClick={() => setActiveTab("hotels")} style={tabBtnStyle}>Hotels</button>
       </div>
 
       {/* BLOG SECTION */}
@@ -119,18 +119,57 @@ export default function AdminDashboard() {
       {(activeTab === "all" || activeTab === "hotels") && (
         <>
           <h1>Pending Property Approvals</h1>
-          {pendingHotels.map(hotel => (
-            <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px" }}>
-              <h3>{hotel.name}</h3>
-              <p>{hotel.city} - ₹{hotel.price}</p>
-              <button onClick={() => approveHotel(hotel._id)} style={{ background: "green", color: "white", padding: "8px" }}>Approve</button>
-            </div>
-          ))}
-          <h1>Manage Active Properties</h1>
+          {pendingHotels.length === 0 ? (
+            <p style={{ color: "#64748b" }}>No pending properties to review.</p>
+          ) : (
+            pendingHotels.map(hotel => (
+              <div key={hotel._id} style={{ border: "1px solid #cbd5e1", padding: "20px", marginBottom: "20px", borderRadius: "8px", background: "#fff" }}>
+                
+                {/* यूजर द्वारा अपलोड की गई तस्वीरें */}
+                {hotel.images && hotel.images.length > 0 && (
+                  <div style={{ display: "flex", gap: "10px", overflowX: "auto", marginBottom: "15px", paddingBottom: "5px" }}>
+                    {hotel.images.map((img, index) => (
+                      <img 
+                        key={index} 
+                        src={img} 
+                        alt="Property Preview" 
+                        style={{ width: "100px", height: "70px", objectFit: "cover", borderRadius: "6px", border: "1px solid #cbd5e1" }} 
+                      />
+                    ))}
+                  </div>
+                )}
+
+                <h3 style={{ margin: "0 0 10px 0", color: "#0f172a" }}>{hotel.name}</h3>
+                <p style={{ margin: "5px 0", color: "#475569" }}><b>Location:</b> {hotel.city}, {hotel.state}</p>
+                <p style={{ margin: "5px 0", color: "#475569" }}><b>Price:</b> ₹{hotel.price} / night</p>
+                <p style={{ margin: "5px 0", color: "#475569" }}><b>Description:</b> {hotel.description || "No description provided."}</p>
+                <p style={{ margin: "5px 0 15px 0", color: "#475569" }}><b>Contact/Owner:</b> {hotel.phone || hotel.email || "N/A"}</p>
+
+                {/* एक्शन बटन: Approve और Reject/Delete */}
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button 
+                    onClick={() => approveHotel(hotel._id)} 
+                    style={{ background: "#16a34a", color: "white", padding: "8px 16px", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
+                  >
+                    Approve & Make Live
+                  </button>
+
+                  <button 
+                    onClick={() => deleteHotel(hotel._id)} 
+                    style={{ background: "#dc2626", color: "white", padding: "8px 16px", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
+                  >
+                    Reject / Delete
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+
+          <h1 style={{ marginTop: "40px" }}>Manage Active Properties</h1>
           {activeHotels.map(hotel => (
-            <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px", display: "flex", justifyContent: "space-between" }}>
-              <span>{hotel.name}</span>
-              <button onClick={() => deleteHotel(hotel._id)} style={{ background: "red", color: "white", padding: "8px" }}>Delete</button>
+            <div key={hotel._id} style={{ border: "1px solid #ddd", padding: "15px", marginBottom: "15px", borderRadius: "8px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#fff" }}>
+              <span><b>{hotel.name}</b> ({hotel.city} - ₹{hotel.price})</span>
+              <button onClick={() => deleteHotel(hotel._id)} style={{ background: "#dc2626", color: "white", padding: "8px 12px", border: "none", borderRadius: "5px", cursor: "pointer" }}>Delete</button>
             </div>
           ))}
         </>
@@ -142,4 +181,5 @@ export default function AdminDashboard() {
 const inputStyle = { display: "block", width: "100%", padding: "10px", margin: "10px 0" };
 const thStyle = { padding: "10px", border: "1px solid #ddd", textAlign: "left" };
 const tdStyle = { padding: "10px", border: "1px solid #ddd" };
-const btnStyle = { padding: "10px 20px", background: "#f97316", color: "white", border: "none", borderRadius: "5px" };
+const btnStyle = { padding: "10px 20px", background: "#f97316", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" };
+const tabBtnStyle = { padding: "8px 16px", background: "#e2e8f0", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" };
