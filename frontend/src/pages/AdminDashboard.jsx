@@ -142,8 +142,11 @@ export default function AdminDashboard() {
                 <h3 style={{ margin: "0 0 10px 0", color: "#0f172a" }}>{hotel.name}</h3>
                 <p style={{ margin: "5px 0", color: "#475569" }}><b>Location:</b> {hotel.city}, {hotel.state}</p>
                 <p style={{ margin: "5px 0", color: "#475569" }}><b>Price:</b> ₹{hotel.price} / night</p>
+                <p style={{ margin: "5px 0", color: "#475569" }}><b>Hotel Type:</b> {hotel.hotelType || hotel.type || "N/A"}</p>
+                <p style={{ margin: "5px 0", color: "#475569" }}><b>Room Type:</b> {hotel.roomType || hotel.roomCategory || "N/A"}</p>
                 <p style={{ margin: "5px 0", color: "#475569" }}><b>Description:</b> {hotel.description || "No description provided."}</p>
-                <p style={{ margin: "5px 0 15px 0", color: "#475569" }}><b>Contact/Owner:</b> {hotel.phone || hotel.email || "N/A"}</p>
+                <p style={{ margin: "5px 0", color: "#475569" }}><b>Owner Email:</b> {hotel.email || hotel.ownerEmail || "N/A"}</p>
+                <p style={{ margin: "5px 0 15px 0", color: "#475569" }}><b>Phone No:</b> {hotel.phone || hotel.mobile || hotel.contact || "N/A"}</p>
 
                 {/* एक्शन बटन: Approve और Reject/Delete */}
                 <div style={{ display: "flex", gap: "10px" }}>
