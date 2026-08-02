@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const cloudinary = require("cloudinary").v2; // Sirf config ke liye chahiye
+const cloudinary = require("cloudinary").v2;
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 require("dotenv").config();
@@ -30,15 +30,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ===== RAZORPAY CONFIG ===== */
+/* ===== RAZORPAY CONFIG (Direct Hardcoded to bypass Render env issues) ===== */
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
+  key_id: "rzp_test_TKBfYo6v5i4nor",
+  key_secret: "YAHAPAPNISECRETHARKODALDE", // <-- यहाँ अपनी असली Razorpay Test Secret Key चुपचाप पेस्ट कर दें
 });
 
 /* ===== DATABASE ===== */
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI || process.env.MONGO_URL)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ Mongo error", err));
 
@@ -52,8 +52,7 @@ app.use("/api/hotels", require("./routes/hotelRoutes"));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
 app.use("/api/payment", require("./routes/paymentRoutes"));
 
-/* ===== RAZORPAY PAYMENT ROUTES ===== */
-// 1. Create Order Endpoint
+/* ===== RAZORPAY PAYMENT ROUTES (Direct in server.js for absolute reliability) ===== */
 app.post('/api/create-order', async (req, res) => {
   try {
     const { amount, currency = 'INR', receipt } = req.body;
@@ -69,18 +68,17 @@ app.post('/api/create-order', async (req, res) => {
     };
 
     const order = await razorpay.orders.create(options);
-    res.json({
+    return res.json({
       order_id: order.id,
       amount: order.amount,
       currency: order.currency,
     });
   } catch (error) {
-    console.error('Error creating Razorpay order:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('CREATE ORDER ERROR:', error);
+    return res.status(500).json({ error: error.description || 'Internal Server Error' });
   }
 });
 
-// 2. Verify Payment Signature Endpoint
 app.post('/api/verify-payment', (req, res) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
@@ -91,7 +89,7 @@ app.post('/api/verify-payment', (req, res) => {
 
     const body = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .createHmac('sha256', "YAHAPAPNISECRETHARKODALDE") // <-- यहाँ भी वही अपनी Secret Key पेस्ट कर दें
       .update(body.toString())
       .digest('hex');
 
@@ -102,7 +100,7 @@ app.post('/api/verify-payment', (req, res) => {
     }
   } catch (error) {
     console.error('Error verifying payment:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
