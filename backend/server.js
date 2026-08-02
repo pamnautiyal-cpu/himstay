@@ -30,7 +30,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ===== RAZORPAY CONFIG (Live Keys Updated) ===== */
+/* ===== RAZORPAY CONFIG (Live Keys Hardcoded) ===== */
 const razorpay = new Razorpay({
   key_id: "rzp_live_TKtTqRDH6nVxxo",
   key_secret: "DPCdLoXUFFX0HQzqD2nP5HVU",
