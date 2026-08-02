@@ -30,10 +30,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ===== RAZORPAY CONFIG (Direct Hardcoded to bypass Render env issues) ===== */
+/* ===== RAZORPAY CONFIG (Live Keys Updated) ===== */
 const razorpay = new Razorpay({
-  key_id: "rzp_test_TKBfYo6v5i4nor",
-  key_secret: "YAHAPAPNISECRETHARKODALDE", // <-- यहाँ अपनी असली Razorpay Test Secret Key चुपचाप पेस्ट कर दें
+  key_id: "rzp_live_TKtTqRDH6nVxxo",
+  key_secret: "DPCdLoXUFFX0HQzqD2nP5HVU",
 });
 
 /* ===== DATABASE ===== */
@@ -52,7 +52,7 @@ app.use("/api/hotels", require("./routes/hotelRoutes"));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
 app.use("/api/payment", require("./routes/paymentRoutes"));
 
-/* ===== RAZORPAY PAYMENT ROUTES (Direct in server.js for absolute reliability) ===== */
+/* ===== RAZORPAY PAYMENT ROUTES ===== */
 app.post('/api/create-order', async (req, res) => {
   try {
     const { amount, currency = 'INR', receipt } = req.body;
@@ -89,7 +89,7 @@ app.post('/api/verify-payment', (req, res) => {
 
     const body = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSignature = crypto
-      .createHmac('sha256', "YAHAPAPNISECRETHARKODALDE") // <-- यहाँ भी वही अपनी Secret Key पेस्ट कर दें
+      .createHmac('sha256', "DPCdLoXUFFX0HQzqD2nP5HVU")
       .update(body.toString())
       .digest('hex');
 
