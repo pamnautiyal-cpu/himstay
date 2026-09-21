@@ -72,7 +72,7 @@ export default function Booking() {
       }
 
       const options = {
-        key: "rzp_test_TKBfYo6v5i4nor",
+        key: "rzp_live_TKtTqRDH6nVxxo", // <-- Updated to Live Key ID
         amount: order.amount,
         currency: order.currency,
         name: "The Himalayans",
