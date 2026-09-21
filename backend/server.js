@@ -11,7 +11,7 @@ const app = express();
 /* ===== MIDDLEWARE ===== */
 app.use(
   cors({
-    origin: "*", // Testing aur Live dono ke liye sabhi origins allow kar diye hain
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -26,9 +26,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ===== RAZORPAY CONFIG (Live Keys) ===== */
+/* ===== RAZORPAY CONFIG ===== */
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || "rzp_live_TKtTqRDH6nVxxo";
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "DPCdLoXUFFX0HQzqD2nP5HVU";
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET; // .env me rakhein, hardcode mat karein
 
 const razorpay = new Razorpay({
   key_id: RAZORPAY_KEY_ID,
@@ -55,19 +55,21 @@ app.post("/api/create-order", async (req, res) => {
   try {
     const { amount, currency = "INR", receipt } = req.body;
 
-    if (!amount || amount < 100) {
-      return res.status(400).json({ error: "Minimum amount must be at least 100 paise" });
+    // Amount parse and strictly format as integer
+    const parsedAmount = Math.round(Number(amount));
+
+    if (isNaN(parsedAmount) || parsedAmount < 100) {
+      return res.status(400).json({ error: "Invalid amount. Minimum amount must be at least 100 paise (₹1)." });
     }
 
     const options = {
-      amount: Number(amount),
+      amount: parsedAmount,
       currency,
       receipt: receipt || `receipt_${Date.now()}`,
     };
 
     const order = await razorpay.orders.create(options);
     
-    // Send both 'id' and 'order_id' so frontend never fails
     return res.json({
       id: order.id,
       order_id: order.id,
@@ -76,7 +78,7 @@ app.post("/api/create-order", async (req, res) => {
     });
   } catch (error) {
     console.error("CREATE ORDER ERROR:", error);
-    return res.status(500).json({ error: error.description || "Internal Server Error" });
+    return res.status(500).json({ error: error.description || error.message || "Internal Server Error" });
   }
 });
 
@@ -89,9 +91,10 @@ app.post("/api/verify-payment", (req, res) => {
     }
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
+    
     const expectedSignature = crypto
       .createHmac("sha256", RAZORPAY_KEY_SECRET)
-      .update(body.toString())
+      .update(body)
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
