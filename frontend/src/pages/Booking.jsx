@@ -56,7 +56,10 @@ export default function Booking() {
     }
 
     try {
-      const amountInPaise = hotel ? Number(hotel.price) * 100 : 250000;
+      // Clean price string to remove symbols/commas (e.g., "₹2,200" -> 2200)
+      const rawPrice = hotel?.price ? hotel.price : 2500;
+      const cleanPrice = String(rawPrice).replace(/[^0-9]/g, ""); 
+      const amountInPaise = (Number(cleanPrice) || 2500) * 100;
       
       const orderRes = await axios.post(`${BACKEND_URL}/api/create-order`, {
         amount: amountInPaise, 
@@ -64,8 +67,6 @@ export default function Booking() {
       });
 
       const order = orderRes.data;
-
-      // Check order response correctly (Razorpay order object contains 'id')
       const orderId = order.id || order.order_id;
 
       if (!order || !orderId) {
@@ -80,7 +81,7 @@ export default function Booking() {
         currency: order.currency || "INR",
         name: "The Himalayans",
         description: hotel ? hotel.name : "Himalayan Booking",
-        order_id: orderId, // Fixed: using correctly parsed order ID
+        order_id: orderId,
         handler: async function (response) {
           try {
             const verifyRes = await axios.post(`${BACKEND_URL}/api/verify-payment`, {
@@ -119,6 +120,14 @@ export default function Booking() {
       };
 
       const paymentObject = new window.Razorpay(options);
+
+      // Reset loading if user closes popup or payment fails
+      paymentObject.on("payment.failed", function (response) {
+        console.error("Payment Failed:", response.error);
+        alert(`Payment Failed: ${response.error.description || 'Transaction declined'}`);
+        setLoading(false);
+      });
+
       paymentObject.open();
 
     } catch (err) {
