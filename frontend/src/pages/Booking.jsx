@@ -65,19 +65,22 @@ export default function Booking() {
 
       const order = orderRes.data;
 
-      if (!order || !order.order_id) {
+      // Check order response correctly (Razorpay order object contains 'id')
+      const orderId = order.id || order.order_id;
+
+      if (!order || !orderId) {
         alert("Server failed to initiate order.");
         setLoading(false);
         return;
       }
 
       const options = {
-        key: "rzp_live_TKtTqRDH6nVxxo", // <-- Updated to Live Key ID
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TKtTqRDH6nVxxo",
         amount: order.amount,
-        currency: order.currency,
+        currency: order.currency || "INR",
         name: "The Himalayans",
         description: hotel ? hotel.name : "Himalayan Booking",
-        order_id: order.order_id,
+        order_id: orderId, // Fixed: using correctly parsed order ID
         handler: async function (response) {
           try {
             const verifyRes = await axios.post(`${BACKEND_URL}/api/verify-payment`, {
