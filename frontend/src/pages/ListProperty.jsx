@@ -25,9 +25,8 @@ export default function ListProperty() {
         localStorage.getItem("currentUser");
 
       if (!userStr) {
-        alert("Aapko property list karne ke liye pehle Sign Up karna hoga.");
-        // Redirecting directly to signup instead of login
-        navigate("/signup", { replace: true, state: { isSignup: true } });
+        alert("Access Denied! You must log in or sign up before listing a property.");
+        navigate("/login", { replace: true });
         return;
       }
       
@@ -37,8 +36,8 @@ export default function ListProperty() {
         
         if (!email) {
           localStorage.removeItem("user"); 
-          alert("Aapka session expiry ya invalid hai. Kripya fir se Sign Up karein.");
-          navigate("/signup", { replace: true, state: { isSignup: true } });
+          alert("Session expired or invalid. Please login again.");
+          navigate("/login", { replace: true });
           return;
         }
         setOwnerInfo({
@@ -47,7 +46,7 @@ export default function ListProperty() {
         });
       } catch (e) {
         console.error("Auth check failed", e);
-        navigate("/signup", { replace: true, state: { isSignup: true } });
+        navigate("/login", { replace: true });
       }
     };
 
