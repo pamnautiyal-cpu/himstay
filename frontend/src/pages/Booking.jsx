@@ -56,10 +56,11 @@ export default function Booking() {
     }
 
     try {
-      // Clean price string to remove symbols/commas (e.g., "₹2,200" -> 2200)
+      // Clean price string & convert strictly to integer paise
       const rawPrice = hotel?.price ? hotel.price : 2500;
       const cleanPrice = String(rawPrice).replace(/[^0-9]/g, ""); 
-      const amountInPaise = (Number(cleanPrice) || 2500) * 100;
+      const numericPrice = Number(cleanPrice) || 2500;
+      const amountInPaise = Math.round(numericPrice * 100);
       
       const orderRes = await axios.post(`${BACKEND_URL}/api/create-order`, {
         amount: amountInPaise, 
@@ -70,7 +71,7 @@ export default function Booking() {
       const orderId = order.id || order.order_id;
 
       if (!order || !orderId) {
-        alert("Server failed to initiate order.");
+        alert("Server failed to initiate payment order.");
         setLoading(false);
         return;
       }
@@ -110,7 +111,7 @@ export default function Booking() {
             }
           } catch (err) {
             console.error("Verification err:", err);
-            alert("Internal error during confirmation.");
+            alert("Internal error during payment confirmation.");
           } finally {
             setLoading(false);
           }
@@ -121,10 +122,10 @@ export default function Booking() {
 
       const paymentObject = new window.Razorpay(options);
 
-      // Reset loading if user closes popup or payment fails
+      // Handle user popup close or payment failure
       paymentObject.on("payment.failed", function (response) {
         console.error("Payment Failed:", response.error);
-        alert(`Payment Failed: ${response.error.description || 'Transaction declined'}`);
+        alert(`Payment Failed: ${response.error.description || 'Transaction cancelled'}`);
         setLoading(false);
       });
 
@@ -132,7 +133,9 @@ export default function Booking() {
 
     } catch (err) {
       console.error("Payment Order Error:", err);
-      alert("Failed to reach payment gateway.");
+      // Backend se aane wale exact error response ko show karega
+      const serverMessage = err.response?.data?.error || err.message || "Failed to reach payment gateway.";
+      alert(`Payment Error: ${serverMessage}`);
       setLoading(false);
     }
   }
