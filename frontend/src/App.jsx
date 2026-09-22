@@ -21,6 +21,7 @@ import Booking from "./pages/Booking";
 import AdminDashboard from "./pages/AdminDashboard";
 import Discover from "./pages/Discover";
 import Search from "./components/Search";
+import Offers from "./pages/Offers"; // 🎁 Offers component import kiya
 import "./App.css";
 
 // 🛡️ STRICT PROTECTED ROUTE GUARD - REDIRECTS TO /signup FIRST
@@ -85,6 +86,9 @@ export default function App() {
           
           <Route path="/booking" element={<Booking />} />
           <Route path="/booking/:hotelId" element={<Booking />} />
+
+          {/* 🎁 OFFERS ROUTE ADDED HERE */}
+          <Route path="/offers" element={<Offers />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
