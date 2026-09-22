@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
 export default function Booking() {
   const [searchParams] = useSearchParams();
+  const params = useParams();
   const navigate = useNavigate();
-  const hotelId = searchParams.get("hotelId");
+
+  // URL route param (:hotelId ya :id) aur query param (?hotelId=) dono se fetch karega
+  const hotelId = params.hotelId || params.id || searchParams.get("hotelId");
 
   const [hotel, setHotel] = useState(null);
   const [name, setName] = useState("");
@@ -25,7 +28,9 @@ export default function Booking() {
     if (hotelId) {
       axios
         .get(`${BACKEND_URL}/api/hotels/${hotelId}`)
-        .then((res) => setHotel(res.data))
+        .then((res) => {
+          setHotel(res.data);
+        })
         .catch((err) => console.error("Error loading hotel context:", err));
     }
   }, [hotelId]);
@@ -43,7 +48,7 @@ export default function Booking() {
   async function handleBookingAndPayment(e) {
     e.preventDefault();
 
-    if (!hotelId) return alert("Hotel selection missing.");
+    if (!hotelId) return alert("Hotel selection missing from URL.");
     if (!name || !phone || !email || !checkIn) return alert("Please fill required fields (*)");
 
     setLoading(true);
@@ -56,7 +61,7 @@ export default function Booking() {
     }
 
     try {
-      // Clean price string & convert strictly to integer paise
+      // Hotel price me se symbols/commas hatakar integer paise me convert karein
       const rawPrice = hotel?.price ? hotel.price : 2500;
       const cleanPrice = String(rawPrice).replace(/[^0-9]/g, ""); 
       const numericPrice = Number(cleanPrice) || 2500;
@@ -122,7 +127,6 @@ export default function Booking() {
 
       const paymentObject = new window.Razorpay(options);
 
-      // Handle user popup close or payment failure
       paymentObject.on("payment.failed", function (response) {
         console.error("Payment Failed:", response.error);
         alert(`Payment Failed: ${response.error.description || 'Transaction cancelled'}`);
@@ -133,7 +137,6 @@ export default function Booking() {
 
     } catch (err) {
       console.error("Payment Order Error:", err);
-      // Backend se aane wale exact error response ko show karega
       const serverMessage = err.response?.data?.error || err.message || "Failed to reach payment gateway.";
       alert(`Payment Error: ${serverMessage}`);
       setLoading(false);
@@ -143,7 +146,11 @@ export default function Booking() {
   return (
     <div style={{ maxWidth: "600px", margin: "40px auto", padding: "30px", background: "#fff", borderRadius: "16px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", fontFamily: "sans-serif" }}>
       <h2 style={{ marginBottom: "5px", color: "#1e293b" }}>Book Your Stay</h2>
-      {hotel && <p style={{ color: "#2563eb", fontWeight: "bold", marginTop: 0 }}>📍 {hotel.name} — ₹{hotel.price}/night</p>}
+      {hotel ? (
+        <p style={{ color: "#2563eb", fontWeight: "bold", marginTop: 0 }}>📍 {hotel.name} — ₹{hotel.price}/night</p>
+      ) : (
+        <p style={{ color: "#64748b", fontSize: "14px" }}>Loading hotel details...</p>
+      )}
       
       <form onSubmit={handleBookingAndPayment} style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
         <input placeholder="Full Name *" value={name} onChange={(e) => setName(e.target.value)} required style={inputStyle} />
