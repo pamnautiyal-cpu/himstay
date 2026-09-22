@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const districtData = [
   {
     id: "uttarkashi",
     name: "Uttarkashi (उत्तरकाशी)",
-    slug: "uttarkashi",
     tagline: "Hub of Hill Rajma, Trekking & Scenic Valleys",
     image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
     famousFood: ["Pahadi Rajma", "Red Rice", "Mandua Roti"],
@@ -13,24 +11,22 @@ const districtData = [
       { name: "Pahadi Cafe Harshil", specialty: "Local Apple Juice and Momos", rating: "4.8 ★" },
       { name: "Uttarkashi Traditional Bhojanalaya", specialty: "Pure Desi Ghee Dal-Bhat", rating: "4.6 ★" }
     ],
-    hotelsCount: "12+ Stays Available"
+    foodHighlight: "Famous for organic Hill Rajma grown in pristine Himalayan valleys and traditional organic farming."
   },
   {
     id: "tehri",
     name: "Tehri Garhwal (टिहरी गढ़वाल)",
-    slug: "tehri",
     tagline: "Traditional Taste by the Majestic Lake Waters",
     image: "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=800&q=80",
     famousFood: ["Chainsoo", "Gahat Dal", "Urad Pakodi"],
     restaurants: [
       { name: "Kanatal View Dine", specialty: "Organic Pahadi Thali & Chai", rating: "4.7 ★" }
     ],
-    hotelsCount: "15+ Stays Available"
+    foodHighlight: "Known for protein-rich Gahat (Horse Gram) preparations and smoky traditional Garhwali flavors."
   },
   {
     id: "dehradun",
     name: "Dehradun & Mussoorie (देहरादून & मसूरी)",
-    slug: "dehradun",
     tagline: "Vibrant Cafe Culture & Colonial Heritage Flavors",
     image: "https://images.unsplash.com/photo-1589182337358-2fabedd73e9d?auto=format&fit=crop&w=800&q=80",
     famousFood: ["Kafuli", "Baal Mithai", "Arsa"],
@@ -38,25 +34,23 @@ const districtData = [
       { name: "Landour Bakehouse", specialty: "Cinnamon Bun & Artisan Coffee", rating: "4.9 ★" },
       { name: "Kalsang Ama Cafe", specialty: "Tibetan & Himalayan Delicacies", rating: "4.8 ★" }
     ],
-    hotelsCount: "35+ Stays Available"
+    foodHighlight: "A blend of colonial-era bakeries, authentic Kumaoni-Garhwali greens (Kafuli), and Tibetan treats."
   },
   {
     id: "nainital",
     name: "Nainital - Kumaon (नैनीताल)",
-    slug: "nainital",
     tagline: "The Lake District with Rich Kumaoni Heritage",
     image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=800&q=80",
     famousFood: ["Bhatt ki Churkani", "Aloo ke Gutke", "Baal Mithai"],
     restaurants: [
       { name: "Mallital Kumaoni Rasoi", specialty: "Authentic Wood-fired Kumaoni Thali", rating: "4.9 ★" }
     ],
-    hotelsCount: "28+ Stays Available"
+    foodHighlight: "Famous for iron-rich black soybean curry (Bhatt ki Churkani) and world-renowned Almora Baal Mithai."
   }
 ];
 
 export default function DistrictsPage() {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const navigate = useNavigate();
 
   return (
     <div style={{ padding: "60px 20px", background: "#f8fafc", fontFamily: "'Inter', sans-serif", minHeight: "100vh" }}>
@@ -68,10 +62,10 @@ export default function DistrictsPage() {
             Culture & Culinary Heritage
           </span>
           <h2 style={{ fontSize: "36px", fontWeight: "900", color: "#0f172a", margin: "16px 0 10px 0" }}>
-            Explore Uttarakhand Districts & Local Delights
+            Uttarakhand Districts, Local Foods & Cafes
           </h2>
           <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "600px", margin: "0 auto", lineHeight: "1.6" }}>
-            Discover authentic traditional recipes, handpicked cafes, and luxury mountain stays tailored for your Himalayan journey.
+            Explore the authentic taste of the Himalayas, traditional recipes, and local standalone cafes across different districts.
           </p>
         </div>
 
@@ -100,23 +94,23 @@ export default function DistrictsPage() {
               }}
             >
               <div style={{ height: "200px", overflow: "hidden", position: "relative" }}>
-                <img src={district.image} alt={district.name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }} />
+                <img src={district.image} alt={district.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(4px)", color: "white", padding: "6px 12px", borderRadius: "8px", fontSize: "12px", fontWeight: "700" }}>
-                  🏨 {district.hotelsCount}
+                  🍽️ {district.famousFood.length} Local Delicacies
                 </div>
               </div>
               <div style={{ padding: "24px" }}>
                 <h3 style={{ fontSize: "20px", fontWeight: "900", color: "#0f172a", margin: "0 0 6px 0" }}>{district.name}</h3>
                 <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 20px 0", lineHeight: "1.5" }}>{district.tagline}</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "16px" }}>
-                  <span style={{ fontSize: "13px", fontWeight: "700", color: "#0284c7" }}>Explore Guide & Hotels →</span>
+                  <span style={{ fontSize: "13px", fontWeight: "700", color: "#0284c7" }}>View Food & Cafe Guide →</span>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Premium Modal / Detail Drawer */}
+        {/* Premium Food & Cafe Guide Modal */}
         {selectedDistrict && (
           <div style={{
             position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
@@ -133,9 +127,14 @@ export default function DistrictsPage() {
               </button>
 
               <div style={{ marginBottom: "24px" }}>
-                <span style={{ fontSize: "11px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>Destination & Culture Guide</span>
+                <span style={{ fontSize: "11px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>Culinary & Cafe Guide</span>
                 <h2 style={{ fontSize: "26px", fontWeight: "900", color: "#0f172a", margin: "4px 0 6px 0" }}>{selectedDistrict.name}</h2>
                 <p style={{ fontSize: "14px", color: "#64748b" }}>{selectedDistrict.tagline}</p>
+              </div>
+
+              {/* Food Culture Highlight */}
+              <div style={{ marginBottom: "20px", background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "14px 18px", borderRadius: "14px", color: "#166534", fontSize: "13px", fontWeight: "600", lineHeight: "1.5" }}>
+                💡 <strong>Food Heritage:</strong> {selectedDistrict.foodHighlight}
               </div>
 
               {/* Famous Foods Section */}
@@ -152,7 +151,7 @@ export default function DistrictsPage() {
 
               {/* Restaurants & Cafes Section */}
               <div style={{ marginBottom: "30px" }}>
-                <h4 style={{ fontSize: "14px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>☕ Top Recommended Restaurants & Cafes:</h4>
+                <h4 style={{ fontSize: "14px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>☕ Famous Local Cafes & Independent Restaurants:</h4>
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   {selectedDistrict.restaurants.map((rest, index) => (
                     <div key={index} style={{ background: "#ffffff", padding: "14px 18px", borderRadius: "14px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.02)" }}>
@@ -166,23 +165,13 @@ export default function DistrictsPage() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div style={{ display: "flex", gap: "12px" }}>
-                <button 
-                  onClick={() => navigate(`/hotels?city=${selectedDistrict.slug}`)}
-                  style={{ flex: 1, background: "#0284c7", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.2)", transition: "background 0.2s" }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = "#0369a1"}
-                  onMouseLeave={(e) => e.currentTarget.style.background = "#0284c7"}
-                >
-                  🏨 View All Hotels in {selectedDistrict.name.split(" ")[0]}
-                </button>
-                <button 
-                  onClick={() => setSelectedDistrict(null)}
-                  style={{ background: "#f1f5f9", color: "#475569", border: "none", padding: "14px 20px", borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
-                >
-                  Close
-                </button>
-              </div>
+              {/* Close Button Only */}
+              <button 
+                onClick={() => setSelectedDistrict(null)}
+                style={{ width: "100%", background: "#0f172a", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer", transition: "background 0.2s" }}
+              >
+                Close Guide
+              </button>
 
             </div>
           </div>
