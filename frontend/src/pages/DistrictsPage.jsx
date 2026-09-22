@@ -1,46 +1,46 @@
 import React, { useState } from "react";
 
-// उत्तराखंड के जिलों और उनके कल्चरल/फूड डेटा का ढांचा
+// Uttarakhand districts and cultural/food data structure (English with bilingual local names)
 const districtData = [
   {
     id: "uttarkashi",
-    name: "उत्तरकाशी",
-    tagline: "पहाड़ी राजमा और ट्रेकिंग का गढ़",
+    name: "Uttarkashi (उत्तरकाशी)",
+    tagline: "Hub of Hill Rajma and Trekking",
     image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80",
-    famousFood: ["पहाड़ी राजमा", "लाल चावल", "मंडुआ की रोटी"],
+    famousFood: ["Pahadi Rajma", "Red Rice", "Mandua Roti"],
     restaurants: [
-      { name: "पहाड़ी कैफे हर्षिल", specialty: "लोकल सेब का जूस और मोमोज" },
-      { name: "उत्तरकाशी ट्रेडिशनल भोजनालय", specialty: "शुद्ध देसी घी दाल-भात" }
+      { name: "Pahadi Cafe Harshil", specialty: "Local Apple Juice and Momos" },
+      { name: "Uttarkashi Traditional Bhojanalaya", specialty: "Pure Desi Ghee Dal-Bhat" }
     ]
   },
   {
     id: "tehri",
-    name: "टिहरी गढ़वाल",
-    tagline: "झील किनारे का पारंपरिक स्वाद",
+    name: "Tehri Garhwal (टिहरी गढ़वाल)",
+    tagline: "Traditional Taste by the Lake",
     image: "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=600&q=80",
-    famousFood: ["चैनसू", "गहत की दाल", "उड़द पकौड़ी"],
+    famousFood: ["Chainsoo", "Gahat Dal", "Urad Pakodi"],
     restaurants: [
-      { name: "कनाताल व्यू डाइन", specialty: "ऑर्गेनिक पहाड़ी थाली" }
+      { name: "Kanatal View Dine", specialty: "Organic Pahadi Thali" }
     ]
   },
   {
     id: "dehradun",
-    name: "देहरादून & मसूरी",
-    tagline: "कैफे कल्चर और पहाड़ी ज़ायका",
+    name: "Dehradun & Mussoorie (देहरादून & मसूरी)",
+    tagline: "Cafe Culture and Mountain Flavors",
     image: "https://images.unsplash.com/photo-1589182337358-2fabedd73e9d?auto=format&fit=crop&w=600&q=80",
-    famousFood: ["कफुली", "बाल मिठाई", "अरसा"],
+    famousFood: ["Kafuli", "Baal Mithai", "Arsa"],
     restaurants: [
-      { name: "लैंडौर बेकर्स", specialty: "दालचीनी बन और कॉफी" }
+      { name: "Landour Bakers", specialty: "Cinnamon Bun and Coffee" }
     ]
   },
   {
     id: "nainital",
-    name: "नैनीताल (कुमाऊं)",
-    tagline: "झीलों का शहर और कुमाऊनी ज़ायका",
+    name: "Nainital - Kumaon (नैनीताल)",
+    tagline: "City of Lakes and Kumaoni Flavors",
     image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=600&q=80",
-    famousFood: ["भट की चुर्काणी", "आलू के गुटके", "बाल मिठाई"],
+    famousFood: ["Bhatt ki Churkani", "Aloo ke Gutke", "Baal Mithai"],
     restaurants: [
-      { name: "मल्लीताल कुमाऊनी रसोई", specialty: "पारंपरिक कुमाऊनी ठेट खाना" }
+      { name: "Mallital Kumaoni Rasoi", specialty: "Traditional Kumaoni Authentic Food" }
     ]
   }
 ];
@@ -55,13 +55,13 @@ export default function DistrictsPage() {
         {/* Section Header */}
         <div style={{ textAlign: "center", marginBottom: "40px" }}>
           <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>
-            संस्कृति और ज़ायका
+            Culture & Taste
           </span>
           <h2 style={{ fontSize: "28px", fontWeight: "900", color: "#0f172a", margin: "8px 0" }}>
-            उत्तराखंड के जिले, उनके लोकल फूड और कैफे
+            Uttarakhand Districts, Local Foods & Cafes
           </h2>
           <p style={{ fontSize: "14px", color: "#64748b" }}>
-            होटल बुकिंग के साथ-साथ जानें हर जिले के प्रसिद्ध पारंपरिक व्यंजनों और खास जगहों के बारे में।
+            Explore famous traditional dishes and special places of each district along with hotel bookings.
           </p>
         </div>
 
@@ -90,7 +90,7 @@ export default function DistrictsPage() {
                 <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{district.name}</h3>
                 <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 16px 0" }}>{district.tagline}</p>
                 <div style={{ display: "inline-block", background: "#f0fdf4", color: "#166534", fontSize: "11px", fontWeight: "700", padding: "4px 10px", borderRadius: "6px" }}>
-                  🍽️ {district.famousFood.length} लोकल डिशेज उपलब्ध
+                  🍽️ {district.famousFood.length} Local Dishes Available
                 </div>
               </div>
             </div>
@@ -112,12 +112,12 @@ export default function DistrictsPage() {
                 ✕
               </button>
 
-              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", marginBottom: "4px" }}>{selectedDistrict.name} गाइड</h2>
+              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", marginBottom: "4px" }}>{selectedDistrict.name} Guide</h2>
               <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "20px" }}>{selectedDistrict.tagline}</p>
 
               {/* Famous Foods */}
               <div style={{ marginBottom: "20px" }}>
-                <h4 style={{ fontSize: "14px", fontWeight: "800", color: "#334155", marginBottom: "8px" }}>🍲 पारंपरिक पहाड़ी भोजन:</h4>
+                <h4 style={{ fontSize: "14px", fontWeight: "800", color: "#334155", marginBottom: "8px" }}>🍲 Traditional Pahadi Food:</h4>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   {selectedDistrict.famousFood.map((food, index) => (
                     <span key={index} style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "6px 12px", borderRadius: "8px", fontSize: "12px", fontWeight: "700", color: "#1e293b" }}>
@@ -129,12 +129,12 @@ export default function DistrictsPage() {
 
               {/* Restaurants / Cafes */}
               <div style={{ marginBottom: "24px" }}>
-                <h4 style={{ fontSize: "14px", fontWeight: "800", color: "#334155", marginBottom: "8px" }}>☕ प्रसिद्ध रेस्टोरेंट और कैफे:</h4>
+                <h4 style={{ fontSize: "14px", fontWeight: "800", color: "#334155", marginBottom: "8px" }}>☕ Famous Restaurants & Cafes:</h4>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   {selectedDistrict.restaurants.map((rest, index) => (
                     <div key={index} style={{ background: "#f8fafc", padding: "12px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
                       <div style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a" }}>{rest.name}</div>
-                      <div style={{ fontSize: "12px", color: "#64748b" }}>स्पेशियलिटी: {rest.specialty}</div>
+                      <div style={{ fontSize: "12px", color: "#64748b" }}>Specialty: {rest.specialty}</div>
                     </div>
                   ))}
                 </div>
@@ -144,7 +144,7 @@ export default function DistrictsPage() {
                 onClick={() => setSelectedDistrict(null)}
                 style={{ width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
               >
-                बंद करें / होटल्स देखें
+                Close / View Hotels
               </button>
 
             </div>
