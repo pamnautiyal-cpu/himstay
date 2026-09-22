@@ -155,7 +155,7 @@ export default function AllStays() {
               boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)"
             }}
           >
-            Load More Stays ({hotels.length - visibleCount} remaining) ↓
+            Load More Stays (remaining) ↓
           </button>
         ) : (
           <button 
