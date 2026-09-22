@@ -57,10 +57,13 @@ export default function AllStays() {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", minHeight: "100vh", padding: "30px 20px" }}>
       
-      {/* Header */}
+      {/* Stylish Header Section (Removed boring number count) */}
       <div style={{ textAlign: "center", marginBottom: "35px", maxWidth: "800px", margin: "0 auto 35px auto" }}>
+        <span style={{ background: "rgba(2, 132, 199, 0.1)", color: "#0284c7", padding: "6px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px", display: "inline-block", marginBottom: "12px" }}>
+          ✨ Curated Mountain Sanctuaries
+        </span>
         <h1 style={{ fontSize: "30px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
-          Stays in Uttarakhand ({hotels.length} Properties)
+          Stays in Uttarakhand
         </h1>
         <p style={{ fontSize: "14px", color: "#64748b", margin: 0 }}>
           Discover handpicked mountain retreats, cozy homestays, and scenic luxury hotels crafted for an unforgettable Himalayan experience.
