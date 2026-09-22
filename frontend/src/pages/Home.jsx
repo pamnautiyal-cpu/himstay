@@ -94,35 +94,31 @@ export default function Home() {
     return String(item.category).trim().toLowerCase() === String(activeTab).trim().toLowerCase();
   });
 
-  // Official Govt Links & Info for Uttarakhand Tourism
-  const officialTourismDestinations = [
+  // Simple Pilgrimage Cards without Official/Government labels
+  const sacredPlaces = [
     { 
-      name: "Kedarnath Dham", 
-      desc: "Official info & history of sacred Jyotirlinga.", 
+      name: "Kedarnath", 
+      desc: "Sacred shrine nestled in Garhwal Himalayas.", 
       img: "/images/chardham/kedarnath.jpg", 
-      officialUrl: "https://uttarakhandtourism.gov.in/experiences/char-dham/kedarnath",
-      googleUrl: "https://www.google.com/search?q=Kedarnath+Dham+Uttarakhand+Tourism+Official"
+      searchUrl: "https://www.google.com/search?q=Kedarnath+Dham+guide"
     },
     { 
-      name: "Badrinath Dham", 
-      desc: "Explore details about divine abode of Lord Vishnu.", 
+      name: "Badrinath", 
+      desc: "Holy divine abode of Lord Vishnu.", 
       img: "/images/chardham/badrinath.jpg", 
-      officialUrl: "https://uttarakhandtourism.gov.in/experiences/char-dham/badrinath",
-      googleUrl: "https://www.google.com/search?q=Badrinath+Dham+Uttarakhand+Tourism+Official"
+      searchUrl: "https://www.google.com/search?q=Badrinath+Dham+guide"
     },
     { 
-      name: "Gangotri Temple", 
-      desc: "Origins of the holy river Ganga in Uttarkashi.", 
+      name: "Gangotri", 
+      desc: "Pristine origin point of holy river Ganga.", 
       img: "/images/chardham/gangotri.jpg", 
-      officialUrl: "https://uttarakhandtourism.gov.in/experiences/char-dham/gangotri",
-      googleUrl: "https://www.google.com/search?q=Gangotri+Temple+Uttarakhand+Tourism"
+      searchUrl: "https://www.google.com/search?q=Gangotri+temple+guide"
     },
     { 
-      name: "Yamunotri Temple", 
-      desc: "Sacred source of Yamuna River and Yamunotri valley.", 
+      name: "Yamunotri", 
+      desc: "Sacred source of the Yamuna River.", 
       img: "/images/chardham/yamunotri.jpg", 
-      officialUrl: "https://uttarakhandtourism.gov.in/experiences/char-dham/yamunotri",
-      googleUrl: "https://www.google.com/search?q=Yamunotri+Temple+Uttarakhand+Tourism"
+      searchUrl: "https://www.google.com/search?q=Yamunotri+temple+guide"
     }
   ];
 
@@ -406,107 +402,32 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 4. Shifted Section: Uttarakhand Official Tourism Info & Direct External Links */}
-        <div style={{ 
-          marginBottom: "60px", 
-          background: "#f1f5f9", 
-          padding: "32px", 
-          borderRadius: "24px",
-          border: "1px solid #e2e8f0" 
-        }}>
-          <div style={{ marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "10px" }}>
-            <div>
-              <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>
-                🏛️ EXTERNAL TRAVEL GUIDES
-              </span>
-              <h2 style={{ fontSize: "26px", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
-                Uttarakhand Official Tourism Portals
-              </h2>
-              <p style={{ fontSize: "13px", color: "#64748b", margin: "4px 0 0 0" }}>
-                Click below to visit the Official Govt Portal or search detailed guides on Google.
-              </p>
-            </div>
-            <a 
-              href="https://uttarakhandtourism.gov.in" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{
-                fontSize: "13px", fontWeight: "800", color: "#0284c7", textDecoration: "none",
-                background: "#e0f2fe", padding: "8px 16px", borderRadius: "10px"
-              }}
-            >
-              Visit uttarakhandtourism.gov.in ↗
-            </a>
+        {/* 4. Clean & Simple Pilgrimage Section */}
+        <div style={{ marginBottom: "60px" }}>
+          <div style={{ marginBottom: "20px" }}>
+            <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>
+              SACRED DESTINATIONS
+            </span>
+            <h2 style={{ fontSize: "30px", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
+              Explore Pilgrimage & Char Dham
+            </h2>
           </div>
 
           <div style={horizontalScrollContainer}>
-            {officialTourismDestinations.map((item, idx) => (
-              <div 
+            {sacredPlaces.map((item, idx) => (
+              <a 
                 key={idx} 
-                style={{
-                  ...largeCardStyle,
-                  background: "white",
-                  display: "flex",
-                  flexDirection: "column",
-                  justify: "space-between"
-                }}
+                href={item.searchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...largeCardStyle, textDecoration: "none" }}
               >
-                <div>
-                  <div style={{ position: "relative" }}>
-                    <img src={item.img} alt={item.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
-                    <span style={{
-                      position: "absolute", top: "10px", right: "10px", background: "rgba(15, 23, 42, 0.8)",
-                      color: "#38bdf8", padding: "3px 8px", borderRadius: "6px", fontSize: "10px", fontWeight: "800"
-                    }}>
-                      ↗ Official Govt Info
-                    </span>
-                  </div>
-                  <div style={{ padding: "16px" }}>
-                    <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{item.name}</h3>
-                    <p style={{ fontSize: "12px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
-                  </div>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+                <div style={{ padding: "18px" }}>
+                  <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
+                  <p style={{ fontSize: "13px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
                 </div>
-
-                <div style={{ padding: "0 16px 16px 16px", display: "flex", gap: "8px" }}>
-                  <a 
-                    href={item.officialUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{
-                      flex: 1,
-                      textAlign: "center",
-                      background: "#0284c7",
-                      color: "white",
-                      padding: "8px 0",
-                      borderRadius: "8px",
-                      fontSize: "11px",
-                      fontWeight: "800",
-                      textDecoration: "none"
-                    }}
-                  >
-                    Govt Portal
-                  </a>
-                  <a 
-                    href={item.googleUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{
-                      flex: 1,
-                      textAlign: "center",
-                      background: "#f1f5f9",
-                      color: "#0f172a",
-                      border: "1px solid #cbd5e1",
-                      padding: "8px 0",
-                      borderRadius: "8px",
-                      fontSize: "11px",
-                      fontWeight: "800",
-                      textDecoration: "none"
-                    }}
-                  >
-                    Search Google
-                  </a>
-                </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
