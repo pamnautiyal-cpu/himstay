@@ -41,7 +41,6 @@ export default function HotelDetails() {
             ...data,
             location: data.city ? `${data.city}, ${data.state || ""}` : (data.location || "Uttarakhand"),
             images: data.images && data.images.length > 0 ? data.images : ["/images/hotals/Hotel Nagraja Palace1.jpg"],
-            // डायनेमिक रूम या फॉर्म से आए डेटा को लेआउट के अनुरूप ढालना
             rooms: data.rooms || [
               { 
                 type: data.roomType || data.roomDetails || data.propertyType || "Standard Room", 
@@ -60,25 +59,10 @@ export default function HotelDetails() {
     }
   }, [id]);
 
-  const handlePayment = async (amount) => {
-    if (!hotel) return;
-    try {
-      const { data: orderData } = await axios.post(`${BACKEND_URL}/api/payment/create-order`, { amount });
-      const options = {
-        key: "rzp_test_RxW3zOEiOiGN69",
-        amount: orderData.amount,
-        currency: "INR",
-        name: "The Himalayans",
-        description: `Booking ${hotel.name}`,
-        order_id: orderData.id,
-        handler: async (response) => {
-          const res = await axios.post(`${BACKEND_URL}/api/payment/verify`, response);
-          if (res.data.success) { alert("🎉 Booking Confirmed Successfully!"); navigate("/mytrips"); }
-        },
-        theme: { color: "#0284c7" }
-      };
-      new window.Razorpay(options).open();
-    } catch (err) { alert("Payment error, please try again."); }
+  // ✅ REDIRECT TO BOOKING PAGE (Payment form ke sath)
+  const navigateToBooking = () => {
+    const targetId = id || "local_01";
+    navigate(`/booking/${targetId}`);
   };
 
   if (!hotel) return <div style={{ textAlign: "center", padding: "100px", fontSize: "18px", color: "#64748b" }}>🏔️ Loading Details...</div>;
@@ -170,7 +154,7 @@ export default function HotelDetails() {
                   <div key={index} style={{ border: "1px solid #e2e8f0", borderRadius: "12px", padding: "18px", background: "#f8fafc", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "15px" }}>
                     <div>
                       <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", margin: "0 0 6px 0" }}>{room.type}</h4>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "swap" }}>
+                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                         {room.inclusions?.map((inc, i) => (
                           <span key={i} style={{ background: "#e0f2fe", color: "#0369a1", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "600" }}>
                             ✓ {inc}
@@ -184,7 +168,7 @@ export default function HotelDetails() {
                         <span style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a" }}>₹{room.price}</span>
                       </div>
                       <button 
-                        onClick={() => handlePayment(room.price)}
+                        onClick={navigateToBooking}
                         style={{ background: "#0284c7", color: "white", border: "none", padding: "10px 20px", borderRadius: "8px", fontWeight: "700", fontSize: "13px", cursor: "pointer", boxShadow: "0 2px 6px rgba(2, 132, 199, 0.3)" }}
                       >
                         Book Now
@@ -220,7 +204,7 @@ export default function HotelDetails() {
                 🎉 Instant Confirmation & Free Cancellation.
               </div>
               <button 
-                onClick={() => handlePayment(hotel.rooms?.[0]?.price || hotel.price || 2200)}
+                onClick={navigateToBooking}
                 style={{ width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)", marginBottom: "14px" }}
               >
                 PROCEED TO BOOK
