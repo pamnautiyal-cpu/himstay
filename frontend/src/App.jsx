@@ -21,12 +21,11 @@ import Booking from "./pages/Booking";
 import AdminDashboard from "./pages/AdminDashboard";
 import Discover from "./pages/Discover";
 import Search from "./components/Search";
-import Offers from "./pages/Offers"; // 🎁 Offers component import kiya
-import DistrictsPage from "./pages/DistrictsPage"; // 🗺️ Districts list page import kiya
-import DistrictDetail from "./pages/DistrictDetail"; // 🍲 District detail & food guide page import kiya
+import Offers from "./pages/Offers";
+import DistrictsPage from "./pages/DistrictsPage"; // 🗺️ सभी जिलों की लिस्ट का पेज[cite: 1]
+import DestinationDetail from "./pages/DestinationDetail"; // 🏔️ डेस्टिनेशन डिटेल पेज[cite: 2]
 import "./App.css";
 
-// 🛡️ STRICT PROTECTED ROUTE GUARD - REDIRECTS TO /signup FIRST
 const ProtectedRoute = ({ children }) => {
   let isAuthed = false;
   try {
@@ -52,14 +51,7 @@ const ProtectedRoute = ({ children }) => {
     isAuthed = false;
   }
 
-  useEffect(() => {
-    if (!isAuthed) {
-      console.warn("Unauthorized access attempt. Redirecting to signup...");
-    }
-  }, [isAuthed]);
-
   if (!isAuthed) {
-    // 🎯 Redirect to /signup instead of /login with state redirect path
     return <Navigate to="/signup" state={{ from: "/list-property" }} replace />;
   }
 
@@ -89,12 +81,11 @@ export default function App() {
           <Route path="/booking" element={<Booking />} />
           <Route path="/booking/:hotelId" element={<Booking />} />
 
-          {/* 🎁 OFFERS ROUTE */}
           <Route path="/offers" element={<Offers />} />
 
-          {/* 🗺️ DISTRICTS & FOOD CULTURE ROUTES ADDED */}
+          {/* 🗺️ जिले और डेस्टिनेशन के राउट्स */}
           <Route path="/districts" element={<DistrictsPage />} />
-          <Route path="/districts/:id" element={<DistrictDetail />} />
+          <Route path="/destination/:slug" element={<DestinationDetail />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
@@ -104,7 +95,6 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* 🔒 PROTECTED LIST PROPERTY ROUTE */}
           <Route
             path="/list-property"
             element={
