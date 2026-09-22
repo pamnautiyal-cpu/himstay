@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import VisitorCounter from "../components/VisitorCounter"; // इम्पोर्ट सुरक्षित है
+import VisitorCounter from "../components/VisitorCounter";
 
 export default function Footer() {
   return (
     <footer style={{ background: "#f8fafc", borderTop: "1px solid #e2e8f0", padding: "40px 20px 20px", fontFamily: "sans-serif" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         
-        {/* ✅ Brand Section */}
+        {/* Brand Section */}
         <div style={{ marginBottom: "40px", textAlign: "left" }}>
           <h2 style={{ fontSize: "20px", color: "#006ce4", margin: "0 0 10px 0" }}>The Himalayans</h2>
           <p style={{ fontSize: "14px", color: "#64748b", margin: 0 }}>Authentic experiences, crafted for the mountains.</p>
@@ -35,6 +35,7 @@ export default function Footer() {
             <h4 style={columnTitleStyle}>Partners</h4>
             <ul style={ulStyle}>
               <li><Link to="/list-property" style={linkStyle}>List your property</Link></li>
+              <li><Link to="/admin" style={linkStyle}>Admin Access</Link></li>
               <li><Link to="/admin/bookings" style={linkStyle}>Admin Bookings</Link></li>
               <li><span style={linkStyle}>Partner Help</span></li>
             </ul>
@@ -52,7 +53,6 @@ export default function Footer() {
         <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", color: "#475569" }}>
           <div>© {new Date().getFullYear()} The Himalayans · All rights reserved.</div>
           
-          {/* Visitor Counter यहाँ जोड़ा गया है */}
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             <VisitorCounter />
             <span>🇮🇳 India (INR ₹)</span>

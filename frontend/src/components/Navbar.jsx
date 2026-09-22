@@ -41,19 +41,6 @@ export default function Navbar() {
     }
   };
 
-  // Protected Click Handler for My Trips
-  const handleMyTripsClick = (e) => {
-    if (!user) {
-      e.preventDefault();
-      setModalInfo({
-        show: true,
-        title: "Authentication Required",
-        message: "Please log in or sign up first to view your trips!"
-      });
-      setIsMobileMenuOpen(false);
-    }
-  };
-
   const navLinkStyle = {
     color: "#e2e8f0",
     textDecoration: "none",
@@ -123,10 +110,6 @@ export default function Navbar() {
             🏨 Hotels
           </Link>
           
-          <Link to="/mytrips" onClick={handleMyTripsClick} style={navLinkStyle}>
-            🧳 My Trips
-          </Link>
-          
           <Link 
             to="/offers" 
             style={{ 
@@ -146,10 +129,6 @@ export default function Navbar() {
               display: "inline-block",
               boxShadow: "0 0 8px #fbbf24"
             }}></span>
-          </Link>
-
-          <Link to="/admin" style={navLinkStyle}>
-            🛠️ Admin
           </Link>
 
           <Link to="/list-property" onClick={handleListPropertyClick} style={navLinkStyle}>
@@ -291,9 +270,7 @@ export default function Navbar() {
           )}
 
           <Link to="/hotels" onClick={() => setIsMobileMenuOpen(false)} style={navLinkStyle}>🏨 Hotels</Link>
-          <Link to="/mytrips" onClick={(e) => { setIsMobileMenuOpen(false); handleMyTripsClick(e); }} style={navLinkStyle}>🧳 My Trips</Link>
           <Link to="/offers" onClick={() => setIsMobileMenuOpen(false)} style={{ ...navLinkStyle, color: "#fbbf24" }}>✨ Offers</Link>
-          <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} style={navLinkStyle}>🛠️ Admin</Link>
           <Link to="/list-property" onClick={(e) => { setIsMobileMenuOpen(false); handleListPropertyClick(e); }} style={navLinkStyle}>🏡 List Property</Link>
           
           <div style={{ height: "1px", background: "rgba(255, 255, 255, 0.1)", margin: "8px 0" }} />
