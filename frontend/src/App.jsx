@@ -16,22 +16,12 @@ import ListProperty from "./pages/ListProperty";
 import AdminBookings from "./pages/AdminBookings";
 import Terms from "./pages/Terms";
 import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail"; // Clean ES Import
+import Booking from "./pages/Booking"; // ✅ Added Booking Import from pages
 import AdminDashboard from "./pages/AdminDashboard";
 import Discover from "./pages/Discover";
 import Search from "./components/Search";
 import "./App.css";
-
-// 🛡️ Safe Import for BlogDetail to prevent Render build crash due to Case Sensitivity
-let BlogDetail;
-try {
-  BlogDetail = require("./pages/BlogDetail").default;
-} catch (e) {
-  BlogDetail = () => (
-    <div style={{ padding: "80px 20px", textCenter: "center", color: "#fff" }}>
-      <h2>Blog detail loading or coming soon...</h2>
-    </div>
-  );
-}
 
 // 🛡️ STRICT PROTECTED ROUTE GUARD WITH CLEAN ALERT HANDLING
 const ProtectedRoute = ({ children }) => {
@@ -61,7 +51,6 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthed) {
-      // Safe toast notification
       console.warn("Unauthorized access attempt. Redirecting to login...");
     }
   }, [isAuthed]);
@@ -92,6 +81,11 @@ export default function App() {
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
           <Route path="/hotel/:id" element={<HotelDetails />} />
+          
+          {/* ✅ FIXED: ADDED BOOKING ROUTES (Both with param and search query support) */}
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/booking/:hotelId" element={<Booking />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />
