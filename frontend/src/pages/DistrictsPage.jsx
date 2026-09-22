@@ -121,7 +121,7 @@ const districtData = [
 
 export default function DistrictsPage() {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const [selectedSpot, setSelectedSpot] = useState(null); // Opening Soon modal ke liye state
+  const [selectedSpot, setSelectedSpot] = useState(null);
 
   return (
     <div style={{ padding: "60px 20px", background: "#f8fafc", fontFamily: "'Inter', sans-serif", minHeight: "100vh" }}>
@@ -272,7 +272,7 @@ export default function DistrictsPage() {
           </div>
         )}
 
-        {/* Opening Soon / Coming Soon Modal */}
+        {/* Opening Soon / Coming Soon Modal in Professional English */}
         {selectedSpot && (
           <div style={{
             position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
@@ -288,7 +288,7 @@ export default function DistrictsPage() {
                 {selectedSpot.name}
               </h3>
               <p style={{ fontSize: "14px", color: "#64748b", margin: "0 0 20px 0", lineHeight: "1.5" }}>
-                Is restaurant aur iske special traditional menu ki poori detailed listing is platform par bahut jald live hone wali hai. Bane rahiye!
+                The complete detailed listing, menu, and offerings for this restaurant will be live on this platform very soon. Stay tuned!
               </p>
               
               <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: "12px", color: "#334155", marginBottom: "24px", fontWeight: "600" }}>
