@@ -45,7 +45,7 @@ const districtData = [
   }
 ];
 
-export default function DistrictSection() {
+export default function DistrictsPage() {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
 
   return (
@@ -145,7 +145,7 @@ export default function DistrictSection() {
                 style={{ width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
               >
                 बंद करें / होटल्स देखें
-              </Button>
+              </button>
 
             </div>
           </div>
