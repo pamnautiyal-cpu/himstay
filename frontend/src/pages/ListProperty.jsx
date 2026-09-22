@@ -18,29 +18,36 @@ export default function ListProperty() {
 
   useEffect(() => {
     const checkUserAuth = () => {
-      const userStr = localStorage.getItem("user");
+      const userStr = 
+        localStorage.getItem("user") ||
+        localStorage.getItem("userInfo") ||
+        localStorage.getItem("auth") ||
+        localStorage.getItem("currentUser");
+
       if (!userStr) {
-        alert("Access Denied! You must log in or sign up before listing a property.");
-        navigate("/login", { replace: true });
+        alert("Aapko property list karne ke liye pehle Sign Up karna hoga.");
+        // Redirecting directly to signup instead of login
+        navigate("/signup", { replace: true, state: { isSignup: true } });
         return;
       }
       
       try {
         const parsedUser = JSON.parse(userStr);
-        if (!parsedUser || !parsedUser.email) {
+        const email = parsedUser?.email || parsedUser?.userEmail || (typeof userStr === "string" && userStr.includes("@") ? userStr : null);
+        
+        if (!email) {
           localStorage.removeItem("user"); 
-          alert("Session expired or invalid. Please login again.");
-          navigate("/login", { replace: true });
+          alert("Aapka session expiry ya invalid hai. Kripya fir se Sign Up karein.");
+          navigate("/signup", { replace: true, state: { isSignup: true } });
           return;
         }
         setOwnerInfo({
-          email: parsedUser.email,
-          name: parsedUser.name || "Partner"
+          email: email,
+          name: parsedUser?.name || "Partner"
         });
       } catch (e) {
         console.error("Auth check failed", e);
-        localStorage.removeItem("user");
-        navigate("/login", { replace: true });
+        navigate("/signup", { replace: true, state: { isSignup: true } });
       }
     };
 
@@ -89,9 +96,9 @@ export default function ListProperty() {
       let defaultSub = "Hotel";
       if (value === "yoga") defaultSub = "Hatha Yoga Retreat";
       if (value === "trek") defaultSub = "Guided Trekking";
-      setFormData({ ...formData, listingCategory: value, propertyType: defaultSub });
+      setFormData((prev) => ({ ...prev, listingCategory: value, propertyType: defaultSub }));
     } else {
-      setFormData({ ...formData, [name]: value });
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -103,17 +110,10 @@ export default function ListProperty() {
   };
 
   const removeFile = (index) => {
-    setFiles(files.filter((_, i) => i !== index));
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const nextStep = () => {
-    const activeUser = localStorage.getItem("user");
-    if (!activeUser) {
-      alert("Authentication required! Please login.");
-      navigate("/login");
-      return;
-    }
-
     if (currentStep === 1) {
       if (!formData.name.trim()) {
         alert("Please enter a valid Property Name.");
@@ -154,13 +154,6 @@ export default function ListProperty() {
 
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
-    
-    const finalCheckUser = localStorage.getItem("user");
-    if (!finalCheckUser) {
-      alert("Security Error: You are not logged in! Listing cancelled.");
-      navigate("/login");
-      return;
-    }
 
     if (files.length === 0) {
       alert("Please upload at least one property image.");
@@ -210,27 +203,18 @@ export default function ListProperty() {
   };
 
   const finalizePropertyUpload = async () => {
-    const finalCheckUser = localStorage.getItem("user");
-    let verifiedEmail = "";
-    try {
-      const parsed = JSON.parse(finalCheckUser);
-      verifiedEmail = parsed.email;
-    } catch (err) {
-      verifiedEmail = "partner@thehimalayans.in";
-    }
-
     setLoading(true);
     setOtpLoading(false);
 
     const data = new FormData();
     for (let key in formData) { data.append(key, formData[key]); }
     files.forEach((file) => { data.append("images", file); });
-    data.append("ownerEmail", verifiedEmail); 
+    data.append("ownerEmail", ownerInfo?.email || "partner@thehimalayans.in"); 
 
     try {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/hotels/add`, data, {
         headers: { "Content-Type": "multipart/form-data" },
-        timeout: 15000 
+        timeout: 20000 
       });
 
       setLoading(false);
@@ -339,7 +323,7 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 2: LOCATION (Fully Editable) --- */}
+        {/* --- STEP 2: LOCATION --- */}
         {currentStep === 2 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Location Details</h3>
@@ -564,7 +548,7 @@ export default function ListProperty() {
 
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
               <button type="button" onClick={prevStep} style={secondaryBtnStyle}>Back</button>
-              <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a", opacity: (files.length === 0 || !agreedTerms) ? 0.6 : 1 }} disabled={loading}>
+              <button type="submit" style={{ ...primaryBtnStyle, background: "#16a34a", opacity: (files.length === 0 || !agreedTerms || loading) ? 0.6 : 1 }} disabled={loading}>
                 {loading ? "Processing..." : "Verify Email & Submit"}
               </button>
             </div>
