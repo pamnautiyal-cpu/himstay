@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const districtData = [
   {
@@ -31,7 +30,6 @@ const districtData = [
         type: "Street Food & Snacks",
         specialtyMenu: "Special Menu: Aloo ke Gutke, Hot Tea & Local Urad Pakodi",
         rating: "4.7 ★",
-        ratingCount: "Street Special",
         location: "Bhatwari Road, Uttarkashi"
       }
     ]
@@ -123,7 +121,7 @@ const districtData = [
 
 export default function DistrictsPage() {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
-  const navigate = useNavigate();
+  const [selectedSpot, setSelectedSpot] = useState(null); // Opening Soon modal ke liye state
 
   return (
     <div style={{ padding: "60px 20px", background: "#f8fafc", fontFamily: "'Inter', sans-serif", minHeight: "100vh" }}>
@@ -224,7 +222,7 @@ export default function DistrictsPage() {
                   {selectedDistrict.foodSpots.map((spot) => (
                     <div 
                       key={spot.id}
-                      onClick={() => navigate(`/restaurants/${spot.id}`)}
+                      onClick={() => setSelectedSpot(spot)}
                       style={{ 
                         background: "#ffffff", 
                         padding: "16px 20px", 
@@ -268,6 +266,40 @@ export default function DistrictsPage() {
                 style={{ width: "100%", background: "#0f172a", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
               >
                 Close Guide
+              </button>
+
+            </div>
+          </div>
+        )}
+
+        {/* Opening Soon / Coming Soon Modal */}
+        {selectedSpot && (
+          <div style={{
+            position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+            background: "rgba(15, 23, 42, 0.7)", backdropFilter: "blur(6px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1100, padding: "20px"
+          }}>
+            <div style={{ background: "white", width: "100%", maxWidth: "450px", borderRadius: "24px", padding: "35px", textAlign: "center", position: "relative", boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}>
+              
+              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🚀</div>
+              <span style={{ fontSize: "11px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1.5px", background: "#e0f2fe", padding: "4px 12px", borderRadius: "20px" }}>
+                Opening Soon
+              </span>
+              <h3 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", margin: "16px 0 8px 0" }}>
+                {selectedSpot.name}
+              </h3>
+              <p style={{ fontSize: "14px", color: "#64748b", margin: "0 0 20px 0", lineHeight: "1.5" }}>
+                Is restaurant aur iske special traditional menu ki poori detailed listing is platform par bahut jald live hone wali hai. Bane rahiye!
+              </p>
+              
+              <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "12px", border: "1px solid #e2e8f0", fontSize: "12px", color: "#334155", marginBottom: "24px", fontWeight: "600" }}>
+                ✨ {selectedSpot.specialtyMenu}
+              </div>
+
+              <button 
+                onClick={() => setSelectedSpot(null)}
+                style={{ width: "100%", background: "#0f172a", color: "white", border: "none", padding: "12px", borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
+              >
+                Got It, Thanks!
               </button>
 
             </div>
