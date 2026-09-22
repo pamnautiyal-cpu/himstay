@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { auth, db } from "../firebase"; 
 import { createUserWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
@@ -10,7 +10,12 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState(""); 
   const [loading, setLoading] = useState(false);
+  
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🎯 Agar user ProtectedRoute (List Property) se aaye hain toh vahan bhejein, nahi toh default /list-property par bhejein
+  const redirectTo = location.state?.from || "/list-property";
 
   const handleSignup = async () => {
     // 1. सभी फील्ड्स खाली तो नहीं हैं
@@ -61,8 +66,10 @@ export default function Signup() {
         phone: phone
       }));
 
-      alert("Account created successfully!");
-      navigate("/"); 
+      alert("Account created successfully! Redirecting to property listing...");
+      
+      // 🚀 Dynamically redirecting to list-property page
+      navigate(redirectTo, { replace: true }); 
     } catch (error) {
       alert(error.message);
     } finally {

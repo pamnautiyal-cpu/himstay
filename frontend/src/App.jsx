@@ -23,7 +23,7 @@ import Discover from "./pages/Discover";
 import Search from "./components/Search";
 import "./App.css";
 
-// 🛡️ STRICT PROTECTED ROUTE GUARD WITH CLEAN ALERT HANDLING
+// 🛡️ STRICT PROTECTED ROUTE GUARD - REDIRECTS TO /signup FIRST
 const ProtectedRoute = ({ children }) => {
   let isAuthed = false;
   try {
@@ -51,12 +51,13 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (!isAuthed) {
-      console.warn("Unauthorized access attempt. Redirecting to login...");
+      console.warn("Unauthorized access attempt. Redirecting to signup...");
     }
   }, [isAuthed]);
 
   if (!isAuthed) {
-    return <Navigate to="/login" replace />;
+    // 🎯 Redirect to /signup instead of /login with state redirect path
+    return <Navigate to="/signup" state={{ from: "/list-property" }} replace />;
   }
 
   return children;
