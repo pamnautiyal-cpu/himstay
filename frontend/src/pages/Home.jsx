@@ -37,15 +37,16 @@ export default function Home() {
     return () => clearInterval(slideInterval);
   }, [heroImages.length]);
 
-  // Fetching data from Backend with fallback dummy items so UI never looks empty/broken
+  // Fetching data from Backend with proper unique IDs for each fallback item
   useEffect(() => {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
         const rawData = Array.isArray(res.data) ? res.data : [];
         if (rawData.length > 0) {
-          const backendData = rawData.map(item => ({
+          const backendData = rawData.map((item, index) => ({
             ...item,
+            _id: item._id || item.id || `hotel-${index + 1}`,
             price: item.price || "2,499",
             rating: item.rating || "4.8",
             category: item.category || "Hotels",
@@ -53,23 +54,22 @@ export default function Home() {
           }));
           setHotels(backendData);
         } else {
-          // Fallback demo items so the slider always looks alive and beautiful
+          // Fallback demo items with distinct unique IDs
           setHotels([
-            { _id: "1", name: "Hotel Nagaraja Palace", location: "Uttarkashi", price: "2,499", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" },
-            { _id: "2", name: "Grandparents Homestay", location: "Uttarkashi", price: "1,999", rating: "4.8", category: "Hotels", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=600&q=80" },
-            { _id: "3", name: "Ganges Valley Retreat", location: "Rishikesh", price: "3,199", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=600&q=80" },
-            { _id: "4", name: "Himalayan Peak View", location: "Kedarnath", price: "2,899", rating: "4.7", category: "Hotels", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" }
+            { _id: "hotel-nagaraja", name: "Hotel Nagaraja Palace", location: "Uttarkashi", price: "2,499", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" },
+            { _id: "hotel-grandparents", name: "Grandparents Homestay", location: "Uttarkashi", price: "1,999", rating: "4.8", category: "Hotels", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=600&q=80" },
+            { _id: "hotel-ganges", name: "Ganges Valley Retreat", location: "Rishikesh", price: "3,199", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=600&q=80" },
+            { _id: "hotel-himalayan", name: "Himalayan Peak View", location: "Kedarnath", price: "2,899", rating: "4.7", category: "Hotels", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80" }
           ]);
         }
         setLoading(false);
       })
       .catch((err) => {
         console.error("Backend fetch error:", err);
-        // Fallback data on error to maintain rich UI experience
         setHotels([
-          { _id: "1", name: "Hotel Nagaraja Palace", location: "Uttarkashi", price: "2,499", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" },
-          { _id: "2", name: "Grandparents Homestay", location: "Uttarkashi", price: "1,999", rating: "4.8", category: "Hotels", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=600&q=80" },
-          { _id: "3", name: "Ganges Valley Retreat", location: "Rishikesh", price: "3,199", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=600&q=80" }
+          { _id: "hotel-nagaraja", name: "Hotel Nagaraja Palace", location: "Uttarkashi", price: "2,499", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" },
+          { _id: "hotel-grandparents", name: "Grandparents Homestay", location: "Uttarkashi", price: "1,999", rating: "4.8", category: "Hotels", image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=600&q=80" },
+          { _id: "hotel-ganges", name: "Ganges Valley Retreat", location: "Rishikesh", price: "3,199", rating: "4.9", category: "Hotels", image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=600&q=80" }
         ]);
         setLoading(false);
       });
@@ -221,7 +221,7 @@ export default function Home() {
           <div style={badgeCardStyle}><span style={{ fontSize: "26px" }}>📞</span><div><h4 style={{ margin: "0 0 2px 0", fontSize: "15px", fontWeight: "800" }}>24/7 Mountain Support</h4><p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Dedicated local assistance.</p></div></div>
         </div>
 
-        {/* 2. Handpicked Stays & Retreats (Sliding Cards Layout Restored) */}
+        {/* 2. Handpicked Stays & Retreats (Fixed Unique ID Routing) */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px" }}>
             <div>
@@ -241,7 +241,7 @@ export default function Home() {
             <div ref={staysScrollRef} style={horizontalScrollContainer}>
               {filteredListings.length > 0 ? (
                 filteredListings.map((hotel) => (
-                  <div key={hotel._id || hotel.name} style={largeCardStyle}>
+                  <div key={hotel._id} style={largeCardStyle}>
                     <div style={{ position: "relative" }}>
                       <img src={hotel.image} alt={hotel.name} style={{ width: "100%", height: "180px", objectFit: "cover" }} onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80"; }} />
                       <span style={{ position: "absolute", top: "10px", right: "10px", background: "rgba(15, 23, 42, 0.85)", color: "white", padding: "3px 9px", borderRadius: "20px", fontSize: "11px", fontWeight: "800" }}>⭐ {hotel.rating || "4.8"}</span>
@@ -256,7 +256,7 @@ export default function Home() {
                           <span style={{ fontSize: "10px", color: "#64748b", display: "block" }}>Starting from</span>
                           <span style={{ fontSize: "17px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.price || "2,499"}</span>
                         </div>
-                        <button onClick={() => navigate(`/hotels/${hotel._id || 'details'}`)} style={{ background: "#0284c7", color: "white", border: "none", padding: "8px 14px", borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer" }}>View Details</button>
+                        <button onClick={() => navigate(`/hotels/${hotel._id}`)} style={{ background: "#0284c7", color: "white", border: "none", padding: "8px 14px", borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer" }}>View Details</button>
                       </div>
                     </div>
                   </div>
@@ -268,7 +268,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Big Graphic Banner replacing Food Section */}
+        {/* Big Graphic Banner for Treks (Fixed Correct Routing to Trek Page) */}
         <div style={{
           margin: "50px 0",
           position: "relative",
@@ -282,8 +282,8 @@ export default function Home() {
           boxShadow: "0 10px 30px rgba(0,0,0,0.15)"
         }}>
           <div style={{ maxWidth: "550px" }}>
-            <span style={{ background: "#0284c7", color: "white", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
-              Himalayan Expedition 2026
+            <span style={{ background: "#d97706", color: "white", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
+              Himalayan Trekking Expedition 2026
             </span>
             <h2 style={{ fontSize: "32px", fontWeight: "900", margin: "14px 0 10px 0", lineHeight: "1.2" }}>
               Conquer the Highest Peaks with Expert Guides
@@ -358,19 +358,26 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Popular Alpine Treks */}
+        {/* Popular Alpine Treks with Premium Offer Style */}
         <div style={{ marginBottom: "50px" }}>
-          <div style={{ marginBottom: "16px" }}>
-            <span style={{ fontSize: "11px", fontWeight: "800", color: "#d97706", textTransform: "uppercase", letterSpacing: "1px" }}>THRILLING EXPEDITIONS</span>
-            <h2 style={{ fontSize: "26px", fontWeight: "900", color: "#0f172a", margin: "3px 0 0 0" }}>Popular Alpine Treks</h2>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "16px" }}>
+            <div>
+              <span style={{ fontSize: "11px", fontWeight: "800", color: "#d97706", textTransform: "uppercase", letterSpacing: "1px" }}>THRILLING EXPEDITIONS</span>
+              <h2 style={{ fontSize: "26px", fontWeight: "900", color: "#0f172a", margin: "3px 0 0 0" }}>Popular Alpine Treks & Deals</h2>
+            </div>
+            <button onClick={() => navigate("/search?tab=Treks")} style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "13px" }}>View All Treks →</button>
           </div>
           <div style={horizontalScrollContainer}>
             {popularTreks.map((item, idx) => (
               <div key={idx} style={largeCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
+                <div style={{ position: "relative" }}>
+                  <img src={item.img} alt={item.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
+                  <span style={{ position: "absolute", top: "10px", left: "10px", background: "#d97706", color: "white", padding: "3px 8px", borderRadius: "6px", fontSize: "10px", fontWeight: "800" }}>🔥 15% OFF</span>
+                </div>
                 <div style={{ padding: "18px" }}>
                   <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{item.name}</h3>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: 0, lineHeight: "1.3" }}>{item.desc}</p>
+                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px 0", lineHeight: "1.3" }}>{item.desc}</p>
+                  <span style={{ fontSize: "13px", fontWeight: "900", color: "#0284c7" }}>Book Guided Trek →</span>
                 </div>
               </div>
             ))}
