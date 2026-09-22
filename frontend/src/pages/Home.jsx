@@ -299,25 +299,13 @@ export default function Home() {
                 filteredListings.map((hotel) => (
                   <div 
                     key={hotel._id}
-                    style={{
-                      minWidth: "300px",
-                      width: "300px",
-                      flex: "0 0 auto",
-                      background: "#fff",
-                      borderRadius: "18px",
-                      overflow: "hidden",
-                      border: "1px solid #e2e8f0",
-                      boxShadow: "0 6px 20px rgba(0,0,0,0.04)",
-                      display: "flex",
-                      flexDirection: "column",
-                      justify: "space-between"
-                    }}
+                    style={largeCardStyle}
                   >
                     <div style={{ position: "relative" }}>
                       <img 
                         src={hotel.image} 
                         alt={hotel.name} 
-                        style={{ width: "100%", height: "190px", objectFit: "cover" }} 
+                        style={{ width: "100%", height: "160px", objectFit: "cover" }} 
                         onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                       />
                       <span style={{
@@ -328,25 +316,25 @@ export default function Home() {
                       </span>
                     </div>
 
-                    <div style={{ padding: "20px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    <div style={{ padding: "18px", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "calc(100% - 160px)", boxSizing: "border-box" }}>
                       <div>
                         <span style={{ fontSize: "12px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
                           📍 {hotel.location || hotel.city}
                         </span>
-                        <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#0f172a", margin: "6px 0 12px 0", lineHeight: "1.3" }}>
+                        <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "6px 0 8px 0", lineHeight: "1.3" }}>
                           {hotel.name}
                         </h3>
                       </div>
 
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "14px" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "12px", marginTop: "8px" }}>
                         <div>
                           <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
-                          <span style={{ fontSize: "18px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.price || "2,499"}</span>
+                          <span style={{ fontSize: "17px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.price || "2,499"}</span>
                         </div>
                         <button 
                           onClick={() => navigate(`/hotels/${hotel._id}`)}
                           style={{
-                            background: "#0284c7", color: "white", border: "none", padding: "9px 16px",
+                            background: "#0284c7", color: "white", border: "none", padding: "8px 14px",
                             borderRadius: "10px", fontWeight: "700", fontSize: "13px", cursor: "pointer"
                           }}
                         >
@@ -361,6 +349,50 @@ export default function Home() {
               )}
             </div>
           )}
+        </div>
+
+        {/* Special Offer / Promo Banner */}
+        <div style={{
+          margin: "60px 0",
+          background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
+          borderRadius: "24px",
+          padding: "40px",
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "20px",
+          boxShadow: "0 10px 25px -5px rgba(2, 132, 199, 0.4)"
+        }}>
+          <div>
+            <span style={{ background: "rgba(255, 255, 255, 0.2)", padding: "6px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
+              ⚡ Limited Period Offer
+            </span>
+            <h2 style={{ fontSize: "28px", fontWeight: "900", margin: "14px 0 8px 0" }}>
+              Get 20% OFF on Your First Char Dham Booking!
+            </h2>
+            <p style={{ fontSize: "15px", color: "#e0f2fe", margin: 0, maxWidth: "600px" }}>
+              Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "6px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
+            </p>
+          </div>
+          <button 
+            onClick={() => navigate("/search?tab=Hotels")}
+            style={{
+              background: "white",
+              color: "#0369a1",
+              border: "none",
+              padding: "14px 28px",
+              borderRadius: "14px",
+              fontWeight: "900",
+              fontSize: "15px",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              transition: "transform 0.2s ease"
+            }}
+          >
+            Claim Offer Now
+          </button>
         </div>
 
         {/* Yoga & Wellness */}
