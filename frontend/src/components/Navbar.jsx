@@ -347,7 +347,7 @@ export default function Navbar() {
               <button 
                 onClick={() => { 
                   setModalInfo({ show: false, title: "", message: "" }); 
-                  navigate("/login"); 
+                  navigate("/signup", { state: { mode: "signup", isSignup: true } }); 
                 }} 
                 style={{ 
                   flex: 1, 
@@ -360,7 +360,7 @@ export default function Navbar() {
                   cursor: "pointer"
                 }}
               >
-                Go to Login
+                Go to Sign Up
               </button>
             </div>
           </div>
