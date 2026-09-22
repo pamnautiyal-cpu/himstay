@@ -54,48 +54,51 @@ export default function BookingPage() {
     }
   }, [id]);
 
-  // Exact Offers Page Coupon Code Validation Logic
+  // Strict Room-Wise Coupon Validation Logic
   const handleApplyCoupon = (e) => {
     e.preventDefault();
     const code = couponCode.trim().toUpperCase();
     const currentRoom = roomType.toLowerCase();
 
+    // Check if room is Standard or Deluxe
+    const isStandardOrDeluxe = currentRoom.includes("standard") || currentRoom.includes("deluxe");
+    // Check if room is Super Deluxe or Family Suite
+    const isSuperOrSuite = currentRoom.includes("super") || currentRoom.includes("family") || currentRoom.includes("suite");
+
     if (code === "TREK15") {
-      // FLAT 15% OFF sirf Standard Room aur Deluxe Room ke liye
-      if (currentRoom.includes("standard") || currentRoom.includes("deluxe")) {
+      // Rule 1: TREK15 sirf Standard aur Deluxe Room ke liye valid hai
+      if (isStandardOrDeluxe) {
         const discAmount = Math.round(finalPrice * 0.15);
         setDiscount(discAmount);
-        setCouponMessage("🎉 TREK15 Applied: 15% OFF on Standard/Deluxe Room!");
+        setCouponMessage("🎉 TREK15 Applied: 15% OFF!");
       } else {
         setDiscount(0);
-        setCouponMessage("❌ TREK15 is only valid for Standard and Deluxe Rooms.");
+        setCouponMessage("❌ TREK15 is only valid for Standard Room and Deluxe Room.");
       }
     } 
-    else if (code === "HIMALAYA20") {
-      // 20% Instant Discount (All rooms or specific as per logic)
-      const discAmount = Math.round(finalPrice * 0.20);
-      setDiscount(discAmount);
-      setCouponMessage("🎉 HIMALAYA20 Applied: 20% Instant Discount!");
-    } 
-    else if (code === "WEEKEND1500") {
-      // Flat ₹1,500 off on Super Deluxe and Family Suite or minimum booking value
-      if (currentRoom.includes("super") || currentRoom.includes("family")) {
-        setDiscount(1500);
-        setCouponMessage("🎉 WEEKEND1500 Applied: Flat ₹1,500 OFF!");
+    else if (code === "HIMALAYA20" || code === "WEEKEND1500" || code === "WORKATION") {
+      // Rule 2: Baaki saare offers sirf Super Deluxe aur Family Suite ke liye valid hain
+      if (isSuperOrSuite) {
+        if (code === "HIMALAYA20") {
+          const discAmount = Math.round(finalPrice * 0.20);
+          setDiscount(discAmount);
+          setCouponMessage("🎉 HIMALAYA20 Applied: 20% OFF!");
+        } else if (code === "WEEKEND1500") {
+          setDiscount(1500);
+          setCouponMessage("🎉 WEEKEND1500 Applied: Flat ₹1,500 OFF!");
+        } else if (code === "WORKATION") {
+          const discAmount = Math.round(finalPrice / 5);
+          setDiscount(discAmount);
+          setCouponMessage("🎉 WORKATION Applied: Long stay benefit!");
+        }
       } else {
-        setDiscount(1500);
-        setCouponMessage("🎉 WEEKEND1500 Applied: Flat ₹1,500 OFF!");
+        setDiscount(0);
+        setCouponMessage(`❌ ${code} is only valid for Super Deluxe Room and Family Suite.`);
       }
-    } 
-    else if (code === "WORKATION") {
-      // Stay 5 Pay for 4 equivalent discount estimation
-      const discAmount = Math.round(finalPrice / 5);
-      setDiscount(discAmount);
-      setCouponMessage("🎉 WORKATION Applied: Long stay benefit added!");
     } 
     else {
       setDiscount(0);
-      setCouponMessage("❌ Invalid Coupon Code. Use valid codes from Offers page (e.g., TREK15, HIMALAYA20, WEEKEND1500, WORKATION)");
+      setCouponMessage("❌ Invalid Coupon Code. Use valid offers from the Offers page.");
     }
   };
 
@@ -134,7 +137,7 @@ export default function BookingPage() {
           </div>
         </div>
 
-        {/* Official Offers Coupon Section */}
+        {/* Coupon Code Section */}
         <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "16px", borderRadius: "12px", marginBottom: "24px" }}>
           <label style={{ fontSize: "12px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "8px" }}>Apply Offers Page Coupon Code</label>
           <div style={{ display: "flex", gap: "10px" }}>
@@ -160,7 +163,7 @@ export default function BookingPage() {
           )}
         </div>
 
-        {/* Booking Form Details */}
+        {/* Booking Form */}
         <form onSubmit={handleBookingSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
             <div>
