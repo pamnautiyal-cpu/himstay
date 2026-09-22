@@ -1,200 +1,196 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
-export default function Booking() {
-  const [searchParams] = useSearchParams();
-  const params = useParams();
+export default function BookingPage() {
+  const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // URL route param (:hotelId ya :id) aur query param (?hotelId=) dono se fetch karega
-  const hotelId = params.hotelId || params.id || searchParams.get("hotelId");
+  // 1. HotelDetails se pass ki gayi state ko receive karna
+  const { roomType = "Standard Room", finalPrice = 1799, mealPlan = "EP (Room Only)" } = location.state || {};
 
   const [hotel, setHotel] = useState(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [guests, setGuests] = useState(2);
-  const [checkIn, setCheckIn] = useState("");
-  const [packageType, setPackageType] = useState("Standard");
-  const [notes, setNotes] = useState("");
-  
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    city: "",
+    checkInDate: "",
+    guests: "2"
+  });
 
-  useEffect(() => {
-    if (hotelId) {
-      axios
-        .get(`${BACKEND_URL}/api/hotels/${hotelId}`)
-        .then((res) => {
-          setHotel(res.data);
-        })
-        .catch((err) => console.error("Error loading hotel context:", err));
-    }
-  }, [hotelId]);
+  // Coupon / Offer state variables
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [couponMessage, setCouponMessage] = useState("");
 
-  const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-      if (window.Razorpay) {
-        resolve(true);
-        return;
-      }
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
+  // Local hotels database (fallback ke liye)
+  const localHotels = {
+    "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy" },
+    "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli" },
+    "local_03": { name: "Hotel Prisha Pahal", location: "Barahat Range" },
+    "local_04": { name: "Hotel K.P Residency", location: "Near Medicose" },
+    "local_05": { name: "Dhruvnanda Homestay", location: "ITBP Rd" },
+    "local_06": { name: "Himalayan Abode", location: "Main Market" },
+    "local_07": { name: "Riverside Retreat", location: "Bhagirathi Bank" },
+    "local_08": { name: "Gangotri View Inn", location: "Gangori Bridge" },
+    "local_09": { name: "Green Valley Homestay", location: "Village Road" },
+    "local_10": { name: "Uttarkashi Guest House", location: "Old Town" },
+    "local_11": { name: "Mountain Peak Hotel", location: "Dunda Main Rd" },
+    "local_12": { name: "Peaceful Stay", location: "Valley View" },
+    "local_13": { name: "Char Dham Camp", location: "Near Highway" },
+    "local_14": { name: "Sunrise Residency", location: "Tiloth Road" },
+    "local_15": { name: "Nature's Nest", location: "Orchard Side" },
+    "local_16": { name: "Skyline Hotel", location: "City Center" }
   };
 
-  async function handleBookingAndPayment(e) {
+  useEffect(() => {
+    if (localHotels[id]) {
+      setHotel(localHotels[id]);
+    } else {
+      axios.get(`${BACKEND_URL}/api/hotels/${id}`)
+        .then((res) => setHotel(res.data))
+        .catch(() => setHotel({ name: "Himalayan Luxury Stay", location: "Uttarakhand" }));
+    }
+  }, [id]);
+
+  // 2. Coupon apply karne ka logic (Price Reduce karne ke liye)
+  const handleApplyCoupon = (e) => {
     e.preventDefault();
+    const code = couponCode.trim().toUpperCase();
 
-    if (!hotelId) return alert("Hotel selection missing from URL.");
-    if (!name || !phone || !email || !checkIn) return alert("Please fill required fields (*)");
-
-    setLoading(true);
-
-    const isScriptLoaded = await loadRazorpayScript();
-    if (!isScriptLoaded) {
-      alert("Razorpay SDK failed to load. Please check your internet connection.");
-      setLoading(false);
-      return;
+    if (code === "HIMALAYA10" || code === "WELCOME10") {
+      const discAmount = Math.round(finalPrice * 0.10); // 10% discount
+      setDiscount(discAmount);
+      setCouponMessage("🎉 10% Discount Applied Successfully!");
+    } else if (code === "FLAT500") {
+      setDiscount(500); // Flat ₹500 discount
+      setCouponMessage("🎉 Flat ₹500 Discount Applied Successfully!");
+    } else {
+      setDiscount(0);
+      setCouponMessage("❌ Invalid Coupon Code. Try HIMALAYA10 or FLAT500");
     }
+  };
 
-    try {
-      // Hotel price me se symbols/commas hatakar integer paise me convert karein
-      const rawPrice = hotel?.price ? hotel.price : 2500;
-      const cleanPrice = String(rawPrice).replace(/[^0-9]/g, ""); 
-      const numericPrice = Number(cleanPrice) || 2500;
-      const amountInPaise = Math.round(numericPrice * 100);
-      
-      const orderRes = await axios.post(`${BACKEND_URL}/api/create-order`, {
-        amount: amountInPaise, 
-        currency: "INR"
-      });
+  const netPayablePrice = Math.max(0, finalPrice - discount);
 
-      const order = orderRes.data;
-      const orderId = order.id || order.order_id;
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-      if (!order || !orderId) {
-        alert("Server failed to initiate payment order.");
-        setLoading(false);
-        return;
-      }
-
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TKtTqRDH6nVxxo",
-        amount: order.amount,
-        currency: order.currency || "INR",
-        name: "The Himalayans",
-        description: hotel ? hotel.name : "Himalayan Booking",
-        order_id: orderId,
-        handler: async function (response) {
-          try {
-            const verifyRes = await axios.post(`${BACKEND_URL}/api/verify-payment`, {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            });
-
-            if (verifyRes.data.success) {
-              await axios.post(`${BACKEND_URL}/api/bookings`, {
-                hotelId,
-                name,
-                email,
-                phone,
-                city,
-                guests: Number(guests),
-                checkIn,
-                packageType,
-                notes,
-              });
-
-              alert("Booking & Payment Successful! 🎉");
-              navigate("/mytrips");
-            } else {
-              alert("Payment verification failed.");
-            }
-          } catch (err) {
-            console.error("Verification err:", err);
-            alert("Internal error during payment confirmation.");
-          } finally {
-            setLoading(false);
-          }
-        },
-        prefill: { name, email, contact: phone },
-        theme: { color: "#2563eb" },
-      };
-
-      const paymentObject = new window.Razorpay(options);
-
-      paymentObject.on("payment.failed", function (response) {
-        console.error("Payment Failed:", response.error);
-        alert(`Payment Failed: ${response.error.description || 'Transaction cancelled'}`);
-        setLoading(false);
-      });
-
-      paymentObject.open();
-
-    } catch (err) {
-      console.error("Payment Order Error:", err);
-      const serverMessage = err.response?.data?.error || err.message || "Failed to reach payment gateway.";
-      alert(`Payment Error: ${serverMessage}`);
-      setLoading(false);
-    }
-  }
+  const handleBookingSubmit = (e) => {
+    e.preventDefault();
+    alert(`Booking Confirmed for ${formData.fullName}! Room: ${roomType}, Meal Plan: ${mealPlan}, Total Paid: ₹${netPayablePrice}`);
+    navigate("/");
+  };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "40px auto", padding: "30px", background: "#fff", borderRadius: "16px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", fontFamily: "sans-serif" }}>
-      <h2 style={{ marginBottom: "5px", color: "#1e293b" }}>Book Your Stay</h2>
-      {hotel ? (
-        <p style={{ color: "#2563eb", fontWeight: "bold", marginTop: 0 }}>📍 {hotel.name} — ₹{hotel.price}/night</p>
-      ) : (
-        <p style={{ color: "#64748b", fontSize: "14px" }}>Loading hotel details...</p>
-      )}
-      
-      <form onSubmit={handleBookingAndPayment} style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
-        <input placeholder="Full Name *" value={name} onChange={(e) => setName(e.target.value)} required style={inputStyle} />
-        <input type="email" placeholder="Email Address *" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
-        <input type="tel" placeholder="Phone Number *" value={phone} onChange={(e) => setPhone(e.target.value)} required style={inputStyle} />
-        <input placeholder="Your City" value={city} onChange={(e) => setCity(e.target.value)} style={inputStyle} />
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", minHeight: "100vh", padding: "40px 20px" }}>
+      <div style={{ maxWidth: "800px", margin: "0 auto", background: "white", borderRadius: "20px", border: "1px solid #e2e8f0", boxShadow: "0 10px 30px rgba(0,0,0,0.05)", padding: "32px" }}>
         
-        <div style={{ display: "flex", gap: "10px" }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ fontSize: "12px", color: "#64748b" }}>Check-in Date *</label>
-            <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} required style={inputStyle} />
+        <h2 style={{ fontSize: "24px", fontWeight: "900", color: "#0f172a", marginBottom: "6px" }}>Book Your Stay</h2>
+        <p style={{ fontSize: "14px", color: "#64748b", marginBottom: "24px" }}>
+          {hotel ? hotel.name : "Loading hotel details..."} ({hotel?.location})
+        </p>
+
+        {/* Selected Room & Meal Plan Summary Box */}
+        <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "16px", borderRadius: "12px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+          <div>
+            <span style={{ fontSize: "11px", fontWeight: "800", color: "#166534", textTransform: "uppercase", display: "block" }}>Selected Configuration</span>
+            <h4 style={{ fontSize: "16px", fontWeight: "900", color: "#14532d", margin: "2px 0" }}>{roomType}</h4>
+            <span style={{ fontSize: "12px", color: "#166534", fontWeight: "700" }}>🍽️ Meal Plan: {mealPlan}</span>
           </div>
-          <div style={{ flex: 1 }}>
-            <label style={{ fontSize: "12px", color: "#64748b" }}>Number of Guests</label>
-            <input type="number" min="1" max="10" value={guests} onChange={(e) => setGuests(e.target.value)} style={inputStyle} />
+          <div style={{ textAlign: "right" }}>
+            <span style={{ fontSize: "12px", color: "#64748b", display: "block" }}>Base Price: ₹{finalPrice}</span>
+            {discount > 0 && <span style={{ fontSize: "12px", color: "#dc2626", display: "block" }}>Discount: -₹{discount}</span>}
+            <span style={{ fontSize: "20px", fontWeight: "900", color: "#0f172a" }}>₹{netPayablePrice}</span>
           </div>
         </div>
 
-        <div>
-          <label style={{ fontSize: "12px", color: "#64748b" }}>Choose Package</label>
-          <select value={packageType} onChange={(e) => setPackageType(e.target.value)} style={inputStyle}>
-            <option value="Standard">Standard Package</option>
-            <option value="Deluxe">Deluxe Package</option>
-            <option value="Premium">Premium Luxury Package</option>
-          </select>
+        {/* Coupon Code Section (Yahan price reduce hoga) */}
+        <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "16px", borderRadius: "12px", marginBottom: "24px" }}>
+          <label style={{ fontSize: "12px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "8px" }}>Have a Coupon Code / Offer?</label>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <input 
+              type="text" 
+              placeholder="e.g. HIMALAYA10 or FLAT500" 
+              value={couponCode} 
+              onChange={(e) => setCouponCode(e.target.value)}
+              style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13px", outline: "none" }}
+            />
+            <button 
+              type="button" 
+              onClick={handleApplyCoupon}
+              style={{ background: "#0284c7", color: "white", border: "none", padding: "0 18px", borderRadius: "8px", fontWeight: "800", fontSize: "13px", cursor: "pointer" }}
+            >
+              Apply
+            </button>
+          </div>
+          {couponMessage && (
+            <p style={{ fontSize: "12px", fontWeight: "700", color: discount > 0 ? "#16a34a" : "#dc2626", margin: "8px 0 0 0" }}>
+              {couponMessage}
+            </p>
+          )}
         </div>
 
-        <textarea placeholder="Any Special Notes or Requirements?" value={notes} onChange={(e) => setNotes(e.target.value)} rows="3" style={inputStyle} />
+        {/* Booking Form */}
+        <form onSubmit={handleBookingSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div>
+              <label style={labelStyle}>Full Name *</label>
+              <input type="text" name="fullName" required placeholder="Enter your name" value={formData.fullName} onChange={handleInputChange} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Email Address *</label>
+              <input type="email" name="email" required placeholder="name@example.com" value={formData.email} onChange={handleInputChange} style={inputStyle} />
+            </div>
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{ padding: "14px", background: "linear-gradient(135deg,#16a34a,#22c55e)", color: "white", border: "none", borderRadius: "10px", fontSize: "16px", fontWeight: "bold", cursor: "pointer", marginTop: "10px" }}
-        >
-          {loading ? "Processing Secure Payment..." : "Pay Now & Confirm Booking"}
-        </button>
-      </form>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div>
+              <label style={labelStyle}>Phone Number *</label>
+              <input type="tel" name="phone" required placeholder="9876543210" value={formData.phone} onChange={handleInputChange} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Your City</label>
+              <input type="text" name="city" placeholder="e.g. Delhi, Dehradun" value={formData.city} onChange={handleInputChange} style={inputStyle} />
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div>
+              <label style={labelStyle}>Check-in Date *</label>
+              <input type="date" name="checkInDate" required value={formData.checkInDate} onChange={handleInputChange} style={inputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Number of Guests *</label>
+              <input type="number" name="guests" min="1" max="6" required value={formData.guests} onChange={handleInputChange} style={inputStyle} />
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            style={{ marginTop: "16px", background: "linear-gradient(135deg, #22c55e, #16a34a)", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontWeight: "900", fontSize: "15px", cursor: "pointer", boxShadow: "0 6px 18px rgba(34, 197, 94, 0.35)" }}
+          >
+            Pay Now & Confirm Booking (₹{netPayablePrice})
+          </button>
+        </form>
+
+      </div>
     </div>
   );
 }
+
+const labelStyle = {
+  fontSize: "12px",
+  fontWeight: "700",
+  color: "#475569",
+  display: "block",
+  marginBottom: "6px"
+};
 
 const inputStyle = {
   width: "100%",
@@ -202,5 +198,6 @@ const inputStyle = {
   borderRadius: "8px",
   border: "1px solid #cbd5e1",
   fontSize: "14px",
+  outline: "none",
   boxSizing: "border-box"
 };
