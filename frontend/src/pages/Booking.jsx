@@ -9,7 +9,6 @@ export default function BookingPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 1. HotelDetails se pass ki gayi state ko receive karna
   const { roomType = "Standard Room", finalPrice = 1799, mealPlan = "EP (Room Only)" } = location.state || {};
 
   const [hotel, setHotel] = useState(null);
@@ -22,12 +21,10 @@ export default function BookingPage() {
     guests: "2"
   });
 
-  // Coupon / Offer state variables
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponMessage, setCouponMessage] = useState("");
 
-  // Local hotels database (fallback ke liye)
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy" },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli" },
@@ -57,21 +54,48 @@ export default function BookingPage() {
     }
   }, [id]);
 
-  // 2. Coupon apply karne ka logic (Price Reduce karne ke liye)
+  // Exact Offers Page Coupon Code Validation Logic
   const handleApplyCoupon = (e) => {
     e.preventDefault();
     const code = couponCode.trim().toUpperCase();
+    const currentRoom = roomType.toLowerCase();
 
-    if (code === "HIMALAYA10" || code === "WELCOME10") {
-      const discAmount = Math.round(finalPrice * 0.10); // 10% discount
+    if (code === "TREK15") {
+      // FLAT 15% OFF sirf Standard Room aur Deluxe Room ke liye
+      if (currentRoom.includes("standard") || currentRoom.includes("deluxe")) {
+        const discAmount = Math.round(finalPrice * 0.15);
+        setDiscount(discAmount);
+        setCouponMessage("🎉 TREK15 Applied: 15% OFF on Standard/Deluxe Room!");
+      } else {
+        setDiscount(0);
+        setCouponMessage("❌ TREK15 is only valid for Standard and Deluxe Rooms.");
+      }
+    } 
+    else if (code === "HIMALAYA20") {
+      // 20% Instant Discount (All rooms or specific as per logic)
+      const discAmount = Math.round(finalPrice * 0.20);
       setDiscount(discAmount);
-      setCouponMessage("🎉 10% Discount Applied Successfully!");
-    } else if (code === "FLAT500") {
-      setDiscount(500); // Flat ₹500 discount
-      setCouponMessage("🎉 Flat ₹500 Discount Applied Successfully!");
-    } else {
+      setCouponMessage("🎉 HIMALAYA20 Applied: 20% Instant Discount!");
+    } 
+    else if (code === "WEEKEND1500") {
+      // Flat ₹1,500 off on Super Deluxe and Family Suite or minimum booking value
+      if (currentRoom.includes("super") || currentRoom.includes("family")) {
+        setDiscount(1500);
+        setCouponMessage("🎉 WEEKEND1500 Applied: Flat ₹1,500 OFF!");
+      } else {
+        setDiscount(1500);
+        setCouponMessage("🎉 WEEKEND1500 Applied: Flat ₹1,500 OFF!");
+      }
+    } 
+    else if (code === "WORKATION") {
+      // Stay 5 Pay for 4 equivalent discount estimation
+      const discAmount = Math.round(finalPrice / 5);
+      setDiscount(discAmount);
+      setCouponMessage("🎉 WORKATION Applied: Long stay benefit added!");
+    } 
+    else {
       setDiscount(0);
-      setCouponMessage("❌ Invalid Coupon Code. Try HIMALAYA10 or FLAT500");
+      setCouponMessage("❌ Invalid Coupon Code. Use valid codes from Offers page (e.g., TREK15, HIMALAYA20, WEEKEND1500, WORKATION)");
     }
   };
 
@@ -96,7 +120,7 @@ export default function BookingPage() {
           {hotel ? hotel.name : "Loading hotel details..."} ({hotel?.location})
         </p>
 
-        {/* Selected Room & Meal Plan Summary Box */}
+        {/* Selected Room & Meal Plan Summary */}
         <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "16px", borderRadius: "12px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
           <div>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#166534", textTransform: "uppercase", display: "block" }}>Selected Configuration</span>
@@ -110,23 +134,23 @@ export default function BookingPage() {
           </div>
         </div>
 
-        {/* Coupon Code Section (Yahan price reduce hoga) */}
+        {/* Official Offers Coupon Section */}
         <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", padding: "16px", borderRadius: "12px", marginBottom: "24px" }}>
-          <label style={{ fontSize: "12px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "8px" }}>Have a Coupon Code / Offer?</label>
+          <label style={{ fontSize: "12px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "8px" }}>Apply Offers Page Coupon Code</label>
           <div style={{ display: "flex", gap: "10px" }}>
             <input 
               type="text" 
-              placeholder="e.g. HIMALAYA10 or FLAT500" 
+              placeholder="e.g. TREK15, HIMALAYA20, WEEKEND1500" 
               value={couponCode} 
               onChange={(e) => setCouponCode(e.target.value)}
-              style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13px", outline: "none" }}
+              style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13px", outline: "none", textTransform: "uppercase" }}
             />
             <button 
               type="button" 
               onClick={handleApplyCoupon}
               style={{ background: "#0284c7", color: "white", border: "none", padding: "0 18px", borderRadius: "8px", fontWeight: "800", fontSize: "13px", cursor: "pointer" }}
             >
-              Apply
+              Apply Offer
             </button>
           </div>
           {couponMessage && (
@@ -136,7 +160,7 @@ export default function BookingPage() {
           )}
         </div>
 
-        {/* Booking Form */}
+        {/* Booking Form Details */}
         <form onSubmit={handleBookingSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
             <div>
