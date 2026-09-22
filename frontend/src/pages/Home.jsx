@@ -38,7 +38,7 @@ export default function Home() {
     return () => clearInterval(slideInterval);
   }, [heroImages.length]);
 
-  // Local Uttarkashi Stays
+  // Local Uttarkashi Stays + Dummy Cards for Unique Graphics
   const localUttarkashiHotels = [
     { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
@@ -46,6 +46,9 @@ export default function Home() {
     { _id: "local_04", name: "Hotel K.P Residency", city: "Matli", image: "/images/hotals/Hotel K.P Residency1.jpg", location: "Near Medicose", price: "2,200", rating: "4.6", category: "Hotels" },
     { _id: "local_05", name: "Dhruvnanda Homestay", city: "Athali", image: "/images/hotals/Dhruvnanda Homestay1.jpg", location: "ITBP Rd", price: "1,599", rating: "4.8", category: "Hotels" },
     { _id: "local_06", name: "Himalayan Abode", city: "Uttarkashi", image: "/images/hotals/Himalayan Abode home stay.jpg", location: "Main Market", price: "2,799", rating: "4.9", category: "Hotels" },
+    // Extra Unique Dummy Cards for Graphic Enhancement
+    { _id: "dummy_01", name: "Snow Peak Luxury Villa", city: "Harsil", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600", location: "Apple Orchards", price: "4,500", rating: "5.0", category: "Hotels" },
+    { _id: "dummy_02", name: "Ganga Riverside Glamping", city: "Rishikesh", image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?w=600", location: "Brahmapuri", price: "3,200", rating: "4.9", category: "Hotels" },
     { _id: "local_07", name: "Ganges Riverside Ashram", city: "Rishikesh", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", location: "Bhagirathi Bank", price: "1,899", rating: "4.9", category: "Yoga" },
     { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
   ];
@@ -73,7 +76,7 @@ export default function Home() {
         
         const merged = [
           ...localUttarkashiHotels, 
-          ...backendData.filter(bh => bh._id && !String(bh._id).startsWith("local_"))
+          ...backendData.filter(bh => bh._id && !String(bh._id).startsWith("local_") && !String(bh._id).startsWith("dummy_"))
         ];
         setHotels(merged);
         setLoading(false);
@@ -244,51 +247,6 @@ export default function Home() {
               <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "15px", fontWeight: "800" }}>24/7 Mountain Support</h4>
               <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>Dedicated local assistance during travel.</p>
             </div>
-          </div>
-        </div>
-
-        {/* Explore Districts & Local Culture Section */}
-        <div style={{ marginBottom: "60px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
-            <div>
-              <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>उत्तराखंड संस्कृति और ज़ायका</span>
-              <h2 style={{ fontSize: "30px", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
-                Explore Districts & Local Food
-              </h2>
-            </div>
-            <button 
-              onClick={() => navigate("/districts")}
-              style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
-            >
-              View All Districts →
-            </button>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "24px" }}>
-            {uttarakhandDistricts.map((dist) => (
-              <div 
-                key={dist.id}
-                onClick={() => navigate(`/districts/${dist.id}`)}
-                style={{
-                  background: "white",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  border: "1px solid #e2e8f0",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
-                  transition: "transform 0.2s ease"
-                }}
-              >
-                <img src={dist.image} alt={dist.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} />
-                <div style={{ padding: "18px" }}>
-                  <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{dist.name}</h3>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 12px 0" }}>{dist.tagline}</p>
-                  <span style={{ background: "#f0fdf4", color: "#166534", fontSize: "11px", fontWeight: "700", padding: "4px 10px", borderRadius: "6px" }}>
-                    🍽️ {dist.food}
-                  </span>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 
@@ -491,6 +449,51 @@ export default function Home() {
                   </div>
                 </div>
               </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Explore Districts & Local Culture Section (Moved to Last) */}
+        <div style={{ marginBottom: "60px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
+            <div>
+              <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>उत्तराखंड संस्कृति और ज़ायका</span>
+              <h2 style={{ fontSize: "30px", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
+                Explore Districts & Local Food
+              </h2>
+            </div>
+            <button 
+              onClick={() => navigate("/districts")}
+              style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
+            >
+              View All Districts →
+            </button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "24px" }}>
+            {uttarakhandDistricts.map((dist) => (
+              <div 
+                key={dist.id}
+                onClick={() => navigate(`/districts/${dist.id}`)}
+                style={{
+                  background: "white",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  border: "1px solid #e2e8f0",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+                  transition: "transform 0.2s ease"
+                }}
+              >
+                <img src={dist.image} alt={dist.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} />
+                <div style={{ padding: "18px" }}>
+                  <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{dist.name}</h3>
+                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 12px 0" }}>{dist.tagline}</p>
+                  <span style={{ background: "#f0fdf4", color: "#166534", fontSize: "11px", fontWeight: "700", padding: "4px 10px", borderRadius: "6px" }}>
+                    🍽️ {dist.food}
+                  </span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
