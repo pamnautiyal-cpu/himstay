@@ -12,7 +12,7 @@ export default function Home() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // हीरो बैनर के लिए सही और रिलायबल इमेज पाथ्स
+  // Hero Banner Images
   const heroImages = [
     "/images/hotals/Hotel Nagraja Palace1.jpg",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
@@ -28,7 +28,7 @@ export default function Home() {
     return () => clearInterval(slideInterval);
   }, [heroImages.length]);
 
-  // लोकल होटल्स (Hotel Nagraja Palace सही पाथ के साथ)
+  // Local Uttarkashi Stays
   const localUttarkashiHotels = [
     { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
@@ -44,18 +44,25 @@ export default function Home() {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
-        const backendData = (res.data || []).map(item => ({
+        const rawData = Array.isArray(res.data) ? res.data : [];
+        const backendData = rawData.map(item => ({
           ...item,
           price: item.price || "2,499",
           rating: item.rating || "4.8",
           category: item.category || "Hotels",
           image: item.image || item.img || "/images/hotals/Hotel Nagraja Palace1.jpg"
         }));
-        const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !bh._id.startsWith("local_"))];
+        
+        // Merge backend and local data safely
+        const merged = [
+          ...localUttarkashiHotels, 
+          ...backendData.filter(bh => bh._id && !String(bh._id).startsWith("local_"))
+        ];
         setHotels(merged);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("Backend fetch error:", err);
         setHotels(localUttarkashiHotels);
         setLoading(false);
       });
@@ -67,19 +74,23 @@ export default function Home() {
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
-    navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${activeTab}`);
+    navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${encodeURIComponent(activeTab)}`);
   };
 
-  // 🌟 RAVI GOVINDAM EXCLUSION FILTER FOR HOMEPAGE
+  // Safe Filter Logic for Homepage
   const filteredListings = hotels.filter((item) => {
-    const isRaviGovindam = item.name && item.name.trim().toLowerCase() === "ravi govindam";
-    if (isRaviGovindam) return false;
+    const itemName = (item.name || "").trim().toLowerCase();
+    if (itemName === "ravi govindam") return false;
 
     if (!item.category) return true;
-    return item.category.toLowerCase() === activeTab.toLowerCase();
+    
+    // Flexible matching for Category (e.g. "hotels" vs "Hotels")
+    const itemCat = String(item.category).trim().toLowerCase();
+    const currentTab = String(activeTab).trim().toLowerCase();
+    
+    return itemCat === currentTab;
   });
 
-  // चार धाम के लिए पब्लिक फोल्डर वाले सटीक इमेज पाथ्स
   const tourismDestinations = [
     { name: "Kedarnath", desc: "Sacred Jyotirlinga nestled in the high Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", path: "/details/kedarnath" },
     { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu on the Alaknanda riverbank.", img: "/images/chardham/badrinath.jpg", path: "/details/badrinath" },
@@ -281,7 +292,7 @@ export default function Home() {
                     transition: "transform 0.2s ease, box-shadow 0.2s ease",
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-between"
+                    justify: "space-between"
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-4px)";
