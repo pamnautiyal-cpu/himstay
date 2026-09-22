@@ -25,8 +25,9 @@ export default function ListProperty() {
         localStorage.getItem("currentUser");
 
       if (!userStr) {
-        alert("Access Denied! You must log in or sign up before listing a property.");
-        navigate("/login", { replace: true });
+        alert("Aapko property list karne ke liye pehle Sign Up karna hoga.");
+        // Directly sending state and query param for explicit Signup tab selection
+        navigate("/signup?mode=signup", { replace: true, state: { mode: "signup", isSignup: true } });
         return;
       }
       
@@ -36,8 +37,8 @@ export default function ListProperty() {
         
         if (!email) {
           localStorage.removeItem("user"); 
-          alert("Session expired or invalid. Please login again.");
-          navigate("/login", { replace: true });
+          alert("Aapka session expiry ya invalid hai. Kripya fir se Sign Up karein.");
+          navigate("/signup?mode=signup", { replace: true, state: { mode: "signup", isSignup: true } });
           return;
         }
         setOwnerInfo({
@@ -46,7 +47,7 @@ export default function ListProperty() {
         });
       } catch (e) {
         console.error("Auth check failed", e);
-        navigate("/login", { replace: true });
+        navigate("/signup?mode=signup", { replace: true, state: { mode: "signup", isSignup: true } });
       }
     };
 
@@ -229,7 +230,7 @@ export default function ListProperty() {
   return (
     <div style={{ maxWidth: "850px", margin: "30px auto", padding: "30px", background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.08)" }}>
       
-      {/* 🌟 STEPPER HEADER */}
+      {/* STEPPER HEADER */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "30px", borderBottom: "1px solid #e2e8f0", paddingBottom: "15px", overflowX: "auto", gap: "10px" }}>
         {[
           { step: 1, label: "Basic Info" },
@@ -262,7 +263,7 @@ export default function ListProperty() {
 
       <form onSubmit={handleInitialSubmit}>
         
-        {/* --- STEP 1: BASIC INFO --- */}
+        {/* STEP 1: BASIC INFO */}
         {currentStep === 1 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Basic Information</h3>
@@ -322,7 +323,7 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 2: LOCATION --- */}
+        {/* STEP 2: LOCATION */}
         {currentStep === 2 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Location Details</h3>
@@ -359,7 +360,7 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 3: ROOM DETAILS & PRICING --- */}
+        {/* STEP 3: ROOM DETAILS & PRICING */}
         {currentStep === 3 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Room Details & Pricing</h3>
@@ -465,7 +466,7 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 4: AMENITIES --- */}
+        {/* STEP 4: AMENITIES */}
         {currentStep === 4 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Property Amenities</h3>
@@ -504,7 +505,7 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 5: DESCRIPTION --- */}
+        {/* STEP 5: DESCRIPTION */}
         {currentStep === 5 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Description & House Rules</h3>
@@ -525,7 +526,7 @@ export default function ListProperty() {
           </div>
         )}
 
-        {/* --- STEP 6: PHOTOS & SUBMISSION --- */}
+        {/* STEP 6: PHOTOS & SUBMISSION */}
         {currentStep === 6 && (
           <div>
             <h3 style={{ marginBottom: "15px", color: "#1e293b" }}>Photos & Final Submission</h3>
