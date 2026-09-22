@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function ListProperty() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   
@@ -16,6 +18,7 @@ export default function ListProperty() {
   const [enteredOtp, setEnteredOtp] = useState("");
   const [otpLoading, setOtpLoading] = useState(false);
 
+  // 🎯 STRICT AUTH CHECK: अगर यूजर लॉगिन नहीं है, तो सीधे /signup पर भेजेगा
   useEffect(() => {
     const checkUserAuth = () => {
       const userStr = 
@@ -25,9 +28,11 @@ export default function ListProperty() {
         localStorage.getItem("currentUser");
 
       if (!userStr) {
-        alert("Aapko property list karne ke liye pehle Sign Up karna hoga.");
-        // Directly sending state and query param for explicit Signup tab selection
-        navigate("/signup?mode=signup", { replace: true, state: { mode: "signup", isSignup: true } });
+        alert("Property list karne ke liye pehle Sign Up karein.");
+        navigate("/signup", { 
+          replace: true, 
+          state: { from: location.pathname, mode: "signup", isSignup: true } 
+        });
         return;
       }
       
@@ -37,22 +42,29 @@ export default function ListProperty() {
         
         if (!email) {
           localStorage.removeItem("user"); 
-          alert("Aapka session expiry ya invalid hai. Kripya fir se Sign Up karein.");
-          navigate("/signup?mode=signup", { replace: true, state: { mode: "signup", isSignup: true } });
+          alert("Aapka session expire ho gaya hai. Kripya fir se Sign Up karein.");
+          navigate("/signup", { 
+            replace: true, 
+            state: { from: location.pathname, mode: "signup", isSignup: true } 
+          });
           return;
         }
+
         setOwnerInfo({
           email: email,
           name: parsedUser?.name || "Partner"
         });
       } catch (e) {
         console.error("Auth check failed", e);
-        navigate("/signup?mode=signup", { replace: true, state: { mode: "signup", isSignup: true } });
+        navigate("/signup", { 
+          replace: true, 
+          state: { from: location.pathname, mode: "signup", isSignup: true } 
+        });
       }
     };
 
     checkUserAuth();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const [formData, setFormData] = useState({
     listingCategory: "hotel",
