@@ -38,7 +38,7 @@ const districtData = [
     id: "tehri",
     name: "Tehri Garhwal (टिहरी गढ़वाल)",
     tagline: "Traditional Taste by the Majestic Lake Waters",
-    image: "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
     famousFood: ["Chainsoo", "Gahat Dal", "Urad Pakodi"],
     foodSpots: [
       {
@@ -165,7 +165,15 @@ export default function DistrictsPage() {
               }}
             >
               <div style={{ height: "200px", overflow: "hidden", position: "relative" }}>
-                <img src={district.image} alt={district.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img 
+                  src={district.image} 
+                  alt={district.name} 
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                  onError={(e)=>{
+                    // Fallback image if any link fails
+                    e.target.src = "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=800&q=80";
+                  }}
+                />
                 <div style={{ position: "absolute", bottom: "12px", left: "12px", background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(4px)", color: "white", padding: "6px 12px", borderRadius: "8px", fontSize: "12px", fontWeight: "700" }}>
                   🍽️ {district.foodSpots.length} Food Spots & Cafes Listed
                 </div>
@@ -272,7 +280,7 @@ export default function DistrictsPage() {
           </div>
         )}
 
-        {/* Opening Soon / Coming Soon Modal in Professional English */}
+        {/* Opening Soon / Coming Soon Modal */}
         {selectedSpot && (
           <div style={{
             position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
