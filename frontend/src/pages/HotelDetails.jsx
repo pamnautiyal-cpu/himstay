@@ -8,8 +8,18 @@ export default function HotelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
+  
+  // State to track selected meal plan for each room index: { [roomIndex]: { planName, priceExtra } }
+  const [selectedMealPlans, setSelectedMealPlans] = useState({});
 
-  // सभी 16 होटल्स के लिए Universal Standard, Deluxe, Super Deluxe & Family Suite categories
+  // Sabhi 16 hotals ke liye universal rooms list
+  const standardRoomsList = [
+    { type: "Standard Room", basePrice: 1799, inclusions: ["1 Comfortable Bed", "Max 2 Adults", "Attached Washroom", "Free Wi-Fi"] },
+    { type: "Deluxe Room", basePrice: 2299, inclusions: ["1 Double Bed", "Max 2 Adults + 1 Child", "Mountain View", "LED TV"] },
+    { type: "Super Deluxe Room", basePrice: 2899, inclusions: ["1 Double Bed + Extra Mattress", "Max 3 Guests", "24/7 Hot Water", "Balcony"] },
+    { type: "Family Suite", basePrice: 3599, inclusions: ["2 Double Beds", "Max 4 Guests", "Spacious Hall", "Complimentary Breakfast"] }
+  ];
+
   const localHotels = {
     "local_01": { name: "Hotel Nagraja Palace", location: "Gangotri Hwy", description: "Luxury stay at Gangotri with traditional architecture and modern comfort.", images: ["/images/hotals/Hotel Nagraja Palace1.jpg", "/images/hotals/Hotel Nagraja Palace2.jpg", "/images/hotals/Hotel Nagraja Palace3.jpg"] },
     "local_02": { name: "Grandparents Homestay", location: "NH 34, Matli", description: "Cozy home-like stay offering genuine pahadi hospitality and warmth.", images: ["/images/hotals/Grandparents Homestay1.jpg", "/images/hotals/Grandparents Homestay2.jpg", "/images/hotals/Grandparents Homestay3.jpg"] },
@@ -29,20 +39,10 @@ export default function HotelDetails() {
     "local_16": { name: "Skyline Hotel", location: "City Center", description: "Convenient city center location with premium hospitality.", images: ["https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600"] }
   };
 
-  // हर होटल के लिए सभी कैटेगरीज के शानदार रूम्स का सेट
-  const standardRoomsList = [
-    { type: "Standard Room", price: 1799, inclusions: ["1 Comfortable Bed", "Max 2 Adults", "Attached Washroom", "Free Wi-Fi"] },
-    { type: "Deluxe Room", price: 2299, inclusions: ["1 Double Bed", "Max 2 Adults + 1 Child", "Mountain View", "LED TV"] },
-    { type: "Super Deluxe Room", price: 2899, inclusions: ["1 Double Bed + Extra Mattress", "Max 3 Guests", "24/7 Hot Water", "Balcony"] },
-    { type: "Family Suite", price: 3599, inclusions: ["2 Double Beds", "Max 4 Guests", "Spacious Hall", "Complimentary Breakfast"] }
-  ];
-
   useEffect(() => {
+    let baseRooms = standardRoomsList;
     if (localHotels[id]) {
-      setHotel({
-        ...localHotels[id],
-        rooms: standardRoomsList
-      });
+      setHotel({ ...localHotels[id], rooms: baseRooms });
     } else if (id) {
       axios.get(`${BACKEND_URL}/api/hotels/${id}`)
         .then((res) => {
@@ -51,21 +51,28 @@ export default function HotelDetails() {
             ...data,
             location: data.city ? `${data.city}, ${data.state || ""}` : (data.location || "Uttarakhand"),
             images: data.images && data.images.length > 0 ? data.images : ["/images/hotals/Hotel Nagraja Palace1.jpg"],
-            rooms: data.rooms && data.rooms.length > 0 ? data.rooms : standardRoomsList
+            rooms: data.rooms && data.rooms.length > 0 ? data.rooms : baseRooms
           });
         })
         .catch((err) => {
           console.error("Error fetching property details:", err);
-          setHotel({ ...localHotels["local_01"], rooms: standardRoomsList });
+          setHotel({ ...localHotels["local_01"], rooms: baseRooms });
         });
     } else {
-      setHotel({ ...localHotels["local_01"], rooms: standardRoomsList });
+      setHotel({ ...localHotels["local_01"], rooms: baseRooms });
     }
   }, [id]);
 
-  const navigateToBooking = () => {
+  const handleMealPlanSelect = (roomIndex, planName, extraCost) => {
+    setSelectedMealPlans(prev => ({
+      ...prev,
+      [roomIndex]: { planName, extraCost }
+    }));
+  };
+
+  const navigateToBooking = (roomType, finalPrice, mealPlan) => {
     const targetId = id || "local_01";
-    navigate(`/booking/${targetId}`);
+    navigate(`/booking/${targetId}`, { state: { roomType, finalPrice, mealPlan } });
   };
 
   if (!hotel) return <div style={{ textAlign: "center", padding: "100px", fontSize: "18px", color: "#64748b" }}>🏔️ Loading Premium Experience...</div>;
@@ -95,7 +102,7 @@ export default function HotelDetails() {
             <img 
               src={mainImg} 
               alt={hotel.name} 
-              style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }} 
+              style={{ width: "100%", height: "100%", objectFit: "cover" }} 
               onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
             />
           </div>
@@ -155,47 +162,116 @@ export default function HotelDetails() {
               </div>
             </div>
 
-            {/* Select Your Room & All Categories Section */}
+            {/* Select Your Room & Meal Plans Section */}
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
               <div style={{ marginBottom: "20px" }}>
                 <span style={{ background: "rgba(2, 132, 199, 0.1)", color: "#0284c7", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase" }}>
-                  Tailored Accommodations
+                  Tailored Accommodations & Meal Plans
                 </span>
-                <h3 style={{ fontSize: "20px", fontWeight: "900", color: "#0f172a", margin: "8px 0 4px 0" }}>Select Your Room & Plan</h3>
-                <p style={{ fontSize: "13px", color: "#64748b", margin: 0 }}>Choose from our range of meticulously crafted rooms equipped with modern comforts.</p>
+                <h3 style={{ fontSize: "20px", fontWeight: "900", color: "#0f172a", margin: "8px 0 4px 0" }}>Select Room & Meal Plan (EP, CP, MAP, AP)</h3>
+                <p style={{ fontSize: "13px", color: "#64748b", margin: 0 }}>Customize your stay with your preferred meal package.</p>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                {hotel.rooms?.map((room, index) => (
-                  <div key={index} style={{ border: "2px solid #e2e8f0", borderRadius: "16px", padding: "20px", background: "#ffffff", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "18px", transition: "all 0.3s ease" }}>
-                    <div>
-                      <h4 style={{ fontSize: "17px", fontWeight: "900", color: "#0f172a", margin: "0 0 8px 0" }}>{room.type}</h4>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
-                        {room.inclusions?.map((inc, i) => (
-                          <span key={i} style={{ background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0", padding: "3px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "700" }}>
-                            ✓ {inc}
-                          </span>
-                        ))}
+              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                {hotel.rooms?.map((room, index) => {
+                  const base = room.basePrice || room.price || 1799;
+                  const currentMeal = selectedMealPlans[index] || { planName: "EP", extraCost: 0 };
+                  const finalPrice = base + currentMeal.extraCost;
+
+                  return (
+                    <div key={index} style={{ border: "2px solid #e2e8f0", borderRadius: "16px", padding: "20px", background: "#ffffff", display: "flex", flexDirection: "column", gap: "16px", transition: "all 0.3s ease" }}>
+                      
+                      {/* Room Header Info */}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+                        <div>
+                          <h4 style={{ fontSize: "18px", fontWeight: "900", color: "#0f172a", margin: "0 0 6px 0" }}>{room.type}</h4>
+                          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+                            {room.inclusions?.map((inc, i) => (
+                              <span key={i} style={{ background: "#f0fdf4", color: "#166534", border: "1px solid #bbf7d0", padding: "2px 8px", borderRadius: "6px", fontSize: "11px", fontWeight: "700" }}>
+                                ✓ {inc}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div style={{ textAlign: "right" }}>
+                          <span style={{ fontSize: "11px", color: "#64748b", display: "block", fontWeight: "600" }}>Total per night</span>
+                          <span style={{ fontSize: "24px", fontWeight: "900", color: "#0f172a" }}>₹{finalPrice}</span>
+                          <span style={{ fontSize: "10px", color: "#64748b", display: "block" }}>+ taxes</span>
+                        </div>
                       </div>
-                      <span style={{ color: "#0284c7", fontSize: "12px", fontWeight: "800" }}>
-                        ⚡ Free Cancellation • Instant Confirmation
-                      </span>
-                    </div>
-                    <div style={{ textAlign: "right", display: "flex", alignItems: "center", gap: "20px" }}>
-                      <div>
-                        <span style={{ fontSize: "11px", color: "#64748b", display: "block", fontWeight: "600" }}>Starting from</span>
-                        <span style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a" }}>₹{room.price}</span>
-                        <span style={{ fontSize: "10px", color: "#64748b", display: "block" }}>+ taxes / night</span>
+
+                      {/* Meal Plan Selector (EP, CP, MAP, AP) */}
+                      <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+                        <span style={{ fontSize: "11px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "8px", textTransform: "uppercase" }}>
+                          Choose Meal Plan:
+                        </span>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px" }}>
+                          
+                          <label style={mealPlanLabelStyle(currentMeal.planName === "EP")}>
+                            <input 
+                              type="radio" 
+                              name={`meal_plan_${index}`} 
+                              defaultChecked 
+                              onChange={() => handleMealPlanSelect(index, "EP (Room Only)", 0)} 
+                            />
+                            <div>
+                              <strong style={{ display: "block" }}>EP</strong>
+                              <span style={{ fontSize: "10px", color: "#64748b" }}>Room Only (₹0)</span>
+                            </div>
+                          </label>
+
+                          <label style={mealPlanLabelStyle(currentMeal.planName === "CP (Room + Breakfast)")}>
+                            <input 
+                              type="radio" 
+                              name={`meal_plan_${index}`} 
+                              onChange={() => handleMealPlanSelect(index, "CP (Room + Breakfast)", 300)} 
+                            />
+                            <div>
+                              <strong style={{ display: "block" }}>CP</strong>
+                              <span style={{ fontSize: "10px", color: "#64748b" }}>+ Breakfast (+₹300)</span>
+                            </div>
+                          </label>
+
+                          <label style={mealPlanLabelStyle(currentMeal.planName === "MAP (Breakfast + Dinner)")}>
+                            <input 
+                              type="radio" 
+                              name={`meal_plan_${index}`} 
+                              onChange={() => handleMealPlanSelect(index, "MAP (Breakfast + Dinner)", 800)} 
+                            />
+                            <div>
+                              <strong style={{ display: "block" }}>MAP</strong>
+                              <span style={{ fontSize: "10px", color: "#64748b" }}>B/F & Dinner (+₹800)</span>
+                            </div>
+                          </label>
+
+                          <label style={mealPlanLabelStyle(currentMeal.planName === "AP (All Meals Included)")}>
+                            <input 
+                              type="radio" 
+                              name={`meal_plan_${index}`} 
+                              onChange={() => handleMealPlanSelect(index, "AP (All Meals Included)", 1400)} 
+                            />
+                            <div>
+                              <strong style={{ display: "block" }}>AP</strong>
+                              <span style={{ fontSize: "10px", color: "#64748b" }}>All Meals (+₹1400)</span>
+                            </div>
+                          </label>
+
+                        </div>
                       </div>
-                      <button 
-                        onClick={navigateToBooking}
-                        style={{ background: "#0284c7", color: "white", border: "none", padding: "12px 24px", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer", boxShadow: "0 4px 14px rgba(2, 132, 199, 0.35)" }}
-                      >
-                        Book Now
-                      </button>
+
+                      {/* Book Button */}
+                      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <button 
+                          onClick={() => navigateToBooking(room.type, finalPrice, currentMeal.planName)}
+                          style={{ background: "#0284c7", color: "white", border: "none", padding: "10px 24px", borderRadius: "8px", fontWeight: "800", fontSize: "13px", cursor: "pointer", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)" }}
+                        >
+                          Book {room.type} ({currentMeal.planName.split(" ")[0]})
+                        </button>
+                      </div>
+
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -217,14 +293,14 @@ export default function HotelDetails() {
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", boxShadow: "0 12px 30px rgba(0,0,0,0.06)" }}>
               <span style={{ fontSize: "11px", color: "#0284c7", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>Best Price Guarantee</span>
               <div style={{ display: "flex", alignItems: "baseline", gap: "8px", margin: "6px 0 14px 0" }}>
-                <span style={{ fontSize: "30px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.rooms?.[0]?.price || 1799}</span>
+                <span style={{ fontSize: "30px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.rooms?.[0]?.basePrice || 1799}</span>
                 <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>+ taxes / night</span>
               </div>
               <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "12px", borderRadius: "10px", fontSize: "12px", color: "#166534", fontWeight: "700", marginBottom: "18px" }}>
                 🎉 Instant Confirmation & Free Cancellation.
               </div>
               <button 
-                onClick={navigateToBooking}
+                onClick={() => navigateToBooking(hotel.rooms?.[0]?.type || "Standard Room", hotel.rooms?.[0]?.basePrice || 1799, "EP (Room Only)")}
                 style={{ width: "100%", background: "linear-gradient(135deg, #0284c7, #0369a1)", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontWeight: "900", fontSize: "14px", cursor: "pointer", boxShadow: "0 6px 18px rgba(2, 132, 199, 0.35)", marginBottom: "16px" }}
               >
                 PROCEED TO BOOK
@@ -248,3 +324,16 @@ const amenityBox = {
   borderRadius: "10px",
   border: "1px solid #e2e8f0"
 };
+
+const mealPlanLabelStyle = (isSelected) => ({
+  background: isSelected ? "#e0f2fe" : "#ffffff",
+  border: isSelected ? "2px solid #0284c7" : "1px solid #cbd5e1",
+  padding: "8px 10px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  fontSize: "12px",
+  transition: "all 0.2s ease"
+});
