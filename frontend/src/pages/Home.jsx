@@ -50,6 +50,14 @@ export default function Home() {
     { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
   ];
 
+  // Districts Data for Homepage Culture Section
+  const uttarakhandDistricts = [
+    { id: "uttarkashi", name: "उत्तरकाशी", tagline: "पहाड़ी राजमा और ट्रेकिंग", image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80", food: "पहाड़ी राजमा, लाल चावल" },
+    { id: "tehri", name: "टिहरी गढ़वाल", tagline: "झील किनारे का स्वाद", image: "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=600&q=80", food: "चैनसू, गहत की दाल" },
+    { id: "dehradun", name: "देहरादून & मसूरी", tagline: "कैफे और पहाड़ी ज़ायका", image: "https://images.unsplash.com/photo-1589182337358-2fabedd73e9d?auto=format&fit=crop&w=600&q=80", food: "कफुली, बाल मिठाई" },
+    { id: "nainital", name: "नैनीताल", tagline: "कुमाऊनी ज़ायका और झीलें", image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=600&q=80", food: "भट की चुर्काणी, आलू गुटके" }
+  ];
+
   useEffect(() => {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
@@ -95,30 +103,10 @@ export default function Home() {
   });
 
   const sacredPlaces = [
-    { 
-      name: "Kedarnath", 
-      desc: "Sacred shrine nestled in Garhwal Himalayas.", 
-      img: "/images/chardham/kedarnath.jpg", 
-      searchUrl: "https://www.google.com/search?q=Kedarnath+Dham+guide"
-    },
-    { 
-      name: "Badrinath", 
-      desc: "Holy divine abode of Lord Vishnu.", 
-      img: "/images/chardham/badrinath.jpg", 
-      searchUrl: "https://www.google.com/search?q=Badrinath+Dham+guide"
-    },
-    { 
-      name: "Gangotri", 
-      desc: "Pristine origin point of holy river Ganga.", 
-      img: "/images/chardham/gangotri.jpg", 
-      searchUrl: "https://www.google.com/search?q=Gangotri+temple+guide"
-    },
-    { 
-      name: "Yamunotri", 
-      desc: "Sacred source of the Yamuna River.", 
-      img: "/images/chardham/yamunotri.jpg", 
-      searchUrl: "https://www.google.com/search?q=Yamunotri+temple+guide"
-    }
+    { name: "Kedarnath", desc: "Sacred shrine nestled in Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", searchUrl: "https://www.google.com/search?q=Kedarnath+Dham+guide" },
+    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu.", img: "/images/chardham/badrinath.jpg", searchUrl: "https://www.google.com/search?q=Badrinath+Dham+guide" },
+    { name: "Gangotri", desc: "Pristine origin point of holy river Ganga.", img: "/images/chardham/gangotri.jpg", searchUrl: "https://www.google.com/search?q=Gangotri+temple+guide" },
+    { name: "Yamunotri", desc: "Sacred source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", searchUrl: "https://www.google.com/search?q=Yamunotri+temple+guide" }
   ];
 
   const yogaRetreats = [
@@ -259,6 +247,51 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Explore Districts & Local Culture Section (Newly Added to Homepage) */}
+        <div style={{ marginBottom: "60px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
+            <div>
+              <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>उत्तराखंड संस्कृति और ज़ायका</span>
+              <h2 style={{ fontSize: "30px", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
+                Explore Districts & Local Food
+              </h2>
+            </div>
+            <button 
+              onClick={() => navigate("/districts")}
+              style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
+            >
+              View All Districts →
+            </button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "24px" }}>
+            {uttarakhandDistricts.map((dist) => (
+              <div 
+                key={dist.id}
+                onClick={() => navigate(`/districts/${dist.id}`)}
+                style={{
+                  background: "white",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  border: "1px solid #e2e8f0",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+                  transition: "transform 0.2s ease"
+                }}
+              >
+                <img src={dist.image} alt={dist.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} />
+                <div style={{ padding: "18px" }}>
+                  <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{dist.name}</h3>
+                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 12px 0" }}>{dist.tagline}</p>
+                  <span style={{ background: "#f0fdf4", color: "#166534", fontSize: "11px", fontWeight: "700", padding: "4px 10px", borderRadius: "6px" }}>
+                    🍽️ {dist.food}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Handpicked Stays */}
         <div style={{ marginBottom: "60px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "24px" }}>
@@ -273,7 +306,7 @@ export default function Home() {
               <button onClick={() => scrollStays("left")} style={navButtonStyle}>‹</button>
               <button onClick={() => scrollStays("right")} style={navButtonStyle}>›</button>
               <button 
-                onClick={() => navigate("/stays")}
+                onClick={() => navigate("/hotels")}
                 style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "14px", marginLeft: "10px" }}
               >
                 View All →

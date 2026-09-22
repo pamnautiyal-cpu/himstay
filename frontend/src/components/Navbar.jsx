@@ -110,6 +110,11 @@ export default function Navbar() {
             🏨 Hotels
           </Link>
           
+          {/* 🗺️ Explore Culture Link Added Here */}
+          <Link to="/districts" style={{ ...navLinkStyle, color: "#38bdf8" }}>
+            🗺️ Explore Culture
+          </Link>
+          
           <Link 
             to="/offers" 
             style={{ 
@@ -270,6 +275,7 @@ export default function Navbar() {
           )}
 
           <Link to="/hotels" onClick={() => setIsMobileMenuOpen(false)} style={navLinkStyle}>🏨 Hotels</Link>
+          <Link to="/districts" onClick={() => setIsMobileMenuOpen(false)} style={{ ...navLinkStyle, color: "#38bdf8" }}>🗺️ Explore Culture</Link>
           <Link to="/offers" onClick={() => setIsMobileMenuOpen(false)} style={{ ...navLinkStyle, color: "#fbbf24" }}>✨ Offers</Link>
           <Link to="/list-property" onClick={(e) => { setIsMobileMenuOpen(false); handleListPropertyClick(e); }} style={navLinkStyle}>🏡 List Property</Link>
           
