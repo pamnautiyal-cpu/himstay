@@ -1,226 +1,234 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Offers() {
-  const navigate = useNavigate();
   const [copiedCode, setCopiedCode] = useState("");
+
+  const handleCopy = (code) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(""), 2000);
+  };
 
   const offersList = [
     {
       id: 1,
-      title: "Early Mountain Explorer",
-      tag: "FLAT 20% OFF",
-      code: "HIMALAYA20",
-      validTill: "Valid till 30th Sep",
+      title: "FLAT 20% OFF",
+      subtitle: "Early Mountain Explorer",
       desc: "Get 20% instant discount on all Himalayan homestays and luxury resorts when you book 7 days in advance.",
-      bgGradient: "linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)",
+      code: "HIHIMALAYA20",
+      validity: "Valid till 30th Sep",
       badge: "Best Seller",
+      badgeColor: "#0ea5e9",
+      gradient: "linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(2, 132, 199, 0.05))",
+      borderCol: "rgba(14, 165, 233, 0.3)"
     },
     {
       id: 2,
-      title: "Weekend Getaway Deal",
-      tag: "SAVE ₹1,500",
-      code: "WEEKEND1500",
-      validTill: "Valid on Friday-Sunday bookings",
+      title: "SAVE ₹1,500",
+      subtitle: "Weekend Getaway Deal",
       desc: "Planning a quick escape to the mountains? Flat ₹1,500 off on minimum booking value of ₹5,000.",
-      bgGradient: "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)",
+      code: "WEEKEND1500",
+      validity: "Valid on Friday-Sunday bookings",
       badge: "Popular",
+      badgeColor: "#8b5cf6",
+      gradient: "linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(109, 40, 217, 0.05))",
+      borderCol: "rgba(139, 92, 246, 0.3)"
     },
     {
       id: 3,
-      title: "Long Stay Workation",
-      tag: "STAY 5 PAY FOR 4",
+      title: "STAY 5 PAY FOR 4",
+      subtitle: "Long Stay Workation",
+      desc: "Work from the mountains with high-speed WiFi and panoramic views. Get 1 night complimentary on 5+ night stays.",
       code: "WORKATION",
-      validTill: "Valid for 5+ Nights Stay",
-      desc: "Work from the mountains with high-speed WiFi and panoramic views. Get 1 night complimentary on 5-night stays.",
-      bgGradient: "linear-gradient(135deg, #059669 0%, #047857 100%)",
+      validity: "Valid for 5+ Nights Stay",
       badge: "Value Deal",
+      badgeColor: "#10b981",
+      gradient: "linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.05))",
+      borderCol: "rgba(16, 185, 129, 0.3)"
     },
     {
       id: 4,
-      title: "Monsoon Trekking Special",
-      tag: "FLAT 15% OFF",
+      title: "FLAT 15% OFF",
+      subtitle: "Monsoon Trekking Special",
+      desc: "Book graded treks along with stay packages and enjoy special discount on stay charges.",
       code: "TREK15",
-      validTill: "Limited Period Offer",
-      desc: "Book guided treks along with stay packages and enjoy special discount on stay charges.",
-      bgGradient: "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+      validity: "Limited Period Offer",
       badge: "Limited Time",
-    },
+      badgeColor: "#f59e0b",
+      gradient: "linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.05))",
+      borderCol: "rgba(245, 158, 11, 0.3)"
+    }
   ];
 
-  const copyToClipboard = (code) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    setTimeout(() => setCopiedCode(""), 2500);
-  };
-
   return (
-    <div style={{ backgroundColor: "#f8fafc", minHeight: "85vh", padding: "40px 20px" }}>
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+    <div style={{
+      background: "#0b0f19",
+      minHeight: "100vh",
+      padding: "40px 20px",
+      color: "#f8fafc",
+      fontFamily: "Inter, sans-serif"
+    }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         
-        {/* Banner Section */}
-        <div
-          style={{
-            background: "linear-gradient(90deg, #1e293b 0%, #0f172a 100%)",
+        {/* Header Banner */}
+        <div style={{
+          background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          borderRadius: "24px",
+          padding: "40px 20px",
+          textAlign: "center",
+          marginBottom: "40px",
+          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)",
+          position: "relative",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            display: "inline-block",
+            background: "rgba(245, 158, 11, 0.15)",
+            color: "#fbbf24",
+            padding: "6px 16px",
             borderRadius: "20px",
-            padding: "40px 30px",
-            color: "#fff",
-            textAlign: "center",
-            marginBottom: "40px",
-            boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
-          }}
-        >
-          <span
-            style={{
-              background: "#38bdf8",
-              color: "#0f172a",
-              padding: "6px 14px",
-              borderRadius: "20px",
-              fontSize: "12px",
-              fontWeight: "700",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-            }}
-          >
-            Exclusive Deals
-          </span>
-          <h1 style={{ fontSize: "32px", margin: "16px 0 8px 0", fontWeight: "800" }}>
+            fontSize: "12px",
+            fontWeight: "700",
+            letterSpacing: "1px",
+            marginBottom: "12px",
+            border: "1px solid rgba(245, 158, 11, 0.3)"
+          }}>
+            EXCLUSIVE DEALS
+          </div>
+          <h1 style={{ fontSize: "32px", fontWeight: "800", marginBottom: "10px", color: "#ffffff" }}>
             Unbeatable Mountain Discounts
           </h1>
-          <p style={{ color: "#94a3b8", fontSize: "16px", maxWidth: "600px", margin: "0 auto" }}>
+          <p style={{ color: "#94a3b8", fontSize: "15px", maxWidth: "600px", margin: "0 auto" }}>
             Apply coupon codes at checkout to get instant discounts on stays across Uttarakhand.
           </p>
         </div>
 
         {/* Offers Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "24px",
-          }}
-        >
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "24px"
+        }}>
           {offersList.map((offer) => (
-            <div
-              key={offer.id}
-              style={{
-                backgroundColor: "#ffffff",
-                borderRadius: "16px",
-                overflow: "hidden",
-                border: "1px solid #e2e8f0",
-                boxShadow: "0 4px 15px rgba(0, 0, 0, 0.05)",
-                display: "flex",
-                flexDirection: "column",
-                justify: "space-between",
-                position: "relative",
-              }}
-            >
-              {/* Card Header */}
-              <div
-                style={{
-                  background: offer.bgGradient,
-                  color: "#fff",
-                  padding: "20px",
-                  position: "relative",
-                }}
-              >
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "12px",
-                    right: "12px",
-                    backgroundColor: "rgba(255, 255, 255, 0.2)",
-                    backdropFilter: "blur(4px)",
-                    color: "#fff",
-                    fontSize: "11px",
+            <div key={offer.id} style={{
+              background: "#1e293b",
+              borderRadius: "20px",
+              border: `1px solid ${offer.borderCol}`,
+              padding: "24px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              position: "relative",
+              overflow: "hidden",
+              backdropFilter: "blur(12px)"
+            }}>
+              {/* Background Glow Effect */}
+              <div style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: "120px",
+                height: "120px",
+                background: offer.gradient,
+                filter: "blur(40px)",
+                zIndex: 0
+              }} />
+
+              <div style={{ position: "relative", zIndex: 1 }}>
+                {/* Top Badge & Title */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
+                  <div>
+                    <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#ffffff", margin: 0 }}>
+                      {offer.title}
+                    </h3>
+                    <p style={{ fontSize: "13px", color: "#94a3b8", fontWeight: "500", margin: "4px 0 0 0" }}>
+                      {offer.subtitle}
+                    </p>
+                  </div>
+                  <span style={{
+                    background: `${offer.badgeColor}22`,
+                    color: offer.badgeColor,
+                    border: `1px solid ${offer.badgeColor}55`,
+                    fontSize: "10px",
                     fontWeight: "700",
                     padding: "4px 10px",
-                    borderRadius: "12px",
-                  }}
-                >
-                  {offer.badge}
-                </span>
-                <div style={{ fontSize: "22px", fontWeight: "800", marginBottom: "4px" }}>
-                  {offer.tag}
+                    borderRadius: "20px"
+                  }}>
+                    {offer.badge}
+                  </span>
                 </div>
-                <div style={{ fontSize: "16px", fontWeight: "600", opacity: 0.9 }}>
-                  {offer.title}
-                </div>
-              </div>
 
-              {/* Card Body */}
-              <div style={{ padding: "20px", flexGrow: 1 }}>
-                <p style={{ color: "#64748b", fontSize: "14px", lineHeight: "1.5", margin: "0 0 16px 0" }}>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", lineHeight: "1.5", marginBottom: "20px" }}>
                   {offer.desc}
                 </p>
 
                 {/* Coupon Box */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    backgroundColor: "#f1f5f9",
-                    border: "1px dashed #cbd5e1",
-                    borderRadius: "8px",
-                    padding: "10px 14px",
-                    marginBottom: "12px",
-                  }}
-                >
+                <div style={{
+                  background: "rgba(15, 23, 42, 0.6)",
+                  border: "1px dashed rgba(255, 255, 255, 0.15)",
+                  borderRadius: "12px",
+                  padding: "12px 16px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "16px"
+                }}>
                   <div>
-                    <div style={{ fontSize: "10px", color: "#64748b", textTransform: "uppercase", fontWeight: "700" }}>
+                    <span style={{ fontSize: "10px", color: "#64748b", display: "block", textTransform: "uppercase", fontWeight: "600" }}>
                       Coupon Code
-                    </div>
-                    <div style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", letterSpacing: "1px" }}>
+                    </span>
+                    <span style={{ fontSize: "14px", fontWeight: "700", color: "#fbbf24", letterSpacing: "0.5px" }}>
                       {offer.code}
-                    </div>
+                    </span>
                   </div>
                   <button
-                    onClick={() => copyToClipboard(offer.code)}
+                    onClick={() => handleCopy(offer.code)}
                     style={{
-                      backgroundColor: copiedCode === offer.code ? "#10b981" : "#0284c7",
-                      color: "#fff",
+                      background: copiedCode === offer.code ? "#10b981" : "#3b82f6",
+                      color: "#ffffff",
                       border: "none",
-                      borderRadius: "6px",
-                      padding: "6px 12px",
+                      padding: "6px 14px",
+                      borderRadius: "8px",
                       fontSize: "12px",
                       fontWeight: "600",
                       cursor: "pointer",
-                      transition: "all 0.2s ease",
+                      transition: "background 0.2s"
                     }}
                   >
                     {copiedCode === offer.code ? "Copied!" : "Copy Code"}
                   </button>
                 </div>
 
-                <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: "500" }}>
-                  ⏳ {offer.validTill}
+                <div style={{ fontSize: "11px", color: "#94a3b8", display: "flex", alignItems: "center", gap: "6px", marginBottom: "20px" }}>
+                  <span>⏳</span> {offer.validity}
                 </div>
               </div>
 
               {/* Action Button */}
-              <div style={{ padding: "0 20px 20px 20px" }}>
-                <button
-                  onClick={() => navigate("/hotels")}
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    backgroundColor: "#0f172a",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "8px",
-                    fontSize: "14px",
-                    fontWeight: "700",
-                    cursor: "pointer",
-                    transition: "background 0.2s",
-                  }}
-                >
-                  Explore Stays & Apply Offer →
-                </button>
-              </div>
+              <Link to="/hotels" style={{
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                color: "#ffffff",
+                textAlign: "center",
+                padding: "10px",
+                borderRadius: "10px",
+                textDecoration: "none",
+                fontSize: "13px",
+                fontWeight: "600",
+                display: "block",
+                transition: "all 0.2s ease",
+                zIndex: 1
+              }}>
+                Explore Stays & Apply Offer →
+              </Link>
             </div>
           ))}
         </div>
+
       </div>
     </div>
   );
