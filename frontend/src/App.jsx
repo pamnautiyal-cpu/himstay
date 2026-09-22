@@ -16,8 +16,8 @@ import ListProperty from "./pages/ListProperty";
 import AdminBookings from "./pages/AdminBookings";
 import Terms from "./pages/Terms";
 import Blogs from "./pages/Blogs";
-import BlogDetail from "./pages/BlogDetail"; // Clean ES Import
-import Booking from "./pages/Booking"; // ✅ Added Booking Import from pages
+import BlogDetail from "./pages/BlogDetail";
+import Booking from "./pages/Booking";
 import AdminDashboard from "./pages/AdminDashboard";
 import Discover from "./pages/Discover";
 import Search from "./components/Search";
@@ -82,7 +82,6 @@ export default function App() {
           <Route path="/hotels/:id" element={<HotelDetails />} />
           <Route path="/hotel/:id" element={<HotelDetails />} />
           
-          {/* ✅ FIXED: ADDED BOOKING ROUTES (Both with param and search query support) */}
           <Route path="/booking" element={<Booking />} />
           <Route path="/booking/:hotelId" element={<Booking />} />
 
