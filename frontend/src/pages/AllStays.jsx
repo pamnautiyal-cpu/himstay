@@ -23,6 +23,10 @@ export default function AllStays() {
 
   useEffect(() => {
     setLoading(true);
+    
+    // Check locally added user properties first from frontend storage
+    const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
+
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
         const backendData = (res.data || []).map(item => ({
@@ -33,12 +37,15 @@ export default function AllStays() {
           image: item.image || item.img || "/images/hotals/Hotel Nagraja Palace1.jpg",
           tag: item.tag || "Verified Stay ✓"
         }));
-        const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
+        
+        // Merge user added hotels + local static + backend data
+        const merged = [...userAdded, ...localUttarkashiHotels, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
         setHotels(merged);
         setLoading(false);
       })
       .catch(() => {
-        setHotels(localUttarkashiHotels);
+        const merged = [...userAdded, ...localUttarkashiHotels];
+        setHotels(merged);
         setLoading(false);
       });
   }, []);
@@ -148,7 +155,7 @@ export default function AllStays() {
                   </h3>
 
                   <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 16px 0", lineHeight: "1.4" }}>
-                    Enjoy modern amenities, breathtaking mountain views, and world-class hospitality tailored for families and couples.
+                    {hotel.description || "Enjoy modern amenities, breathtaking mountain views, and world-class hospitality tailored for families and couples."}
                   </p>
                 </div>
 
