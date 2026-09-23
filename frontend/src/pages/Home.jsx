@@ -186,7 +186,7 @@ export default function Home() {
             boxSizing: "border-box"
           }}>
             <form onSubmit={handleSearch} style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
-              <div style={{ flex: "1 1 100%", minWidth: "100%", sm: { minWidth: "200px" } }}>
+              <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
                 <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", marginBottom: "6px" }}>DESTINATION</label>
                 <select 
                   value={selectedCity} 
@@ -375,7 +375,7 @@ export default function Home() {
               cursor: "pointer",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               width: "100%",
-              sm: { width: "auto" }
+              maxWidth: "200px"
             }}
           >
             Claim Offer Now
@@ -456,7 +456,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Explore Districts & Local Culture Section (Moved to Last) */}
+        {/* Explore Districts & Local Culture Section */}
         <div style={{ marginBottom: "40px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
             <div>
