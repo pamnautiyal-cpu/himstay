@@ -22,6 +22,16 @@ export default function Home() {
     }
   };
 
+  // 🎲 Array ko randomly shuffle karne ka function (Live & Dynamic feel ke liye)
+  const shuffleArray = (array) => {
+    let shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
   // Hero Banner Images
   const heroImages = [
     "/images/hotals/Hotel Nagraja Palace1.jpg",
@@ -77,12 +87,15 @@ export default function Home() {
           ...localUttarkashiHotels, 
           ...backendData.filter(bh => bh._id && !String(bh._id).startsWith("local_") && !String(bh._id).startsWith("dummy_"))
         ];
-        setHotels(merged);
+        
+        // 🎲 Yahan hotels ko random shuffle kar diya hai taaki har baar alag sequence aaye
+        setHotels(shuffleArray(merged));
         setLoading(false);
       })
       .catch((err) => {
         console.error("Backend fetch error:", err);
-        setHotels(localUttarkashiHotels);
+        // Error aane par bhi local hotels ko shuffle karke set karein
+        setHotels(shuffleArray(localUttarkashiHotels));
         setLoading(false);
       });
   }, []);
