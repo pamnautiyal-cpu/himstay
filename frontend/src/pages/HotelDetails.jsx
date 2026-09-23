@@ -9,10 +9,8 @@ export default function HotelDetails() {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   
-  // State to track selected meal plan for each room index: { [roomIndex]: { planName, priceExtra } }
   const [selectedMealPlans, setSelectedMealPlans] = useState({});
 
-  // Sabhi 16 hotals ke liye universal rooms list
   const standardRoomsList = [
     { type: "Standard Room", basePrice: 1799, inclusions: ["1 Comfortable Bed", "Max 2 Adults", "Attached Washroom", "Free Wi-Fi"] },
     { type: "Deluxe Room", basePrice: 2299, inclusions: ["1 Double Bed", "Max 2 Adults + 1 Child", "Mountain View", "LED TV"] },
@@ -41,7 +39,20 @@ export default function HotelDetails() {
 
   useEffect(() => {
     let baseRooms = standardRoomsList;
-    if (localHotels[id]) {
+    
+    // Check if hotel was added dynamically via localStorage (user_added_hotels)
+    const userAddedHotels = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
+    const foundUserHotel = userAddedHotels.find(h => h._id === id);
+
+    if (foundUserHotel) {
+      setHotel({
+        name: foundUserHotel.name,
+        location: foundUserHotel.location || foundUserHotel.city,
+        description: foundUserHotel.description,
+        images: foundUserHotel.images && foundUserHotel.images.length > 0 ? foundUserHotel.images : [foundUserHotel.image],
+        rooms: baseRooms
+      });
+    } else if (localHotels[id]) {
       setHotel({ ...localHotels[id], rooms: baseRooms });
     } else if (id) {
       axios.get(`${BACKEND_URL}/api/hotels/${id}`)
@@ -84,7 +95,6 @@ export default function HotelDetails() {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", color: "#0f172a", minHeight: "100vh", paddingBottom: "60px" }}>
       
-      {/* Back Button */}
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "16px 20px" }}>
         <button 
           onClick={() => navigate(-1)} 
@@ -96,7 +106,6 @@ export default function HotelDetails() {
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
         
-        {/* Luxury Photo Gallery Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "14px", borderRadius: "20px", overflow: "hidden", marginBottom: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", height: "400px" }}>
           <div style={{ overflow: "hidden" }}>
             <img 
@@ -122,12 +131,9 @@ export default function HotelDetails() {
           </div>
         </div>
 
-        {/* Two Column Layout */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "30px", alignItems: "flex-start" }}>
           
-          {/* Left Column */}
           <div>
-            {/* Hotel Title Card */}
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
@@ -143,13 +149,11 @@ export default function HotelDetails() {
               </div>
             </div>
 
-            {/* About Property */}
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
               <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>About Property</h3>
               <p style={{ fontSize: "14px", color: "#475569", lineHeight: "1.7", margin: 0 }}>{hotel.description || "Experience breathtaking views, serene ambiance, and top-tier hospitality right in the heart of the Himalayas."}</p>
             </div>
 
-            {/* Top Amenities */}
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
               <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", marginBottom: "16px" }}>Top Amenities</h3>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px", fontSize: "13px", color: "#334155", fontWeight: "700" }}>
@@ -162,7 +166,6 @@ export default function HotelDetails() {
               </div>
             </div>
 
-            {/* Select Your Room & Meal Plans Section */}
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", marginBottom: "20px", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
               <div style={{ marginBottom: "20px" }}>
                 <span style={{ background: "rgba(2, 132, 199, 0.1)", color: "#0284c7", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase" }}>
@@ -175,13 +178,12 @@ export default function HotelDetails() {
               <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
                 {hotel.rooms?.map((room, index) => {
                   const base = room.basePrice || room.price || 1799;
-                  const currentMeal = selectedMealPlans[index] || { planName: "EP", extraCost: 0 };
+                  const currentMeal = selectedMealPlans[index] || { planName: "EP (Room Only)", extraCost: 0 };
                   const finalPrice = base + currentMeal.extraCost;
 
                   return (
                     <div key={index} style={{ border: "2px solid #e2e8f0", borderRadius: "16px", padding: "20px", background: "#ffffff", display: "flex", flexDirection: "column", gap: "16px", transition: "all 0.3s ease" }}>
                       
-                      {/* Room Header Info */}
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
                         <div>
                           <h4 style={{ fontSize: "18px", fontWeight: "900", color: "#0f172a", margin: "0 0 6px 0" }}>{room.type}</h4>
@@ -200,14 +202,13 @@ export default function HotelDetails() {
                         </div>
                       </div>
 
-                      {/* Meal Plan Selector (EP, CP, MAP, AP) */}
                       <div style={{ background: "#f8fafc", padding: "12px", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
                         <span style={{ fontSize: "11px", fontWeight: "800", color: "#334155", display: "block", marginBottom: "8px", textTransform: "uppercase" }}>
                           Choose Meal Plan:
                         </span>
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px" }}>
                           
-                          <label style={mealPlanLabelStyle(currentMeal.planName === "EP")}>
+                          <label style={mealPlanLabelStyle(currentMeal.planName === "EP (Room Only)")}>
                             <input 
                               type="radio" 
                               name={`meal_plan_${index}`} 
@@ -259,7 +260,6 @@ export default function HotelDetails() {
                         </div>
                       </div>
 
-                      {/* Book Button */}
                       <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <button 
                           onClick={() => navigateToBooking(room.type, finalPrice, currentMeal.planName)}
@@ -275,7 +275,6 @@ export default function HotelDetails() {
               </div>
             </div>
 
-            {/* Terms & Conditions */}
             <div style={{ background: "#f1f5f9", padding: "24px", borderRadius: "18px", border: "1px solid #cbd5e1" }}>
               <h4 style={{ fontSize: "14px", fontWeight: "900", color: "#0f172a", marginBottom: "10px" }}>Important Terms & Policies</h4>
               <ol style={{ fontSize: "12px", color: "#475569", margin: 0, paddingLeft: "18px", lineHeight: "1.6", display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -288,7 +287,6 @@ export default function HotelDetails() {
             </div>
           </div>
 
-          {/* Right Column: Sticky Booking Card */}
           <div style={{ position: "sticky", top: "20px" }}>
             <div style={{ background: "white", padding: "28px", borderRadius: "20px", border: "1px solid #e2e8f0", boxShadow: "0 12px 30px rgba(0,0,0,0.06)" }}>
               <span style={{ fontSize: "11px", color: "#0284c7", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>Best Price Guarantee</span>

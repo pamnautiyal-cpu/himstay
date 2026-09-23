@@ -10,14 +10,13 @@ export default function AllStays() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // Smart Short Form State (Basics only, rooms/meal plans will be auto-generated)
   const [newHotel, setNewHotel] = useState({
     name: "",
     city: "Uttarkashi",
     location: "",
-    price: "",
-    rating: "4.8",
-    tag: "New Listing ✨",
-    image: "",
+    image1: "",
+    image2: "",
     description: ""
   });
 
@@ -37,11 +36,11 @@ export default function AllStays() {
   useEffect(() => {
     setLoading(true);
     
-    // Check if admin is authenticated from footer passcode
+    // Check footer secret passcode authentication
     const isAdminAuthenticated = localStorage.getItem("is_hotel_admin") === "true";
     if (isAdminAuthenticated) {
       setIsModalOpen(true);
-      localStorage.removeItem("is_hotel_admin"); // ek baar khulne ke baad flag hata dein
+      localStorage.removeItem("is_hotel_admin");
     }
 
     const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
@@ -70,11 +69,24 @@ export default function AllStays() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    
+    // Auto-assign standard default pricing structure and multiple images for professional look
     const hotelObj = {
       _id: "custom_" + Date.now(),
-      ...newHotel,
-      price: newHotel.price || "2,499",
-      image: newHotel.image || "/images/hotals/Hotel Nagraja Palace1.jpg"
+      name: newHotel.name,
+      city: newHotel.city,
+      location: newHotel.location || newHotel.city,
+      price: "1,899", // Base starting price
+      rating: "4.9",
+      tag: "New Listing ✨",
+      image: newHotel.image1 || "/images/hotals/Hotel Nagraja Palace1.jpg",
+      images: [
+        newHotel.image1 || "/images/hotals/Hotel Nagraja Palace1.jpg",
+        newHotel.image2 || "/images/hotals/Hotel Nagraja Palace2.jpg"
+      ],
+      description: newHotel.description || "Enjoy modern amenities, breathtaking mountain views, and world-class hospitality tailored for families and couples.",
+      // Auto-include standard room & meal plan structure so detail page matches other hotels completely
+      hasStandardStructure: true 
     };
 
     const existingLocal = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
@@ -87,13 +99,11 @@ export default function AllStays() {
       name: "",
       city: "Uttarkashi",
       location: "",
-      price: "",
-      rating: "4.8",
-      tag: "New Listing ✨",
-      image: "",
+      image1: "",
+      image2: "",
       description: ""
     });
-    alert("Hotel Added Successfully and Listed in All Stays! 🎉");
+    alert("Hotel Added Successfully with Full Room & Meal Plan Structure! 🎉");
   };
 
   if (loading) {
@@ -129,7 +139,7 @@ export default function AllStays() {
         </p>
       </div>
 
-      {/* Secret Password Protected Modal Form */}
+      {/* Secret Secured Add Hotel Modal (Smart Short Form) */}
       {isModalOpen && (
         <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(15, 23, 42, 0.7)",
@@ -140,7 +150,7 @@ export default function AllStays() {
             boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)", maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box"
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", margin: 0 }}>🔐 Secure Partner: Add New Hotel</h2>
+              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", margin: 0 }}>🔐 Add Hotel (Auto Room & Meal Plans)</h2>
               <button 
                 onClick={() => setIsModalOpen(false)}
                 style={{ background: "none", border: "none", fontSize: "20px", fontWeight: "bold", cursor: "pointer", color: "#64748b" }}
@@ -169,41 +179,54 @@ export default function AllStays() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Price Per Night (₹) *</label>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Location / Area *</label>
                   <input 
-                    type="text" required placeholder="2,499" 
-                    value={newHotel.price} onChange={(e) => setNewHotel({...newHotel, price: e.target.value})}
+                    type="text" required placeholder="Gangotri Hwy / Market" 
+                    value={newHotel.location} onChange={(e) => setNewHotel({...newHotel, location: e.target.value})}
                     style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Image Path / URL *</label>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Main Image URL / Path *</label>
                 <input 
                   type="text" required placeholder="/images/hotals/Hotel Nagraja Palace1.jpg" 
-                  value={newHotel.image} onChange={(e) => setNewHotel({...newHotel, image: e.target.value})}
+                  value={newHotel.image1} onChange={(e) => setNewHotel({...newHotel, image1: e.target.value})}
                   style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
                 />
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Description / Details</label>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Second Image URL / Path (Gallery) *</label>
+                <input 
+                  type="text" required placeholder="/images/hotals/Hotel Nagraja Palace2.jpg" 
+                  value={newHotel.image2} onChange={(e) => setNewHotel({...newHotel, image2: e.target.value})}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Short Description</label>
                 <textarea 
-                  rows="2" placeholder="Write basic details..." 
+                  rows="2" placeholder="Write basic details about the view and comfort..." 
                   value={newHotel.description} onChange={(e) => setNewHotel({...newHotel, description: e.target.value})}
                   style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }}
                 ></textarea>
               </div>
 
+              <p style={{ fontSize: "12px", color: "#0284c7", background: "#f0f9ff", padding: "8px", borderRadius: "6px", margin: 0, fontWeight: "600" }}>
+                ℹ️ Standard Rooms (Standard, Deluxe, Super Deluxe, Family Suite) & Meal Plans (EP, CP, MAP, AP) will be automatically configured.
+              </p>
+
               <button 
                 type="submit" 
                 style={{
                   background: "#0284c7", color: "white", border: "none", padding: "12px", borderRadius: "10px",
-                  fontWeight: "800", fontSize: "14px", cursor: "pointer", marginTop: "10px"
+                  fontWeight: "800", fontSize: "14px", cursor: "pointer", marginTop: "5px"
                 }}
               >
-                Publish & Show in All Stays 🚀
+                Publish Hotel with Full Details 🚀
               </button>
             </form>
           </div>
@@ -279,10 +302,10 @@ export default function AllStays() {
                   display: "flex", justifyContent: "space-between", alignItems: "center" 
                 }}>
                   <div>
-                    <span style={{ fontSize: "11px", color: "#94a3b8", display: "block", fontWeight: "600" }}>Per Night Price</span>
+                    <span style={{ fontSize: "11px", color: "#94a3b8", display: "block", fontWeight: "600" }}>Starting From</span>
                     <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
                       <span style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.price}</span>
-                      <span style={{ fontSize: "11px", color: "#64748b" }}>+ taxes</span>
+                      <span style={{ fontSize: "11px", color: "#64748b" }}>/night</span>
                     </div>
                   </div>
 
