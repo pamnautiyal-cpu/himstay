@@ -8,8 +8,8 @@ export default function Footer() {
   const handleListPropertyClick = (e) => {
     e.preventDefault();
     const password = prompt("Enter Admin Secret Passcode to Add Hotel:");
-    // Yahan aap apna secure password set kar sakte hain (jaise: himstay123)
-    if (password === "himstay123") {
+    // Yahan aap apna secure password set kar sakte hain (jaise: 040788)
+    if (password === "040788") {
       localStorage.setItem("is_hotel_admin", "true");
       navigate("/hotels"); // AllStays page par redirect karega jahan add modal khulega
       window.location.reload();
