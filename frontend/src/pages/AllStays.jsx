@@ -209,15 +209,28 @@ export default function AllStays() {
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#0284c7", marginBottom: "6px" }}>Upload Photos (Select 2, 3, 4 or more images from device) *</label>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#0284c7", marginBottom: "6px" }}>
+                  📁 Upload Multiple Photos (Hold 'Ctrl' or 'Shift' to select 2, 3, 4+ images) *
+                </label>
                 <input 
                   type="file" accept="image/*" multiple required 
                   onChange={handleMultipleImagesUpload}
                   style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "2px dashed #0284c7", fontSize: "13px", background: "#f0f9ff", boxSizing: "border-box", cursor: "pointer" }} 
                 />
-                <span style={{ fontSize: "11px", color: "#16a34a", fontWeight: "700", display: "block", marginTop: "4px" }}>
-                  ✓ Selected: {newHotel.images.length} images ready.
-                </span>
+                
+                {/* Live Preview Thumbnails */}
+                {newHotel.images.length > 0 && (
+                  <div style={{ display: "flex", gap: "8px", marginTop: "10px", flexWrap: "wrap", alignItems: "center" }}>
+                    {newHotel.images.map((imgSrc, idx) => (
+                      <div key={idx} style={{ position: "relative", width: "45px", height: "45px", borderRadius: "6px", overflow: "hidden", border: "1px solid #cbd5e1" }}>
+                        <img src={imgSrc} alt={`prev ${idx}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                    ))}
+                    <span style={{ fontSize: "12px", color: "#16a34a", fontWeight: "700" }}>
+                      ✓ {newHotel.images.length} images selected!
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div>
