@@ -7,7 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrende
 export default function AllStays() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(5);
+  const [visibleCount, setVisibleCount] = useState(6);
   const navigate = useNavigate();
 
   const localUttarkashiHotels = [
@@ -40,7 +40,7 @@ export default function AllStays() {
           location: item.location || item.city || "Uttarakhand",
           image: item.image || item.img || "/images/hotals/Hotel Nagraja Palace1.jpg"
         }));
-        const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !bh._id.startsWith("local_"))];
+        const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
         setHotels(merged);
         setLoading(false);
       })
@@ -50,28 +50,39 @@ export default function AllStays() {
       });
   }, []);
 
-  if (loading) return <div style={{ textAlign: "center", padding: "80px", fontSize: "20px", color: "#64748b" }}> Loading Stays...</div>;
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "100px 20px", fontSize: "18px", color: "#0284c7", fontWeight: "700" }}>
+        🏔️ Loading Premium Mountain Stays...
+      </div>
+    );
+  }
 
   const currentHotels = hotels.slice(0, visibleCount);
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", background: "#f8fafc", minHeight: "100vh", padding: "30px 20px" }}>
+    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#f8fafc", minHeight: "100vh", padding: "40px 20px", boxSizing: "border-box" }}>
       
-      {/* Stylish Header Section (Removed boring number count) */}
-      <div style={{ textAlign: "center", marginBottom: "35px", maxWidth: "800px", margin: "0 auto 35px auto" }}>
-        <span style={{ background: "rgba(2, 132, 199, 0.1)", color: "#0284c7", padding: "6px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px", display: "inline-block", marginBottom: "12px" }}>
+      {/* Header Section */}
+      <div style={{ textAlign: "center", marginBottom: "40px", maxWidth: "800px", margin: "0 auto 40px auto" }}>
+        <span style={{ 
+          background: "linear-gradient(135deg, rgba(2, 132, 199, 0.1), rgba(3, 105, 161, 0.15))", 
+          color: "#0284c7", padding: "6px 16px", borderRadius: "30px", fontSize: "12px", 
+          fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.2px", display: "inline-block", marginBottom: "14px",
+          border: "1px solid rgba(2, 132, 199, 0.2)"
+        }}>
           ✨ Curated Mountain Sanctuaries
         </span>
-        <h1 style={{ fontSize: "30px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
-          Stays in Uttarakhand
+        <h1 style={{ fontSize: "clamp(26px, 4vw, 36px)", fontWeight: "900", color: "#0f172a", marginBottom: "10px", letterSpacing: "-0.5px" }}>
+          Explore All Stays in Uttarakhand
         </h1>
-        <p style={{ fontSize: "14px", color: "#64748b", margin: 0 }}>
-          Discover handpicked mountain retreats, cozy homestays, and scenic luxury hotels crafted for an unforgettable Himalayan experience.
+        <p style={{ fontSize: "15px", color: "#64748b", margin: 0, lineHeight: "1.5" }}>
+          Discover handpicked mountain retreats, cozy homestays, and scenic luxury properties crafted for an unforgettable Himalayan experience.
         </p>
       </div>
 
-      {/* MakeMyTrip Style Horizontal Layout Container */}
-      <div style={{ maxWidth: "1000px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
+      {/* Main Listings Layout Container */}
+      <div style={{ maxWidth: "1000px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "20px", boxSizing: "border-box" }}>
         
         {currentHotels.map((hotel) => (
           <div 
@@ -79,62 +90,71 @@ export default function AllStays() {
             style={{ 
               background: "#ffffff",
               border: "1px solid #e2e8f0", 
-              borderRadius: "14px", 
+              borderRadius: "16px", 
               overflow: "hidden", 
-              boxShadow: "0 2px 10px rgba(0,0,0,0.02)",
+              boxShadow: "0 10px 25px -5px rgba(0,0,0,0.04), 0 8px 10px -6px rgba(0,0,0,0.04)",
               display: "grid",
-              gridTemplateColumns: "260px 1fr 200px",
-              alignItems: "stretch"
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              alignItems: "stretch",
+              transition: "all 0.3s ease",
+              boxSizing: "border-box"
             }}
           >
-            {/* Left: Hotel Image */}
-            <div style={{ position: "relative", width: "260px", height: "180px", background: "#f1f5f9" }}>
+            {/* Left: Hotel Image with Badge */}
+            <div style={{ position: "relative", minHeight: "200px", background: "#f1f5f9" }}>
               <img 
                 src={hotel.image} 
                 alt={hotel.name} 
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", minHeight: "200px" }} 
                 onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
               />
-              <span style={{
-                position: "absolute", top: "10px", left: "10px", background: "rgba(15, 23, 42, 0.8)",
-                color: "white", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "700", zIndex: 2
+              <div style={{
+                position: "absolute", top: "12px", left: "12px", background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(4px)",
+                color: "white", padding: "4px 10px", borderRadius: "20px", fontSize: "12px", fontWeight: "800", zIndex: 2,
+                display: "flex", alignItems: "center", gap: "4px"
               }}>
                 ⭐ {hotel.rating || "4.8"}
-              </span>
-            </div>
-
-            {/* Middle: Details */}
-            <div style={{ padding: "18px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
-                  📍 {hotel.location || hotel.city}, Uttarkashi
-                </span>
-                <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: "6px 0 8px 0" }}>
-                  {hotel.name}
-                </h3>
-                <p style={{ fontSize: "12px", color: "#16a34a", fontWeight: "600", margin: "0 0 4px 0" }}>
-                  ✓ Couple Friendly & Verified Property
-                </p>
-                <p style={{ fontSize: "12px", color: "#64748b", margin: 0 }}>
-                  Free cancellation available • Breakfast included options
-                </p>
               </div>
             </div>
 
-            {/* Right: Price & CTA */}
-            <div style={{ padding: "18px", background: "#f8fafc", borderLeft: "1px solid #f1f5f9", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end", textAlign: "right" }}>
+            {/* Middle: Details */}
+            <div style={{ padding: "22px", display: "flex", flexDirection: "column", justifyContent: "space-between", boxSizing: "border-box" }}>
               <div>
-                <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>Starting from</span>
-                <span style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a" }}>₹{hotel.price}</span>
-                <span style={{ fontSize: "11px", color: "#64748b", display: "block" }}>+ ₹300 taxes & fees</span>
+                <span style={{ fontSize: "12px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                  📍 {hotel.location || hotel.city}, Uttarkashi
+                </span>
+                <h3 style={{ fontSize: "20px", fontWeight: "900", color: "#0f172a", margin: "8px 0 10px 0", lineHeight: "1.3" }}>
+                  {hotel.name}
+                </h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <span style={{ fontSize: "13px", color: "#16a34a", fontWeight: "700", display: "flex", alignItems: "center", gap: "6px" }}>
+                    ✓ Couple Friendly & Verified Property
+                  </span>
+                  <span style={{ fontSize: "13px", color: "#64748b" }}>
+                    Free cancellation available • Breakfast included options
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Price & CTA Action Box */}
+            <div style={{ 
+              padding: "22px", background: "#f8fafc", borderLeft: "1px solid #f1f5f9", 
+              display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end", textAlign: "right",
+              boxSizing: "border-box"
+            }}>
+              <div style={{ width: "100%" }}>
+                <span style={{ fontSize: "12px", color: "#64748b", display: "block", fontWeight: "600" }}>Starting from</span>
+                <span style={{ fontSize: "24px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.price}</span>
+                <span style={{ fontSize: "11px", color: "#64748b", display: "block", marginTop: "2px" }}>+ ₹300 taxes & fees</span>
               </div>
 
               <button 
                 onClick={() => navigate(`/hotels/${hotel._id}`)}
                 style={{ 
-                  width: "100%", padding: "10px 0", background: "#0284c7", 
-                  color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "13px", cursor: "pointer",
-                  boxShadow: "0 2px 6px rgba(2, 132, 199, 0.3)"
+                  width: "100%", padding: "12px 0", background: "#0284c7", 
+                  color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "14px", cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(2, 132, 199, 0.35)", transition: "background 0.2s ease"
                 }}
               >
                 View Details
@@ -145,24 +165,25 @@ export default function AllStays() {
       </div>
 
       {/* Pagination / Load More Button Section */}
-      <div style={{ textAlign: "center", marginTop: "35px" }}>
+      <div style={{ textAlign: "center", marginTop: "45px" }}>
         {visibleCount < hotels.length ? (
           <button 
-            onClick={() => setVisibleCount(prev => prev + 5)}
+            onClick={() => setVisibleCount(prev => prev + 6)}
             style={{
-              background: "#0284c7", color: "white", border: "none", padding: "12px 35px",
-              borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)"
+              background: "#0284c7", color: "white", border: "none", padding: "14px 40px",
+              borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer",
+              boxShadow: "0 6px 20px rgba(2, 132, 199, 0.4)", transition: "all 0.2s ease"
             }}
           >
-            Load More Stays (remaining) ↓
+            Load More Stays ({hotels.length - visibleCount} remaining) ↓
           </button>
         ) : (
           <button 
-            onClick={() => setVisibleCount(5)}
+            onClick={() => setVisibleCount(6)}
             style={{
-              background: "#64748b", color: "white", border: "none", padding: "12px 35px",
-              borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer"
+              background: "#64748b", color: "white", border: "none", padding: "14px 40px",
+              borderRadius: "12px", fontWeight: "800", fontSize: "14px", cursor: "pointer",
+              boxShadow: "0 6px 20px rgba(100, 116, 139, 0.3)"
             }}
           >
             Show Less ↑
