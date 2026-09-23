@@ -8,6 +8,19 @@ export default function AllStays() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(6);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const [newHotel, setNewHotel] = useState({
+    name: "",
+    city: "Uttarkashi",
+    location: "",
+    price: "",
+    rating: "4.8",
+    tag: "New Listing ✨",
+    image: "",
+    description: ""
+  });
+
   const navigate = useNavigate();
 
   const localUttarkashiHotels = [
@@ -24,7 +37,13 @@ export default function AllStays() {
   useEffect(() => {
     setLoading(true);
     
-    // Check locally added user properties first from frontend storage
+    // Check if admin is authenticated from footer passcode
+    const isAdminAuthenticated = localStorage.getItem("is_hotel_admin") === "true";
+    if (isAdminAuthenticated) {
+      setIsModalOpen(true);
+      localStorage.removeItem("is_hotel_admin"); // ek baar khulne ke baad flag hata dein
+    }
+
     const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
 
     axios.get(`${BACKEND_URL}/api/hotels`)
@@ -38,7 +57,6 @@ export default function AllStays() {
           tag: item.tag || "Verified Stay ✓"
         }));
         
-        // Merge user added hotels + local static + backend data
         const merged = [...userAdded, ...localUttarkashiHotels, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
         setHotels(merged);
         setLoading(false);
@@ -49,6 +67,34 @@ export default function AllStays() {
         setLoading(false);
       });
   }, []);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const hotelObj = {
+      _id: "custom_" + Date.now(),
+      ...newHotel,
+      price: newHotel.price || "2,499",
+      image: newHotel.image || "/images/hotals/Hotel Nagraja Palace1.jpg"
+    };
+
+    const existingLocal = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
+    const updatedLocal = [hotelObj, ...existingLocal];
+    localStorage.setItem("user_added_hotels", JSON.stringify(updatedLocal));
+
+    setHotels([hotelObj, ...hotels]);
+    setIsModalOpen(false);
+    setNewHotel({
+      name: "",
+      city: "Uttarkashi",
+      location: "",
+      price: "",
+      rating: "4.8",
+      tag: "New Listing ✨",
+      image: "",
+      description: ""
+    });
+    alert("Hotel Added Successfully and Listed in All Stays! 🎉");
+  };
 
   if (loading) {
     return (
@@ -83,14 +129,93 @@ export default function AllStays() {
         </p>
       </div>
 
-      {/* Modern Grid Layout (Mixed Card Sizes Effect) */}
+      {/* Secret Password Protected Modal Form */}
+      {isModalOpen && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(15, 23, 42, 0.7)",
+          display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000, padding: "20px", backdropFilter: "blur(5px)"
+        }}>
+          <div style={{
+            background: "white", borderRadius: "20px", maxWidth: "600px", width: "100%", padding: "30px",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)", maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", margin: 0 }}>🔐 Secure Partner: Add New Hotel</h2>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                style={{ background: "none", border: "none", fontSize: "20px", fontWeight: "bold", cursor: "pointer", color: "#64748b" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Hotel Name *</label>
+                <input 
+                  type="text" required placeholder="e.g. Himalayan Peak Resort" 
+                  value={newHotel.name} onChange={(e) => setNewHotel({...newHotel, name: e.target.value})}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>City *</label>
+                  <input 
+                    type="text" required placeholder="Uttarkashi / Matli" 
+                    value={newHotel.city} onChange={(e) => setNewHotel({...newHotel, city: e.target.value})}
+                    style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Price Per Night (₹) *</label>
+                  <input 
+                    type="text" required placeholder="2,499" 
+                    value={newHotel.price} onChange={(e) => setNewHotel({...newHotel, price: e.target.value})}
+                    style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Image Path / URL *</label>
+                <input 
+                  type="text" required placeholder="/images/hotals/Hotel Nagraja Palace1.jpg" 
+                  value={newHotel.image} onChange={(e) => setNewHotel({...newHotel, image: e.target.value})}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Description / Details</label>
+                <textarea 
+                  rows="2" placeholder="Write basic details..." 
+                  value={newHotel.description} onChange={(e) => setNewHotel({...newHotel, description: e.target.value})}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }}
+                ></textarea>
+              </div>
+
+              <button 
+                type="submit" 
+                style={{
+                  background: "#0284c7", color: "white", border: "none", padding: "12px", borderRadius: "10px",
+                  fontWeight: "800", fontSize: "14px", cursor: "pointer", marginTop: "10px"
+                }}
+              >
+                Publish & Show in All Stays 🚀
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modern Grid Layout */}
       <div style={{ 
         maxWidth: "1200px", margin: "0 auto", 
         display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: "24px", boxSizing: "border-box" 
       }}>
-        
         {currentHotels.map((hotel, index) => {
-          // Make every 3rd card slightly stand out as a "Featured/Hero" card vibe
           const isFeatured = index % 3 === 0;
 
           return (
@@ -102,24 +227,17 @@ export default function AllStays() {
                 borderRadius: "20px", 
                 overflow: "hidden", 
                 boxShadow: isFeatured ? "0 20px 25px -5px rgba(2, 132, 199, 0.15)" : "0 10px 15px -3px rgba(0,0,0,0.03)",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                position: "relative",
-                boxSizing: "border-box"
+                display: "flex", flexDirection: "column", justifyContent: "space-between",
+                position: "relative", boxSizing: "border-box"
               }}
             >
-              {/* Top Image Section with Tags */}
               <div style={{ position: "relative", height: "220px", background: "#e2e8f0", overflow: "hidden" }}>
                 <img 
                   src={hotel.image} 
                   alt={hotel.name} 
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.5s ease" }} 
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
                   onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                 />
-                
-                {/* Special Tag Badge */}
                 <div style={{
                   position: "absolute", top: "14px", left: "14px", background: "linear-gradient(135deg, #f59e0b, #d97706)",
                   color: "white", padding: "5px 12px", borderRadius: "8px", fontSize: "11px", fontWeight: "800", zIndex: 2,
@@ -127,8 +245,6 @@ export default function AllStays() {
                 }}>
                   {hotel.tag || "Top Pick ⭐"}
                 </div>
-
-                {/* Rating Badge */}
                 <div style={{
                   position: "absolute", top: "14px", right: "14px", background: "rgba(15, 23, 42, 0.85)", backdropFilter: "blur(6px)",
                   color: "white", padding: "5px 12px", borderRadius: "8px", fontSize: "12px", fontWeight: "900", zIndex: 2,
@@ -138,7 +254,6 @@ export default function AllStays() {
                 </div>
               </div>
 
-              {/* Middle Content Section */}
               <div style={{ padding: "20px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
@@ -159,7 +274,6 @@ export default function AllStays() {
                   </p>
                 </div>
 
-                {/* Price and Action Section inside Card */}
                 <div style={{ 
                   borderTop: "1px solid #f1f5f9", paddingTop: "16px", marginTop: "auto",
                   display: "flex", justifyContent: "space-between", alignItems: "center" 
@@ -177,20 +291,18 @@ export default function AllStays() {
                     style={{ 
                       padding: "10px 22px", background: isFeatured ? "#0f172a" : "#0284c7", 
                       color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer",
-                      boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)", transition: "all 0.2s ease"
+                      boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)"
                     }}
                   >
                     View Room →
                   </button>
                 </div>
               </div>
-
             </div>
           );
         })}
       </div>
 
-      {/* Load More & Pagination Section */}
       <div style={{ textAlign: "center", marginTop: "50px" }}>
         {visibleCount < hotels.length ? (
           <button 
@@ -198,7 +310,7 @@ export default function AllStays() {
             style={{
               background: "#0284c7", color: "white", border: "none", padding: "14px 45px",
               borderRadius: "14px", fontWeight: "800", fontSize: "15px", cursor: "pointer",
-              boxShadow: "0 8px 20px rgba(2, 132, 199, 0.35)", transition: "all 0.2s ease"
+              boxShadow: "0 8px 20px rgba(2, 132, 199, 0.35)"
             }}
           >
             Load More Amazing Stays ({hotels.length - visibleCount} left) ↓

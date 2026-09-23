@@ -1,8 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VisitorCounter from "../components/VisitorCounter";
 
 export default function Footer() {
+  const navigate = useNavigate();
+
+  const handleListPropertyClick = (e) => {
+    e.preventDefault();
+    const password = prompt("Enter Admin Secret Passcode to Add Hotel:");
+    // Yahan aap apna secure password set kar sakte hain (jaise: himstay123)
+    if (password === "himstay123") {
+      localStorage.setItem("is_hotel_admin", "true");
+      navigate("/hotels"); // AllStays page par redirect karega jahan add modal khulega
+      window.location.reload();
+    } else if (password !== null) {
+      alert("Incorrect Passcode!");
+    }
+  };
+
   return (
     <footer style={{ background: "#f8fafc", borderTop: "1px solid #e2e8f0", padding: "40px 20px 20px", fontFamily: "sans-serif" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
@@ -34,7 +49,7 @@ export default function Footer() {
           <div>
             <h4 style={columnTitleStyle}>Partners</h4>
             <ul style={ulStyle}>
-              <li><Link to="/list-property" style={linkStyle}>List your property</Link></li>
+              <li><a href="#" onClick={handleListPropertyClick} style={linkStyle}>List your property</a></li>
               <li><Link to="/admin" style={linkStyle}>Admin Access</Link></li>
               <li><Link to="/admin/bookings" style={linkStyle}>Admin Bookings</Link></li>
               <li><span style={linkStyle}>Partner Help</span></li>
