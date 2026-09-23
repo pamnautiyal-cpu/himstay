@@ -10,13 +10,11 @@ export default function AllStays() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Smart Short Form State (Basics only, rooms/meal plans will be auto-generated)
   const [newHotel, setNewHotel] = useState({
     name: "",
     city: "Uttarkashi",
     location: "",
-    image1: "",
-    image2: "",
+    images: [],
     description: ""
   });
 
@@ -34,7 +32,6 @@ export default function AllStays() {
   ];
 
   useEffect(() => {
-    // Check footer secret passcode authentication immediately
     const isAdminAuthenticated = localStorage.getItem("is_hotel_admin") === "true";
     if (isAdminAuthenticated) {
       setIsModalOpen(true);
@@ -66,9 +63,39 @@ export default function AllStays() {
       });
   }, []);
 
+  // Handle multiple file selection and convert all to Base64
+  const handleMultipleImagesUpload = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      let loadedImages = [];
+      let count = 0;
+
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          loadedImages[index] = reader.result;
+          count++;
+          if (count === files.length) {
+            setNewHotel(prev => ({ ...prev, images: loadedImages.filter(Boolean) }));
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     
+    const defaultImg = "/images/hotals/Hotel Nagraja Palace1.jpg";
+    const defaultImages = [
+      defaultImg,
+      "/images/hotals/Hotel Nagraja Palace2.jpg",
+      "/images/hotals/Hotel Nagraja Palace3.jpg"
+    ];
+
+    const finalImages = newHotel.images.length > 0 ? newHotel.images : defaultImages;
+
     const hotelObj = {
       _id: "custom_" + Date.now(),
       name: newHotel.name,
@@ -77,11 +104,8 @@ export default function AllStays() {
       price: "1,899",
       rating: "4.9",
       tag: "New Listing ✨",
-      image: newHotel.image1 || "/images/hotals/Hotel Nagraja Palace1.jpg",
-      images: [
-        newHotel.image1 || "/images/hotals/Hotel Nagraja Palace1.jpg",
-        newHotel.image2 || "/images/hotals/Hotel Nagraja Palace2.jpg"
-      ],
+      image: finalImages[0],
+      images: finalImages,
       description: newHotel.description || "Enjoy modern amenities, breathtaking mountain views, and world-class hospitality tailored for families and couples.",
       hasStandardStructure: true 
     };
@@ -96,11 +120,10 @@ export default function AllStays() {
       name: "",
       city: "Uttarkashi",
       location: "",
-      image1: "",
-      image2: "",
+      images: [],
       description: ""
     });
-    alert("Hotel Added Successfully with Full Room & Meal Plan Structure! 🎉");
+    alert(`Hotel Added Successfully with ${finalImages.length} Photos & Full Structure! 🎉`);
   };
 
   if (loading) {
@@ -136,7 +159,7 @@ export default function AllStays() {
         </p>
       </div>
 
-      {/* Secret Secured Add Hotel Modal (Smart Short Form) */}
+      {/* Secret Secured Add Hotel Modal (Multiple Images Upload Option) */}
       {isModalOpen && (
         <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(15, 23, 42, 0.7)",
@@ -147,7 +170,7 @@ export default function AllStays() {
             boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)", maxHeight: "90vh", overflowY: "auto", boxSizing: "border-box"
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", margin: 0 }}>🔐 Add Hotel (Auto Room & Meal Plans)</h2>
+              <h2 style={{ fontSize: "22px", fontWeight: "900", color: "#0f172a", margin: 0 }}>🔐 Add Hotel & Upload Multiple Photos</h2>
               <button 
                 onClick={() => setIsModalOpen(false)}
                 style={{ background: "none", border: "none", fontSize: "20px", fontWeight: "bold", cursor: "pointer", color: "#64748b" }}
@@ -186,21 +209,15 @@ export default function AllStays() {
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Main Image URL / Path *</label>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#0284c7", marginBottom: "6px" }}>Upload Photos (Select 2, 3, 4 or more images from device) *</label>
                 <input 
-                  type="text" required placeholder="/images/hotals/Hotel Nagraja Palace1.jpg" 
-                  value={newHotel.image1} onChange={(e) => setNewHotel({...newHotel, image1: e.target.value})}
-                  style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
+                  type="file" accept="image/*" multiple required 
+                  onChange={handleMultipleImagesUpload}
+                  style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "2px dashed #0284c7", fontSize: "13px", background: "#f0f9ff", boxSizing: "border-box", cursor: "pointer" }} 
                 />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Second Image URL / Path (Gallery) *</label>
-                <input 
-                  type="text" required placeholder="/images/hotals/Hotel Nagraja Palace2.jpg" 
-                  value={newHotel.image2} onChange={(e) => setNewHotel({...newHotel, image2: e.target.value})}
-                  style={{ width: "100%", padding: "10px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "14px", boxSizing: "border-box" }} 
-                />
+                <span style={{ fontSize: "11px", color: "#16a34a", fontWeight: "700", display: "block", marginTop: "4px" }}>
+                  ✓ Selected: {newHotel.images.length} images ready.
+                </span>
               </div>
 
               <div>
@@ -213,7 +230,7 @@ export default function AllStays() {
               </div>
 
               <p style={{ fontSize: "12px", color: "#0284c7", background: "#f0f9ff", padding: "8px", borderRadius: "6px", margin: 0, fontWeight: "600" }}>
-                ℹ️ Standard Rooms (Standard, Deluxe, Super Deluxe, Family Suite) & Meal Plans (EP, CP, MAP, AP) will be automatically configured.
+                ℹ️ Standard Rooms & Meal Plans (EP, CP, MAP, AP) will be automatically configured.
               </p>
 
               <button 
@@ -223,7 +240,7 @@ export default function AllStays() {
                   fontWeight: "800", fontSize: "14px", cursor: "pointer", marginTop: "5px"
                 }}
               >
-                Publish Hotel with Full Details 🚀
+                Publish Hotel with Multiple Photos 🚀
               </button>
             </form>
           </div>
