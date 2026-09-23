@@ -63,20 +63,22 @@ export default function AllStays() {
       });
   }, []);
 
-  // Handle multiple file selection and convert all to Base64
+  // Handle multiple file selection and accumulate/append images cleanly
   const handleMultipleImagesUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
-      let loadedImages = [];
-      let count = 0;
+      let currentImages = [...newHotel.images];
+      let loadedCount = 0;
 
-      files.forEach((file, index) => {
+      files.forEach((file) => {
         const reader = new FileReader();
         reader.onloadend = () => {
-          loadedImages[index] = reader.result;
-          count++;
-          if (count === files.length) {
-            setNewHotel(prev => ({ ...prev, images: loadedImages.filter(Boolean) }));
+          if (reader.result) {
+            currentImages.push(reader.result);
+          }
+          loadedCount++;
+          if (loadedCount === files.length) {
+            setNewHotel(prev => ({ ...prev, images: [...currentImages] }));
           }
         };
         reader.readAsDataURL(file);
@@ -210,25 +212,36 @@ export default function AllStays() {
 
               <div>
                 <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#0284c7", marginBottom: "6px" }}>
-                  📁 Upload Multiple Photos (Hold 'Ctrl' or 'Shift' to select 2, 3, 4+ images) *
+                  📁 Upload Photos (Select multiple at once, or browse multiple times to add more) *
                 </label>
                 <input 
-                  type="file" accept="image/*" multiple required 
+                  type="file" accept="image/*" multiple 
                   onChange={handleMultipleImagesUpload}
                   style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "2px dashed #0284c7", fontSize: "13px", background: "#f0f9ff", boxSizing: "border-box", cursor: "pointer" }} 
                 />
                 
-                {/* Live Preview Thumbnails */}
+                {/* Live Preview Thumbnails & Reset Option */}
                 {newHotel.images.length > 0 && (
-                  <div style={{ display: "flex", gap: "8px", marginTop: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                    {newHotel.images.map((imgSrc, idx) => (
-                      <div key={idx} style={{ position: "relative", width: "45px", height: "45px", borderRadius: "6px", overflow: "hidden", border: "1px solid #cbd5e1" }}>
-                        <img src={imgSrc} alt={`prev ${idx}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      </div>
-                    ))}
-                    <span style={{ fontSize: "12px", color: "#16a34a", fontWeight: "700" }}>
-                      ✓ {newHotel.images.length} images selected!
-                    </span>
+                  <div style={{ marginTop: "10px" }}>
+                    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "6px" }}>
+                      {newHotel.images.map((imgSrc, idx) => (
+                        <div key={idx} style={{ position: "relative", width: "50px", height: "50px", borderRadius: "6px", overflow: "hidden", border: "2px solid #0284c7" }}>
+                          <img src={imgSrc} alt={`prev ${idx}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: "12px", color: "#16a34a", fontWeight: "700" }}>
+                        ✓ Total {newHotel.images.length} image(s) added!
+                      </span>
+                      <button 
+                        type="button" 
+                        onClick={() => setNewHotel(prev => ({ ...prev, images: [] }))}
+                        style={{ background: "#fee2e2", color: "#dc2626", border: "none", padding: "2px 8px", borderRadius: "4px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}
+                      >
+                        Clear Photos
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
