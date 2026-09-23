@@ -34,15 +34,14 @@ export default function AllStays() {
   ];
 
   useEffect(() => {
-    setLoading(true);
-    
-    // Check footer secret passcode authentication
+    // Check footer secret passcode authentication immediately
     const isAdminAuthenticated = localStorage.getItem("is_hotel_admin") === "true";
     if (isAdminAuthenticated) {
       setIsModalOpen(true);
       localStorage.removeItem("is_hotel_admin");
     }
 
+    setLoading(true);
     const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
 
     axios.get(`${BACKEND_URL}/api/hotels`)
@@ -70,13 +69,12 @@ export default function AllStays() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     
-    // Auto-assign standard default pricing structure and multiple images for professional look
     const hotelObj = {
       _id: "custom_" + Date.now(),
       name: newHotel.name,
       city: newHotel.city,
       location: newHotel.location || newHotel.city,
-      price: "1,899", // Base starting price
+      price: "1,899",
       rating: "4.9",
       tag: "New Listing ✨",
       image: newHotel.image1 || "/images/hotals/Hotel Nagraja Palace1.jpg",
@@ -85,7 +83,6 @@ export default function AllStays() {
         newHotel.image2 || "/images/hotals/Hotel Nagraja Palace2.jpg"
       ],
       description: newHotel.description || "Enjoy modern amenities, breathtaking mountain views, and world-class hospitality tailored for families and couples.",
-      // Auto-include standard room & meal plan structure so detail page matches other hotels completely
       hasStandardStructure: true 
     };
 
