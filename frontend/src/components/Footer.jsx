@@ -62,7 +62,7 @@ export default function Footer() {
             <ul style={ulStyle}>
               <li><a href="#" onClick={handleListPropertyClick} style={linkStyle}>List your property</a></li>
               {/* ⚙️ लाल रंग और बोल्ड स्टाइल यहाँ से हटा दिया गया है */}
-              <li><a href="#" onClick={handleManageListingsClick} style={linkStyle}>Manage Listings (Delete)</a></li>
+              <li><a href="#" onClick={handleManageListingsClick} style={linkStyle}>Manage Listings </a></li>
               <li><Link to="/admin" style={linkStyle}>Admin Access</Link></li>
               <li><Link to="/admin/bookings" style={linkStyle}>Admin Bookings</Link></li>
               <li><span style={linkStyle}>Partner Help</span></li>
