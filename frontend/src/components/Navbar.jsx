@@ -104,13 +104,12 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links (Hidden on Mobile) */}
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }} className="desktop-nav-container">
           <Link to="/hotels" style={navLinkStyle}>
             🏨 Hotels
           </Link>
           
-          {/* 🗺️ Explore Culture Link Added Here */}
           <Link to="/districts" style={{ ...navLinkStyle, color: "#38bdf8" }}>
             🗺️ Explore Culture
           </Link>
@@ -212,8 +211,8 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile Hamburger Menu Toggle */}
-        <div style={{ display: "none" }} className="mobile-toggle-btn">
+        {/* Mobile Hamburger Menu Toggle (Hidden on Desktop) */}
+        <div className="mobile-toggle-wrapper" style={{ display: "none" }}>
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             style={{ 
@@ -232,7 +231,7 @@ export default function Navbar() {
 
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Dropdown (Scrollable) */}
       {isMobileMenuOpen && (
         <div style={{ 
           background: "#0f172a", 
@@ -242,7 +241,9 @@ export default function Navbar() {
           border: "1px solid rgba(255, 255, 255, 0.1)",
           display: "flex", 
           flexDirection: "column", 
-          gap: "10px" 
+          gap: "10px",
+          maxHeight: "80vh",
+          overflowY: "auto"
         }}>
           {user && (
             <div style={{
@@ -372,6 +373,18 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Responsive Media Query CSS */}
+      <style>{`
+        @media (max-width: 900px) {
+          .desktop-nav-container {
+            display: none !important;
+          }
+          .mobile-toggle-wrapper {
+            display: block !important;
+          }
+        }
+      `}</style>
     </header>
   );
 }
