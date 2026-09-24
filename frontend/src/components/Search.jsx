@@ -4,6 +4,14 @@ import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
+// Fallback hotels taaki zero properties ki samasya kabhi na aaye
+const FALLBACK_HOTELS = [
+  { _id: "1", name: "Hotel Nagraja Palace", location: "Gangotri Hwy, Uttarkashi", price: 2499, rating: "4.8", category: "Hotel", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" },
+  { _id: "2", name: "HOTEL SATYAM PARADISE", location: "Matli, Uttarkashi", price: 1899, rating: "4.9", category: "Hotel", image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600" },
+  { _id: "3", name: "Dhruvnanda Homestay", location: "ITBP Rd, Uttarkashi", price: 1599, rating: "4.8", category: "Homestay", image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600" },
+  { _id: "4", name: "Hotel K.P Residency", location: "Near Medicose, Uttarkashi", price: 2200, rating: "4.5", category: "Hotel", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600" }
+];
+
 export default function Search() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,20 +37,24 @@ export default function Search() {
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
         const backendData = res.data || [];
-        const formattedBackendData = backendData.map(item => ({
-          ...item,
-          price: Number(item.price) || 2499,
-          rating: item.rating || "4.8",
-          location: item.location || item.city || "Uttarkashi",
-          category: item.category || "Hotel",
-          image: item.image || item.img || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
-        }));
-        setHotels(formattedBackendData);
+        if (backendData.length > 0) {
+          const formattedBackendData = backendData.map(item => ({
+            ...item,
+            price: Number(item.price) || 2499,
+            rating: item.rating || "4.8",
+            location: item.location || item.city || "Uttarkashi",
+            category: item.category || "Hotel",
+            image: item.image || item.img || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
+          }));
+          setHotels(formattedBackendData);
+        } else {
+          setHotels(FALLBACK_HOTELS);
+        }
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching hotels:", err);
-        setHotels([]);
+        console.error("Error fetching hotels, using fallback:", err);
+        setHotels(FALLBACK_HOTELS);
         setLoading(false);
       });
   }, []);
@@ -51,7 +63,6 @@ export default function Search() {
     setSelectedFilters(prev => ({ ...prev, [filterName]: !prev[filterName] }));
   };
 
-  // फ्लेक्सिबल फ़िल्टर ताकि रो प्रॉपर्टीज़ न दिखे, कम से कम सारे होटल तो दिखें
   const filteredHotels = hotels.filter(hotel => {
     const matchesSearch = searchTerm.trim() === "" || 
                           hotel.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -62,7 +73,6 @@ export default function Search() {
                         (hotel.city && hotel.city.toLowerCase() === selectedCity.toLowerCase()) || 
                         (hotel.location && hotel.location.toLowerCase().includes(selectedCity.toLowerCase()));
     
-    // अगर कोई फ़िल्टर टिक नहीं है, तो सभी को पास होने दें
     const hasAnyTypeFilter = selectedFilters.hotel || selectedFilters.homestay || selectedFilters.cottage;
     if (hasAnyTypeFilter) {
       if (selectedFilters.hotel && hotel.category?.toLowerCase() !== "hotel") return false;
@@ -143,35 +153,13 @@ export default function Search() {
 
               {filteredHotels.length === 0 ? (
                 <div style={{ background: "white", borderRadius: "12px", padding: "40px", textAlign: "center", border: "1px solid #e2e8f0" }}>
-                  <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>No properties found. Showing all available database items:</p>
-                  {/* अगर फ़िल्टर की वजह से जीरो हो रहा है, तो कम से कम बैकएंड के सारे होटल नीचे दिखा दें */}
-                  <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
-                    {hotels.map((hotel) => (
-                      <div 
-                        key={hotel._id || hotel.id}
-                        style={{
-                          background: "#fff",
-                          borderRadius: "14px",
-                          border: "1px solid #e2e8f0",
-                          display: "grid",
-                          gridTemplateColumns: "200px 1fr auto",
-                          padding: "10px",
-                          gap: "15px",
-                          alignItems: "center",
-                          textAlign: "left",
-                          cursor: "pointer"
-                        }}
-                        onClick={() => navigate(`/hotels/${hotel._id || hotel.id}`)}
-                      >
-                        <img src={hotel.image} alt={hotel.name} style={{ width: "100px", height: "70px", objectFit: "cover", borderRadius: "8px" }} />
-                        <div>
-                          <h4 style={{ margin: "0 0 5px 0", fontSize: "16px", color: "#0f172a" }}>{hotel.name}</h4>
-                          <span style={{ fontSize: "12px", color: "#64748b" }}>📍 {hotel.location}</span>
-                        </div>
-                        <span style={{ fontWeight: "700", color: "#0284c7" }}>₹{hotel.price}</span>
-                      </div>
-                    ))}
-                  </div>
+                  <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>No properties found matching your search.</p>
+                  <button 
+                    onClick={() => { setSearchTerm(""); setSelectedCity("All"); }}
+                    style={{ marginTop: "15px", background: "#0284c7", color: "white", border: "none", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", fontWeight: "600" }}
+                  >
+                    Reset Search
+                  </button>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
