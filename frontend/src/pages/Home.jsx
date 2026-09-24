@@ -22,7 +22,7 @@ export default function Home() {
     }
   };
 
-  // 🎲 Random shuffle function for dynamic feel
+  // Random shuffle function for dynamic feel
   const shuffleArray = (array) => {
     let shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -62,12 +62,12 @@ export default function Home() {
     { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
   ];
 
-  // Updated relevant cultural & food images for Uttarakhand Districts
+  // Unique and fixed images for Uttarakhand Districts
   const uttarakhandDistricts = [
-    { id: "uttarkashi", name: "उत्तरकाशी", tagline: "पहाड़ी राजमा और ट्रेकिंग", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80", food: "पहाड़ी राजमा, लाल चावल" },
-    { id: "tehri", name: "टिहरी गढ़वाल", tagline: "झील किनारे का स्वाद", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", food: "चैनसू, गहत की दाल" },
-    { id: "dehradun", name: "देहरादून & मसूरी", tagline: "कैफे और पहाड़ी ज़ायका", image: "https://images.unsplash.com/photo-1589182337358-2fabedd73e9d?auto=format&fit=crop&w=600&q=80", food: "कफुली, बाल मिठाई" },
-    { id: "nainital", name: "नैनीताल", tagline: "कुमाऊनी ज़ायका और झीलें", image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=600&q=80", food: "भट की चुर्काणी, आलू गुटके" }
+    { id: "uttarkashi", name: "Uttarkashi", tagline: "Mountain Rajma & Trekking", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80", food: "Pahari Rajma, Red Rice" },
+    { id: "tehri", name: "Tehri Garhwal", tagline: "Lake View Delicacies", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", food: "Chainsoo, Gahat Dal" },
+    { id: "dehradun", name: "Dehradun & Mussoorie", tagline: "Cafes & Mountain Flavors", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80", food: "Kafuli, Bal Mithai" },
+    { id: "nainital", name: "Nainital", tagline: "Kumaoni Flavors & Lakes", image: "https://images.unsplash.com/photo-1561501900-3701fa6a0864?auto=format&fit=crop&w=600&q=80", food: "Bhatt ki Churkani, Aloo Gutke" }
   ];
 
   useEffect(() => {
@@ -492,11 +492,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Explore Districts & Local Food Section with Corrected Unique Images */}
+        {/* Explore Districts & Local Food Section with Unique Fixed Images */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
-              <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>उत्तराखंड संस्कृति और ज़ायका</span>
+              <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>HIMALAYAN CULTURE & CUISINE</span>
               <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
                 Explore Districts & Local Food
               </h2>
