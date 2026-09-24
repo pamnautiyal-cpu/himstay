@@ -253,7 +253,7 @@ export default function CharDhamAgents() {
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   <a 
-                    href={`https://wa.me/91YOUR_PHONE_NUMBER?text=${whatsappMessage}`} 
+                    href={`https://wa.me/919410106470?text=${whatsappMessage}`} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     style={{ 
