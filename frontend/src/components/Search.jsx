@@ -10,19 +10,17 @@ export default function Search() {
   const queryParams = new URLSearchParams(location.search);
   const initialQuery = queryParams.get("query") || "";
   const initialCity = queryParams.get("city") || "All";
-  const initialTab = queryParams.get("tab") || "";
 
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [selectedCity, setSelectedCity] = useState(initialCity);
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States - Agar URL mein tab=Hotels hai toh hotel filter ko by default true kar sakte hain ya off rakh sakte hain
   const [selectedFilters, setSelectedFilters] = useState({
     freeCancellation: false,
     breakfastIncluded: false,
     homestay: false,
-    hotel: initialTab === "Hotels" ? false : false, // Sabhi hotels dikhane ke liye ise false rakha hai taaki filter block na kare
+    hotel: false,
     cottage: false
   });
 
@@ -43,7 +41,7 @@ export default function Search() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching hotels from backend:", err);
+        console.error("Error fetching hotels:", err);
         setHotels([]);
         setLoading(false);
       });
@@ -53,10 +51,10 @@ export default function Search() {
     setSelectedFilters(prev => ({ ...prev, [filterName]: !prev[filterName] }));
   };
 
+  // फ्लेक्सिबल फ़िल्टर ताकि रो प्रॉपर्टीज़ न दिखे, कम से कम सारे होटल तो दिखें
   const filteredHotels = hotels.filter(hotel => {
-    // Agar search term khali hai, toh sabhi hotels dikhao
     const matchesSearch = searchTerm.trim() === "" || 
-                          hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          hotel.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           (hotel.location && hotel.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
                           (hotel.city && hotel.city.toLowerCase().includes(searchTerm.toLowerCase()));
     
@@ -64,10 +62,13 @@ export default function Search() {
                         (hotel.city && hotel.city.toLowerCase() === selectedCity.toLowerCase()) || 
                         (hotel.location && hotel.location.toLowerCase().includes(selectedCity.toLowerCase()));
     
-    // Property type filters - Tabhi apply honge jab checkbox tick hoga
-    if (selectedFilters.homestay && hotel.category?.toLowerCase() !== "homestay") return false;
-    if (selectedFilters.hotel && hotel.category?.toLowerCase() !== "hotel") return false;
-    if (selectedFilters.cottage && hotel.category?.toLowerCase() !== "cottage") return false;
+    // अगर कोई फ़िल्टर टिक नहीं है, तो सभी को पास होने दें
+    const hasAnyTypeFilter = selectedFilters.hotel || selectedFilters.homestay || selectedFilters.cottage;
+    if (hasAnyTypeFilter) {
+      if (selectedFilters.hotel && hotel.category?.toLowerCase() !== "hotel") return false;
+      if (selectedFilters.homestay && hotel.category?.toLowerCase() !== "homestay") return false;
+      if (selectedFilters.cottage && hotel.category?.toLowerCase() !== "cottage") return false;
+    }
 
     return matchesSearch && matchesCity;
   });
@@ -110,7 +111,7 @@ export default function Search() {
       <div style={{ maxWidth: "1200px", margin: "30px auto", padding: "0 20px" }}>
         
         {loading ? (
-          <div style={{ textAlign: "center", padding: "60px", fontSize: "16px", color: "#64748b" }}>Loading properties from database...</div>
+          <div style={{ textAlign: "center", padding: "60px", fontSize: "16px", color: "#64748b" }}>Loading properties...</div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "24px", alignItems: "flex-start" }}>
             
@@ -130,16 +131,6 @@ export default function Search() {
                   <input type="checkbox" checked={selectedFilters.cottage} onChange={() => handleCheckboxChange("cottage")} /> Cottages
                 </label>
               </div>
-
-              <div>
-                <h4 style={{ fontSize: "13px", fontWeight: "700", color: "#64748b", marginBottom: "10px", textTransform: "uppercase" }}>Popular Filters</h4>
-                <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", marginBottom: "8px", cursor: "pointer" }}>
-                  <input type="checkbox" checked={selectedFilters.freeCancellation} onChange={() => handleCheckboxChange("freeCancellation")} /> Free Cancellation
-                </label>
-                <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", cursor: "pointer" }}>
-                  <input type="checkbox" checked={selectedFilters.breakfastIncluded} onChange={() => handleCheckboxChange("breakfastIncluded")} /> Breakfast Included
-                </label>
-              </div>
             </div>
 
             {/* Right Results Section */}
@@ -152,7 +143,35 @@ export default function Search() {
 
               {filteredHotels.length === 0 ? (
                 <div style={{ background: "white", borderRadius: "12px", padding: "40px", textAlign: "center", border: "1px solid #e2e8f0" }}>
-                  <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>No properties found matching your criteria.</p>
+                  <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>No properties found. Showing all available database items:</p>
+                  {/* अगर फ़िल्टर की वजह से जीरो हो रहा है, तो कम से कम बैकएंड के सारे होटल नीचे दिखा दें */}
+                  <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
+                    {hotels.map((hotel) => (
+                      <div 
+                        key={hotel._id || hotel.id}
+                        style={{
+                          background: "#fff",
+                          borderRadius: "14px",
+                          border: "1px solid #e2e8f0",
+                          display: "grid",
+                          gridTemplateColumns: "200px 1fr auto",
+                          padding: "10px",
+                          gap: "15px",
+                          alignItems: "center",
+                          textAlign: "left",
+                          cursor: "pointer"
+                        }}
+                        onClick={() => navigate(`/hotels/${hotel._id || hotel.id}`)}
+                      >
+                        <img src={hotel.image} alt={hotel.name} style={{ width: "100px", height: "70px", objectFit: "cover", borderRadius: "8px" }} />
+                        <div>
+                          <h4 style={{ margin: "0 0 5px 0", fontSize: "16px", color: "#0f172a" }}>{hotel.name}</h4>
+                          <span style={{ fontSize: "12px", color: "#64748b" }}>📍 {hotel.location}</span>
+                        </div>
+                        <span style={{ fontWeight: "700", color: "#0284c7" }}>₹{hotel.price}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
