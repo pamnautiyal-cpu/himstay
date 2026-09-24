@@ -10,18 +10,19 @@ export default function Search() {
   const queryParams = new URLSearchParams(location.search);
   const initialQuery = queryParams.get("query") || "";
   const initialCity = queryParams.get("city") || "All";
+  const initialTab = queryParams.get("tab") || "";
 
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [selectedCity, setSelectedCity] = useState(initialCity);
-  const [hotels, setHotels] = useState([]); // केवल डेटाबेस से आने वाला डेटा
+  const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States
+  // Filter States - Agar URL mein tab=Hotels hai toh hotel filter ko by default true kar sakte hain ya off rakh sakte hain
   const [selectedFilters, setSelectedFilters] = useState({
     freeCancellation: false,
     breakfastIncluded: false,
     homestay: false,
-    hotel: false,
+    hotel: initialTab === "Hotels" ? false : false, // Sabhi hotels dikhane ke liye ise false rakha hai taaki filter block na kare
     cottage: false
   });
 
@@ -53,7 +54,9 @@ export default function Search() {
   };
 
   const filteredHotels = hotels.filter(hotel => {
-    const matchesSearch = hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    // Agar search term khali hai, toh sabhi hotels dikhao
+    const matchesSearch = searchTerm.trim() === "" || 
+                          hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           (hotel.location && hotel.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
                           (hotel.city && hotel.city.toLowerCase().includes(searchTerm.toLowerCase()));
     
@@ -61,9 +64,10 @@ export default function Search() {
                         (hotel.city && hotel.city.toLowerCase() === selectedCity.toLowerCase()) || 
                         (hotel.location && hotel.location.toLowerCase().includes(selectedCity.toLowerCase()));
     
-    if (selectedFilters.homestay && hotel.category !== "Homestay") return false;
-    if (selectedFilters.hotel && hotel.category !== "Hotel") return false;
-    if (selectedFilters.cottage && hotel.category !== "Cottage") return false;
+    // Property type filters - Tabhi apply honge jab checkbox tick hoga
+    if (selectedFilters.homestay && hotel.category?.toLowerCase() !== "homestay") return false;
+    if (selectedFilters.hotel && hotel.category?.toLowerCase() !== "hotel") return false;
+    if (selectedFilters.cottage && hotel.category?.toLowerCase() !== "cottage") return false;
 
     return matchesSearch && matchesCity;
   });
@@ -148,7 +152,7 @@ export default function Search() {
 
               {filteredHotels.length === 0 ? (
                 <div style={{ background: "white", borderRadius: "12px", padding: "40px", textAlign: "center", border: "1px solid #e2e8f0" }}>
-                  <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>No properties found in the database matching your search.</p>
+                  <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>No properties found matching your criteria.</p>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
