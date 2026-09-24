@@ -63,40 +63,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Advanced Form States for Serious Agents & Drivers
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phone: "",
-    agencyName: "",
-    gstin: "",
-    travelDate: "",
-    groupSize: "1-5 Persons",
-    roomCount: "2-4 Rooms",
-    vehicleType: "Tempo Traveller (12-26 Seater)",
-    yatraRegistration: "Yes - Completed",
-    route: "Yamunotri & Gangotri Route"
-  });
-
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-  const handleFormChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleAgentFormSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.fullName || !formData.phone || !formData.travelDate) {
-      alert("Please fill in all required fields (Name, Phone, Travel Date).");
-      return;
-    }
-    setIsFormSubmitted(true);
-  };
-
-  // WhatsApp pre-filled message
-  const whatsappMessage = encodeURIComponent(
-    `Hello, I am a serious travel agent/driver. Here are my booking inquiry details:\n\n*Name:* ${formData.fullName}\n*Phone:* ${formData.phone}\n*Agency:* ${formData.agencyName || "N/A"}\n*GSTIN/ID:* ${formData.gstin || "N/A"}\n*Travel Date:* ${formData.travelDate}\n*Group Size:* ${formData.groupSize}\n*Rooms Required:* ${formData.roomCount}\n*Vehicle Type:* ${formData.vehicleType}\n*Yatra Status:* ${formData.yatraRegistration}\n*Route:* ${formData.route}`
-  );
-
   const staysScrollRef = useRef(null);
 
   const scrollStays = useCallback((direction) => {
@@ -183,258 +149,118 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#0f172a", color: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
       
-      {/* Compact & Sleek Hero / Partner Verification Section (Designed to take less vertical space) */}
-      <section style={{ 
-        display: "grid", 
-        gridTemplateColumns: "1.2fr 1fr", 
-        minHeight: "460px", 
-        background: "#0f172a", 
-        color: "#ffffff",
-        borderBottom: "1px solid #334155"
-      }} className="orn-hero-grid">
-        
-        {/* Left Dark Content Box */}
-        <div style={{ 
-          padding: "35px 40px", 
-          display: "flex", 
-          flexDirection: "column", 
-          justifyContent: "center",
-          background: `linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('${HERO_IMAGES[currentSlide]}') center/cover`,
-          borderRight: "1px solid rgba(255, 255, 255, 0.08)",
-          boxSizing: "border-box"
-        }}>
+      {/* ⚡ Compact & Sleek Hero Banner Section */}
+      <div style={{
+        position: "relative",
+        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)), url('${HERO_IMAGES[currentSlide]}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        padding: "24px 15px 30px 15px",
+        textAlign: "center",
+        color: "white",
+        borderBottom: "1px solid #334155",
+        transition: "background-image 1s ease-in-out",
+        boxSizing: "border-box"
+      }}>
+        <div style={{ maxWidth: "760px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+          
           <span style={{ 
-            color: "#38bdf8", 
-            fontWeight: "800", 
-            fontSize: "11px", 
-            letterSpacing: "1.5px", 
-            textTransform: "uppercase", 
-            marginBottom: "8px",
-            display: "inline-block"
+            background: "rgba(56, 189, 248, 0.1)", color: "#38bdf8", padding: "4px 12px", borderRadius: "20px", 
+            fontSize: "10px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.2px", display: "inline-block", 
+            marginBottom: "8px", border: "1px solid rgba(56, 189, 248, 0.3)" 
           }}>
-            ✨ Char Dham Special Partner Program
+            ✨ Handpicked Stays & Journeys
           </span>
-          <h1 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: "900", lineHeight: "1.2", margin: "0 0 12px 0", letterSpacing: "-0.5px" }}>
-            Hotel Bookings for Verified Travel Agents & Drivers.
+
+          <h1 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: "900", marginBottom: "6px", letterSpacing: "-0.5px", lineHeight: "1.2" }}>
+            Discover the True Spirit of the Himalayas
           </h1>
-          <p style={{ fontSize: "13.5px", color: "#94a3b8", margin: "0 0 18px 0", lineHeight: "1.5" }}>
-            Connect with us directly for group stays, driver accommodation, and confirmed room allocations on Gangotri and Yamunotri Dham routes.
+          <p style={{ fontSize: "clamp(12px, 1.8vw, 14px)", color: "#94a3b8", marginBottom: "16px", fontWeight: "400" }}>
+            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginBottom: "14px", flexWrap: "wrap" }}>
             {[
-              "✔️ Confirmed inventory across Barkot, Yamunotri, and Gangotri",
-              "✔️ Special B2B rates and dedicated arrangements for transport operators",
-              "✔️ Fill verification details on the right to instantly unlock WhatsApp & rates"
-            ].map((text, idx) => (
-              <div key={idx} style={{ fontSize: "13px", color: "#cbd5e1", display: "flex", alignItems: "center", gap: "8px" }}>
-                {text}
-              </div>
+              { id: "Hotels", label: "🏨 Hotels" },
+              { id: "Yoga", label: "🌿 Yoga" },
+              { id: "Treks", label: "⚡ Treks" }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  background: activeTab === tab.id ? "#0284c7" : "rgba(30, 41, 59, 0.8)",
+                  color: "white",
+                  border: activeTab === tab.id ? "none" : "1px solid #475569",
+                  padding: "6px 14px",
+                  borderRadius: "20px",
+                  fontWeight: "700",
+                  fontSize: "11.5px",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                {tab.label}
+              </button>
             ))}
           </div>
-        </div>
 
-        {/* Right Light Form Box (Compact & Sleek Serious Agent Verification Form) */}
-        <div style={{ 
-          background: "#ffffff", 
-          padding: "25px 35px", 
-          display: "flex", 
-          flexDirection: "column", 
-          justifyContent: "center",
-          color: "#1f2937",
-          boxSizing: "border-box"
-        }}>
-          <div style={{ maxWidth: "420px", width: "100%", margin: "0 auto" }}>
-            
-            {!isFormSubmitted ? (
-              <>
-                <h3 style={{ fontSize: "18px", fontWeight: "750", margin: "0 0 2px 0", color: "#0f172a" }}>
-                  Partner Agent Verification Form
-                </h3>
-                <p style={{ fontSize: "12px", color: "#6b7280", margin: "0 0 12px 0" }}>
-                  Fill travel details to filter spam and get instant direct access.
-                </p>
-
-                <form onSubmit={handleAgentFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <div>
-                      <label style={labelStyle}>Full Name *</label>
-                      <input 
-                        type="text" 
-                        name="fullName"
-                        placeholder="Your Name" 
-                        value={formData.fullName}
-                        onChange={handleFormChange}
-                        style={inputStyle}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label style={labelStyle}>WhatsApp Number *</label>
-                      <input 
-                        type="tel" 
-                        name="phone"
-                        placeholder="10-digit mobile" 
-                        value={formData.phone}
-                        onChange={handleFormChange}
-                        style={inputStyle}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <div>
-                      <label style={labelStyle}>Agency / Company</label>
-                      <input 
-                        type="text" 
-                        name="agencyName"
-                        placeholder="Agency Name" 
-                        value={formData.agencyName}
-                        onChange={handleFormChange}
-                        style={inputStyle}
-                      />
-                    </div>
-                    <div>
-                      <label style={labelStyle}>GSTIN / ID Proof (Opt)</label>
-                      <input 
-                        type="text" 
-                        name="gstin"
-                        placeholder="GSTIN or ID" 
-                        value={formData.gstin}
-                        onChange={handleFormChange}
-                        style={inputStyle}
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <div>
-                      <label style={labelStyle}>Travel Date *</label>
-                      <input 
-                        type="date" 
-                        name="travelDate"
-                        value={formData.travelDate}
-                        onChange={handleFormChange}
-                        style={inputStyle}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label style={labelStyle}>Group Size</label>
-                      <select name="groupSize" value={formData.groupSize} onChange={handleFormChange} style={inputStyle}>
-                        <option value="1-5 Persons">1 - 5 Persons</option>
-                        <option value="6-15 Persons">6 - 15 Persons</option>
-                        <option value="16+ Persons">16+ Large Group</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <div>
-                      <label style={labelStyle}>Rooms Required</label>
-                      <select name="roomCount" value={formData.roomCount} onChange={handleFormChange} style={inputStyle}>
-                        <option value="1 Room">1 Room</option>
-                        <option value="2-4 Rooms">2 - 4 Rooms</option>
-                        <option value="5-10 Rooms">5 - 10 Rooms</option>
-                        <option value="10+ Rooms">10+ Group Rooms</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label style={labelStyle}>Vehicle Type</label>
-                      <select name="vehicleType" value={formData.vehicleType} onChange={handleFormChange} style={inputStyle}>
-                        <option value="Tempo Traveller">Tempo Traveller</option>
-                        <option value="Mini Bus">Mini Bus</option>
-                        <option value="Personal Car/Cab">Personal Cab</option>
-                        <option value="Standard Bus">Standard Bus</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <div>
-                      <label style={labelStyle}>Yatra Registration</label>
-                      <select name="yatraRegistration" value={formData.yatraRegistration} onChange={handleFormChange} style={inputStyle}>
-                        <option value="Yes - Completed">Yes - Completed</option>
-                        <option value="Pending / In Process">Pending / Process</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label style={labelStyle}>Preferred Route</label>
-                      <select name="route" value={formData.route} onChange={handleFormChange} style={inputStyle}>
-                        <option value="Yamunotri & Gangotri Route">Both Routes</option>
-                        <option value="Yamunotri Route Only">Yamunotri Only</option>
-                        <option value="Gangotri Route Only">Gangotri Only</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button type="submit" style={{ 
-                    background: "#ef4444", 
-                    color: "#ffffff", 
-                    border: "none", 
-                    padding: "10px", 
-                    borderRadius: "6px", 
-                    fontWeight: "700", 
-                    fontSize: "13.5px", 
-                    cursor: "pointer",
-                    marginTop: "2px",
-                    transition: "background 0.2s"
-                  }}>
-                    Verify Details & Unlock WhatsApp
-                  </button>
-                </form>
-              </>
-            ) : (
-              <div style={{ textAlign: "center", padding: "15px 0" }}>
-                <div style={{ fontSize: "38px", marginBottom: "6px" }}>✅</div>
-                <h3 style={{ fontSize: "18px", fontWeight: "750", color: "#0f172a", margin: "0 0 6px 0" }}>
-                  Verification Successful!
-                </h3>
-                <p style={{ fontSize: "13px", color: "#4b5563", margin: "0 0 16px 0", lineHeight: "1.4" }}>
-                  Thank you, <b>{formData.fullName}</b>. Click below to chat instantly on WhatsApp.
-                </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                  <a 
-                    href={`https://wa.me/91YOUR_PHONE_NUMBER?text=${whatsappMessage}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    style={{ 
-                      background: "#22c55e", 
-                      color: "#ffffff", 
-                      padding: "10px", 
-                      borderRadius: "6px", 
-                      textDecoration: "none", 
-                      fontWeight: "700", 
-                      fontSize: "13.5px",
-                      display: "block"
-                    }}
-                  >
-                    🟢 Open WhatsApp Chat Now
-                  </a>
-                  <button 
-                    onClick={() => setIsFormSubmitted(false)}
-                    style={{ background: "transparent", border: "1px solid #cbd5e1", padding: "8px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", color: "#64748b" }}
-                  >
-                    Edit Details
-                  </button>
-                </div>
+          {/* Compact Inline Search Box */}
+          <div style={{
+            background: "rgba(30, 41, 59, 0.95)",
+            backdropFilter: "blur(8px)",
+            borderRadius: "12px",
+            padding: "12px",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.4)",
+            textAlign: "left",
+            color: "#f8fafc",
+            border: "1px solid #334155",
+            boxSizing: "border-box"
+          }}>
+            <form onSubmit={handleSearch} style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+              <div style={{ flex: "1 1 200px", minWidth: "140px" }}>
+                <label style={{ display: "block", fontSize: "9.5px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "3px", letterSpacing: "0.8px" }}>DESTINATION</label>
+                <select 
+                  value={selectedCity} 
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  style={{ width: "100%", padding: "8px 10px", border: "1px solid #475569", borderRadius: "6px", fontSize: "12.5px", outline: "none", background: "#0f172a", color: "#fff", fontWeight: "600", boxSizing: "border-box" }}
+                >
+                  {cityOptions.map((city) => (
+                    <option key={city} value={city}>{city}</option>
+                  ))}
+                </select>
               </div>
-            )}
 
-            <p style={{ fontSize: "10.5px", color: "#9ca3af", textAlign: "center", marginTop: "10px", lineHeight: "1.3" }}>
-              🔒 Spam protection enabled. Only genuine agent requests are entertained.
-            </p>
+              <div style={{ flex: "2 1 220px", minWidth: "160px" }}>
+                <label style={{ display: "block", fontSize: "9.5px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "3px", letterSpacing: "0.8px" }}>KEYWORD</label>
+                <input 
+                  type="text" 
+                  placeholder="Hotel name, location, or trek..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ width: "100%", padding: "8px 10px", border: "1px solid #475569", borderRadius: "6px", fontSize: "12.5px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
+                />
+              </div>
+
+              <div style={{ flex: "0 1 auto", width: "100%", minWidth: "120px", alignSelf: "flex-end" }}>
+                <button type="submit" style={{
+                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "9.5px 16px", 
+                  borderRadius: "6px", fontWeight: "800", fontSize: "12.5px", cursor: "pointer", boxShadow: "0 4px 12px rgba(2, 132, 199, 0.4)"
+                }}>
+                  SEARCH
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Main Content Container */}
-      <div style={{ maxWidth: "1240px", margin: "40px auto 0", padding: "0 20px", boxSizing: "border-box" }}>
+      <div style={{ maxWidth: "1240px", margin: "30px auto 0", padding: "0 20px", boxSizing: "border-box" }}>
         
         {/* Trust Badges */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px", marginBottom: "50px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px", marginBottom: "40px" }}>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>🛡️</span>
             <div>
@@ -459,11 +285,11 @@ export default function Home() {
         </div>
 
         {/* Handpicked Stays */}
-        <div style={{ marginBottom: "50px" }}>
+        <div style={{ marginBottom: "40px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
               <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>FEATURED ACCOMMODATIONS</span>
-              <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
+              <h2 style={{ fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
                 Handpicked Stays & Retreats
               </h2>
             </div>
@@ -547,10 +373,10 @@ export default function Home() {
 
         {/* Special Offer Banner */}
         <div style={{
-          margin: "50px 0",
+          margin: "40px 0",
           background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
           borderRadius: "20px",
-          padding: "30px",
+          padding: "25px 30px",
           color: "white",
           display: "flex",
           justifyContent: "space-between",
@@ -564,19 +390,19 @@ export default function Home() {
             <span style={{ background: "rgba(255, 255, 255, 0.2)", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
               ⚡ Limited Period Offer (विशेष ऑफर)
             </span>
-            <h2 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "900", margin: "12px 0 8px 0" }}>
+            <h2 style={{ fontSize: "clamp(20px, 3.5vw, 26px)", fontWeight: "900", margin: "10px 0 6px 0" }}>
               Get 20% OFF on Your First Char Dham Booking!
             </h2>
-            <p style={{ fontSize: "14px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "13.5px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.5" }}>
               Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
             </p>
           </div>
           <button 
             onClick={() => navigate("/search?tab=Hotels")}
             style={{
-              background: "#0f172a", color: "white", border: "none", padding: "14px 26px",
-              borderRadius: "12px", fontWeight: "900", fontSize: "14px", cursor: "pointer",
-              boxShadow: "0 10px 20px rgba(0,0,0,0.2)", width: "100%", maxWidth: "210px"
+              background: "#0f172a", color: "white", border: "none", padding: "12px 24px",
+              borderRadius: "12px", fontWeight: "900", fontSize: "13.5px", cursor: "pointer",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.2)", width: "100%", maxWidth: "200px"
             }}
           >
             Claim Offer Now
@@ -584,10 +410,10 @@ export default function Home() {
         </div>
 
         {/* Yoga & Wellness */}
-        <div style={{ marginBottom: "50px" }}>
+        <div style={{ marginBottom: "40px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#34d399", textTransform: "uppercase", letterSpacing: "1.5px" }}>REJUVENATE BODY & SOUL</span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Yoga & Wellness Retreats</h2>
+            <h2 style={{ fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Yoga & Wellness Retreats</h2>
           </div>
           <div style={horizontalScrollContainer}>
             {YOGA_RETREATS.map((item, idx) => (
@@ -610,7 +436,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Yoga Section Special Banner */}
+        {/* 🌿 Yoga Section के बाद का स्पेशल ग्रीन ऑफर बैनर */}
         <div style={{
           maxWidth: "1200px",
           margin: "40px auto",
@@ -630,7 +456,7 @@ export default function Home() {
             <span style={{ background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
               🧘 Wellness Special
             </span>
-            <h3 style={{ fontSize: "22px", fontWeight: "900", margin: "10px 0 5px 0" }}>
+            <h3 style={{ fontSize: "20px", fontWeight: "900", margin: "8px 0 4px 0" }}>
               Flat 25% OFF on 7-Day Himalayan Yoga & Meditation Retreats!
             </h3>
             <p style={{ fontSize: "13px", color: "#a7f3d0", margin: 0 }}>
@@ -657,10 +483,10 @@ export default function Home() {
         </div>
 
         {/* Popular Treks */}
-        <div style={{ marginBottom: "50px" }}>
+        <div style={{ marginBottom: "40px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#fbbf24", textTransform: "uppercase", letterSpacing: "1.5px" }}>THRILLING EXPEDITIONS</span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Popular Alpine Treks</h2>
+            <h2 style={{ fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Popular Alpine Treks</h2>
           </div>
           <div style={horizontalScrollContainer}>
             {POPULAR_TREKS.map((item, idx) => (
@@ -683,7 +509,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Treks Section Special Banner */}
+        {/* 🏔️ Treks Section के बाद का एडवेंचर ऑरेंज ऑफर बैनर */}
         <div style={{
           maxWidth: "1200px",
           margin: "40px auto",
@@ -703,7 +529,7 @@ export default function Home() {
             <span style={{ background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
               ⛺ Trekker's Club Offer
             </span>
-            <h3 style={{ fontSize: "22px", fontWeight: "900", margin: "10px 0 5px 0" }}>
+            <h3 style={{ fontSize: "20px", fontWeight: "900", margin: "8px 0 4px 0" }}>
               Book Kedarkantha or Roopkund Trek & Get Free Camping Gear!
             </h3>
             <p style={{ fontSize: "13px", color: "#fed7aa", margin: 0 }}>
@@ -730,12 +556,12 @@ export default function Home() {
         </div>
 
         {/* Pilgrimage Section */}
-        <div style={{ marginBottom: "50px" }}>
+        <div style={{ marginBottom: "40px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>
               SACRED DESTINATIONS
             </span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
+            <h2 style={{ fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
               Explore Pilgrimage & Char Dham
             </h2>
           </div>
@@ -767,11 +593,11 @@ export default function Home() {
         </div>
 
         {/* Explore Districts & Local Food Section */}
-        <div style={{ marginBottom: "50px" }}>
+        <div style={{ marginBottom: "40px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
               <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>HIMALAYAN CULTURE & CUISINE</span>
-              <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
+              <h2 style={{ fontSize: "clamp(22px, 3.5vw, 28px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
                 Explore Districts & Local Food
               </h2>
             </div>
@@ -815,15 +641,15 @@ export default function Home() {
         </div>
 
         {/* Stats Section */}
-        <section style={{ marginTop: "50px", background: "#1e293b", color: "#fff", padding: "40px 20px", borderRadius: "16px", textAlign: "center", border: "1px solid #334155", boxSizing: "border-box" }}>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "25px", fontWeight: "900" }}>Why Choose The Himalayans?</h2>
+        <section style={{ marginTop: "40px", background: "#1e293b", color: "#fff", padding: "35px 20px", borderRadius: "16px", textAlign: "center", border: "1px solid #334155", boxSizing: "border-box" }}>
+          <h2 style={{ fontSize: "clamp(22px, 3.5vw, 28px)", marginBottom: "20px", fontWeight: "900" }}>Why Choose The Himalayans?</h2>
           <div style={{ display: "flex", justifyContent: "space-around", gap: "30px", flexWrap: "wrap" }}>
             <div>
-              <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>100+</h2>
+              <h2 style={{ fontSize: "36px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>100+</h2>
               <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Verified Mountain Stays</p>
             </div>
             <div>
-              <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>10k+</h2>
+              <h2 style={{ fontSize: "36px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>10k+</h2>
               <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Happy Travelers</p>
             </div>
           </div>
@@ -837,35 +663,10 @@ export default function Home() {
           border-color: #38bdf8 !important;
           box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.2) !important;
         }
-        @media (max-width: 968px) {
-          .orn-hero-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
       `}</style>
     </div>
   );
 }
-
-const labelStyle = {
-  display: "block", 
-  fontSize: "10.5px", 
-  fontWeight: "600", 
-  marginBottom: "2px", 
-  color: "#374151"
-};
-
-const inputStyle = {
-  width: "100%", 
-  padding: "6px 8px", 
-  borderRadius: "5px", 
-  border: "1px solid #cbd5e1", 
-  fontSize: "12.5px",
-  outline: "none",
-  boxSizing: "border-box",
-  background: "#ffffff",
-  color: "#1f2937"
-};
 
 const horizontalScrollContainer = {
   display: "flex",
