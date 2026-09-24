@@ -87,6 +87,10 @@ export default function App() {
           <Route path="/districts" element={<DistrictsPage />} />
           <Route path="/destination/:slug" element={<DestinationDetail />} />
 
+          {/* 🌟 यहाँ हमने explore-culture के रूट्स जोड़ दिए हैं ताकि ब्लैंक पेज न आए */}
+          <Route path="/explore-culture" element={<DistrictsPage />} />
+          <Route path="/explore-culture/:id" element={<DestinationDetail />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
           <Route path="/details/:category/:id" element={<DetailsPage />} />
