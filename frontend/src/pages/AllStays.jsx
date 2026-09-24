@@ -7,8 +7,11 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrende
 export default function AllStays() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(6); // शुरुआत में 6 क्लीन कार्ड्स दिखेंगे
+  const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // ⚙️ नया स्टेट: यह देखने के लिए कि क्या एडमिन मैनेज/डिलीट मोड में आया है
+  const [isManageAdmin, setIsManageAdmin] = useState(false);
   
   const [newHotel, setNewHotel] = useState({
     name: "",
@@ -39,7 +42,6 @@ export default function AllStays() {
     { _id: "local_16", name: "Valley Blossom Cottage", city: "Joshimath", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", location: "Badrinath Hwy", price: "2,699", rating: "4.9", tag: "Scenic Beauty 🌸", description: "Gateway retreat towards Valley of Flowers and Hemkund Sahib with cozy fireplaces." }
   ];
 
-  // हर बार होटल्स का सीक्वेंस रैंडम बदलने के लिए शफल फंक्शन
   const shuffleArray = useCallback((array) => {
     let shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -50,14 +52,23 @@ export default function AllStays() {
   }, []);
 
   useEffect(() => {
+    // 1. चेक करें कि क्या "List Property" के लिए एडमिन आए हैं
     const isAdminAuthenticated = localStorage.getItem("is_hotel_admin") === "true";
     if (isAdminAuthenticated) {
       setIsModalOpen(true);
       localStorage.removeItem("is_hotel_admin");
     }
 
+    // 2. चेक करें कि क्या फुटर से "Manage Listings" के लिए एडमिन आए हैं
+    const isManageAdminAuth = localStorage.getItem("is_manage_admin") === "true";
+    if (isManageAdminAuth) {
+      setIsManageAdmin(true);
+      localStorage.removeItem("is_manage_admin");
+    }
+
     setLoading(true);
     const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
+    const deletedHotelIds = JSON.parse(localStorage.getItem("deleted_hotel_ids") || "[]");
 
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
@@ -71,16 +82,42 @@ export default function AllStays() {
           description: item.description || "Comfortable stay with modern Himalayan hospitality."
         }));
         
-        const merged = [...userAdded, ...masterHotelList, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
+        let merged = [...userAdded, ...masterHotelList, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
+        
+        // जो होटल डिलीट कर दिए गए हैं, उन्हें लिस्ट से हटा दें
+        merged = merged.filter(h => !deletedHotelIds.includes(String(h._id)));
+
         setHotels(shuffleArray(merged));
         setLoading(false);
       })
       .catch(() => {
-        const merged = [...userAdded, ...masterHotelList];
+        let merged = [...userAdded, ...masterHotelList];
+        merged = merged.filter(h => !deletedHotelIds.includes(String(h._id)));
         setHotels(shuffleArray(merged));
         setLoading(false);
       });
   }, [shuffleArray]);
+
+  // 🗑️ होटल डिलीट करने का फंक्शन
+  const handleDeleteHotel = (hotelId, hotelName) => {
+    if (window.confirm(`Kya aap pakka "${hotelName}" ko delete karna chahte hain?`)) {
+      // 1. लोकल स्टेट से हटाएं
+      const updatedHotels = hotels.filter(h => h._id !== hotelId);
+      setHotels(updatedHotels);
+
+      // 2. अगर यह यूजर का जोड़ा हुआ होटल है, तो user_added_hotels से हटाएं
+      const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
+      const filteredUserAdded = userAdded.filter(h => h._id !== hotelId);
+      localStorage.setItem("user_added_hotels", JSON.stringify(filteredUserAdded));
+
+      // 3. डिलीਟेड आईडी की लिस्ट में सेव करें ताकि रीफ्रेश होने पर वापस न आए
+      const deletedHotelIds = JSON.parse(localStorage.getItem("deleted_hotel_ids") || "[]");
+      deletedHotelIds.push(String(hotelId));
+      localStorage.setItem("deleted_hotel_ids", JSON.stringify(deletedHotelIds));
+
+      alert(`Hotel "${hotelName}" successfully delete ho gaya hai! 🗑️`);
+    }
+  };
 
   const handleMultipleImagesUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -159,7 +196,25 @@ export default function AllStays() {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#f3f4f6", minHeight: "100vh", padding: "40px 20px", boxSizing: "border-box" }}>
       
-      {/* Clean & Professional Header Banner (बिना नंबर और बिना स्टे काउंट के) */}
+      {/* ⚠️ अगर एडमिन मैनेज मोड में है, तो ऊपर एक लाल पट्टी (Banner) दिखेगी */}
+      {isManageAdmin && (
+        <div style={{
+          maxWidth: "1200px", margin: "0 auto 20px auto", background: "#fee2e2", border: "1px solid #ef4444",
+          borderRadius: "14px", padding: "15px 20px", display: "flex", justifyContent: "space-between", alignItems: "center"
+        }}>
+          <div style={{ color: "#991b1b", fontWeight: "700", fontSize: "14px" }}>
+            🛠️ Admin Manage Mode Active: Aap ab kisi bhi hotel ke card par diye gaye "Delete" button se use hata sakte hain.
+          </div>
+          <button 
+            onClick={() => setIsManageAdmin(false)}
+            style={{ background: "#ef4444", color: "white", border: "none", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontWeight: "bold", fontSize: "12px" }}
+          >
+            Exit Manage Mode
+          </button>
+        </div>
+      )}
+
+      {/* Header Banner */}
       <div style={{ 
         maxWidth: "1200px", margin: "0 auto 40px auto", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", 
         borderRadius: "24px", padding: "40px 30px", color: "white", textAlign: "center", boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" 
@@ -270,7 +325,7 @@ export default function AllStays() {
         </div>
       )}
 
-      {/* 🔹 Modern & Large Card Grid Layout with Hover Effects & Clickable Cards */}
+      {/* Hotel Cards Grid */}
       <div style={{ 
         maxWidth: "1200px", margin: "0 auto", 
         display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: "24px", boxSizing: "border-box" 
@@ -343,19 +398,37 @@ export default function AllStays() {
                     </div>
                   </div>
 
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/hotels/${hotel._id}`);
-                    }}
-                    style={{ 
-                      padding: "10px 22px", background: isFeatured ? "#0f172a" : "#0284c7", 
-                      color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer",
-                      boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)", transition: "background 0.2s"
-                    }}
-                  >
-                    View Room →
-                  </button>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    {/* 🗑️ यदि एडमिन मैनेज मोड एक्टिव है, तो डिलीट बटन यहाँ दिखेगा */}
+                    {isManageAdmin && (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteHotel(hotel._id, hotel.name);
+                        }}
+                        style={{
+                          padding: "10px 14px", background: "#fee2e2", color: "#ef4444", border: "1px solid #ef4444",
+                          borderRadius: "10px", fontWeight: "800", fontSize: "12px", cursor: "pointer"
+                        }}
+                      >
+                        🗑️ Delete
+                      </button>
+                    )}
+
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/hotels/${hotel._id}`);
+                      }}
+                      style={{ 
+                        padding: "10px 22px", background: isFeatured ? "#0f172a" : "#0284c7", 
+                        color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer",
+                        boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)", transition: "background 0.2s"
+                      }}
+                    >
+                      View Room →
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -363,7 +436,7 @@ export default function AllStays() {
         })}
       </div>
 
-      {/* Clean Load More / Show Less Controls */}
+      {/* Load More / Show Less Controls */}
       <div style={{ textAlign: "center", marginTop: "50px" }}>
         {visibleCount < hotels.length ? (
           <button 
@@ -390,7 +463,6 @@ export default function AllStays() {
         )}
       </div>
 
-      {/* CSS Hovers और Zoom Animations के लिए */}
       <style>{`
         .hotel-hover-card:hover {
           transform: translateY(-6px);
