@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 export default function CharDhamAgents() {
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    if (phoneNumber.trim().length >= 10) {
-      setSubmitted(true);
-      alert("Verification code / Login link sent to your WhatsApp/Phone!");
+    if (username.trim() && password.trim()) {
+      alert("Login successful! Welcome to the Partner Portal.");
+      // आप चाहें तो यहाँ सफल लॉगिन के बाद रीडायरेक्ट या स्टेट सेव कर सकते हैं
     } else {
-      alert("Please enter a valid 10-digit mobile number.");
+      alert("Please enter username and password.");
     }
   };
 
@@ -46,20 +46,20 @@ export default function CharDhamAgents() {
             marginBottom: "12px",
             display: "inline-block"
           }}>
-            चारधाम यात्रा स्पेशल पार्टनर प्रोग्राम
+            Char Dham Special Partner Program (चारधाम यात्रा स्पेशल पार्टनर प्रोग्राम)
           </span>
           <h1 style={{ fontSize: "36px", fontWeight: "800", lineHeight: "1.2", margin: "0 0 16px 0", letterSpacing: "-0.5px" }}>
-            उत्तरकाशी रूट पर ट्रैवल एजेंट्स और ड्राइवर्स के लिए होटल बुकिंग।
+            Hotel Bookings for Travel Agents & Drivers on the Uttarkashi Route.
           </h1>
           <p style={{ fontSize: "15px", color: "#94a3b8", margin: "0 0 30px 0", lineHeight: "1.6" }}>
-            गंगोत्री और यमुनोत्री धाम रूट पर ग्रुप स्टे, ड्राइवर एकोमोडेशन और कन्फर्म रूम्स के लिए सीधे हमारे साथ जुड़ें।
+            Connect with us directly for group stays, driver accommodation, and confirmed rooms on the Gangotri and Yamunotri Dham routes.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {[
-              "✔️ बड़कोट, यमुनोत्री रूट, उत्तरकाशी शहर और गंगोत्री रूट पर कन्फर्म रूम्स",
-              "✔️ ट्रैवल ग्रुप्स के लिए विशेष रियायत और ड्राइवर्स के लिए खास व्यवस्था",
-              "✔️ एजेंट्स सीधे फोन या व्हाट्सएप के जरिए तुरंत बुकिंग कन्फर्म कर सकते हैं"
+              "✔️ Confirmed rooms across Barkot, Yamunotri route, Uttarkashi town, and Gangotri route",
+              "✔️ Special discounts for travel groups and dedicated arrangements for drivers",
+              "✔️ Agents can directly connect to check availability and instant bookings"
             ].map((text, idx) => (
               <div key={idx} style={{ fontSize: "13.5px", color: "#cbd5e1", display: "flex", alignItems: "center", gap: "8px" }}>
                 {text}
@@ -68,7 +68,7 @@ export default function CharDhamAgents() {
           </div>
         </div>
 
-        {/* Right Light Form Box (ORN Login Style) */}
+        {/* Right Light Form Box (Simple Dummy Login) */}
         <div style={{ 
           background: "#ffffff", 
           padding: "60px 50px", 
@@ -82,19 +82,41 @@ export default function CharDhamAgents() {
               Welcome back
             </h3>
             <p style={{ fontSize: "14px", color: "#6b7280", margin: "0 0 24px 0" }}>
-              Sign in with your agent partner credentials or phone number.
+              Sign in with your agent partner credentials to access inventory.
             </p>
 
             <form onSubmit={handleLoginSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               <div>
                 <label style={{ display: "block", fontSize: "13px", fontWeight: "600", marginBottom: "6px", color: "#374151" }}>
-                  Mobile Number / WhatsApp
+                  Username / Email / Mobile
                 </label>
                 <input 
-                  type="tel" 
-                  placeholder="Enter 10-digit mobile number" 
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  type="text" 
+                  placeholder="Enter username or ID" 
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  style={{ 
+                    width: "100%", 
+                    padding: "12px 14px", 
+                    borderRadius: "8px", 
+                    border: "1px solid #cbd5e1", 
+                    fontSize: "14px",
+                    outline: "none",
+                    boxSizing: "border-box"
+                  }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "13px", fontWeight: "600", marginBottom: "6px", color: "#374151" }}>
+                  Password
+                </label>
+                <input 
+                  type="password" 
+                  placeholder="Enter your password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   style={{ 
                     width: "100%", 
                     padding: "12px 14px", 
@@ -117,14 +139,15 @@ export default function CharDhamAgents() {
                 fontWeight: "700", 
                 fontSize: "15px", 
                 cursor: "pointer",
-                transition: "background 0.2s"
+                transition: "background 0.2s",
+                marginTop: "6px"
               }}>
-                Continue with WhatsApp / OTP
+                Login Now
               </button>
             </form>
 
             <p style={{ fontSize: "12px", color: "#9ca3af", textAlign: "center", marginTop: "16px", lineHeight: "1.5" }}>
-              By continuing, you agree to our terms of service and acknowledge our privacy policy.
+              Quick dummy login enabled for partner agents. By signing in, you agree to our terms & privacy policy.
             </p>
           </div>
         </div>
@@ -215,10 +238,10 @@ export default function CharDhamAgents() {
             textAlign: "center" 
           }}>
             <h3 style={{ fontSize: "22px", fontWeight: "750", color: "#ffffff", margin: "0 0 10px 0" }}>
-              बुकिंग या इन्वेंट्री की जानकारी के लिए सीधे संपर्क करें
+              Contact Directly for Booking or Inventory Details
             </h3>
             <p style={{ fontSize: "14px", color: "#cbd5e1", margin: "0 0 24px 0" }}>
-              फोन उठाइए या व्हाट्सएप पर अपनी डेट्स और ग्रुप साइज भेजिए। आपको तुरंत रेट्स और उपलब्धता मिल जाएगी।
+              Send your travel dates and group size via WhatsApp or call us for instant rates and availability.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: "15px", flexWrap: "wrap" }}>
               <a 
@@ -238,10 +261,10 @@ export default function CharDhamAgents() {
                   gap: "8px"
                 }}
               >
-                🟢 व्हाट्सएप पर बात करें
+                🟢 Chat on WhatsApp
               </a>
               <a 
-                href="tel:+919410106470" 
+                href="tel:+91YOUR_PHONE_NUMBER" 
                 style={{ 
                   background: "#ef4444", 
                   color: "#ffffff", 
@@ -255,7 +278,7 @@ export default function CharDhamAgents() {
                   gap: "8px"
                 }}
               >
-                📞 डायरेक्ट कॉल करें
+                📞 Call Directly
               </a>
             </div>
           </div>
