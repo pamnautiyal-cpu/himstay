@@ -17,12 +17,12 @@ export default function Home() {
 
   const scrollStays = (direction) => {
     if (staysScrollRef.current) {
-      const scrollAmount = direction === "left" ? -300 : 300;
+      const scrollAmount = direction === "left" ? -320 : 320;
       staysScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
 
-  // 🎲 Array ko randomly shuffle karne ka function (Live & Dynamic feel ke liye)
+  // 🎲 Random shuffle function for dynamic feel
   const shuffleArray = (array) => {
     let shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -32,7 +32,7 @@ export default function Home() {
     return shuffled;
   };
 
-  // Hero Banner Images
+  // Hero Banner Slider Images
   const heroImages = [
     "/images/hotals/Hotel Nagraja Palace1.jpg",
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
@@ -48,7 +48,7 @@ export default function Home() {
     return () => clearInterval(slideInterval);
   }, [heroImages.length]);
 
-  // Local Uttarkashi Stays + Dummy Cards for Unique Graphics
+  // Local Uttarkashi Stays & Master List
   const localUttarkashiHotels = [
     { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
@@ -62,7 +62,6 @@ export default function Home() {
     { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
   ];
 
-  // Districts Data for Homepage Culture Section
   const uttarakhandDistricts = [
     { id: "uttarkashi", name: "उत्तरकाशी", tagline: "पहाड़ी राजमा और ट्रेकिंग", image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80", food: "पहाड़ी राजमा, लाल चावल" },
     { id: "tehri", name: "टिहरी गढ़वाल", tagline: "झील किनारे का स्वाद", image: "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=600&q=80", food: "चैनसू, गहत की दाल" },
@@ -70,6 +69,7 @@ export default function Home() {
     { id: "nainital", name: "नैनीताल", tagline: "कुमाऊनी ज़ायका और झीलें", image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=600&q=80", food: "भट की चुर्काणी, आलू गुटके" }
   ];
 
+  // Backend Integration with fallback security
   useEffect(() => {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
@@ -88,13 +88,11 @@ export default function Home() {
           ...backendData.filter(bh => bh._id && !String(bh._id).startsWith("local_") && !String(bh._id).startsWith("dummy_"))
         ];
         
-        // 🎲 Yahan hotels ko random shuffle kar diya hai taaki har baar alag sequence aaye
         setHotels(shuffleArray(merged));
         setLoading(false);
       })
       .catch((err) => {
         console.error("Backend fetch error:", err);
-        // Error aane par bhi local hotels ko shuffle karke set karein
         setHotels(shuffleArray(localUttarkashiHotels));
         setLoading(false);
       });
@@ -112,7 +110,6 @@ export default function Home() {
   const filteredListings = hotels.filter((item) => {
     const itemName = (item.name || "").trim().toLowerCase();
     if (itemName === "ravi govindam") return false;
-
     if (!item.category) return true;
     return String(item.category).trim().toLowerCase() === String(activeTab).trim().toLowerCase();
   });
@@ -139,26 +136,37 @@ export default function Home() {
   ];
 
   return (
-    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
+    <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#0f172a", color: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
       
-      {/* Hero Banner Section */}
+      {/* 🌟 ORN Style Premium Dark Hero Section */}
       <div style={{
         position: "relative",
-        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.85)), url('${heroImages[currentSlide]}')`,
+        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.95)), url('${heroImages[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "60px 15px 80px 15px",
+        padding: "80px 15px 90px 15px",
         textAlign: "center",
         color: "white",
+        borderBottom: "1px solid #334155",
         transition: "background-image 1s ease-in-out",
         boxSizing: "border-box"
       }}>
-        <div style={{ maxWidth: "880px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-          <h1 style={{ fontSize: "clamp(26px, 5vw, 42px)", fontWeight: "900", marginBottom: "12px", letterSpacing: "-1px", lineHeight: "1.2" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+          
+          {/* Top Elegant Badge */}
+          <span style={{ 
+            background: "rgba(56, 189, 248, 0.1)", color: "#38bdf8", padding: "8px 20px", borderRadius: "30px", 
+            fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px", display: "inline-block", 
+            marginBottom: "20px", border: "1px solid rgba(56, 189, 248, 0.3)" 
+          }}>
+            ✨ No Fixed Itineraries • Handpicked Stays & Journeys
+          </span>
+
+          <h1 style={{ fontSize: "clamp(30px, 5vw, 54px)", fontWeight: "900", marginBottom: "16px", letterSpacing: "-1px", lineHeight: "1.15" }}>
             Discover the True Spirit of the Himalayas
           </h1>
-          <p style={{ fontSize: "clamp(14px, 2.5vw, 17px)", color: "#e2e8f0", marginBottom: "30px", fontWeight: "400" }}>
-            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Treks
+          <p style={{ fontSize: "clamp(15px, 2.5vw, 18px)", color: "#94a3b8", marginBottom: "35px", fontWeight: "400", maxWidth: "700px", marginInline: "auto" }}>
+            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks tailored for you.
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "25px", flexWrap: "wrap" }}>
@@ -172,15 +180,14 @@ export default function Home() {
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
                 style={{
-                  background: activeTab === tab.id ? "#0284c7" : "rgba(255, 255, 255, 0.15)",
+                  background: activeTab === tab.id ? "#0284c7" : "rgba(30, 41, 59, 0.8)",
                   color: "white",
-                  border: "none",
-                  padding: "8px 18px",
+                  border: activeTab === tab.id ? "none" : "1px solid #475569",
+                  padding: "10px 20px",
                   borderRadius: "30px",
                   fontWeight: "700",
                   fontSize: "13px",
                   cursor: "pointer",
-                  backdropFilter: "blur(6px)",
                   transition: "all 0.2s ease"
                 }}
               >
@@ -189,22 +196,24 @@ export default function Home() {
             ))}
           </div>
 
+          {/* Search Box in ORN Dark Glassmorphism Style */}
           <div style={{
-            background: "white",
+            background: "#1e293b",
             borderRadius: "16px",
-            padding: "20px",
-            boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.35)",
+            padding: "24px",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
             textAlign: "left",
-            color: "#0f172a",
+            color: "#f8fafc",
+            border: "1px solid #334155",
             boxSizing: "border-box"
           }}>
-            <form onSubmit={handleSearch} style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+            <form onSubmit={handleSearch} style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center" }}>
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", marginBottom: "6px" }}>DESTINATION</label>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "1px" }}>DESTINATION</label>
                 <select 
                   value={selectedCity} 
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  style={{ width: "100%", padding: "12px", border: "1px solid #cbd5e1", borderRadius: "10px", fontSize: "14px", outline: "none", background: "#f8fafc", fontWeight: "600", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "14px", border: "1px solid #475569", borderRadius: "10px", fontSize: "14px", outline: "none", background: "#0f172a", color: "#fff", fontWeight: "600", boxSizing: "border-box" }}
                 >
                   {cityOptions.map((city) => (
                     <option key={city} value={city}>{city}</option>
@@ -213,22 +222,22 @@ export default function Home() {
               </div>
 
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", marginBottom: "6px" }}>KEYWORD</label>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "1px" }}>KEYWORD</label>
                 <input 
                   type="text" 
                   placeholder="Hotel name, location, or trek..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ width: "100%", padding: "12px", border: "1px solid #cbd5e1", borderRadius: "10px", fontSize: "14px", outline: "none", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "14px", border: "1px solid #475569", borderRadius: "10px", fontSize: "14px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
                 />
               </div>
 
               <div style={{ width: "100%" }}>
                 <button type="submit" style={{
-                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "13px", 
-                  borderRadius: "10px", fontWeight: "800", fontSize: "15px", cursor: "pointer", boxShadow: "0 4px 14px rgba(2, 132, 199, 0.4)"
+                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "15px", 
+                  borderRadius: "10px", fontWeight: "800", fontSize: "15px", cursor: "pointer", boxShadow: "0 10px 20px -5px rgba(2, 132, 199, 0.5)"
                 }}>
-                  SEARCH
+                  SEARCH EXPERIENCE
                 </button>
               </div>
             </form>
@@ -237,49 +246,49 @@ export default function Home() {
       </div>
 
       {/* Main Content Container */}
-      <div style={{ maxWidth: "1240px", margin: "30px auto 0", padding: "0 15px", boxSizing: "border-box" }}>
+      <div style={{ maxWidth: "1240px", margin: "40px auto 0", padding: "0 20px", boxSizing: "border-box" }}>
         
         {/* Trust Badges */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", marginBottom: "40px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px", marginBottom: "50px" }}>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>🛡️</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px", fontWeight: "800" }}>100% Verified Properties</h4>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Direct verified stays with best prices.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>100% Verified Properties</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Direct verified stays with best prices.</p>
             </div>
           </div>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>⚡</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px", fontWeight: "800" }}>Instant Confirmation</h4>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Get booking details instantly on SMS.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>Instant Confirmation</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Get booking details instantly on SMS.</p>
             </div>
           </div>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>📞</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#0f172a", fontSize: "14px", fontWeight: "800" }}>24/7 Mountain Support</h4>
-              <p style={{ margin: 0, fontSize: "12px", color: "#64748b" }}>Dedicated local assistance during travel.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>24/7 Mountain Support</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Dedicated local assistance during travel.</p>
             </div>
           </div>
         </div>
 
         {/* Handpicked Stays */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
+        <div style={{ marginBottom: "50px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
-              <span style={{ fontSize: "11px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>FEATURED ACCOMMODATIONS</span>
-              <h2 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
+              <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>FEATURED ACCOMMODATIONS</span>
+              <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
                 Handpicked Stays & Retreats
               </h2>
             </div>
             
-            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <button onClick={() => scrollStays("left")} style={navButtonStyle}>‹</button>
               <button onClick={() => scrollStays("right")} style={navButtonStyle}>›</button>
               <button 
                 onClick={() => navigate("/hotels")}
-                style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "13px", marginLeft: "5px" }}
+                style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px", marginLeft: "8px" }}
               >
                 View All →
               </button>
@@ -287,7 +296,7 @@ export default function Home() {
           </div>
 
           {loading ? (
-            <div style={{ textAlign: "center", padding: "40px", fontSize: "15px", color: "#64748b" }}>🏔️ Loading Verified Stays...</div>
+            <div style={{ textAlign: "center", padding: "40px", fontSize: "15px", color: "#94a3b8" }}>🏔️ Loading Verified Stays...</div>
           ) : (
             <div 
               ref={staysScrollRef}
@@ -303,36 +312,36 @@ export default function Home() {
                       <img 
                         src={hotel.image} 
                         alt={hotel.name} 
-                        style={{ width: "100%", height: "150px", objectFit: "cover" }} 
+                        style={{ width: "100%", height: "170px", objectFit: "cover" }} 
                         onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                       />
                       <span style={{
-                        position: "absolute", top: "10px", right: "10px", background: "rgba(15, 23, 42, 0.85)",
-                        color: "white", padding: "3px 8px", borderRadius: "20px", fontSize: "11px", fontWeight: "800"
+                        position: "absolute", top: "12px", right: "12px", background: "rgba(15, 23, 42, 0.85)",
+                        color: "white", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "800"
                       }}>
                         ⭐ {hotel.rating || "4.8"}
                       </span>
                     </div>
 
-                    <div style={{ padding: "14px", display: "flex", flexDirection: "column", justifyContent: "space-between", flexGrow: 1, boxSizing: "border-box" }}>
+                    <div style={{ padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between", flexGrow: 1, boxSizing: "border-box" }}>
                       <div>
-                        <span style={{ fontSize: "11px", fontWeight: "700", color: "#0284c7", textTransform: "uppercase" }}>
+                        <span style={{ fontSize: "11px", fontWeight: "700", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "0.5px" }}>
                           📍 {hotel.location || hotel.city}
                         </span>
-                        <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", margin: "4px 0 6px 0", lineHeight: "1.3" }}>
+                        <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "6px 0 8px 0", lineHeight: "1.3" }}>
                           {hotel.name}
                         </h3>
                       </div>
 
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #f1f5f9", paddingTop: "10px", marginTop: "6px" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #334155", paddingTop: "12px", marginTop: "8px" }}>
                         <div>
-                          <span style={{ fontSize: "10px", color: "#64748b", display: "block" }}>Starting from</span>
-                          <span style={{ fontSize: "15px", fontWeight: "900", color: "#0f172a" }}>₹{hotel.price || "2,499"}</span>
+                          <span style={{ fontSize: "11px", color: "#94a3b8", display: "block" }}>Starting from</span>
+                          <span style={{ fontSize: "16px", fontWeight: "900", color: "#fff" }}>₹{hotel.price || "2,499"}</span>
                         </div>
                         <button 
                           onClick={() => navigate(`/hotels/${hotel._id}`)}
                           style={{
-                            background: "#0284c7", color: "white", border: "none", padding: "6px 12px",
+                            background: "#0284c7", color: "white", border: "none", padding: "8px 14px",
                             borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer"
                           }}
                         >
@@ -343,7 +352,7 @@ export default function Home() {
                   </div>
                 ))
               ) : (
-                <p style={{ color: "#64748b", padding: "20px" }}>No stays available in this category.</p>
+                <p style={{ color: "#94a3b8", padding: "20px" }}>No stays available in this category.</p>
               )}
             </div>
           )}
@@ -351,44 +360,44 @@ export default function Home() {
 
         {/* Special Offer / Promo Banner */}
         <div style={{
-          margin: "40px 0",
+          margin: "50px 0",
           background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
-          borderRadius: "16px",
-          padding: "24px",
+          borderRadius: "20px",
+          padding: "30px",
           color: "white",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
-          gap: "16px",
-          boxShadow: "0 8px 20px -4px rgba(2, 132, 199, 0.4)",
+          gap: "20px",
+          boxShadow: "0 20px 25px -5px rgba(2, 132, 199, 0.3)",
           boxSizing: "border-box"
         }}>
           <div>
-            <span style={{ background: "rgba(255, 255, 255, 0.2)", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
+            <span style={{ background: "rgba(255, 255, 255, 0.2)", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
               ⚡ Limited Period Offer
             </span>
-            <h2 style={{ fontSize: "clamp(20px, 3.5vw, 26px)", fontWeight: "900", margin: "10px 0 6px 0" }}>
+            <h2 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "900", margin: "12px 0 8px 0" }}>
               Get 20% OFF on Your First Char Dham Booking!
             </h2>
-            <p style={{ fontSize: "13px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.4" }}>
-              Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 6px", borderRadius: "4px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
+            <p style={{ fontSize: "14px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.5" }}>
+              Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
             </p>
           </div>
           <button 
             onClick={() => navigate("/search?tab=Hotels")}
             style={{
-              background: "white",
-              color: "#0369a1",
+              background: "#0f172a",
+              color: "white",
               border: "none",
-              padding: "12px 22px",
+              padding: "14px 26px",
               borderRadius: "12px",
               fontWeight: "900",
               fontSize: "14px",
               cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
               width: "100%",
-              maxWidth: "200px"
+              maxWidth: "210px"
             }}
           >
             Claim Offer Now
@@ -396,19 +405,19 @@ export default function Home() {
         </div>
 
         {/* Yoga & Wellness */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "16px" }}>
-            <span style={{ fontSize: "11px", fontWeight: "800", color: "#059669", textTransform: "uppercase", letterSpacing: "1px" }}>REJUVENATE BODY & SOUL</span>
-            <h2 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>Yoga & Wellness Retreats</h2>
+        <div style={{ marginBottom: "50px" }}>
+          <div style={{ marginBottom: "20px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "800", color: "#34d399", textTransform: "uppercase", letterSpacing: "1.5px" }}>REJUVENATE BODY & SOUL</span>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Yoga & Wellness Retreats</h2>
           </div>
           <div style={horizontalScrollContainer}>
             {yogaRetreats.map((item, idx) => (
               <div key={idx} style={largeCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
-                <div style={{ padding: "14px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "170px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+                <div style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
-                    <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                    <p style={{ fontSize: "12px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
+                    <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "0 0 6px 0" }}>{item.name}</h3>
+                    <p style={{ fontSize: "13px", color: "#94a3b8", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
                   </div>
                 </div>
               </div>
@@ -417,19 +426,19 @@ export default function Home() {
         </div>
 
         {/* Popular Treks */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "16px" }}>
-            <span style={{ fontSize: "11px", fontWeight: "800", color: "#d97706", textTransform: "uppercase", letterSpacing: "1px" }}>THRILLING EXPEDITIONS</span>
-            <h2 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>Popular Alpine Treks</h2>
+        <div style={{ marginBottom: "50px" }}>
+          <div style={{ marginBottom: "20px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "800", color: "#fbbf24", textTransform: "uppercase", letterSpacing: "1.5px" }}>THRILLING EXPEDITIONS</span>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Popular Alpine Treks</h2>
           </div>
           <div style={horizontalScrollContainer}>
             {popularTreks.map((item, idx) => (
               <div key={idx} style={largeCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
-                <div style={{ padding: "14px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "170px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+                <div style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
-                    <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                    <p style={{ fontSize: "12px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
+                    <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "0 0 6px 0" }}>{item.name}</h3>
+                    <p style={{ fontSize: "13px", color: "#94a3b8", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
                   </div>
                 </div>
               </div>
@@ -438,12 +447,12 @@ export default function Home() {
         </div>
 
         {/* Pilgrimage Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ marginBottom: "16px" }}>
-            <span style={{ fontSize: "11px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>
+        <div style={{ marginBottom: "50px" }}>
+          <div style={{ marginBottom: "20px" }}>
+            <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>
               SACRED DESTINATIONS
             </span>
-            <h2 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
               Explore Pilgrimage & Char Dham
             </h2>
           </div>
@@ -457,11 +466,11 @@ export default function Home() {
                 rel="noopener noreferrer"
                 style={{ ...largeCardStyle, textDecoration: "none" }}
               >
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "150px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
-                <div style={{ padding: "14px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <img src={item.img} alt={item.name} style={{ width: "100%", height: "170px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+                <div style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
-                    <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", margin: "0 0 6px 0" }}>{item.name}</h3>
-                    <p style={{ fontSize: "12px", color: "#64748b", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
+                    <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "0 0 6px 0" }}>{item.name}</h3>
+                    <p style={{ fontSize: "13px", color: "#94a3b8", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
                   </div>
                 </div>
               </a>
@@ -470,42 +479,42 @@ export default function Home() {
         </div>
 
         {/* Explore Districts & Local Culture Section */}
-        <div style={{ marginBottom: "40px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
+        <div style={{ marginBottom: "50px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
-              <span style={{ fontSize: "11px", fontWeight: "800", color: "#0284c7", textTransform: "uppercase", letterSpacing: "1px" }}>उत्तराखंड संस्कृति और ज़ायका</span>
-              <h2 style={{ fontSize: "clamp(22px, 4vw, 30px)", fontWeight: "900", color: "#0f172a", margin: "4px 0 0 0" }}>
+              <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>उत्तराखंड संस्कृति और ज़ायका</span>
+              <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
                 Explore Districts & Local Food
               </h2>
             </div>
             <button 
               onClick={() => navigate("/districts")}
-              style={{ background: "transparent", border: "none", color: "#0284c7", fontWeight: "800", cursor: "pointer", fontSize: "13px" }}
+              style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
             >
               View All Districts →
             </button>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
             {uttarakhandDistricts.map((dist) => (
               <div 
                 key={dist.id}
                 onClick={() => navigate(`/districts/${dist.id}`)}
                 style={{
-                  background: "white",
-                  borderRadius: "14px",
+                  background: "#1e293b",
+                  borderRadius: "16px",
                   overflow: "hidden",
-                  border: "1px solid #e2e8f0",
+                  border: "1px solid #334155",
                   cursor: "pointer",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.03)",
+                  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.2)",
                   transition: "transform 0.2s ease"
                 }}
               >
-                <img src={dist.image} alt={dist.name} style={{ width: "100%", height: "140px", objectFit: "cover" }} />
-                <div style={{ padding: "14px" }}>
-                  <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0f172a", margin: "0 0 4px 0" }}>{dist.name}</h3>
-                  <p style={{ fontSize: "12px", color: "#64748b", margin: "0 0 10px 0" }}>{dist.tagline}</p>
-                  <span style={{ background: "#f0fdf4", color: "#166534", fontSize: "11px", fontWeight: "700", padding: "4px 8px", borderRadius: "6px", display: "inline-block" }}>
+                <img src={dist.image} alt={dist.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
+                <div style={{ padding: "16px" }}>
+                  <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#fff", margin: "0 0 4px 0" }}>{dist.name}</h3>
+                  <p style={{ fontSize: "13px", color: "#94a3b8", margin: "0 0 12px 0" }}>{dist.tagline}</p>
+                  <span style={{ background: "rgba(52, 211, 153, 0.1)", color: "#34d399", fontSize: "11px", fontWeight: "700", padding: "5px 10px", borderRadius: "6px", display: "inline-block", border: "1px solid rgba(52, 211, 153, 0.2)" }}>
                     🍽️ {dist.food}
                   </span>
                 </div>
@@ -515,16 +524,16 @@ export default function Home() {
         </div>
 
         {/* Stats Section */}
-        <section style={{ marginTop: "40px", background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)", color: "#fff", padding: "35px 20px", borderRadius: "16px", textAlign: "center", boxSizing: "border-box" }}>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "20px", fontWeight: "900" }}>Why Choose The Himalayans?</h2>
-          <div style={{ display: "flex", justifyContent: "center", gap: "40px", flexWrap: "wrap" }}>
+        <section style={{ marginTop: "50px", background: "#1e293b", color: "#fff", padding: "40px 20px", borderRadius: "16px", textAlign: "center", border: "1px solid #334155", boxSizing: "border-box" }}>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "25px", fontWeight: "900" }}>Why Choose The Himalayans?</h2>
+          <div style={{ display: "flex", justifyContent: "space-around", gap: "30px", flexWrap: "wrap" }}>
             <div>
-              <h2 style={{ fontSize: "36px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>100+</h2>
-              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "4px" }}>Verified Mountain Stays</p>
+              <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>100+</h2>
+              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Verified Mountain Stays</p>
             </div>
             <div>
-              <h2 style={{ fontSize: "36px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>10k+</h2>
-              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "4px" }}>Happy Travelers</p>
+              <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>10k+</h2>
+              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Happy Travelers</p>
             </div>
           </div>
         </section>
@@ -535,37 +544,37 @@ export default function Home() {
 }
 
 const badgeCardStyle = {
-  background: "white",
-  padding: "16px 20px",
-  borderRadius: "14px",
-  border: "1px solid #e2e8f0",
+  background: "#1e293b",
+  padding: "20px",
+  borderRadius: "16px",
+  border: "1px solid #334155",
   display: "flex",
   alignItems: "center",
-  gap: "14px",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.02)",
+  gap: "16px",
+  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.2)",
   boxSizing: "border-box"
 };
 
 const navButtonStyle = {
-  width: "32px",
-  height: "32px",
+  width: "36px",
+  height: "36px",
   borderRadius: "50%",
-  border: "1px solid #cbd5e1",
-  background: "white",
-  fontSize: "18px",
+  border: "1px solid #475569",
+  background: "#1e293b",
+  fontSize: "20px",
   fontWeight: "bold",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "#0f172a"
+  color: "#fff"
 };
 
 const horizontalScrollContainer = {
   display: "flex",
-  gap: "16px",
+  gap: "20px",
   overflowX: "auto",
-  paddingBottom: "10px",
+  paddingBottom: "12px",
   scrollBehavior: "smooth",
   scrollbarWidth: "none",
   alignItems: "stretch",
@@ -574,15 +583,15 @@ const horizontalScrollContainer = {
 };
 
 const largeCardStyle = {
-  background: "#fff",
-  borderRadius: "14px",
+  background: "#1e293b",
+  borderRadius: "16px",
   overflow: "hidden",
-  border: "1px solid #e2e8f0",
+  border: "1px solid #334155",
   cursor: "pointer",
-  minWidth: "260px",
-  width: "260px",
+  minWidth: "280px",
+  width: "280px",
   flex: "0 0 auto",
-  boxShadow: "0 4px 15px rgba(0,0,0,0.03)",
+  boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
   transition: "transform 0.2s ease",
   display: "flex",
   flexDirection: "column",
