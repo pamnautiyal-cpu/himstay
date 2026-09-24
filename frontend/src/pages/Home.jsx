@@ -1,8 +1,59 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
+
+// स्टैटिक डेटा को कॉम्पोनेंट के बाहर रखा गया है ताकि परफॉर्मेंस बेहतर रहे
+const HERO_IMAGES = [
+  "/images/hotals/Hotel Nagraja Palace1.jpg",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200",
+  "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200"
+];
+
+const LOCAL_UTTARKASHI_HOTELS = [
+  { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
+  { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
+  { _id: "local_03", name: "Hotel Prisha Pahal", city: "Matli", image: "/images/hotals/Hotel Prisha Pahal1.jpg", location: "Barahat Range", price: "2,199", rating: "4.7", category: "Hotels" },
+  { _id: "local_04", name: "Hotel K.P Residency", city: "Matli", image: "/images/hotals/Hotel K.P Residency1.jpg", location: "Near Medicose", price: "2,200", rating: "4.6", category: "Hotels" },
+  { _id: "local_05", name: "Dhruvnanda Homestay", city: "Athali", image: "/images/hotals/Dhruvnanda Homestay1.jpg", location: "ITBP Rd", price: "1,599", rating: "4.8", category: "Hotels" },
+  { _id: "local_06", name: "Himalayan Abode", city: "Uttarkashi", image: "/images/hotals/Himalayan Abode home stay.jpg", location: "Main Market", price: "2,799", rating: "4.9", category: "Hotels" },
+  { _id: "dummy_01", name: "Snow Peak Luxury Villa", city: "Harsil", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600", location: "Apple Orchards", price: "4,500", rating: "5.0", category: "Hotels" },
+  { _id: "dummy_02", name: "Ganga Riverside Glamping", city: "Rishikesh", image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?w=600", location: "Brahmapuri", price: "3,200", rating: "4.9", category: "Hotels" },
+  { _id: "local_07", name: "Ganges Riverside Ashram", city: "Rishikesh", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", location: "Bhagirathi Bank", price: "1,899", rating: "4.9", category: "Yoga" },
+  { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
+];
+
+const UTTARAKHAND_DISTRICTS = [
+  { id: "uttarkashi", name: "Uttarkashi", tagline: "Mountain Rajma & Trekking", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80", food: "Pahari Rajma, Red Rice" },
+  { id: "tehri", name: "Tehri Garhwal", tagline: "Lake View Delicacies", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", food: "Chainsoo, Gahat Dal" },
+  { id: "dehradun", name: "Dehradun & Mussoorie", tagline: "Cafes & Mountain Flavors", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80", food: "Kafuli, Bal Mithai" },
+  { id: "nainital", name: "Nainital", tagline: "Kumaoni Flavors & Lakes", image: "https://images.unsplash.com/photo-1561501900-3701fa6a0864?auto=format&fit=crop&w=600&q=80", food: "Bhatt ki Churkani, Aloo Gutke" }
+];
+
+const SACRED_PLACES = [
+  { name: "Kedarnath", desc: "Sacred shrine nestled in Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", searchUrl: "https://www.google.com/search?q=Kedarnath+Dham+guide" },
+  { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu.", img: "/images/chardham/badrinath.jpg", searchUrl: "https://www.google.com/search?q=Badrinath+Dham+guide" },
+  { name: "Gangotri", desc: "Pristine origin point of holy river Ganga.", img: "/images/chardham/gangotri.jpg", searchUrl: "https://www.google.com/search?q=Gangotri+temple+guide" },
+  { name: "Yamunotri", desc: "Sacred source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", searchUrl: "https://www.google.com/search?q=Yamunotri+temple+guide" }
+];
+
+const YOGA_RETREATS = [
+  { name: "Himalayan Sanctuary", desc: "Deep meditation in mountain silence.", img: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", path: "/details/himalayan-yoga" },
+  { name: "Ayurvedic Wellness", desc: "Holistic healing through herbs.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/ayurvedic-therapy" },
+  { name: "Meditation & Pranayama", desc: "Master breath by the sacred Ganges.", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600", path: "/details/meditation" },
+  { name: "Panchakarma Detox", desc: "Complete body purification stay.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/panchakarma" }
+];
+
+const POPULAR_TREKS = [
+  { name: "Kedarkantha Trek", desc: "Classic snow trail expedition with views.", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", path: "/details/kedarkantha" },
+  { name: "Valley of Flowers", desc: "UNESCO World Heritage floral valley.", img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600", path: "/details/valley-of-flowers" },
+  { name: "Roopkund Glacial", desc: "Mystical high-altitude glacial lake.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", path: "/details/roopkund" },
+  { name: "Har Ki Dun", desc: "Ancient cradle of Swargarohini.", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", path: "/details/harkidun" }
+];
+
+const MAJOR_CITIES = ["All", "Rishikesh", "Uttarkashi", "Kedarnath", "Badrinath", "Haridwar", "Dehradun"];
 
 export default function Home() {
   const navigate = useNavigate();
@@ -11,68 +62,38 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Ref for Handpicked Stays Horizontal Scroll
   const staysScrollRef = useRef(null);
 
-  const scrollStays = (direction) => {
+  const scrollStays = useCallback((direction) => {
     if (staysScrollRef.current) {
       const scrollAmount = direction === "left" ? -320 : 320;
       staysScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
-  };
+  }, []);
 
-  // Random shuffle function for dynamic feel
-  const shuffleArray = (array) => {
+  const shuffleArray = useCallback((array) => {
     let shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
-  };
-
-  // Hero Banner Slider Images
-  const heroImages = [
-    "/images/hotals/Hotel Nagraja Palace1.jpg",
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
-    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200",
-    "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200"
-  ];
-  const [currentSlide, setCurrentSlide] = useState(0);
+  }, []);
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+      setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
     }, 4500);
     return () => clearInterval(slideInterval);
-  }, [heroImages.length]);
-
-  // Local Uttarkashi Stays & Master List
-  const localUttarkashiHotels = [
-    { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", category: "Hotels" },
-    { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", category: "Hotels" },
-    { _id: "local_03", name: "Hotel Prisha Pahal", city: "Matli", image: "/images/hotals/Hotel Prisha Pahal1.jpg", location: "Barahat Range", price: "2,199", rating: "4.7", category: "Hotels" },
-    { _id: "local_04", name: "Hotel K.P Residency", city: "Matli", image: "/images/hotals/Hotel K.P Residency1.jpg", location: "Near Medicose", price: "2,200", rating: "4.6", category: "Hotels" },
-    { _id: "local_05", name: "Dhruvnanda Homestay", city: "Athali", image: "/images/hotals/Dhruvnanda Homestay1.jpg", location: "ITBP Rd", price: "1,599", rating: "4.8", category: "Hotels" },
-    { _id: "local_06", name: "Himalayan Abode", city: "Uttarkashi", image: "/images/hotals/Himalayan Abode home stay.jpg", location: "Main Market", price: "2,799", rating: "4.9", category: "Hotels" },
-    { _id: "dummy_01", name: "Snow Peak Luxury Villa", city: "Harsil", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600", location: "Apple Orchards", price: "4,500", rating: "5.0", category: "Hotels" },
-    { _id: "dummy_02", name: "Ganga Riverside Glamping", city: "Rishikesh", image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?w=600", location: "Brahmapuri", price: "3,200", rating: "4.9", category: "Hotels" },
-    { _id: "local_07", name: "Ganges Riverside Ashram", city: "Rishikesh", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", location: "Bhagirathi Bank", price: "1,899", rating: "4.9", category: "Yoga" },
-    { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
-  ];
-
-  // Unique and fixed images for Uttarakhand Districts
-  const uttarakhandDistricts = [
-    { id: "uttarkashi", name: "Uttarkashi", tagline: "Mountain Rajma & Trekking", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80", food: "Pahari Rajma, Red Rice" },
-    { id: "tehri", name: "Tehri Garhwal", tagline: "Lake View Delicacies", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", food: "Chainsoo, Gahat Dal" },
-    { id: "dehradun", name: "Dehradun & Mussoorie", tagline: "Cafes & Mountain Flavors", image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80", food: "Kafuli, Bal Mithai" },
-    { id: "nainital", name: "Nainital", tagline: "Kumaoni Flavors & Lakes", image: "https://images.unsplash.com/photo-1561501900-3701fa6a0864?auto=format&fit=crop&w=600&q=80", food: "Bhatt ki Churkani, Aloo Gutke" }
-  ];
+  }, []);
 
   useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
-    axios.get(`${BACKEND_URL}/api/hotels`)
+
+    axios.get(`${BACKEND_URL}/api/hotels`, { signal: controller.signal })
       .then((res) => {
         const rawData = Array.isArray(res.data) ? res.data : [];
         const backendData = rawData.map(item => ({
@@ -84,7 +105,7 @@ export default function Home() {
         }));
         
         const merged = [
-          ...localUttarkashiHotels, 
+          ...LOCAL_UTTARKASHI_HOTELS, 
           ...backendData.filter(bh => bh._id && !String(bh._id).startsWith("local_") && !String(bh._id).startsWith("dummy_"))
         ];
         
@@ -92,56 +113,47 @@ export default function Home() {
         setLoading(false);
       })
       .catch((err) => {
+        if (axios.isCancel(err)) return;
         console.error("Backend fetch error:", err);
-        setHotels(shuffleArray(localUttarkashiHotels));
+        setHotels(shuffleArray(LOCAL_UTTARKASHI_HOTELS));
         setLoading(false);
       });
-  }, []);
 
-  const majorCities = ["All", "Rishikesh", "Uttarkashi", "Kedarnath", "Badrinath", "Haridwar", "Dehradun"];
-  const dbCities = [...new Set(hotels.map((h) => h.location || h.city).filter(Boolean))];
-  const cityOptions = [...new Set([...majorCities, ...dbCities])];
+    return () => controller.abort();
+  }, [shuffleArray]);
+
+  const dbCities = useMemo(() => [...new Set(hotels.map((h) => h.location || h.city).filter(Boolean))], [hotels]);
+  const cityOptions = useMemo(() => [...new Set([...MAJOR_CITIES, ...dbCities])], [dbCities]);
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
     navigate(`/search?query=${encodeURIComponent(searchTerm)}&city=${encodeURIComponent(selectedCity)}&tab=${encodeURIComponent(activeTab)}`);
   };
 
-  const filteredListings = hotels.filter((item) => {
-    const itemName = (item.name || "").trim().toLowerCase();
-    if (itemName === "ravi govindam") return false;
-    if (!item.category) return true;
-    return String(item.category).trim().toLowerCase() === String(activeTab).trim().toLowerCase();
-  });
+  const filteredListings = useMemo(() => {
+    return hotels.filter((item) => {
+      const itemName = (item.name || "").trim().toLowerCase();
+      if (itemName === "ravi govindam") return false;
+      
+      const matchesCategory = item.category 
+        ? String(item.category).trim().toLowerCase() === String(activeTab).trim().toLowerCase()
+        : true;
 
-  const sacredPlaces = [
-    { name: "Kedarnath", desc: "Sacred shrine nestled in Garhwal Himalayas.", img: "/images/chardham/kedarnath.jpg", searchUrl: "https://www.google.com/search?q=Kedarnath+Dham+guide" },
-    { name: "Badrinath", desc: "Holy divine abode of Lord Vishnu.", img: "/images/chardham/badrinath.jpg", searchUrl: "https://www.google.com/search?q=Badrinath+Dham+guide" },
-    { name: "Gangotri", desc: "Pristine origin point of holy river Ganga.", img: "/images/chardham/gangotri.jpg", searchUrl: "https://www.google.com/search?q=Gangotri+temple+guide" },
-    { name: "Yamunotri", desc: "Sacred source of the Yamuna River.", img: "/images/chardham/yamunotri.jpg", searchUrl: "https://www.google.com/search?q=Yamunotri+temple+guide" }
-  ];
+      const matchesCity = selectedCity === "All" 
+        ? true 
+        : String(item.location || item.city || "").trim().toLowerCase() === String(selectedCity).trim().toLowerCase();
 
-  const yogaRetreats = [
-    { name: "Himalayan Sanctuary", desc: "Deep meditation in mountain silence.", img: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", path: "/details/himalayan-yoga" },
-    { name: "Ayurvedic Wellness", desc: "Holistic healing through herbs.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/ayurvedic-therapy" },
-    { name: "Meditation & Pranayama", desc: "Master breath by the sacred Ganges.", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600", path: "/details/meditation" },
-    { name: "Panchakarma Detox", desc: "Complete body purification stay.", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", path: "/details/panchakarma" }
-  ];
-
-  const popularTreks = [
-    { name: "Kedarkantha Trek", desc: "Classic snow trail expedition with views.", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", path: "/details/kedarkantha" },
-    { name: "Valley of Flowers", desc: "UNESCO World Heritage floral valley.", img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600", path: "/details/valley-of-flowers" },
-    { name: "Roopkund Glacial", desc: "Mystical high-altitude glacial lake.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", path: "/details/roopkund" },
-    { name: "Har Ki Dun", desc: "Ancient cradle of Swargarohini.", img: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", path: "/details/harkidun" }
-  ];
+      return matchesCategory && matchesCity;
+    });
+  }, [hotels, activeTab, selectedCity]);
 
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#0f172a", color: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
       
-      {/* Hero Banner Section */}
+      {/* हीरो बैनर सेक्शन */}
       <div style={{
         position: "relative",
-        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.95)), url('${heroImages[currentSlide]}')`,
+        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.95)), url('${HERO_IMAGES[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         padding: "50px 15px 60px 15px",
@@ -158,21 +170,21 @@ export default function Home() {
             fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", display: "inline-block", 
             marginBottom: "14px", border: "1px solid rgba(56, 189, 248, 0.3)" 
           }}>
-            ✨ Handpicked Stays & Journeys
+            ✨ बेहतरीन होमस्टे और यात्राएं
           </span>
 
           <h1 style={{ fontSize: "clamp(26px, 4.5vw, 42px)", fontWeight: "900", marginBottom: "12px", letterSpacing: "-1px", lineHeight: "1.15" }}>
-            Discover the True Spirit of the Himalayas
+            उत्तराखंड की असली संस्कृति का अनुभव करें
           </h1>
           <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "#94a3b8", marginBottom: "25px", fontWeight: "400" }}>
-            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks
+            सत्यापित माउंटेन स्टे, चार धाम यात्रा पैकेज और अल्पाइन ट्रेक बुक करें
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
             {[
-              { id: "Hotels", label: "🏨 Stays" },
-              { id: "Yoga", label: "🌿 Yoga" },
-              { id: "Treks", label: "⚡ Treks" }
+              { id: "Hotels", label: "🏨 होटल्स" },
+              { id: "Yoga", label: "🌿 योग" },
+              { id: "Treks", label: "⚡ ट्रेक्स" }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -195,7 +207,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Compact and Clean Search Box */}
+          {/* सर्च बॉक्स */}
           <div style={{
             background: "#1e293b",
             borderRadius: "14px",
@@ -208,7 +220,7 @@ export default function Home() {
           }}>
             <form onSubmit={handleSearch} style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>DESTINATION</label>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>गंतव्य (DESTINATION)</label>
                 <select 
                   value={selectedCity} 
                   onChange={(e) => setSelectedCity(e.target.value)}
@@ -221,10 +233,10 @@ export default function Home() {
               </div>
 
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>KEYWORD</label>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>कीवर्ड (KEYWORD)</label>
                 <input 
                   type="text" 
-                  placeholder="Hotel name, location, or trek..." 
+                  placeholder="होटल का नाम, लोकेशन या ट्रेक..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{ width: "100%", padding: "10px 12px", border: "1px solid #475569", borderRadius: "8px", fontSize: "13px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
@@ -236,7 +248,7 @@ export default function Home() {
                   width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", 
                   borderRadius: "8px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 8px 16px -4px rgba(2, 132, 199, 0.5)"
                 }}>
-                  SEARCH EXPERIENCE
+                  सर्च करें
                 </button>
               </div>
             </form>
@@ -244,41 +256,41 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Main Content Container */}
+      {/* मुख्य कंटेंट कंटेनर */}
       <div style={{ maxWidth: "1240px", margin: "40px auto 0", padding: "0 20px", boxSizing: "border-box" }}>
         
-        {/* Trust Badges */}
+        {/* ट्रस्ट बैजेस */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px", marginBottom: "50px" }}>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>🛡️</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>100% Verified Properties</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Direct verified stays with best prices.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>100% सत्यापित प्रॉपर्टीज</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>सबसे अच्छे दामों पर सीधे बुक करें।</p>
             </div>
           </div>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>⚡</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>Instant Confirmation</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Get booking details instantly on SMS.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>तुरंत बुकिंग कन्फर्मेशन</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>बुकिंग विवरण तुरंत एसएमएस पर पाएं।</p>
             </div>
           </div>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>📞</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>24/7 Mountain Support</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Dedicated local assistance during travel.</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>24/7 स्थानीय सहायता</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>यात्रा के दौरान समर्पित स्थानीय सहायता।</p>
             </div>
           </div>
         </div>
 
-        {/* Handpicked Stays */}
+        {/* चुनिंदा स्टे (Handpicked Stays) */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
               <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>FEATURED ACCOMMODATIONS</span>
               <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
-                Handpicked Stays & Retreats
+                हैंडपिक किए गए स्टे और रिट्रीट
               </h2>
             </div>
             
@@ -289,13 +301,13 @@ export default function Home() {
                 onClick={() => navigate("/hotels")}
                 style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px", marginLeft: "8px" }}
               >
-                View All →
+                सभी देखें →
               </button>
             </div>
           </div>
 
           {loading ? (
-            <div style={{ textAlign: "center", padding: "40px", fontSize: "15px", color: "#94a3b8" }}>🏔️ Loading Verified Stays...</div>
+            <div style={{ textAlign: "center", padding: "40px", fontSize: "15px", color: "#94a3b8" }}>🏔️ सत्यापित स्टे लोड हो रहे हैं...</div>
           ) : (
             <div 
               ref={staysScrollRef}
@@ -312,7 +324,8 @@ export default function Home() {
                     <div style={{ position: "relative" }}>
                       <img 
                         src={hotel.image} 
-                        alt={hotel.name} 
+                        alt={hotel.name}
+                        loading="lazy"
                         style={{ width: "100%", height: "170px", objectFit: "cover" }} 
                         onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                       />
@@ -336,7 +349,7 @@ export default function Home() {
 
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #334155", paddingTop: "12px", marginTop: "8px" }}>
                         <div>
-                          <span style={{ fontSize: "11px", color: "#94a3b8", display: "block" }}>Starting from</span>
+                          <span style={{ fontSize: "11px", color: "#94a3b8", display: "block" }}>शुरुआती कीमत</span>
                           <span style={{ fontSize: "16px", fontWeight: "900", color: "#fff" }}>₹{hotel.price || "2,499"}</span>
                         </div>
                         <span 
@@ -345,20 +358,20 @@ export default function Home() {
                             borderRadius: "8px", fontWeight: "700", fontSize: "12px"
                           }}
                         >
-                          Details
+                          विवरण
                         </span>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
-                <p style={{ color: "#94a3b8", padding: "20px" }}>No stays available in this category.</p>
+                <p style={{ color: "#94a3b8", padding: "20px" }}>इस श्रेणी या स्थान पर कोई स्टे उपलब्ध नहीं है।</p>
               )}
             </div>
           )}
         </div>
 
-        {/* Special Offer / Promo Banner */}
+        {/* स्पेशल ऑफर बैनर */}
         <div style={{
           margin: "50px 0",
           background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
@@ -375,47 +388,40 @@ export default function Home() {
         }}>
           <div>
             <span style={{ background: "rgba(255, 255, 255, 0.2)", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
-              ⚡ Limited Period Offer
+              ⚡ सीमित समय का ऑफर
             </span>
             <h2 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "900", margin: "12px 0 8px 0" }}>
-              Get 20% OFF on Your First Char Dham Booking!
+              अपनी पहली चार धाम बुकिंग पर पाएं 20% की छूट!
             </h2>
             <p style={{ fontSize: "14px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.5" }}>
-              Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
+              चेकआउट के दौरान कूपन कोड <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> का उपयोग करें।
             </p>
           </div>
           <button 
             onClick={() => navigate("/search?tab=Hotels")}
             style={{
-              background: "#0f172a",
-              color: "white",
-              border: "none",
-              padding: "14px 26px",
-              borderRadius: "12px",
-              fontWeight: "900",
-              fontSize: "14px",
-              cursor: "pointer",
-              boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
-              width: "100%",
-              maxWidth: "210px"
+              background: "#0f172a", color: "white", border: "none", padding: "14px 26px",
+              borderRadius: "12px", fontWeight: "900", fontSize: "14px", cursor: "pointer",
+              boxShadow: "0 10px 20px rgba(0,0,0,0.2)", width: "100%", maxWidth: "210px"
             }}
           >
-            Claim Offer Now
+            अभी ऑफर क्लेम करें
           </button>
         </div>
 
-        {/* Yoga & Wellness */}
+        {/* योग और वेलनेस */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#34d399", textTransform: "uppercase", letterSpacing: "1.5px" }}>REJUVENATE BODY & SOUL</span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Yoga & Wellness Retreats</h2>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>योग और वेलनेस रिट्रीट</h2>
           </div>
           <div style={horizontalScrollContainer}>
-            {yogaRetreats.map((item, idx) => (
+            {YOGA_RETREATS.map((item, idx) => (
               <div key={idx} onClick={() => navigate(item.path)} className="hover-card" style={largeCardStyle}>
                 <img 
                   src={item.img} 
-                  alt={item.name} 
+                  alt={item.name}
+                  loading="lazy"
                   style={{ width: "100%", height: "170px", objectFit: "cover" }} 
                   onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} 
                 />
@@ -430,18 +436,19 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Popular Treks */}
+        {/* लोकप्रिय ट्रेक्स */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#fbbf24", textTransform: "uppercase", letterSpacing: "1.5px" }}>THRILLING EXPEDITIONS</span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Popular Alpine Treks</h2>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>लोकप्रिय अल्पाइन ट्रेक्स</h2>
           </div>
           <div style={horizontalScrollContainer}>
-            {popularTreks.map((item, idx) => (
+            {POPULAR_TREKS.map((item, idx) => (
               <div key={idx} onClick={() => navigate(item.path)} className="hover-card" style={largeCardStyle}>
                 <img 
                   src={item.img} 
-                  alt={item.name} 
+                  alt={item.name}
+                  loading="lazy"
                   style={{ width: "100%", height: "170px", objectFit: "cover" }} 
                   onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} 
                 />
@@ -456,19 +463,19 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pilgrimage Section */}
+        {/* तीर्थयात्रा सेक्शन */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>
               SACRED DESTINATIONS
             </span>
             <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
-              Explore Pilgrimage & Char Dham
+              चार धाम और तीर्थयात्रा स्थलों की खोज करें
             </h2>
           </div>
 
           <div style={horizontalScrollContainer}>
-            {sacredPlaces.map((item, idx) => (
+            {SACRED_PLACES.map((item, idx) => (
               <div 
                 key={idx} 
                 onClick={() => window.open(item.searchUrl, "_blank")}
@@ -477,7 +484,8 @@ export default function Home() {
               >
                 <img 
                   src={item.img} 
-                  alt={item.name} 
+                  alt={item.name}
+                  loading="lazy"
                   style={{ width: "100%", height: "170px", objectFit: "cover" }} 
                   onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} 
                 />
@@ -492,42 +500,39 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Explore Districts & Local Food Section with Unique Fixed Images */}
+        {/* जिले और स्थानीय भोजन */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
               <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>HIMALAYAN CULTURE & CUISINE</span>
               <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
-                Explore Districts & Local Food
+                उत्तराखंड के जिले और स्थानीय भोजन
               </h2>
             </div>
             <button 
               onClick={() => navigate("/districts")}
               style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
             >
-              View All Districts →
+              सभी जिले देखें →
             </button>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px" }}>
-            {uttarakhandDistricts.map((dist) => (
+            {UTTARAKHAND_DISTRICTS.map((dist) => (
               <div 
                 key={dist.id}
                 onClick={() => navigate(`/districts/${dist.id}`)}
                 className="hover-card"
                 style={{
-                  background: "#1e293b",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  border: "1px solid #334155",
-                  cursor: "pointer",
-                  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.2)",
-                  transition: "all 0.2s ease"
+                  background: "#1e293b", borderRadius: "16px", overflow: "hidden",
+                  border: "1px solid #334155", cursor: "pointer",
+                  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.2)", transition: "all 0.2s ease"
                 }}
               >
                 <img 
                   src={dist.image} 
-                  alt={dist.name} 
+                  alt={dist.name}
+                  loading="lazy"
                   style={{ width: "100%", height: "160px", objectFit: "cover" }} 
                   onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                 />
@@ -543,24 +548,23 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats Section */}
+        {/* आंकड़े (Stats Section) */}
         <section style={{ marginTop: "50px", background: "#1e293b", color: "#fff", padding: "40px 20px", borderRadius: "16px", textAlign: "center", border: "1px solid #334155", boxSizing: "border-box" }}>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "25px", fontWeight: "900" }}>Why Choose The Himalayans?</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "25px", fontWeight: "900" }}>हमें क्यों चुनें?</h2>
           <div style={{ display: "flex", justifyContent: "space-around", gap: "30px", flexWrap: "wrap" }}>
             <div>
               <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>100+</h2>
-              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Verified Mountain Stays</p>
+              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>सत्यापित माउंटेन स्टे</p>
             </div>
             <div>
               <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>10k+</h2>
-              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Happy Travelers</p>
+              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>खुश यात्री</p>
             </div>
           </div>
         </section>
 
       </div>
 
-      {/* Global Hover Effect Stylesheet Injection */}
       <style>{`
         .hover-card:hover {
           transform: translateY(-5px);
@@ -571,6 +575,34 @@ export default function Home() {
     </div>
   );
 }
+
+// ग्लोबल स्टाइल कांस्टेंट्स
+const horizontalScrollContainer = {
+  display: "flex",
+  gap: "20px",
+  overflowX: "auto",
+  paddingBottom: "10px",
+  scrollSnapType: "x mandatory",
+  scrollbarWidth: "none",
+  msOverflowStyle: "none"
+};
+
+const largeCardStyle = {
+  minWidth: "280px",
+  maxWidth: "280px",
+  background: "#1e293b",
+  borderRadius: "16px",
+  overflow: "hidden",
+  border: "1px solid #334155",
+  cursor: "pointer",
+  display: "flex",
+  flexDirection: "column",
+  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.2)",
+  scrollSnapAlign: "start",
+  flexShrink: 0,
+  transition: "all 0.2s ease",
+  boxSizing: "border-box"
+};
 
 const badgeCardStyle = {
   background: "#1e293b",
@@ -597,32 +629,4 @@ const navButtonStyle = {
   alignItems: "center",
   justifyContent: "center",
   color: "#fff"
-};
-
-const horizontalScrollContainer = {
-  display: "flex",
-  gap: "20px",
-  overflowX: "auto",
-  paddingBottom: "12px",
-  scrollBehavior: "smooth",
-  scrollbarWidth: "none",
-  alignItems: "stretch",
-  boxSizing: "border-box",
-  WebkitOverflowScrolling: "touch"
-};
-
-const largeCardStyle = {
-  background: "#1e293b",
-  borderRadius: "16px",
-  overflow: "hidden",
-  border: "1px solid #334155",
-  cursor: "pointer",
-  minWidth: "280px",
-  width: "280px",
-  flex: "0 0 auto",
-  boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
-  transition: "all 0.2s ease",
-  display: "flex",
-  flexDirection: "column",
-  boxSizing: "border-box"
 };
