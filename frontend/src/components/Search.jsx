@@ -25,26 +25,6 @@ export default function Search() {
     cottage: false
   });
 
-  // आपके सभी 16 ओरिजिनल उत्तराखंड/उत्तरकाशी होटल्स
-  const localUttarkashiHotels = [
-    { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600", location: "Gangotri Hwy, Uttarkashi", price: 2499, rating: "4.8", category: "Hotel" },
-    { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600", location: "NH 34, Uttarkashi", price: 1899, rating: "4.9", category: "Homestay" },
-    { _id: "local_03", name: "Hotel Prisha Pahal", city: "Matli", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600", location: "Barahat Range, Uttarkashi", price: 2199, rating: "4.7", category: "Hotel" },
-    { _id: "local_04", name: "Hotel K.P Residency", city: "Matli", image: "https://images.unsplash.com/photo-1568495248636-6432b97bd949?w=600", location: "Near Medicose, Uttarkashi", price: 2200, rating: "4.6", category: "Hotel" },
-    { _id: "local_05", name: "Dhruvnanda Homestay", city: "Athali", image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600", location: "ITBP Rd, Uttarkashi", price: 1599, rating: "4.8", category: "Homestay" },
-    { _id: "local_06", name: "Himalayan Abode", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600", location: "Main Market, Uttarkashi", price: 2799, rating: "4.9", category: "Hotel" },
-    { _id: "local_07", name: "Riverside Retreat", city: "Maneri", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600", location: "Bhagirathi Bank, Uttarkashi", price: 1899, rating: "4.9", category: "Cottage" },
-    { _id: "local_08", name: "Gangotri View Inn", city: "Gangori", image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600", location: "Gangori Bridge, Uttarkashi", price: 3199, rating: "4.7", category: "Hotel" },
-    { _id: "local_09", name: "Green Valley Homestay", city: "Matli", image: "https://images.unsplash.com/photo-1449157291145-7efd059a4dc0?w=600", location: "Village Road, Uttarkashi", price: 1799, rating: "4.8", category: "Homestay" },
-    { _id: "local_10", name: "Uttarkashi Guest House", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=600", location: "Old Town, Uttarkashi", price: 2099, rating: "4.5", category: "Hotel" },
-    { _id: "local_11", name: "Mountain Peak Hotel", city: "Dunda", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", location: "Dunda Main Rd, Uttarkashi", price: 2599, rating: "4.7", category: "Hotel" },
-    { _id: "local_12", name: "Peaceful Stay", city: "Matli", image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600", location: "Valley View, Uttarkashi", price: 1699, rating: "4.8", category: "Homestay" },
-    { _id: "local_13", name: "Char Dham Camp", city: "Gangotri Rd", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Near Highway, Uttarkashi", price: 2999, rating: "4.9", category: "Cottage" },
-    { _id: "local_14", name: "Sunrise Residency", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1496417263034-38ec4f0b655a?w=600", location: "Tiloth Road, Uttarkashi", price: 2199, rating: "4.6", category: "Hotel" },
-    { _id: "local_15", name: "Nature's Nest", city: "Athali", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600", location: "Orchard Side, Uttarkashi", price: 1999, rating: "4.8", category: "Homestay" },
-    { _id: "local_16", name: "Skyline Hotel", city: "Uttarkashi", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600", location: "City Center, Uttarkashi", price: 2899, rating: "4.7", category: "Hotel" }
-  ];
-
   useEffect(() => {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
@@ -57,12 +37,13 @@ export default function Search() {
           category: item.category || "Hotel",
           image: item.image || item.img || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
         }));
-        const merged = [...localUttarkashiHotels, ...backendData.filter(bh => !bh._id.startsWith("local_"))];
-        setHotels(merged);
+        // अब केवल डेटाबेस वाला असली डेटा सेट होगा
+        setHotels(backendData);
         setLoading(false);
       })
-      .catch(() => {
-        setHotels(localUttarkashiHotels);
+      .catch((err) => {
+        console.error("Error fetching hotels:", err);
+        setHotels([]);
         setLoading(false);
       });
   }, []);
@@ -132,7 +113,6 @@ export default function Search() {
       {/* Main Container */}
       <div style={{ maxWidth: "1200px", margin: "30px auto", padding: "0 20px" }}>
         
-        {/* अगर उत्तरकाशी के अलावा किसी अन्य शहर का सर्च हो या रिजल्ट न मिले */}
         {showComingSoon ? (
           <div style={{
             background: "white",
