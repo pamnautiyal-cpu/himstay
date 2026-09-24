@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrende
 export default function AllStays() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(8); // Shuru mein 8 hotels dikhenge, load more par aur aayenge
+  const [visibleCount, setVisibleCount] = useState(8);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const [newHotel, setNewHotel] = useState({
@@ -20,7 +20,6 @@ export default function AllStays() {
 
   const navigate = useNavigate();
 
-  // 🔹 कुल 16 शानदार होटल्स की पूरी सूची (Home और AllStays का परफेक्ट कॉम्बिनेशन)
   const masterHotelList = [
     { _id: "local_01", name: "Hotel Nagraja Palace", city: "Matli", image: "/images/hotals/Hotel Nagraja Palace1.jpg", location: "Gangotri Hwy", price: "2,499", rating: "4.8", tag: "Trending 🔥", description: "Experience traditional Garhwali hospitality with modern amenities right on the Gangotri Highway." },
     { _id: "local_02", name: "Grandparents Homestay", city: "Matli", image: "/images/hotals/Grandparents Homestay1.jpg", location: "NH 34", price: "1,899", rating: "4.9", tag: "Best Seller ⭐", description: "A cozy, homely atmosphere surrounded by apple orchards and serene mountain vibes." },
@@ -40,6 +39,16 @@ export default function AllStays() {
     { _id: "local_16", name: "Valley Blossom Cottage", city: "Joshimath", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600", location: "Badrinath Hwy", price: "2,699", rating: "4.9", tag: "Scenic Beauty 🌸", description: "Gateway retreat towards Valley of Flowers and Hemkund Sahib with cozy fireplaces." }
   ];
 
+  // शफल फंक्शन जो हर बार होटल्स का क्रम बदल देगा
+  const shuffleArray = useCallback((array) => {
+    let shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }, []);
+
   useEffect(() => {
     const isAdminAuthenticated = localStorage.getItem("is_hotel_admin") === "true";
     if (isAdminAuthenticated) {
@@ -50,7 +59,6 @@ export default function AllStays() {
     setLoading(true);
     const userAdded = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
 
-    // Backend se data fetch karne ki koshish, agar fail ho toh local master list use hogi
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
         const backendData = (res.data || []).map(item => ({
@@ -63,19 +71,18 @@ export default function AllStays() {
           description: item.description || "Comfortable stay with modern Himalayan hospitality."
         }));
         
-        // User added + Master List + Backend Data ka combination
         const merged = [...userAdded, ...masterHotelList, ...backendData.filter(bh => !String(bh._id).startsWith("local_"))];
-        setHotels(merged);
+        // यहाँ होटल्स को रैंडम शफल कर दिया गया है
+        setHotels(shuffleArray(merged));
         setLoading(false);
       })
       .catch(() => {
         const merged = [...userAdded, ...masterHotelList];
-        setHotels(merged);
+        setHotels(shuffleArray(merged));
         setLoading(false);
       });
-  }, []);
+  }, [shuffleArray]);
 
-  // Multiple Image Upload Handler
   const handleMultipleImagesUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
@@ -142,7 +149,7 @@ export default function AllStays() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", padding: "120px 20px", fontSize: "20px", color: "#0284c7", fontWeight: "800", background: "#f8fafc", minHeight: "100vh" }}>
+      <div style={{ textAlign: "center", padding: "120px 20px", fontSize: "20px", color: "#0284c7", fontWeight: "800", background: "#f3f4f6", minHeight: "100vh" }}>
         🏔️ Fetching Handpicked Himalayan Stays...
       </div>
     );
@@ -271,7 +278,7 @@ export default function AllStays() {
         </div>
       )}
 
-      {/* 🔹 Modern & Large Card Grid Layout */}
+      {/* 🔹 Modern & Large Card Grid Layout with Hover Effects & Clickable Cards */}
       <div style={{ 
         maxWidth: "1200px", margin: "0 auto", 
         display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: "24px", boxSizing: "border-box" 
@@ -282,6 +289,8 @@ export default function AllStays() {
           return (
             <div 
               key={hotel._id || index} 
+              onClick={() => navigate(`/hotels/${hotel._id}`)}
+              className="hotel-hover-card"
               style={{ 
                 background: "#ffffff",
                 border: isFeatured ? "2px solid #0284c7" : "1px solid #e2e8f0", 
@@ -290,14 +299,15 @@ export default function AllStays() {
                 boxShadow: isFeatured ? "0 20px 25px -5px rgba(2, 132, 199, 0.15)" : "0 10px 15px -3px rgba(0,0,0,0.03)",
                 display: "flex", flexDirection: "column", justifyContent: "space-between",
                 position: "relative", boxSizing: "border-box",
-                transition: "transform 0.2s ease"
+                cursor: "pointer",
+                transition: "all 0.3s ease"
               }}
             >
               <div style={{ position: "relative", height: "230px", background: "#e2e8f0", overflow: "hidden" }}>
                 <img 
                   src={hotel.image} 
                   alt={hotel.name} 
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.5s ease" }} 
                   onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
                 />
                 <div style={{
@@ -349,11 +359,14 @@ export default function AllStays() {
                   </div>
 
                   <button 
-                    onClick={() => navigate(`/hotels/${hotel._id}`)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // कार्ड क्लिक से कॉन्फ्लिक्ट रोकने के लिए
+                      navigate(`/hotels/${hotel._id}`);
+                    }}
                     style={{ 
                       padding: "10px 22px", background: isFeatured ? "#0f172a" : "#0284c7", 
                       color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer",
-                      boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)"
+                      boxShadow: "0 4px 12px rgba(2, 132, 199, 0.3)", transition: "background 0.2s"
                     }}
                   >
                     View Room →
@@ -391,6 +404,18 @@ export default function AllStays() {
           </button>
         )}
       </div>
+
+      {/* CSS Hovers और Zoom Animations के लिए */}
+      <style>{`
+        .hotel-hover-card:hover {
+          transform: translateY(-6px);
+          border-color: #0284c7 !important;
+          box-shadow: 0 20px 30px -10px rgba(2, 132, 199, 0.25) !important;
+        }
+        .hotel-hover-card:hover img {
+          transform: scale(1.06);
+        }
+      `}</style>
 
     </div>
   );
