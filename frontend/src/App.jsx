@@ -20,6 +20,7 @@ import BlogDetail from "./pages/BlogDetail";
 import Booking from "./pages/Booking";
 import AdminDashboard from "./pages/AdminDashboard";
 import Discover from "./pages/Discover";
+import ExperienceDetail from "./pages/ExperienceDetail"; // 🌟 नया डिटेल पेज इम्पोर्ट किया गया
 import Search from "./components/Search";
 import Offers from "./pages/Offers";
 import DistrictsPage from "./pages/DistrictsPage"; // 🗺️ सभी जिलों की लिस्ट का पेज[cite: 1]
@@ -74,6 +75,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="/experience-detail" element={<ExperienceDetail />} /> {/* 🌟 नया रूट */}
           <Route path="/search" element={<Search />} />
           <Route path="/hotels" element={<AllStays />} />
           <Route path="/hotels/:id" element={<HotelDetails />} />
