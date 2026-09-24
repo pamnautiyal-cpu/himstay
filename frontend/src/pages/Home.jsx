@@ -4,7 +4,7 @@ import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
-// स्टैटिक डेटा को कॉम्पोनेंट के बाहर रखा गया है ताकि परफॉर्मेंस बेहतर रहे
+// Static data kept outside component to prevent recreation on every render
 const HERO_IMAGES = [
   "/images/hotals/Hotel Nagraja Palace1.jpg",
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
@@ -150,7 +150,7 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#0f172a", color: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
       
-      {/* हीरो बैनर सेक्शन */}
+      {/* Hero Banner Section */}
       <div style={{
         position: "relative",
         backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.95)), url('${HERO_IMAGES[currentSlide]}')`,
@@ -170,21 +170,21 @@ export default function Home() {
             fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", display: "inline-block", 
             marginBottom: "14px", border: "1px solid rgba(56, 189, 248, 0.3)" 
           }}>
-            ✨ बेहतरीन होमस्टे और यात्राएं
+            ✨ Handpicked Stays & Journeys (उत्तराखंड की असली संस्कृति का अनुभव करें)
           </span>
 
           <h1 style={{ fontSize: "clamp(26px, 4.5vw, 42px)", fontWeight: "900", marginBottom: "12px", letterSpacing: "-1px", lineHeight: "1.15" }}>
-            उत्तराखंड की असली संस्कृति का अनुभव करें
+            Discover the True Spirit of the Himalayas
           </h1>
           <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "#94a3b8", marginBottom: "25px", fontWeight: "400" }}>
-            सत्यापित माउंटेन स्टे, चार धाम यात्रा पैकेज और अल्पाइन ट्रेक बुक करें
+            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
             {[
-              { id: "Hotels", label: "🏨 होटल्स" },
-              { id: "Yoga", label: "🌿 योग" },
-              { id: "Treks", label: "⚡ ट्रेक्स" }
+              { id: "Hotels", label: "🏨 Hotels" },
+              { id: "Yoga", label: "🌿 Yoga" },
+              { id: "Treks", label: "⚡ Treks" }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -207,7 +207,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* सर्च बॉक्स */}
+          {/* Search Box */}
           <div style={{
             background: "#1e293b",
             borderRadius: "14px",
@@ -220,7 +220,7 @@ export default function Home() {
           }}>
             <form onSubmit={handleSearch} style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>गंतव्य (DESTINATION)</label>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>DESTINATION</label>
                 <select 
                   value={selectedCity} 
                   onChange={(e) => setSelectedCity(e.target.value)}
@@ -233,10 +233,10 @@ export default function Home() {
               </div>
 
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>कीवर्ड (KEYWORD)</label>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>KEYWORD</label>
                 <input 
                   type="text" 
-                  placeholder="होटल का नाम, लोकेशन या ट्रेक..." 
+                  placeholder="Hotel name, location, or trek..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{ width: "100%", padding: "10px 12px", border: "1px solid #475569", borderRadius: "8px", fontSize: "13px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
@@ -248,7 +248,7 @@ export default function Home() {
                   width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", 
                   borderRadius: "8px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 8px 16px -4px rgba(2, 132, 199, 0.5)"
                 }}>
-                  सर्च करें
+                  SEARCH EXPERIENCE
                 </button>
               </div>
             </form>
@@ -256,41 +256,41 @@ export default function Home() {
         </div>
       </div>
 
-      {/* मुख्य कंटेंट कंटेनर */}
+      {/* Main Content Container */}
       <div style={{ maxWidth: "1240px", margin: "40px auto 0", padding: "0 20px", boxSizing: "border-box" }}>
         
-        {/* ट्रस्ट बैजेस */}
+        {/* Trust Badges */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "20px", marginBottom: "50px" }}>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>🛡️</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>100% सत्यापित प्रॉपर्टीज</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>सबसे अच्छे दामों पर सीधे बुक करें।</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>100% Verified Properties</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Direct verified stays with best prices.</p>
             </div>
           </div>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>⚡</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>तुरंत बुकिंग कन्फर्मेशन</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>बुकिंग विवरण तुरंत एसएमएस पर पाएं।</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>Instant Confirmation</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Get booking details instantly on SMS.</p>
             </div>
           </div>
           <div style={badgeCardStyle}>
             <span style={{ fontSize: "28px" }}>📞</span>
             <div>
-              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>24/7 स्थानीय सहायता</h4>
-              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>यात्रा के दौरान समर्पित स्थानीय सहायता।</p>
+              <h4 style={{ margin: "0 0 2px 0", color: "#fff", fontSize: "15px", fontWeight: "800" }}>24/7 Mountain Support</h4>
+              <p style={{ margin: 0, fontSize: "13px", color: "#94a3b8" }}>Dedicated local assistance during travel.</p>
             </div>
           </div>
         </div>
 
-        {/* चुनिंदा स्टे (Handpicked Stays) */}
+        {/* Handpicked Stays */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
               <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>FEATURED ACCOMMODATIONS</span>
               <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
-                हैंडपिक किए गए स्टे और रिट्रीट
+                Handpicked Stays & Retreats
               </h2>
             </div>
             
@@ -301,13 +301,13 @@ export default function Home() {
                 onClick={() => navigate("/hotels")}
                 style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px", marginLeft: "8px" }}
               >
-                सभी देखें →
+                View All →
               </button>
             </div>
           </div>
 
           {loading ? (
-            <div style={{ textAlign: "center", padding: "40px", fontSize: "15px", color: "#94a3b8" }}>🏔️ सत्यापित स्टे लोड हो रहे हैं...</div>
+            <div style={{ textAlign: "center", padding: "40px", fontSize: "15px", color: "#94a3b8" }}>🏔️ Loading Verified Stays...</div>
           ) : (
             <div 
               ref={staysScrollRef}
@@ -349,7 +349,7 @@ export default function Home() {
 
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #334155", paddingTop: "12px", marginTop: "8px" }}>
                         <div>
-                          <span style={{ fontSize: "11px", color: "#94a3b8", display: "block" }}>शुरुआती कीमत</span>
+                          <span style={{ fontSize: "11px", color: "#94a3b8", display: "block" }}>Starting from</span>
                           <span style={{ fontSize: "16px", fontWeight: "900", color: "#fff" }}>₹{hotel.price || "2,499"}</span>
                         </div>
                         <span 
@@ -358,20 +358,20 @@ export default function Home() {
                             borderRadius: "8px", fontWeight: "700", fontSize: "12px"
                           }}
                         >
-                          विवरण
+                          Details
                         </span>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
-                <p style={{ color: "#94a3b8", padding: "20px" }}>इस श्रेणी या स्थान पर कोई स्टे उपलब्ध नहीं है।</p>
+                <p style={{ color: "#94a3b8", padding: "20px" }}>No stays available in this category/location.</p>
               )}
             </div>
           )}
         </div>
 
-        {/* स्पेशल ऑफर बैनर */}
+        {/* Special Offer Banner with selective Hindi touch */}
         <div style={{
           margin: "50px 0",
           background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
@@ -388,13 +388,13 @@ export default function Home() {
         }}>
           <div>
             <span style={{ background: "rgba(255, 255, 255, 0.2)", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
-              ⚡ सीमित समय का ऑफर
+              ⚡ Limited Period Offer (विशेष ऑफर)
             </span>
             <h2 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "900", margin: "12px 0 8px 0" }}>
-              अपनी पहली चार धाम बुकिंग पर पाएं 20% की छूट!
+              Get 20% OFF on Your First Char Dham Booking! (अपनी पहली चार धाम बुकिंग पर पाएं 20% की छूट)
             </h2>
             <p style={{ fontSize: "14px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.5" }}>
-              चेकआउट के दौरान कूपन कोड <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> का उपयोग करें।
+              Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
             </p>
           </div>
           <button 
@@ -405,15 +405,15 @@ export default function Home() {
               boxShadow: "0 10px 20px rgba(0,0,0,0.2)", width: "100%", maxWidth: "210px"
             }}
           >
-            अभी ऑफर क्लेम करें
+            Claim Offer Now
           </button>
         </div>
 
-        {/* योग और वेलनेस */}
+        {/* Yoga & Wellness */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#34d399", textTransform: "uppercase", letterSpacing: "1.5px" }}>REJUVENATE BODY & SOUL</span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>योग और वेलनेस रिट्रीट</h2>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Yoga & Wellness Retreats</h2>
           </div>
           <div style={horizontalScrollContainer}>
             {YOGA_RETREATS.map((item, idx) => (
@@ -436,11 +436,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* लोकप्रिय ट्रेक्स */}
+        {/* Popular Treks */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#fbbf24", textTransform: "uppercase", letterSpacing: "1.5px" }}>THRILLING EXPEDITIONS</span>
-            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>लोकप्रिय अल्पाइन ट्रेक्स</h2>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>Popular Alpine Treks</h2>
           </div>
           <div style={horizontalScrollContainer}>
             {POPULAR_TREKS.map((item, idx) => (
@@ -463,14 +463,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* तीर्थयात्रा सेक्शन */}
+        {/* Pilgrimage Section */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
             <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>
               SACRED DESTINATIONS
             </span>
             <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
-              चार धाम और तीर्थयात्रा स्थलों की खोज करें
+              Explore Pilgrimage & Char Dham
             </h2>
           </div>
 
@@ -500,20 +500,20 @@ export default function Home() {
           </div>
         </div>
 
-        {/* जिले और स्थानीय भोजन */}
+        {/* Explore Districts & Local Food Section */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
               <span style={{ fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", letterSpacing: "1.5px" }}>HIMALAYAN CULTURE & CUISINE</span>
               <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", fontWeight: "900", color: "#fff", margin: "4px 0 0 0" }}>
-                उत्तराखंड के जिले और स्थानीय भोजन
+                Explore Districts & Local Food
               </h2>
             </div>
             <button 
               onClick={() => navigate("/districts")}
               style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
             >
-              सभी जिले देखें →
+              View All Districts →
             </button>
           </div>
 
@@ -548,17 +548,17 @@ export default function Home() {
           </div>
         </div>
 
-        {/* आंकड़े (Stats Section) */}
+        {/* Stats Section */}
         <section style={{ marginTop: "50px", background: "#1e293b", color: "#fff", padding: "40px 20px", borderRadius: "16px", textAlign: "center", border: "1px solid #334155", boxSizing: "border-box" }}>
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "25px", fontWeight: "900" }}>हमें क्यों चुनें?</h2>
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 32px)", marginBottom: "25px", fontWeight: "900" }}>Why Choose The Himalayans?</h2>
           <div style={{ display: "flex", justifyContent: "space-around", gap: "30px", flexWrap: "wrap" }}>
             <div>
               <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>100+</h2>
-              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>सत्यापित माउंटेन स्टे</p>
+              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Verified Mountain Stays</p>
             </div>
             <div>
               <h2 style={{ fontSize: "40px", color: "#38bdf8", fontWeight: "900", margin: 0 }}>10k+</h2>
-              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>खुश यात्री</p>
+              <p style={{ fontSize: "14px", color: "#94a3b8", marginTop: "6px", fontWeight: "600" }}>Happy Travelers</p>
             </div>
           </div>
         </section>
@@ -576,7 +576,7 @@ export default function Home() {
   );
 }
 
-// ग्लोबल स्टाइल कांस्टेंट्स
+// Global Style Constants
 const horizontalScrollContainer = {
   display: "flex",
   gap: "20px",
