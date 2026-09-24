@@ -17,12 +17,10 @@ export default function Footer() {
     }
   };
 
-  // ⚙️ नया फंक्शन: मैनेज लिस्टिंग्स (डिलीट करने के लिए)
   const handleManageListingsClick = (e) => {
     e.preventDefault();
     const password = prompt("Enter Admin Secret Passcode to Manage/Delete Listings:");
     if (password === "040788") {
-      // एडमिन ऑथराइजेशन सेट करके AllStays पेज पर भेजेंगे और डिलीट मॉडल खोलेंगे
       localStorage.setItem("is_manage_admin", "true");
       navigate("/hotels"); 
       window.location.reload();
@@ -63,8 +61,8 @@ export default function Footer() {
             <h4 style={columnTitleStyle}>Partners</h4>
             <ul style={ulStyle}>
               <li><a href="#" onClick={handleListPropertyClick} style={linkStyle}>List your property</a></li>
-              {/* ⚙️ यहाँ फुटर में नया "Manage Listings" विकल्प जोड़ दिया गया है */}
-              <li><a href="#" onClick={handleManageListingsClick} style={{ ...linkStyle, color: "#e11d48", fontWeight: "700" }}>Manage Listings (Delete)</a></li>
+              {/* ⚙️ लाल रंग और बोल्ड स्टाइल यहाँ से हटा दिया गया है */}
+              <li><a href="#" onClick={handleManageListingsClick} style={linkStyle}>Manage Listings (Delete)</a></li>
               <li><Link to="/admin" style={linkStyle}>Admin Access</Link></li>
               <li><Link to="/admin/bookings" style={linkStyle}>Admin Bookings</Link></li>
               <li><span style={linkStyle}>Partner Help</span></li>
