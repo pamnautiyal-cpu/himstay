@@ -62,9 +62,10 @@ export default function Home() {
     { _id: "local_08", name: "Kedarkantha Base Cottage", city: "Sankri", image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600", location: "Sankri", price: "3,199", rating: "4.7", category: "Treks" }
   ];
 
+  // Updated relevant cultural & food images for Uttarakhand Districts
   const uttarakhandDistricts = [
-    { id: "uttarkashi", name: "उत्तरकाशी", tagline: "पहाड़ी राजमा और ट्रेकिंग", image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80", food: "पहाड़ी राजमा, लाल चावल" },
-    { id: "tehri", name: "टिहरी गढ़वाल", tagline: "झील किनारे का स्वाद", image: "https://images.unsplash.com/photo-1595655608293-98782a174f83?auto=format&fit=crop&w=600&q=80", food: "चैनसू, गहत की दाल" },
+    { id: "uttarkashi", name: "उत्तरकाशी", tagline: "पहाड़ी राजमा और ट्रेकिंग", image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80", food: "पहाड़ी राजमा, लाल चावल" },
+    { id: "tehri", name: "टिहरी गढ़वाल", tagline: "झील किनारे का स्वाद", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", food: "चैनसू, गहत की दाल" },
     { id: "dehradun", name: "देहरादून & मसूरी", tagline: "कैफे और पहाड़ी ज़ायका", image: "https://images.unsplash.com/photo-1589182337358-2fabedd73e9d?auto=format&fit=crop&w=600&q=80", food: "कफुली, बाल मिठाई" },
     { id: "nainital", name: "नैनीताल", tagline: "कुमाऊनी ज़ायका और झीलें", image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=600&q=80", food: "भट की चुर्काणी, आलू गुटके" }
   ];
@@ -491,7 +492,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Explore Districts & Local Culture Section */}
+        {/* Explore Districts & Local Food Section with Corrected Unique Images */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
             <div>
