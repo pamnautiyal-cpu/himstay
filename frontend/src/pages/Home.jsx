@@ -4,7 +4,6 @@ import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
-// Static data kept outside component to prevent recreation on every render
 const HERO_IMAGES = [
   "/images/hotals/Hotel Nagraja Palace1.jpg",
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
@@ -170,7 +169,7 @@ export default function Home() {
             fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", display: "inline-block", 
             marginBottom: "14px", border: "1px solid rgba(56, 189, 248, 0.3)" 
           }}>
-            ✨ Handpicked Stays & Journeys (उत्तराखंड की असली संस्कृति का अनुभव करें)
+            ✨ Handpicked Stays & Journeys
           </span>
 
           <h1 style={{ fontSize: "clamp(26px, 4.5vw, 42px)", fontWeight: "900", marginBottom: "12px", letterSpacing: "-1px", lineHeight: "1.15" }}>
@@ -371,7 +370,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Special Offer Banner with selective Hindi touch */}
+        {/* Special Offer Banner */}
         <div style={{
           margin: "50px 0",
           background: "linear-gradient(135deg, #0284c7 0%, #0369a1 100%)",
@@ -391,7 +390,7 @@ export default function Home() {
               ⚡ Limited Period Offer (विशेष ऑफर)
             </span>
             <h2 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "900", margin: "12px 0 8px 0" }}>
-              Get 20% OFF on Your First Char Dham Booking! (अपनी पहली चार धाम बुकिंग पर पाएं 20% की छूट)
+              Get 20% OFF on Your First Char Dham Booking!
             </h2>
             <p style={{ fontSize: "14px", color: "#e0f2fe", margin: 0, maxWidth: "600px", lineHeight: "1.5" }}>
               Use code <strong style={{ background: "white", color: "#0369a1", padding: "2px 8px", borderRadius: "4px" }}>HIMALAYA20</strong> during checkout to avail instant discount on verified stays and packages.
@@ -510,10 +509,10 @@ export default function Home() {
               </h2>
             </div>
             <button 
-              onClick={() => navigate("/districts")}
+              onClick={() => navigate("/explore-culture")}
               style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
             >
-              View All Districts →
+              View All Culture →
             </button>
           </div>
 
@@ -521,7 +520,8 @@ export default function Home() {
             {UTTARAKHAND_DISTRICTS.map((dist) => (
               <div 
                 key={dist.id}
-                onClick={() => navigate(`/districts/${dist.id}`)}
+                // अब यहाँ क्लिक करने पर सीधा Explore Culture वाले पेज पर जाएगा और संबंधित डिस्ट्रिक्ट का डेटा खुलेगा
+                onClick={() => navigate(`/explore-culture/${dist.id}`)}
                 className="hover-card"
                 style={{
                   background: "#1e293b", borderRadius: "16px", overflow: "hidden",
@@ -576,7 +576,6 @@ export default function Home() {
   );
 }
 
-// Global Style Constants
 const horizontalScrollContainer = {
   display: "flex",
   gap: "20px",
