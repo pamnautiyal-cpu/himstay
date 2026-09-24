@@ -11,6 +11,15 @@ export default function HotelDetails() {
   
   const [selectedMealPlans, setSelectedMealPlans] = useState({});
 
+  // State for Fullscreen Image Modal (Lightbox)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeImage, setActiveImage] = useState("");
+
+  const openImageModal = (imgSrc) => {
+    setActiveImage(imgSrc);
+    setIsModalOpen(true);
+  };
+
   const standardRoomsList = [
     { type: "Standard Room", basePrice: 1799, inclusions: ["1 Comfortable Bed", "Max 2 Adults", "Attached Washroom", "Free Wi-Fi"] },
     { type: "Deluxe Room", basePrice: 2299, inclusions: ["1 Double Bed", "Max 2 Adults + 1 Child", "Mountain View", "LED TV"] },
@@ -40,7 +49,6 @@ export default function HotelDetails() {
   useEffect(() => {
     let baseRooms = standardRoomsList;
     
-    // Check if hotel was added dynamically via localStorage (user_added_hotels)
     const userAddedHotels = JSON.parse(localStorage.getItem("user_added_hotels") || "[]");
     const foundUserHotel = userAddedHotels.find(h => h._id === id);
 
@@ -106,30 +114,79 @@ export default function HotelDetails() {
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
         
+        {/* Images Grid with Hover & Click Effect */}
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "14px", borderRadius: "20px", overflow: "hidden", marginBottom: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", height: "400px" }}>
-          <div style={{ overflow: "hidden" }}>
+          
+          <div 
+            onClick={() => openImageModal(mainImg)}
+            className="image-hover-box"
+            style={{ overflow: "hidden", position: "relative", cursor: "pointer", height: "100%" }}
+          >
             <img 
               src={mainImg} 
               alt={hotel.name} 
-              style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+              style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s ease" }} 
               onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
             />
+            <div style={imageTagStyle}>🔍 Click to zoom</div>
           </div>
+
           <div style={{ display: "flex", flexDirection: "column", gap: "14px", height: "100%" }}>
-            <img 
-              src={subImg1} 
-              alt="preview 1" 
-              style={{ width: "100%", height: "calc(50% - 7px)", objectFit: "cover", borderRadius: "12px" }} 
-              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace2.jpg"; }}
-            />
-            <img 
-              src={subImg2} 
-              alt="preview 2" 
-              style={{ width: "100%", height: "calc(50% - 7px)", objectFit: "cover", borderRadius: "12px" }} 
-              onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace3.jpg"; }}
-            />
+            <div 
+              onClick={() => openImageModal(subImg1)}
+              className="image-hover-box"
+              style={{ overflow: "hidden", position: "relative", cursor: "pointer", height: "calc(50% - 7px)", borderRadius: "12px" }}
+            >
+              <img 
+                src={subImg1} 
+                alt="preview 1" 
+                style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s ease" }} 
+                onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace2.jpg"; }}
+              />
+              <div style={imageTagStyle}>🔍 Zoom</div>
+            </div>
+
+            <div 
+              onClick={() => openImageModal(subImg2)}
+              className="image-hover-box"
+              style={{ overflow: "hidden", position: "relative", cursor: "pointer", height: "calc(50% - 7px)", borderRadius: "12px" }}
+            >
+              <img 
+                src={subImg2} 
+                alt="preview 2" 
+                style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s ease" }} 
+                onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace3.jpg"; }}
+              />
+              <div style={imageTagStyle}>🔍 Zoom</div>
+            </div>
           </div>
         </div>
+
+        {/* Fullscreen Image Lightbox Modal */}
+        {isModalOpen && (
+          <div style={{
+            position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
+            background: "rgba(0, 0, 0, 0.85)", display: "flex", justifyContent: "center",
+            alignItems: "center", zIndex: 9999, padding: "20px", boxSizing: "border-box"
+          }} onClick={() => setIsModalOpen(false)}>
+            <div style={{ position: "relative", maxWidth: "90%", maxHeight: "90%" }} onClick={(e) => e.stopPropagation()}>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                style={{
+                  position: "absolute", top: "-45px", right: "0", background: "#ef4444", color: "#fff",
+                  border: "none", padding: "8px 16px", borderRadius: "8px", fontWeight: "bold", cursor: "pointer", fontSize: "14px"
+                }}
+              >
+                ✕ Close
+              </button>
+              <img 
+                src={activeImage} 
+                alt="Fullscreen preview" 
+                style={{ maxWidth: "100%", maxHeight: "85vh", borderRadius: "12px", objectFit: "contain", border: "2px solid #475569", boxShadow: "0 20px 40px rgba(0,0,0,0.5)" }}
+              />
+            </div>
+          </div>
+        )}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "30px", alignItems: "flex-start" }}>
           
@@ -312,6 +369,15 @@ export default function HotelDetails() {
         </div>
 
       </div>
+
+      <style>{`
+        .image-hover-box:hover img {
+          transform: scale(1.06);
+        }
+        .image-hover-box:hover div {
+          opacity: 1 !important;
+        }
+      `}</style>
     </div>
   );
 }
@@ -321,6 +387,20 @@ const amenityBox = {
   padding: "12px 14px",
   borderRadius: "10px",
   border: "1px solid #e2e8f0"
+};
+
+const imageTagStyle = {
+  position: "absolute",
+  bottom: "10px",
+  right: "10px",
+  background: "rgba(15, 23, 42, 0.8)",
+  color: "#38bdf8",
+  padding: "4px 10px",
+  borderRadius: "6px",
+  fontSize: "11px",
+  fontWeight: "800",
+  opacity: "0.8",
+  transition: "opacity 0.2s ease"
 };
 
 const mealPlanLabelStyle = (isSelected) => ({
