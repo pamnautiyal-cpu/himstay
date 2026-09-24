@@ -69,7 +69,6 @@ export default function Home() {
     { id: "nainital", name: "नैनीताल", tagline: "कुमाऊनी ज़ायका और झीलें", image: "https://images.unsplash.com/photo-1590447158019-883281ab4bc1?auto=format&fit=crop&w=600&q=80", food: "भट की चुर्काणी, आलू गुटके" }
   ];
 
-  // Backend Integration with fallback security
   useEffect(() => {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
@@ -138,38 +137,37 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#0f172a", color: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
       
-      {/* 🌟 ORN Style Premium Dark Hero Section */}
+      {/* Hero Banner Section */}
       <div style={{
         position: "relative",
         backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.95)), url('${heroImages[currentSlide]}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        padding: "80px 15px 90px 15px",
+        padding: "50px 15px 60px 15px",
         textAlign: "center",
         color: "white",
         borderBottom: "1px solid #334155",
         transition: "background-image 1s ease-in-out",
         boxSizing: "border-box"
       }}>
-        <div style={{ maxWidth: "900px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+        <div style={{ maxWidth: "720px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
           
-          {/* Top Elegant Badge */}
           <span style={{ 
-            background: "rgba(56, 189, 248, 0.1)", color: "#38bdf8", padding: "8px 20px", borderRadius: "30px", 
-            fontSize: "12px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "2px", display: "inline-block", 
-            marginBottom: "20px", border: "1px solid rgba(56, 189, 248, 0.3)" 
+            background: "rgba(56, 189, 248, 0.1)", color: "#38bdf8", padding: "6px 16px", borderRadius: "30px", 
+            fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", display: "inline-block", 
+            marginBottom: "14px", border: "1px solid rgba(56, 189, 248, 0.3)" 
           }}>
-            ✨ No Fixed Itineraries • Handpicked Stays & Journeys
+            ✨ Handpicked Stays & Journeys
           </span>
 
-          <h1 style={{ fontSize: "clamp(30px, 5vw, 54px)", fontWeight: "900", marginBottom: "16px", letterSpacing: "-1px", lineHeight: "1.15" }}>
+          <h1 style={{ fontSize: "clamp(26px, 4.5vw, 42px)", fontWeight: "900", marginBottom: "12px", letterSpacing: "-1px", lineHeight: "1.15" }}>
             Discover the True Spirit of the Himalayas
           </h1>
-          <p style={{ fontSize: "clamp(15px, 2.5vw, 18px)", color: "#94a3b8", marginBottom: "35px", fontWeight: "400", maxWidth: "700px", marginInline: "auto" }}>
-            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks tailored for you.
+          <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "#94a3b8", marginBottom: "25px", fontWeight: "400" }}>
+            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks
           </p>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "25px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
             {[
               { id: "Hotels", label: "🏨 Stays" },
               { id: "Yoga", label: "🌿 Yoga" },
@@ -183,10 +181,10 @@ export default function Home() {
                   background: activeTab === tab.id ? "#0284c7" : "rgba(30, 41, 59, 0.8)",
                   color: "white",
                   border: activeTab === tab.id ? "none" : "1px solid #475569",
-                  padding: "10px 20px",
+                  padding: "8px 16px",
                   borderRadius: "30px",
                   fontWeight: "700",
-                  fontSize: "13px",
+                  fontSize: "12px",
                   cursor: "pointer",
                   transition: "all 0.2s ease"
                 }}
@@ -196,24 +194,24 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Search Box in ORN Dark Glassmorphism Style */}
+          {/* Compact and Clean Search Box */}
           <div style={{
             background: "#1e293b",
-            borderRadius: "16px",
-            padding: "24px",
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+            borderRadius: "14px",
+            padding: "16px",
+            boxShadow: "0 20px 30px -10px rgba(0, 0, 0, 0.5)",
             textAlign: "left",
             color: "#f8fafc",
             border: "1px solid #334155",
             boxSizing: "border-box"
           }}>
-            <form onSubmit={handleSearch} style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center" }}>
+            <form onSubmit={handleSearch} style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "1px" }}>DESTINATION</label>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>DESTINATION</label>
                 <select 
                   value={selectedCity} 
                   onChange={(e) => setSelectedCity(e.target.value)}
-                  style={{ width: "100%", padding: "14px", border: "1px solid #475569", borderRadius: "10px", fontSize: "14px", outline: "none", background: "#0f172a", color: "#fff", fontWeight: "600", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "10px 12px", border: "1px solid #475569", borderRadius: "8px", fontSize: "13px", outline: "none", background: "#0f172a", color: "#fff", fontWeight: "600", boxSizing: "border-box" }}
                 >
                   {cityOptions.map((city) => (
                     <option key={city} value={city}>{city}</option>
@@ -222,20 +220,20 @@ export default function Home() {
               </div>
 
               <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "1px" }}>KEYWORD</label>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>KEYWORD</label>
                 <input 
                   type="text" 
                   placeholder="Hotel name, location, or trek..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ width: "100%", padding: "14px", border: "1px solid #475569", borderRadius: "10px", fontSize: "14px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
+                  style={{ width: "100%", padding: "10px 12px", border: "1px solid #475569", borderRadius: "8px", fontSize: "13px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
                 />
               </div>
 
               <div style={{ width: "100%" }}>
                 <button type="submit" style={{
-                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "15px", 
-                  borderRadius: "10px", fontWeight: "800", fontSize: "15px", cursor: "pointer", boxShadow: "0 10px 20px -5px rgba(2, 132, 199, 0.5)"
+                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", 
+                  borderRadius: "8px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 8px 16px -4px rgba(2, 132, 199, 0.5)"
                 }}>
                   SEARCH EXPERIENCE
                 </button>
@@ -306,6 +304,8 @@ export default function Home() {
                 filteredListings.map((hotel) => (
                   <div 
                     key={hotel._id}
+                    onClick={() => navigate(`/hotels/${hotel._id}`)}
+                    className="hover-card"
                     style={largeCardStyle}
                   >
                     <div style={{ position: "relative" }}>
@@ -338,15 +338,14 @@ export default function Home() {
                           <span style={{ fontSize: "11px", color: "#94a3b8", display: "block" }}>Starting from</span>
                           <span style={{ fontSize: "16px", fontWeight: "900", color: "#fff" }}>₹{hotel.price || "2,499"}</span>
                         </div>
-                        <button 
-                          onClick={() => navigate(`/hotels/${hotel._id}`)}
+                        <span 
                           style={{
-                            background: "#0284c7", color: "white", border: "none", padding: "8px 14px",
-                            borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer"
+                            background: "#0284c7", color: "white", padding: "6px 12px",
+                            borderRadius: "8px", fontWeight: "700", fontSize: "12px"
                           }}
                         >
                           Details
-                        </button>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -412,8 +411,13 @@ export default function Home() {
           </div>
           <div style={horizontalScrollContainer}>
             {yogaRetreats.map((item, idx) => (
-              <div key={idx} style={largeCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "170px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+              <div key={idx} onClick={() => navigate(item.path)} className="hover-card" style={largeCardStyle}>
+                <img 
+                  src={item.img} 
+                  alt={item.name} 
+                  style={{ width: "100%", height: "170px", objectFit: "cover" }} 
+                  onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} 
+                />
                 <div style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
                     <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "0 0 6px 0" }}>{item.name}</h3>
@@ -433,8 +437,13 @@ export default function Home() {
           </div>
           <div style={horizontalScrollContainer}>
             {popularTreks.map((item, idx) => (
-              <div key={idx} style={largeCardStyle} onClick={() => navigate(item.path)}>
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "170px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+              <div key={idx} onClick={() => navigate(item.path)} className="hover-card" style={largeCardStyle}>
+                <img 
+                  src={item.img} 
+                  alt={item.name} 
+                  style={{ width: "100%", height: "170px", objectFit: "cover" }} 
+                  onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} 
+                />
                 <div style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
                     <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "0 0 6px 0" }}>{item.name}</h3>
@@ -459,21 +468,25 @@ export default function Home() {
 
           <div style={horizontalScrollContainer}>
             {sacredPlaces.map((item, idx) => (
-              <a 
+              <div 
                 key={idx} 
-                href={item.searchUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ ...largeCardStyle, textDecoration: "none" }}
+                onClick={() => window.open(item.searchUrl, "_blank")}
+                className="hover-card"
+                style={largeCardStyle}
               >
-                <img src={item.img} alt={item.name} style={{ width: "100%", height: "170px", objectFit: "cover" }} onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} />
+                <img 
+                  src={item.img} 
+                  alt={item.name} 
+                  style={{ width: "100%", height: "170px", objectFit: "cover" }} 
+                  onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }} 
+                />
                 <div style={{ padding: "16px", flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
                     <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#fff", margin: "0 0 6px 0" }}>{item.name}</h3>
                     <p style={{ fontSize: "13px", color: "#94a3b8", margin: 0, lineHeight: "1.4" }}>{item.desc}</p>
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
@@ -500,6 +513,7 @@ export default function Home() {
               <div 
                 key={dist.id}
                 onClick={() => navigate(`/districts/${dist.id}`)}
+                className="hover-card"
                 style={{
                   background: "#1e293b",
                   borderRadius: "16px",
@@ -507,10 +521,15 @@ export default function Home() {
                   border: "1px solid #334155",
                   cursor: "pointer",
                   boxShadow: "0 10px 15px -3px rgba(0,0,0,0.2)",
-                  transition: "transform 0.2s ease"
+                  transition: "all 0.2s ease"
                 }}
               >
-                <img src={dist.image} alt={dist.name} style={{ width: "100%", height: "160px", objectFit: "cover" }} />
+                <img 
+                  src={dist.image} 
+                  alt={dist.name} 
+                  style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+                  onError={(e) => { e.target.src = "/images/hotals/Hotel Nagraja Palace1.jpg"; }}
+                />
                 <div style={{ padding: "16px" }}>
                   <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#fff", margin: "0 0 4px 0" }}>{dist.name}</h3>
                   <p style={{ fontSize: "13px", color: "#94a3b8", margin: "0 0 12px 0" }}>{dist.tagline}</p>
@@ -539,6 +558,15 @@ export default function Home() {
         </section>
 
       </div>
+
+      {/* Global Hover Effect Stylesheet Injection */}
+      <style>{`
+        .hover-card:hover {
+          transform: translateY(-5px);
+          border-color: #38bdf8 !important;
+          box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.2) !important;
+        }
+      `}</style>
     </div>
   );
 }
@@ -592,7 +620,7 @@ const largeCardStyle = {
   width: "280px",
   flex: "0 0 auto",
   boxShadow: "0 10px 20px rgba(0,0,0,0.3)",
-  transition: "transform 0.2s ease",
+  transition: "all 0.2s ease",
   display: "flex",
   flexDirection: "column",
   boxSizing: "border-box"
