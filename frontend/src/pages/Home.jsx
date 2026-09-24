@@ -435,6 +435,52 @@ export default function Home() {
           </div>
         </div>
 
+        {/* 🌿 Yoga Section के बाद का स्पेशल ग्रीन ऑफर बैनर */}
+        <div style={{
+          maxWidth: "1200px",
+          margin: "40px auto",
+          background: "linear-gradient(135deg, #065f46 0%, #047857 100%)",
+          borderRadius: "20px",
+          padding: "25px 30px",
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          boxShadow: "0 10px 25px -5px rgba(6, 95, 70, 0.3)",
+          flexWrap: "wrap",
+          gap: "20px",
+          boxSizing: "border-box"
+        }}>
+          <div>
+            <span style={{ background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
+              🧘 Wellness Special
+            </span>
+            <h3 style={{ fontSize: "22px", fontWeight: "900", margin: "10px 0 5px 0" }}>
+              Flat 25% OFF on 7-Day Himalayan Yoga & Meditation Retreats!
+            </h3>
+            <p style={{ fontSize: "13px", color: "#a7f3d0", margin: 0 }}>
+              Use code <strong style={{ color: "#fff" }}>YOGA25</strong> to get free Ayurvedic consultation and organic herbal meals included.
+            </p>
+          </div>
+          <button 
+            onClick={() => navigate("/search?tab=Yoga")}
+            style={{
+              background: "#ffffff",
+              color: "#065f46",
+              border: "none",
+              padding: "12px 24px",
+              borderRadius: "12px",
+              fontWeight: "800",
+              fontSize: "13px",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              transition: "transform 0.2s"
+            }}
+          >
+            Claim Wellness Offer ✨
+          </button>
+        </div>
+
         {/* Popular Treks */}
         <div style={{ marginBottom: "50px" }}>
           <div style={{ marginBottom: "20px" }}>
@@ -460,6 +506,52 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* 🏔️ Treks Section के बाद का एडवेंचर ऑरेंज ऑफर बैनर */}
+        <div style={{
+          maxWidth: "1200px",
+          margin: "40px auto",
+          background: "linear-gradient(135deg, #7c2d12 0%, #c2410c 100%)",
+          borderRadius: "20px",
+          padding: "25px 30px",
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          boxShadow: "0 10px 25px -5px rgba(194, 65, 12, 0.3)",
+          flexWrap: "wrap",
+          gap: "20px",
+          boxSizing: "border-box"
+        }}>
+          <div>
+            <span style={{ background: "rgba(255,255,255,0.2)", padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1px" }}>
+              ⛺ Trekker's Club Offer
+            </span>
+            <h3 style={{ fontSize: "22px", fontWeight: "900", margin: "10px 0 5px 0" }}>
+              Book Kedarkantha or Roopkund Trek & Get Free Camping Gear!
+            </h3>
+            <p style={{ fontSize: "13px", color: "#fed7aa", margin: 0 }}>
+              Use code <strong style={{ color: "#fff" }}>TREKFREE</strong> at checkout. Includes professional guide & certified safety kits.
+            </p>
+          </div>
+          <button 
+            onClick={() => navigate("/search?tab=Treks")}
+            style={{
+              background: "#ffffff",
+              color: "#c2410c",
+              border: "none",
+              padding: "12px 24px",
+              borderRadius: "12px",
+              fontWeight: "800",
+              fontSize: "13px",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              transition: "transform 0.2s"
+            }}
+          >
+            Unlock Trek Deal 🎒
+          </button>
         </div>
 
         {/* Pilgrimage Section */}
