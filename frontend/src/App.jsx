@@ -24,6 +24,7 @@ import Search from "./components/Search";
 import Offers from "./pages/Offers";
 import DistrictsPage from "./pages/DistrictsPage"; // 🗺️ सभी जिलों की लिस्ट का पेज[cite: 1]
 import DestinationDetail from "./pages/DestinationDetail"; // 🏔️ डेस्टिनेशन डिटेल पेज[cite: 2]
+import CharDhamAgents from "./pages/CharDhamAgents"; // 🌟 चारधाम ट्रेवल एजेंट्स और ग्रुप बुकिंग पेज
 import "./App.css";
 
 const ProtectedRoute = ({ children }) => {
@@ -87,9 +88,12 @@ export default function App() {
           <Route path="/districts" element={<DistrictsPage />} />
           <Route path="/destination/:slug" element={<DestinationDetail />} />
 
-          {/* 🌟 यहाँ हमने explore-culture के रूट्स जोड़ दिए हैं ताकि ब्लैंक पेज न आए */}
+          {/* 🌟 explore-culture के रूट्स */}
           <Route path="/explore-culture" element={<DistrictsPage />} />
           <Route path="/explore-culture/:id" element={<DestinationDetail />} />
+
+          {/* 🌟 चारधाम ट्रेवल एजेंट्स और ग्रुप बुकिंग का नया रूट */}
+          <Route path="/char-dham-agents" element={<CharDhamAgents />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/details/:id" element={<ComingSoon />} />
