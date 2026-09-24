@@ -63,6 +63,40 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Advanced Form States for Serious Agents & Drivers
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    agencyName: "",
+    gstin: "",
+    travelDate: "",
+    groupSize: "1-5 Persons",
+    roomCount: "2-4 Rooms",
+    vehicleType: "Tempo Traveller (12-26 Seater)",
+    yatraRegistration: "Yes - Completed",
+    route: "Yamunotri & Gangotri Route"
+  });
+
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+
+  const handleFormChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleAgentFormSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.fullName || !formData.phone || !formData.travelDate) {
+      alert("Please fill in all required fields (Name, Phone, Travel Date).");
+      return;
+    }
+    setIsFormSubmitted(true);
+  };
+
+  // WhatsApp pre-filled message
+  const whatsappMessage = encodeURIComponent(
+    `Hello, I am a serious travel agent/driver. Here are my booking inquiry details:\n\n*Name:* ${formData.fullName}\n*Phone:* ${formData.phone}\n*Agency:* ${formData.agencyName || "N/A"}\n*GSTIN/ID:* ${formData.gstin || "N/A"}\n*Travel Date:* ${formData.travelDate}\n*Group Size:* ${formData.groupSize}\n*Rooms Required:* ${formData.roomCount}\n*Vehicle Type:* ${formData.vehicleType}\n*Yatra Status:* ${formData.yatraRegistration}\n*Route:* ${formData.route}`
+  );
+
   const staysScrollRef = useRef(null);
 
   const scrollStays = useCallback((direction) => {
@@ -149,111 +183,252 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', system-ui, sans-serif", background: "#0f172a", color: "#f8fafc", minHeight: "100vh", paddingBottom: "70px", overflowX: "hidden", width: "100%", boxSizing: "border-box" }}>
       
-      {/* Hero Banner Section */}
-      <div style={{
-        position: "relative",
-        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.95)), url('${HERO_IMAGES[currentSlide]}')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        padding: "50px 15px 60px 15px",
-        textAlign: "center",
-        color: "white",
-        borderBottom: "1px solid #334155",
-        transition: "background-image 1s ease-in-out",
-        boxSizing: "border-box"
-      }}>
-        <div style={{ maxWidth: "720px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-          
+      {/* Compact & Sleek Hero / Partner Verification Section (Designed to take less vertical space) */}
+      <section style={{ 
+        display: "grid", 
+        gridTemplateColumns: "1.2fr 1fr", 
+        minHeight: "460px", 
+        background: "#0f172a", 
+        color: "#ffffff",
+        borderBottom: "1px solid #334155"
+      }} className="orn-hero-grid">
+        
+        {/* Left Dark Content Box */}
+        <div style={{ 
+          padding: "35px 40px", 
+          display: "flex", 
+          flexDirection: "column", 
+          justifyContent: "center",
+          background: `linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('${HERO_IMAGES[currentSlide]}') center/cover`,
+          borderRight: "1px solid rgba(255, 255, 255, 0.08)",
+          boxSizing: "border-box"
+        }}>
           <span style={{ 
-            background: "rgba(56, 189, 248, 0.1)", color: "#38bdf8", padding: "6px 16px", borderRadius: "30px", 
-            fontSize: "11px", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px", display: "inline-block", 
-            marginBottom: "14px", border: "1px solid rgba(56, 189, 248, 0.3)" 
+            color: "#38bdf8", 
+            fontWeight: "800", 
+            fontSize: "11px", 
+            letterSpacing: "1.5px", 
+            textTransform: "uppercase", 
+            marginBottom: "8px",
+            display: "inline-block"
           }}>
-            ✨ Handpicked Stays & Journeys
+            ✨ Char Dham Special Partner Program
           </span>
-
-          <h1 style={{ fontSize: "clamp(26px, 4.5vw, 42px)", fontWeight: "900", marginBottom: "12px", letterSpacing: "-1px", lineHeight: "1.15" }}>
-            Discover the True Spirit of the Himalayas
+          <h1 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: "900", lineHeight: "1.2", margin: "0 0 12px 0", letterSpacing: "-0.5px" }}>
+            Hotel Bookings for Verified Travel Agents & Drivers.
           </h1>
-          <p style={{ fontSize: "clamp(14px, 2vw, 16px)", color: "#94a3b8", marginBottom: "25px", fontWeight: "400" }}>
-            Book Verified Mountain Stays, Sacred Char Dham Yatra Packages & Guided Alpine Treks
+          <p style={{ fontSize: "13.5px", color: "#94a3b8", margin: "0 0 18px 0", lineHeight: "1.5" }}>
+            Connect with us directly for group stays, driver accommodation, and confirmed room allocations on Gangotri and Yamunotri Dham routes.
           </p>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
-              { id: "Hotels", label: "🏨 Hotels" },
-              { id: "Yoga", label: "🌿 Yoga" },
-              { id: "Treks", label: "⚡ Treks" }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  background: activeTab === tab.id ? "#0284c7" : "rgba(30, 41, 59, 0.8)",
-                  color: "white",
-                  border: activeTab === tab.id ? "none" : "1px solid #475569",
-                  padding: "8px 16px",
-                  borderRadius: "30px",
-                  fontWeight: "700",
-                  fontSize: "12px",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                {tab.label}
-              </button>
+              "✔️ Confirmed inventory across Barkot, Yamunotri, and Gangotri",
+              "✔️ Special B2B rates and dedicated arrangements for transport operators",
+              "✔️ Fill verification details on the right to instantly unlock WhatsApp & rates"
+            ].map((text, idx) => (
+              <div key={idx} style={{ fontSize: "13px", color: "#cbd5e1", display: "flex", alignItems: "center", gap: "8px" }}>
+                {text}
+              </div>
             ))}
           </div>
+        </div>
 
-          {/* Search Box */}
-          <div style={{
-            background: "#1e293b",
-            borderRadius: "14px",
-            padding: "16px",
-            boxShadow: "0 20px 30px -10px rgba(0, 0, 0, 0.5)",
-            textAlign: "left",
-            color: "#f8fafc",
-            border: "1px solid #334155",
-            boxSizing: "border-box"
-          }}>
-            <form onSubmit={handleSearch} style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-              <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>DESTINATION</label>
-                <select 
-                  value={selectedCity} 
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  style={{ width: "100%", padding: "10px 12px", border: "1px solid #475569", borderRadius: "8px", fontSize: "13px", outline: "none", background: "#0f172a", color: "#fff", fontWeight: "600", boxSizing: "border-box" }}
-                >
-                  {cityOptions.map((city) => (
-                    <option key={city} value={city}>{city}</option>
-                  ))}
-                </select>
-              </div>
+        {/* Right Light Form Box (Compact & Sleek Serious Agent Verification Form) */}
+        <div style={{ 
+          background: "#ffffff", 
+          padding: "25px 35px", 
+          display: "flex", 
+          flexDirection: "column", 
+          justifyContent: "center",
+          color: "#1f2937",
+          boxSizing: "border-box"
+        }}>
+          <div style={{ maxWidth: "420px", width: "100%", margin: "0 auto" }}>
+            
+            {!isFormSubmitted ? (
+              <>
+                <h3 style={{ fontSize: "18px", fontWeight: "750", margin: "0 0 2px 0", color: "#0f172a" }}>
+                  Partner Agent Verification Form
+                </h3>
+                <p style={{ fontSize: "12px", color: "#6b7280", margin: "0 0 12px 0" }}>
+                  Fill travel details to filter spam and get instant direct access.
+                </p>
 
-              <div style={{ flex: "1 1 100%", minWidth: "100%" }}>
-                <label style={{ display: "block", fontSize: "10px", fontWeight: "800", color: "#38bdf8", textTransform: "uppercase", marginBottom: "4px", letterSpacing: "1px" }}>KEYWORD</label>
-                <input 
-                  type="text" 
-                  placeholder="Hotel name, location, or trek..." 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ width: "100%", padding: "10px 12px", border: "1px solid #475569", borderRadius: "8px", fontSize: "13px", outline: "none", background: "#0f172a", color: "#fff", boxSizing: "border-box" }}
-                />
-              </div>
+                <form onSubmit={handleAgentFormSubmit} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <div>
+                      <label style={labelStyle}>Full Name *</label>
+                      <input 
+                        type="text" 
+                        name="fullName"
+                        placeholder="Your Name" 
+                        value={formData.fullName}
+                        onChange={handleFormChange}
+                        style={inputStyle}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>WhatsApp Number *</label>
+                      <input 
+                        type="tel" 
+                        name="phone"
+                        placeholder="10-digit mobile" 
+                        value={formData.phone}
+                        onChange={handleFormChange}
+                        style={inputStyle}
+                        required
+                      />
+                    </div>
+                  </div>
 
-              <div style={{ width: "100%" }}>
-                <button type="submit" style={{
-                  width: "100%", background: "#0284c7", color: "white", border: "none", padding: "12px", 
-                  borderRadius: "8px", fontWeight: "800", fontSize: "14px", cursor: "pointer", boxShadow: "0 8px 16px -4px rgba(2, 132, 199, 0.5)"
-                }}>
-                  SEARCH EXPERIENCE
-                </button>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <div>
+                      <label style={labelStyle}>Agency / Company</label>
+                      <input 
+                        type="text" 
+                        name="agencyName"
+                        placeholder="Agency Name" 
+                        value={formData.agencyName}
+                        onChange={handleFormChange}
+                        style={inputStyle}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>GSTIN / ID Proof (Opt)</label>
+                      <input 
+                        type="text" 
+                        name="gstin"
+                        placeholder="GSTIN or ID" 
+                        value={formData.gstin}
+                        onChange={handleFormChange}
+                        style={inputStyle}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <div>
+                      <label style={labelStyle}>Travel Date *</label>
+                      <input 
+                        type="date" 
+                        name="travelDate"
+                        value={formData.travelDate}
+                        onChange={handleFormChange}
+                        style={inputStyle}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Group Size</label>
+                      <select name="groupSize" value={formData.groupSize} onChange={handleFormChange} style={inputStyle}>
+                        <option value="1-5 Persons">1 - 5 Persons</option>
+                        <option value="6-15 Persons">6 - 15 Persons</option>
+                        <option value="16+ Persons">16+ Large Group</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <div>
+                      <label style={labelStyle}>Rooms Required</label>
+                      <select name="roomCount" value={formData.roomCount} onChange={handleFormChange} style={inputStyle}>
+                        <option value="1 Room">1 Room</option>
+                        <option value="2-4 Rooms">2 - 4 Rooms</option>
+                        <option value="5-10 Rooms">5 - 10 Rooms</option>
+                        <option value="10+ Rooms">10+ Group Rooms</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Vehicle Type</label>
+                      <select name="vehicleType" value={formData.vehicleType} onChange={handleFormChange} style={inputStyle}>
+                        <option value="Tempo Traveller">Tempo Traveller</option>
+                        <option value="Mini Bus">Mini Bus</option>
+                        <option value="Personal Car/Cab">Personal Cab</option>
+                        <option value="Standard Bus">Standard Bus</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    <div>
+                      <label style={labelStyle}>Yatra Registration</label>
+                      <select name="yatraRegistration" value={formData.yatraRegistration} onChange={handleFormChange} style={inputStyle}>
+                        <option value="Yes - Completed">Yes - Completed</option>
+                        <option value="Pending / In Process">Pending / Process</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Preferred Route</label>
+                      <select name="route" value={formData.route} onChange={handleFormChange} style={inputStyle}>
+                        <option value="Yamunotri & Gangotri Route">Both Routes</option>
+                        <option value="Yamunotri Route Only">Yamunotri Only</option>
+                        <option value="Gangotri Route Only">Gangotri Only</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button type="submit" style={{ 
+                    background: "#ef4444", 
+                    color: "#ffffff", 
+                    border: "none", 
+                    padding: "10px", 
+                    borderRadius: "6px", 
+                    fontWeight: "700", 
+                    fontSize: "13.5px", 
+                    cursor: "pointer",
+                    marginTop: "2px",
+                    transition: "background 0.2s"
+                  }}>
+                    Verify Details & Unlock WhatsApp
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div style={{ textAlign: "center", padding: "15px 0" }}>
+                <div style={{ fontSize: "38px", marginBottom: "6px" }}>✅</div>
+                <h3 style={{ fontSize: "18px", fontWeight: "750", color: "#0f172a", margin: "0 0 6px 0" }}>
+                  Verification Successful!
+                </h3>
+                <p style={{ fontSize: "13px", color: "#4b5563", margin: "0 0 16px 0", lineHeight: "1.4" }}>
+                  Thank you, <b>{formData.fullName}</b>. Click below to chat instantly on WhatsApp.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <a 
+                    href={`https://wa.me/91YOUR_PHONE_NUMBER?text=${whatsappMessage}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    style={{ 
+                      background: "#22c55e", 
+                      color: "#ffffff", 
+                      padding: "10px", 
+                      borderRadius: "6px", 
+                      textDecoration: "none", 
+                      fontWeight: "700", 
+                      fontSize: "13.5px",
+                      display: "block"
+                    }}
+                  >
+                    🟢 Open WhatsApp Chat Now
+                  </a>
+                  <button 
+                    onClick={() => setIsFormSubmitted(false)}
+                    style={{ background: "transparent", border: "1px solid #cbd5e1", padding: "8px", borderRadius: "6px", cursor: "pointer", fontSize: "12px", color: "#64748b" }}
+                  >
+                    Edit Details
+                  </button>
+                </div>
               </div>
-            </form>
+            )}
+
+            <p style={{ fontSize: "10.5px", color: "#9ca3af", textAlign: "center", marginTop: "10px", lineHeight: "1.3" }}>
+              🔒 Spam protection enabled. Only genuine agent requests are entertained.
+            </p>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Main Content Container */}
       <div style={{ maxWidth: "1240px", margin: "40px auto 0", padding: "0 20px", boxSizing: "border-box" }}>
@@ -435,7 +610,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🌿 Yoga Section के बाद का स्पेशल ग्रीन ऑफर बैनर */}
+        {/* Yoga Section Special Banner */}
         <div style={{
           maxWidth: "1200px",
           margin: "40px auto",
@@ -508,7 +683,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 🏔️ Treks Section के बाद का एडवेंचर ऑरेंज ऑफर बैनर */}
+        {/* Treks Section Special Banner */}
         <div style={{
           maxWidth: "1200px",
           margin: "40px auto",
@@ -662,10 +837,35 @@ export default function Home() {
           border-color: #38bdf8 !important;
           box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.2) !important;
         }
+        @media (max-width: 968px) {
+          .orn-hero-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
       `}</style>
     </div>
   );
 }
+
+const labelStyle = {
+  display: "block", 
+  fontSize: "10.5px", 
+  fontWeight: "600", 
+  marginBottom: "2px", 
+  color: "#374151"
+};
+
+const inputStyle = {
+  width: "100%", 
+  padding: "6px 8px", 
+  borderRadius: "5px", 
+  border: "1px solid #cbd5e1", 
+  fontSize: "12.5px",
+  outline: "none",
+  boxSizing: "border-box",
+  background: "#ffffff",
+  color: "#1f2937"
+};
 
 const horizontalScrollContainer = {
   display: "flex",
