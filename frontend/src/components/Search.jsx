@@ -4,6 +4,26 @@ import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://himstay.onrender.com";
 
+// आपकी ओरिजिनल 16 होटल्स की सेफ फॉलबैक लिस्ट
+const localUttarkashiHotels = [
+  { _id: "1", name: "Hotel Nisarga Palace", location: "Uttarkashi", city: "Uttarkashi", price: 2499, rating: "4.8", category: "Hotel", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" },
+  { _id: "2", name: "Gangadutta Homestay", location: "Uttarkashi", city: "Uttarkashi", price: 1899, rating: "4.7", category: "Homestay", image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600" },
+  { _id: "3", name: "Hotel Prabha Palace", location: "Uttarkashi", city: "Uttarkashi", price: 2199, rating: "4.6", category: "Hotel", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600" },
+  { _id: "4", name: "Hotel K.P Residency", location: "Uttarkashi", city: "Uttarkashi", price: 2200, rating: "4.5", category: "Hotel", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600" },
+  { _id: "5", name: "Devbhoomi Homestay", location: "Uttarkashi", city: "Uttarkashi", price: 1599, rating: "4.9", category: "Homestay", image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600" },
+  { _id: "6", name: "Himalayan Abode", location: "Uttarkashi", city: "Uttarkashi", price: 2799, rating: "4.8", category: "Hotel", image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600" },
+  { _id: "7", name: "Riverside Retreat", location: "Uttarkashi", city: "Uttarkashi", price: 1899, rating: "4.7", category: "Cottage", image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600" },
+  { _id: "8", name: "Gangotri View Inn", location: "Uttarkashi", city: "Uttarkashi", price: 2199, rating: "4.6", category: "Hotel", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600" },
+  { _id: "9", name: "Doon Valley Homestay", location: "Uttarkashi", city: "Uttarkashi", price: 1799, rating: "4.8", category: "Homestay", image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600" },
+  { _id: "10", name: "Uttarkashi Guest House", location: "Uttarkashi", city: "Uttarkashi", price: 2000, rating: "4.5", category: "Hotel", image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=600" },
+  { _id: "11", name: "Mountain Peak Hotel", location: "Uttarkashi", city: "Uttarkashi", price: 2599, rating: "4.9", category: "Hotel", image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600" },
+  { _id: "12", name: "Matli Valley Cottage", location: "Matli", city: "Matli", price: 2999, rating: "4.9", category: "Cottage", image: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=600" },
+  { _id: "13", name: "Athali Green Stays", location: "Athali", city: "Athali", price: 1699, rating: "4.7", category: "Homestay", image: "https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=600" },
+  { _id: "14", name: "Maneri Riverside Inn", location: "Maneri", city: "Maneri", price: 2399, rating: "4.6", category: "Hotel", image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600" },
+  { _id: "15", name: "Dunda Pine View", location: "Dunda", city: "Dunda", price: 1999, rating: "4.5", category: "Hotel", image: "https://images.unsplash.com/photo-1568495248636-6432b97bd949?w=600" },
+  { _id: "16", name: "Gangori Heritage Home", location: "Gangori", city: "Gangori", price: 2100, rating: "4.8", category: "Homestay", image: "https://images.unsplash.com/photo-1591088398332-8a7791972843?w=600" }
+];
+
 export default function Search() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,7 +33,7 @@ export default function Search() {
 
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [selectedCity, setSelectedCity] = useState(initialCity);
-  const [hotels, setHotels] = useState([]);
+  const [hotels, setHotels] = useState(localUttarkashiHotels); // शुरुआत में लोकल लिस्ट ताकि कभी 0 न दिखे
   const [loading, setLoading] = useState(true);
 
   // Filter States
@@ -29,21 +49,27 @@ export default function Search() {
     setLoading(true);
     axios.get(`${BACKEND_URL}/api/hotels`)
       .then((res) => {
-        const backendData = (res.data || []).map(item => ({
-          ...item,
-          price: Number(item.price) || 2499,
-          rating: item.rating || "4.8",
-          location: item.location || item.city || "Uttarkashi",
-          category: item.category || "Hotel",
-          image: item.image || item.img || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
-        }));
-        // अब केवल डेटाबेस वाला असली डेटा सेट होगा
-        setHotels(backendData);
+        const backendData = res.data || [];
+        if (backendData.length > 0) {
+          const formattedBackendData = backendData.map(item => ({
+            ...item,
+            price: Number(item.price) || 2499,
+            rating: item.rating || "4.8",
+            location: item.location || item.city || "Uttarkashi",
+            category: item.category || "Hotel",
+            image: item.image || item.img || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
+          }));
+          // यदि बैकएंड में डेटा है, तो उसे दिखाओ
+          setHotels(formattedBackendData);
+        } else {
+          // यदि बैकएंड खाली है, तो पुरानी 16 होटल्स वाली लिस्ट दिखाओ ताकि पेज खाली न लगे
+          setHotels(localUttarkashiHotels);
+        }
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching hotels:", err);
-        setHotels([]);
+        console.error("Error fetching hotels, falling back to local data:", err);
+        setHotels(localUttarkashiHotels);
         setLoading(false);
       });
   }, []);
@@ -52,7 +78,6 @@ export default function Search() {
     setSelectedFilters(prev => ({ ...prev, [filterName]: !prev[filterName] }));
   };
 
-  // Check if searched city/query is outside Uttarkashi region
   const uttarkashiKeywords = ["uttarkashi", "matli", "athali", "maneri", "gangori", "dunda", "gangotri", "tiloth", "all"];
   const isUttarkashiQuery = () => {
     const q = searchTerm.toLowerCase();
