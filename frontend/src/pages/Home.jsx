@@ -509,7 +509,7 @@ export default function Home() {
               </h2>
             </div>
             <button 
-              onClick={() => navigate("/explore-culture")}
+              onClick={() => navigate("/districts")}
               style={{ background: "transparent", border: "none", color: "#38bdf8", fontWeight: "800", cursor: "pointer", fontSize: "14px" }}
             >
               View All Culture →
@@ -520,8 +520,7 @@ export default function Home() {
             {UTTARAKHAND_DISTRICTS.map((dist) => (
               <div 
                 key={dist.id}
-                // अब यहाँ क्लिक करने पर सीधा Explore Culture वाले पेज पर जाएगा और संबंधित डिस्ट्रिक्ट का डेटा खुलेगा
-                onClick={() => navigate(`/explore-culture/${dist.id}`)}
+                onClick={() => navigate("/districts")}
                 className="hover-card"
                 style={{
                   background: "#1e293b", borderRadius: "16px", overflow: "hidden",
